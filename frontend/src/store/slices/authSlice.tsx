@@ -1,6 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { IUser } from "../../types/userAuth";
-import axios from "axios";
+import axios from "../../axiosConfig/axios";
 
 const initialState: IUser = {
   userData: { email: "", password: "", firstName: "", secondName: "" },
