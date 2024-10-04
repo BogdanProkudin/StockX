@@ -1,7 +1,7 @@
 {
   "type": "module",
   "scripts": {
-    "start:back": "nodemon app.js"
+    "dev": "nodemon app.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",

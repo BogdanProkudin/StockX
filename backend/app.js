@@ -1,6 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
-// import cors from "cors"; по сути он не нужен так что если хочешь можешь его от сюда просто убрать
+import cors from "cors";
 import dotenv from "dotenv";
 
 import { registerValidation } from "./Validation/UserValidation.js";
@@ -9,6 +9,7 @@ import { ErrorValidation } from "./utils/ErrorValidation.js";
 
 dotenv.config();
 const app = express();
+app.use(cors());
 const port = process.env.PORT;
 const DB_Connect = process.env.DATA_BASE_CONNECT;
 
@@ -24,15 +25,15 @@ mongoose
 app.use(express.json());
 
 app.post(
-  "/Singup",
+  "/signup",
   registerValidation,
-  ErrorValidation,
+
   UserController.register
 );
 app.post("/login", registerValidation, ErrorValidation, UserController.login);
 app.listen(port, (err) => {
   if (err) {
-    console.log("Error", err);
+    console.log("Error starting server", err);
   }
   console.log("Server Working");
 });
