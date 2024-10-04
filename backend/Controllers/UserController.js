@@ -1,4 +1,5 @@
 import userModel from "../Modules/User.js";
+import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 export const register = async (req, res) => {
   try {
@@ -12,11 +13,24 @@ export const register = async (req, res) => {
       secondName: req.body.secondName,
     });
     const user = await doc.save();
-    res.status(200).json(user);
+    const token = jwt.sign(
+      {
+        _id: user._id,
+      },
+      JWT_PAS,
+      {
+        expiresIn: "30d",
+      }
+    );
+    const { password, ...userData } = user._doc;
+    res.status(200).json(token, ...userData);
   } catch (error) {
     res.status(500).json({
       message: "Registration unavaible",
     });
   }
 };
-export const login = async (req, res) => {};
+export const login = async (req, res) => {
+  try {
+  } catch (error) {}
+};
