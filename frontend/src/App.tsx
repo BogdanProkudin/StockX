@@ -1,12 +1,10 @@
-import { useState } from "react";
-import Header from "./components/Header";
+import AuthUserPage from "./components/AuthUser/AuthUserPage";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
-      <Header />
+      {/* <Header /> */}
+      <AuthUserPage />
     </>
   );
 }
