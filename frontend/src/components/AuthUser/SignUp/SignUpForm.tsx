@@ -4,6 +4,7 @@ import SignUpInput from "./SignUpInput";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import styles from "./styles.module.scss";
+import SignUpButton from "./SignUpButton";
 const validationSchema = Yup.object().shape({
   email: Yup.string()
     .email("Enter a valid email address")
@@ -31,8 +32,10 @@ export default function App() {
     register,
     handleSubmit,
     formState: { errors },
+
     watch,
   } = useForm<Inputs>({
+    // shouldFocusError: false, под вопросом
     resolver: yupResolver(validationSchema),
   });
 
@@ -70,7 +73,7 @@ export default function App() {
         watch={watch}
       />
 
-      <input type="submit" />
+      <SignUpButton />
     </form>
   );
 }

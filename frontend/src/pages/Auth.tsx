@@ -1,9 +1,9 @@
 import { useState } from "react";
-import styles from "./styles.module.scss";
-import AuthSwitcher from "./AuthUserModeSwitcher";
-import SignUp from "./SignUp/SignUp";
-import LogIn from "./LogIn/LogIn";
-const AuthUserPage = () => {
+import styles from "../components/AuthUser/styles.module.scss";
+import AuthSwitcher from "../components/AuthUser/AuthUserModeSwitcher";
+import SignUp from "../components/AuthUser/SignUp/SignUp";
+import LogIn from "../components/AuthUser/LogIn/LogIn";
+const Auth = () => {
   const [authMode, setAuthMode] = useState("Sign Up");
   return (
     <div className={styles.auth_user_page_container}>
@@ -18,4 +18,4 @@ const AuthUserPage = () => {
   );
 };
 
-export default AuthUserPage;
+export default Auth;

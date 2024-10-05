@@ -1,12 +1,13 @@
 import { Route, Routes } from "react-router-dom";
-import AuthUserPage from "./components/AuthUser/AuthUserPage";
+
+import Auth from "./pages/Auth";
 
 function App() {
   return (
     <>
       {/* <Header /> */}
       <Routes>
-        <Route path="/" element={<AuthUserPage />}></Route>
+        <Route path="/" element={<Auth />}></Route>
       </Routes>
       {/* <AuthUserPage /> */}
     </>
