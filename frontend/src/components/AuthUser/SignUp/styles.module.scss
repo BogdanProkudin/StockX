@@ -1,0 +1,101 @@
+.signUp_container {
+  padding: 1rem;
+  padding-top: 2rem;
+  width: 85%;
+
+  height: 100%;
+  span {
+    font-size: 20px;
+    font-family: "proxima-nova", sans-serif;
+    font-weight: 500;
+  }
+}
+.signUp_form_container {
+  display: flex;
+  margin-top: 1rem;
+  flex-direction: column;
+
+  border-radius: 2px;
+  margin-bottom: 8px;
+  gap: 10px;
+}
+
+.signUP_input_container {
+  position: relative;
+
+  width: 100%;
+  .signUp_input_password_close_icon {
+    position: absolute;
+    right: 10px;
+    top: 1.2rem;
+    cursor: pointer;
+  }
+}
+
+.input_field {
+  border: 1px solid #e5e7ea;
+  width: 85%;
+  max-height: 50px;
+  padding: 16px;
+  padding-top: 20px;
+  padding-right: 30px;
+  padding-bottom: 10px;
+  font-family: "proxima-nova", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  outline: none;
+  transform-origin: left;
+  transition: border-color 0.3s ease;
+}
+
+.input_field:focus {
+  border-color: #4caf50;
+}
+
+.floating_label {
+  position: absolute;
+  font-family: "proxima-nova", sans-serif;
+  top: 50%;
+  left: 16px;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: #aaa;
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+.floating_label_active {
+  position: absolute;
+  font-family: "proxima-nova", sans-serif;
+  top: 50%;
+  left: 16px;
+  transform: translateY(-50%);
+  font-size: 15px;
+  color: #aaa;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  font-size: 10px !important;
+  transform: translateY(-161%) !important;
+}
+.signUP_input_container:focus-within .floating_label {
+  font-size: 10px;
+  transform: translateY(-161%);
+}
+.signUp_error_container {
+  display: flex;
+  justify-content: center;
+  background: #fff3f3;
+  border: 2px solid #ff6060;
+  border-radius: 5px;
+  font-family: "proxima-nova", sans-serif;
+  font-weight: 500;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+  font-size: 12px;
+  p {
+    word-break: break-all;
+    font-family: "proxima-nova", sans-serif;
+    font-size: 12px;
+  }
+}

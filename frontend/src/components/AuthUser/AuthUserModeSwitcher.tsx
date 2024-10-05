@@ -8,22 +8,20 @@ const AuthSwitcher: React.FC<AuthSwitcherProps> = ({
   authMode,
   setAuthMode,
 }) => {
-  const authModes = ["Sign Up", "Sign In"];
+  const authModes = ["Sign Up", "Log In"];
   return (
-    <div className={styles.auth_mode_container}>
-      <div className={styles.auth_mode_header_container}>
-        {authModes.map((authName) => {
-          return (
-            <button
-              key={authName}
-              className={authMode === authName ? styles.active_button : ""}
-              onClick={() => setAuthMode(authName)}
-            >
-              {authName}
-            </button>
-          );
-        })}
-      </div>
+    <div className={styles.auth_mode_header_container}>
+      {authModes.map((authName) => {
+        return (
+          <button
+            key={authName}
+            className={authMode === authName ? styles.active_button : ""}
+            onClick={() => setAuthMode(authName)}
+          >
+            {authName}
+          </button>
+        );
+      })}
     </div>
   );
 };

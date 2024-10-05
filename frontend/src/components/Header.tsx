@@ -14,7 +14,7 @@ const Header = () => {
       secondName: "Prokudin",
     };
 
-    dispatch(registerUser({ userData }));
+    dispatch(registerUser(userData));
   };
   return (
     <div>

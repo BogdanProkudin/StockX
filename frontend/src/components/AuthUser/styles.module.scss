@@ -23,8 +23,9 @@ body {
   .auth_mode_container {
     display: flex;
     height: 600px;
+    flex-direction: column;
     width: 400px;
-    justify-content: center;
+    align-items: center;
     margin-top: 0.3rem;
     background-color: #fff;
     border: solid 1px #e0e0e0;

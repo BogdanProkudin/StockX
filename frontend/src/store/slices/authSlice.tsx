@@ -1,15 +1,23 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { IUser } from "../../types/userAuth";
 import axios from "axios";
-
-const initialState: IUser = {
+interface IUserAuthSlice {
+  userData: IUser;
+  validationErrors: string;
+}
+const initialState: IUserAuthSlice = {
   userData: { email: "", password: "", firstName: "", secondName: "" },
+  validationErrors: "",
 };
 
 const userAuthSlice = createSlice({
   name: "userAuth",
   initialState,
-  reducers: {},
+  reducers: {
+    setValidationErrors: (state, action: PayloadAction<string>) => {
+      state.validationErrors = action.payload;
+    },
+  },
 });
 export const registerUser = createAsyncThunk(
   "auth/registerUser",
@@ -24,5 +32,5 @@ export const registerUser = createAsyncThunk(
     }
   }
 );
-export const {} = userAuthSlice.actions;
+export const { setValidationErrors } = userAuthSlice.actions;
 export default userAuthSlice.reducer;
