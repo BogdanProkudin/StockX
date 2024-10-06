@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
-import { useAppDispatch, useAppSelector } from "../../../store/hook";
-import { setValidationErrors } from "../../../store/slices/authSlice";
+import { useAppDispatch, useAppSelector } from "../../../redux/hook";
+import { setValidationErrors } from "../../../redux/slices/authSlice";
 import { IoEyeOutline } from "react-icons/io5";
 import styles from "./styles.module.scss";
 

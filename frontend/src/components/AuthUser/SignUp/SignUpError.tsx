@@ -1,4 +1,4 @@
-import { useAppSelector } from "../../../store/hook";
+import { useAppSelector } from "../../../redux/hook";
 import styles from "./styles.module.scss";
 const SignUpError = () => {
   const validationErrors = useAppSelector(
