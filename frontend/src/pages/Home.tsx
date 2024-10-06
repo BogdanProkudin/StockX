@@ -4,7 +4,7 @@ const Home: React.FC = () => {
   return (
     <div>
       Home
-      <Link to={"/login"}>login</Link>
+      <Link to={"/auth"}>login</Link>
     </div>
   );
 };

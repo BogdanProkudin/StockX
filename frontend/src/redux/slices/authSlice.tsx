@@ -51,7 +51,21 @@ export const loginUser = createAsyncThunk<
     return thunkAPI.rejectWithValue({ message: error.response.data });
   }
 });
-
+export const resetUserPassword = createAsyncThunk<
+  IUser, // Возвращаемый тип в случае успеха
+  { email: string }, // Тип аргументов
+  { rejectValue: { message: string } } // Тип ошибки для rejectWithValue
+>("auth/resetUserPassword", async (params, thunkAPI) => {
+  try {
+    const response = await axios.post(
+      "http://localhost:3003/resetPassword",
+      params
+    );
+    return response.data;
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue({ message: error.response.data });
+  }
+});
 // Slice
 
 const userAuthSlice = createSlice({

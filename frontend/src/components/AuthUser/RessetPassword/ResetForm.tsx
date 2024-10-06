@@ -1,12 +1,19 @@
 import React from "react";
 import styles from "./styles.module.scss";
+import { useAppDispatch } from "../../../redux/hook";
+import { resetUserPassword } from "../../../redux/slices/authSlice";
 
 const ResetForm: React.FC = () => {
+  const dispatch = useAppDispatch();
   const [inputValue, setInputValue] = React.useState("");
   const onChangeInput = (e: any) => {
     setInputValue(e.target.value);
   };
 
+  const handleSendResetEmail = (e: any) => {
+    e.preventDefault();
+    dispatch(resetUserPassword({ email: inputValue }));
+  };
   return (
     <>
       <form className={styles.form_wrapper}>
@@ -25,7 +32,10 @@ const ResetForm: React.FC = () => {
             Email
           </label>
         </div>
-        <button className={styles.btnReset} type="submit">
+        <button
+          onClick={(e) => handleSendResetEmail(e)}
+          className={styles.btnReset}
+        >
           Reset Password
         </button>
       </form>
