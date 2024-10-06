@@ -14,12 +14,14 @@ interface IUserAuthSlice {
   userData: IUser;
   validationErrors: any[];
   registrationBackendErrors: string;
+  resetPass: boolean;
 }
 
 const initialState: IUserAuthSlice = {
   userData: { email: "", password: "", firstName: "", secondName: "" },
   validationErrors: [],
   registrationBackendErrors: "",
+  resetPass: false,
 };
 
 // Асинхронные экшены
@@ -73,6 +75,9 @@ const userAuthSlice = createSlice({
       state.validationErrors = [];
       state.registrationBackendErrors = "";
     },
+    setResetPass(state, action: PayloadAction<boolean>) {
+      state.resetPass = action.payload;
+    },
   },
   extraReducers: (builder: ActionReducerMapBuilder<IUserAuthSlice>) => {
     builder
@@ -105,6 +110,6 @@ const userAuthSlice = createSlice({
 });
 
 // Экспортируем экшены и редьюсер
-export const { setValidationErrors, setClearValidationErrors } =
+export const { setValidationErrors, setClearValidationErrors, setResetPass } =
   userAuthSlice.actions;
 export default userAuthSlice.reducer;
