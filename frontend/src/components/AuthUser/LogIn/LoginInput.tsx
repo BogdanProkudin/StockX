@@ -5,11 +5,18 @@ import { IoEyeOutline } from "react-icons/io5";
 import { IoEyeOffOutline } from "react-icons/io5";
 
 import { Link } from "react-router-dom";
+import { useAppDispatch } from "../../../redux/hook";
+import { setResetPass } from "../../../redux/slices/authSlice";
 const LogInInput: React.FC<LoginInputPros> = ({ name, register, watch }) => {
+  const dispatch = useAppDispatch();
   const [visibPass, isVisibPass] = React.useState<boolean>(false);
   const placeholder =
     name === "email" ? "Email" : name === "password" ? "Password" : "text";
   const inputvalue = watch(name);
+
+  const oncClickReset = () => {
+    dispatch(setResetPass(true));
+  };
   return (
     <>
       <div className={styles.logIn_input_container}>
@@ -40,9 +47,9 @@ const LogInInput: React.FC<LoginInputPros> = ({ name, register, watch }) => {
         </label>
       </div>
       {name === "password" && (
-        <Link className={styles.login_pass_link} to={""}>
+        <p onClick={oncClickReset} className={styles.login_resset_pass}>
           Forgot Password?
-        </Link>
+        </p>
       )}
     </>
   );

@@ -4,10 +4,12 @@ import axios from "axios";
 interface IUserAuthSlice {
   userData: IUser;
   validationErrors: any;
+  resetPass: boolean;
 }
 const initialState: IUserAuthSlice = {
   userData: { email: "", password: "", firstName: "", secondName: "" },
   validationErrors: [],
+  resetPass: false,
 };
 
 const userAuthSlice = createSlice({
@@ -31,6 +33,9 @@ const userAuthSlice = createSlice({
 
     setClearValidationErrors: (state) => {
       state.validationErrors = [];
+    },
+    setResetPass(state, action: PayloadAction<boolean>) {
+      state.resetPass = action.payload;
     },
   },
 });
@@ -58,6 +63,6 @@ export const loginUser = createAsyncThunk(
     }
   }
 );
-export const { setValidationErrors, setClearValidationErrors } =
+export const { setValidationErrors, setClearValidationErrors, setResetPass } =
   userAuthSlice.actions;
 export default userAuthSlice.reducer;

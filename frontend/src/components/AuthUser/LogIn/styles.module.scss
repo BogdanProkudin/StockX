@@ -85,13 +85,14 @@
     cursor: pointer;
   }
 }
-.login_pass_link {
+.login_resset_pass {
   display: flex;
   justify-content: flex-end;
   cursor: pointer;
-  font-size: 12px;
+  font-size: 14px;
   font-family: "proxima-nova", sans-serif;
   font-weight: 500;
+  margin: 0;
   color: black;
 }
 .logIn_error_container {

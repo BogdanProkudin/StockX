@@ -4,13 +4,19 @@ import styles from "../components/AuthUser/styles.module.scss";
 import AuthSwitcher from "../components/AuthUser/AuthUserModeSwitcher";
 import SignUp from "../components/AuthUser/SignUp/SignUp";
 import LogIn from "../components/AuthUser/LogIn/LogIn";
+import RessetPassword from "../components/AuthUser/RessetPassword/index";
 import { Link } from "react-router-dom";
+
+import { useAppDispatch, useAppSelector } from "../redux/hook";
+import { setResetPass } from "../redux/slices/authSlice";
 const Auth: React.FC = () => {
-  const [authMode, setAuthMode] = useState("Log In");
+  const [authMode, setAuthMode] = React.useState("Log In");
+  const dispatch = useAppDispatch();
+  const resetPass = useAppSelector((state) => state.userAuth.resetPass);
   return (
     <div className={styles.auth_user_page_container}>
       <div className={styles.auth_user_logo_container}>
-        <Link to={"/"}>
+        <Link to={"/"} onClick={() => dispatch(setResetPass(false))}>
           <svg
             id="stockx-logo"
             viewBox="0 0 331 66"
@@ -70,10 +76,14 @@ const Auth: React.FC = () => {
           </svg>
         </Link>
       </div>
-      <div className={styles.auth_mode_container}>
-        <AuthSwitcher authMode={authMode} setAuthMode={setAuthMode} />
-        {authMode === "Sign Up" ? <SignUp /> : <LogIn />}
-      </div>
+      {resetPass ? (
+        <RessetPassword />
+      ) : (
+        <div className={styles.auth_mode_container}>
+          <AuthSwitcher authMode={authMode} setAuthMode={setAuthMode} />
+          {authMode === "Sign Up" ? <SignUp /> : <LogIn />}
+        </div>
+      )}
     </div>
   );
 };
