@@ -3,8 +3,8 @@ import styles from "./styles.module.scss";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 import { LoginInputs } from "../@types/LoginTypes";
-import LoginInput from "./LoginInput";
-const LoginForm: React.FC = () => {
+import LogInInput from "./LoginInput";
+const LogInForm: React.FC = () => {
   const {
     register,
     handleSubmit,
@@ -20,7 +20,7 @@ const LoginForm: React.FC = () => {
         className={styles.logIn_form_container}
         onSubmit={handleSubmit(onSubmit)}
       >
-        <LoginInput
+        <LogInInput
           name="email"
           register={register}
           watch={watch}
@@ -32,4 +32,4 @@ const LoginForm: React.FC = () => {
   );
 };
 
-export default LoginForm;
+export default LogInForm;

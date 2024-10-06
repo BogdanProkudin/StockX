@@ -1,6 +1,6 @@
 import React from "react";
-import { useAppDispatch } from "../store/hook";
-import { registerUser } from "../store/slices/authSlice";
+import { useAppDispatch } from "../redux/hook";
+import { registerUser } from "../redux/slices/authSlice";
 
 const Header = () => {
   const dispatch = useAppDispatch();

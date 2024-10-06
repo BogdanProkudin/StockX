@@ -3,7 +3,7 @@ import styles from "./styles.module.scss";
 import { LoginInputPros } from "../@types/LoginTypes";
 import { IoEyeOutline } from "react-icons/io5";
 import { IoEyeOffOutline } from "react-icons/io5";
-const LoginInput: React.FC<LoginInputPros> = ({
+const LogInInput: React.FC<LoginInputPros> = ({
   name,
   register,
   watch,
@@ -38,4 +38,4 @@ const LoginInput: React.FC<LoginInputPros> = ({
   );
 };
 
-export default LoginInput;
+export default LogInInput;
