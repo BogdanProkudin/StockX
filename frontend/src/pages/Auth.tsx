@@ -1,6 +1,6 @@
 import { useState } from "react";
 import React from "react";
-import styles from "../scss/modules/AuthStyles.module.scss";
+import styles from "../components/AuthUser/styles.module.scss";
 import AuthSwitcher from "../components/AuthUser/AuthUserModeSwitcher";
 import SignUp from "../components/AuthUser/SignUp/SignUp";
 import LogIn from "../components/AuthUser/LogIn/LogIn";
