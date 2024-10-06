@@ -75,6 +75,7 @@
   transform: translateY(-50%);
   font-size: 16px;
   color: #aaa;
+  user-select: none;
   transition: all 0.3s ease;
   pointer-events: none;
 }
