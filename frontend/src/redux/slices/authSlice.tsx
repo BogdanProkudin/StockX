@@ -1,14 +1,56 @@
-import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {
+  ActionReducerMapBuilder,
+  CaseReducer,
+  PayloadAction,
+  SerializedError,
+  createAsyncThunk,
+  createSlice,
+} from "@reduxjs/toolkit";
 import { IUser } from "../../types/userAuth";
 import axios from "axios";
+
+// Интерфейс для состояния
 interface IUserAuthSlice {
   userData: IUser;
-  validationErrors: any;
+  validationErrors: any[];
+  registrationBackendErrors: string;
 }
+
 const initialState: IUserAuthSlice = {
   userData: { email: "", password: "", firstName: "", secondName: "" },
   validationErrors: [],
+  registrationBackendErrors: "",
 };
+
+// Асинхронные экшены
+
+export const registerUser = createAsyncThunk<
+  IUser, // Возвращаемый тип в случае успеха
+  IUser, // Тип аргументов
+  { rejectValue: { message: string } } // Тип ошибки для rejectWithValue
+>("auth/registerUser", async (userData, thunkAPI) => {
+  try {
+    const response = await axios.post("http://localhost:3003/signup", userData);
+    return response.data;
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue({ message: error.response.data });
+  }
+});
+
+export const loginUser = createAsyncThunk<
+  IUser, // Возвращаемый тип в случае успеха
+  { email: string; password: string }, // Тип аргументов
+  { rejectValue: { message: string } } // Тип ошибки для rejectWithValue
+>("auth/loginUser", async (params, thunkAPI) => {
+  try {
+    const response = await axios.post("/login", params);
+    return response.data;
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue({ message: error.response.data });
+  }
+});
+
+// Slice
 
 const userAuthSlice = createSlice({
   name: "userAuth",
@@ -21,9 +63,7 @@ const userAuthSlice = createSlice({
         nameList.forEach((name) => {
           if (errors[name]) {
             delete errors[name].ref;
-            state.validationErrors.push(errors[name].message); // юзаю иммер что бы мутировать состояние
-          } else {
-            return;
+            state.validationErrors.push(errors[name].message); // юзаю иммер для мутирования состояния
           }
         });
       }
@@ -31,33 +71,40 @@ const userAuthSlice = createSlice({
 
     setClearValidationErrors: (state) => {
       state.validationErrors = [];
+      state.registrationBackendErrors = "";
     },
   },
+  extraReducers: (builder: ActionReducerMapBuilder<IUserAuthSlice>) => {
+    builder
+      .addCase(registerUser.pending, (state) => {
+        state.registrationBackendErrors = "";
+      })
+      .addCase(
+        registerUser.fulfilled,
+        (state, action: PayloadAction<IUser>) => {
+          state.userData = action.payload;
+          state.validationErrors = [];
+        }
+      )
+      .addCase(
+        registerUser.rejected,
+        (
+          state,
+          action: PayloadAction<
+            { message: string } | undefined, // Полезная нагрузка для rejected
+            string, // Тип action
+            { arg: IUser; requestId: string }, // Доп. данные из asyncThunk
+            SerializedError // Сериализованная ошибка
+          >
+        ) => {
+          state.registrationBackendErrors =
+            action.payload?.message || "Unknown registration error";
+        }
+      );
+  },
 });
-export const registerUser = createAsyncThunk(
-  "auth/registerUser",
-  async (userData: IUser, thunkAPI) => {
-    try {
-      const response = await axios.post("/signup", userData);
-      console.log("Response from registation", response);
 
-      return response.data;
-    } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.response.data);
-    }
-  }
-);
-export const loginUser = createAsyncThunk(
-  "auth/loginUser",
-  async (params: { email: string; password: string }, thunkAPI) => {
-    try {
-      const response = await axios.post("/login", params);
-      return response.data;
-    } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.response.data);
-    }
-  }
-);
+// Экспортируем экшены и редьюсер
 export const { setValidationErrors, setClearValidationErrors } =
   userAuthSlice.actions;
 export default userAuthSlice.reducer;

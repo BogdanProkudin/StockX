@@ -1,13 +1,13 @@
-import LoginErrors from "./LogInErrors";
-import LoginForm from "./LogInForm";
+import LogInErrors from "./LoginErrors";
+import LogInForm from "./LoginForm";
 
 import styles from "./styles.module.scss";
 const LogIn = () => {
   return (
     <div className={styles.logIn_container}>
-      <LoginErrors />
+      <LogInErrors />
       <span>Login</span>
-      <LoginForm />
+      <LogInForm />
     </div>
   );
 };

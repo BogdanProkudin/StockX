@@ -9,6 +9,7 @@ import { Inputs } from "../@types/RegisterTypes";
 import { useEffect } from "react";
 import { useAppDispatch } from "../../../redux/hook";
 import {
+  registerUser,
   setClearValidationErrors,
   setValidationErrors,
 } from "../../../redux/slices/authSlice";
@@ -39,7 +40,7 @@ export default function App() {
   const dispatch = useAppDispatch();
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
+    dispatch(registerUser(data));
   };
   useEffect(() => {
     if (errors) {

@@ -3,16 +3,22 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 export const register = async (req, res) => {
   try {
+    const isUserExist = await userModel.findOne({
+      email: req.body.email,
+    });
+    if (isUserExist) {
+      return res.status(404).json("Email is taken");
+    }
     // нужно ли добавлять  проверку на то занят ли ваш юзер нейм или нет когда фамилия и имя может повторяться
     const JWT_PAS = process.env.JWT_PAS;
-    const reqPass = req.body.userData.password;
+    const reqPass = req.body.password;
     const salt = await bcrypt.genSalt(10);
     const hashPass = await bcrypt.hash(reqPass, salt);
     const doc = new userModel({
-      email: req.body.userData.email,
+      email: req.body.email,
       password: hashPass,
-      firstName: req.body.userData.email,
-      secondName: req.body.userData.email,
+      firstName: req.body.firstName,
+      secondName: req.body.secondName,
     });
     const user = await doc.save();
     const token = jwt.sign(
