@@ -13,11 +13,9 @@ const UserSchema = new mongoose.Schema(
     },
     firstName: {
       type: String,
-      require: true,
     },
     secondName: {
       type: String,
-      require: true,
     },
   },
   {

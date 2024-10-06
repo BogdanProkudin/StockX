@@ -6,7 +6,7 @@ import SignUp from "../components/AuthUser/SignUp/SignUp";
 import LogIn from "../components/AuthUser/LogIn/LogIn";
 import { Link } from "react-router-dom";
 const Auth: React.FC = () => {
-  const [authMode, setAuthMode] = useState("Sign Up");
+  const [authMode, setAuthMode] = useState("Log In");
   return (
     <div className={styles.auth_user_page_container}>
       <div className={styles.auth_user_logo_container}>

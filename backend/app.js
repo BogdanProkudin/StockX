@@ -3,7 +3,6 @@ import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 
-import { registerValidation } from "./Validation/UserValidation.js";
 import { UserController } from "./Controllers/index.js";
 import { ErrorValidation } from "./utils/ErrorValidation.js";
 import CheckAuth from "./utils/CheckAuth.js";
@@ -25,13 +24,8 @@ mongoose
 
 app.use(express.json());
 
-app.post(
-  "/signup",
-  registerValidation,
-
-  UserController.register
-);
-app.post("/login", registerValidation, ErrorValidation, UserController.login);
+app.post("/signup", UserController.register);
+app.post("/login", ErrorValidation, UserController.login);
 app.get("/authMe", CheckAuth, UserController.auth);
 app.listen(port, (err) => {
   if (err) {

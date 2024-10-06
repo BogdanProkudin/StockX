@@ -94,3 +94,22 @@
   font-weight: 500;
   color: black;
 }
+.logIn_error_container {
+  display: flex;
+  justify-content: center;
+  background: #fff3f3;
+  border: 2px solid #ff6060;
+  border-radius: 5px;
+  font-family: "proxima-nova", sans-serif;
+  font-weight: 500;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+  font-size: 12px;
+  p {
+    word-break: break-all;
+    font-family: "proxima-nova", sans-serif;
+    font-size: 12px;
+  }
+}

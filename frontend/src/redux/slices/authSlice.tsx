@@ -3,19 +3,34 @@ import { IUser } from "../../types/userAuth";
 import axios from "axios";
 interface IUserAuthSlice {
   userData: IUser;
-  validationErrors: string;
+  validationErrors: any;
 }
 const initialState: IUserAuthSlice = {
   userData: { email: "", password: "", firstName: "", secondName: "" },
-  validationErrors: "",
+  validationErrors: [],
 };
 
 const userAuthSlice = createSlice({
   name: "userAuth",
   initialState,
   reducers: {
-    setValidationErrors: (state, action: PayloadAction<string>) => {
-      state.validationErrors = action.payload;
+    setValidationErrors: (state, action: PayloadAction<any>) => {
+      const { errors } = action.payload;
+      const nameList = ["firstName", "secondName", "email", "password"];
+      if (errors) {
+        nameList.forEach((name) => {
+          if (errors[name]) {
+            delete errors[name].ref;
+            state.validationErrors.push(errors[name].message); // юзаю иммер что бы мутировать состояние
+          } else {
+            return;
+          }
+        });
+      }
+    },
+
+    setClearValidationErrors: (state) => {
+      state.validationErrors = [];
     },
   },
 });
@@ -43,5 +58,6 @@ export const loginUser = createAsyncThunk(
     }
   }
 );
-export const { setValidationErrors } = userAuthSlice.actions;
+export const { setValidationErrors, setClearValidationErrors } =
+  userAuthSlice.actions;
 export default userAuthSlice.reducer;
