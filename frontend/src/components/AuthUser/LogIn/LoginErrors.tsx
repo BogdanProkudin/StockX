@@ -1,7 +1,11 @@
 import React from "react";
+import { useAppSelector } from "../../../redux/hook";
 
 const LoginErrors: React.FC = () => {
-  return <div>LoginErrors</div>;
+  const ValidationEroros = useAppSelector(
+    (state) => state.userAuth.validationErrors
+  );
+  return <div>LoginErrors,{ValidationEroros[0]}</div>;
 };
 
 export default LoginErrors;

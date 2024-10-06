@@ -9,6 +9,6 @@ export type Inputs = {
 export type SignUpInputProps = {
   name: keyof Inputs;
   register: UseFormRegister<any>;
-  errors: FieldError | undefined;
+  errors: FieldError | any;
   watch: UseFormWatch<Inputs>;
 };
