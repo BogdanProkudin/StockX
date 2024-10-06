@@ -32,5 +32,16 @@ export const registerUser = createAsyncThunk(
     }
   }
 );
+export const loginUser = createAsyncThunk(
+  "auth/loginUser",
+  async (params: { email: string; password: string }, thunkAPI) => {
+    try {
+      const response = await axios.post("/login", params);
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
 export const { setValidationErrors } = userAuthSlice.actions;
 export default userAuthSlice.reducer;

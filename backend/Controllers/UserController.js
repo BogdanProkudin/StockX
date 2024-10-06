@@ -38,5 +38,53 @@ export const register = async (req, res) => {
 };
 export const login = async (req, res) => {
   try {
-  } catch (error) {}
+    const JWT_PAS = process.env.JWT_PAS;
+    const user = await userModel.findOne({
+      email: req.body.email,
+    });
+    if (!user) {
+      return res.status(404).json({
+        message: "Email or password is wrong",
+      });
+    }
+    const reqPass = req.body.password;
+    const userPass = await bcrypt.compare(reqPass, user._doc.password);
+    if (!userPass) {
+      return res.status(404).json({
+        message: "Email or password is wrong",
+      });
+    }
+
+    const token = jwt.sign(
+      {
+        _id: user._id,
+      },
+      JWT_PAS,
+      {
+        expiresIn: "30d",
+      }
+    );
+
+    res.status(200).json({ message: "User login successfully", token });
+  } catch (error) {
+    res.status(500).json({
+      message: "Login unavaible",
+    });
+  }
+};
+export const auth = async (req, res) => {
+  try {
+    const user = userModel.findById(req.userId);
+    if (!user) {
+      return res.status(404).json({
+        message: "No access",
+      });
+    }
+    const { password, ...userData } = user._doc;
+    res.json({ ...userData });
+  } catch (error) {
+    return res.status(500).json({
+      message: "No access",
+    });
+  }
 };

@@ -78,20 +78,14 @@
   user-select: none;
   transition: all 0.3s ease;
   pointer-events: none;
+
+  &.active {
+    font-size: 15px;
+    font-size: 10px;
+    transform: translateY(-161%);
+  }
 }
-.floating_label_active {
-  position: absolute;
-  font-family: "proxima-nova", sans-serif;
-  top: 50%;
-  left: 16px;
-  transform: translateY(-50%);
-  font-size: 15px;
-  color: #aaa;
-  transition: all 0.3s ease;
-  pointer-events: none;
-  font-size: 10px !important;
-  transform: translateY(-161%) !important;
-}
+
 .signUP_input_container:focus-within .floating_label {
   font-size: 10px;
   transform: translateY(-161%);

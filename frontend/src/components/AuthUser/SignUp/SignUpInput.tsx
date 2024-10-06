@@ -1,17 +1,12 @@
 import { useEffect, useState } from "react";
-import { UseFormRegister, FieldError, UseFormWatch } from "react-hook-form";
+
 import { useAppDispatch, useAppSelector } from "../../../store/hook";
 import { setValidationErrors } from "../../../store/slices/authSlice";
 import { IoEyeOutline } from "react-icons/io5";
 import styles from "./styles.module.scss";
-import { Inputs } from "./SignUpForm";
+
 import { IoEyeOffOutline } from "react-icons/io5";
-type SignUpInputProps = {
-  name: keyof Inputs;
-  register: UseFormRegister<any>;
-  errors: FieldError | undefined;
-  watch: UseFormWatch<Inputs>;
-};
+import { SignUpInputProps } from "../@types/RegisterTypes";
 const SignUpInput: React.FC<SignUpInputProps> = ({
   register,
   watch,
@@ -42,27 +37,27 @@ const SignUpInput: React.FC<SignUpInputProps> = ({
   return (
     <div className={styles.signUP_input_container}>
       <input
-        type={name}
+        type={name === "password" && !isShowPassword ? "password" : "text"}
         className={styles.input_field}
         {...register(name)}
       ></input>
       {name === "password" && !isShowPassword ? (
-        <IoEyeOutline
+        <IoEyeOffOutline
           onClick={() => setIsShowPassword(true)}
           className={styles.signUp_input_password_close_icon}
         />
       ) : (
         name === "password" && (
-          <IoEyeOffOutline
+          <IoEyeOutline
             onClick={() => setIsShowPassword(false)}
             className={styles.signUp_input_password_close_icon}
           />
         )
       )}
       <label
-        className={
-          !inputValue ? styles.floating_label : styles.floating_label_active
-        }
+        className={`${styles.floating_label} ${
+          inputValue ? styles.active : ""
+        }`}
       >
         {placeholders}
       </label>

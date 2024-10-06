@@ -10,3 +10,79 @@
     font-weight: 500;
   }
 }
+
+.input_field {
+  border: 1px solid #e5e7ea;
+  width: 85%;
+  max-height: 50px;
+  padding: 16px;
+  padding-top: 20px;
+  padding-right: 30px;
+  padding-bottom: 10px;
+  font-family: "proxima-nova", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  outline: none;
+  transform-origin: left;
+  transition: border-color 0.3s ease;
+}
+
+.input_field:focus {
+  border-color: #4caf50;
+}
+
+.logIn_form_container {
+  display: flex;
+  margin-top: 1rem;
+  flex-direction: column;
+
+  border-radius: 2px;
+  margin-bottom: 8px;
+  gap: 10px;
+  button {
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    height: 50px;
+    border-radius: 0px;
+    padding: 0px;
+    font-family: "proxima-nova", sans-serif;
+    font-weight: 600;
+    min-width: 100px;
+    text-align: center;
+    background: #0f0f0f;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+}
+.floating_label {
+  position: absolute;
+  font-family: "proxima-nova", sans-serif;
+  top: 50%;
+  left: 16px;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: #aaa;
+  user-select: none;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  &.active {
+    font-size: 15px;
+    font-size: 10px;
+    transform: translateY(-161%);
+  }
+}
+.logIn_input_container:focus-within .floating_label {
+  font-size: 10px;
+  transform: translateY(-161%);
+}
+.logIn_input_container {
+  position: relative;
+  width: 100%;
+  .logIn_input_password_close_icon {
+    position: absolute;
+    right: 10px;
+    top: 1.2rem;
+    cursor: pointer;
+  }
+}
