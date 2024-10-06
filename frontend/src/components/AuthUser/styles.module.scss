@@ -1,28 +1,28 @@
 .auth_user_page_container {
   display: flex;
-  justify-content: center;
+
   align-items: center;
   flex-direction: column;
   background: #fafafa;
+  height: 100vh;
   .auth_user_logo_container {
     display: flex;
     justify-content: center;
     background-color: white;
     width: 100%;
-    border-bottom: 1px solid grey;
-    img {
-      width: 200px;
-      height: 90px;
-      transform: scale(1.2);
+    border-bottom: 1px solid #e0e0e0;
+    padding: 25px 0;
+    svg {
+      width: 210px;
     }
   }
   .auth_mode_container {
     display: flex;
-    height: 600px;
+
     flex-direction: column;
     width: 400px;
     align-items: center;
-    margin-top: 0.3rem;
+    margin-top: 1rem;
     background-color: #fff;
     border: solid 1px #e0e0e0;
     border-radius: 4.5px;
@@ -41,7 +41,6 @@
         font-weight: 600;
         color: #616161;
         max-height: 50px;
-
         background: #fff;
         width: 50%;
         padding: 15px;
@@ -50,7 +49,6 @@
     }
   }
 }
-
 .active_button {
   transition: all 0.5s ease;
   border: 2px solid transparent !important;
