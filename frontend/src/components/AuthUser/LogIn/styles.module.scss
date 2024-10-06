@@ -85,3 +85,12 @@
     cursor: pointer;
   }
 }
+.login_pass_link {
+  display: flex;
+  justify-content: flex-end;
+  cursor: pointer;
+  font-size: 12px;
+  font-family: "proxima-nova", sans-serif;
+  font-weight: 500;
+  color: black;
+}

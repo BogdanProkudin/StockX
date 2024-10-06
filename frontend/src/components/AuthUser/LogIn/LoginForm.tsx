@@ -4,6 +4,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 
 import { LoginInputs } from "../@types/LoginTypes";
 import LogInInput from "./LoginInput";
+import LogInButton from "./LogInButton";
 const LogInForm: React.FC = () => {
   const {
     register,
@@ -26,7 +27,13 @@ const LogInForm: React.FC = () => {
           watch={watch}
           errors={errors.email}
         />
-        <button type="submit">Login</button>
+        <LogInInput
+          name="password"
+          register={register}
+          watch={watch}
+          errors={errors.password}
+        />
+        <LogInButton />
       </form>
     </div>
   );
