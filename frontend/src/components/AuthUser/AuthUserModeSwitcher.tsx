@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import styles from "../../scss/modules/AuthStyles.module.scss";
+import styles from "./styles.module.scss";
 type AuthSwitcherProps = {
   authMode: string;
   setAuthMode: Dispatch<SetStateAction<string>>;
