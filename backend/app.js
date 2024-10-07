@@ -25,7 +25,7 @@ mongoose
 app.use(express.json());
 
 app.post("/signup", UserController.register);
-app.post("/login", ErrorValidation, UserController.login);
+app.post("/login", UserController.login);
 app.get("/authMe", CheckAuth, UserController.auth);
 app.post("/resetPassword", UserController.forgotPassword);
 app.listen(port, (err) => {

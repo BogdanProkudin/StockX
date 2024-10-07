@@ -1,0 +1,16 @@
+.header_nav_links {
+  display: flex;
+  align-items: center;
+  nav {
+    a {
+      font-size: 18px;
+      margin-right: 20px;
+      color: black;
+    }
+  }
+  .bellBtn {
+    background-color: inherit;
+    border: 0px solid black;
+    cursor: pointer;
+  }
+}

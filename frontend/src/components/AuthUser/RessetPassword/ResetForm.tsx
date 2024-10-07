@@ -6,7 +6,7 @@ import { resetUserPassword } from "../../../redux/slices/authSlice";
 const ResetForm: React.FC = () => {
   const dispatch = useAppDispatch();
   const [inputValue, setInputValue] = React.useState("");
-  const onChangeInput = (e: any) => {
+  const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };
 

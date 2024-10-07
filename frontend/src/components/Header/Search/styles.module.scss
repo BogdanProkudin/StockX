@@ -1,0 +1,32 @@
+.root {
+  position: relative;
+  width: 675px;
+  .header_input {
+    width: 100%;
+    max-width: 582px;
+    height: 42px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 0 30px 0 48px;
+    font-size: 17px;
+    transition: all ease-in-out 0.2s;
+    &:hover {
+      border: 1px solid #a4a4a4;
+    }
+  }
+  .search {
+    position: absolute;
+    background: inherit;
+    border: 0px solid black;
+    top: 9px;
+    left: 5px;
+  }
+  .close {
+    position: absolute;
+    background: inherit;
+    border: 0px solid black;
+    cursor: pointer;
+    top: 10px;
+    right: 15px;
+  }
+}

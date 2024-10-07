@@ -4,20 +4,22 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { LoginInputs } from "../@types/LoginTypes";
-import LogInInput from "./LoginInput";
+import LogInInput from "./LogInInput";
 import LogInButton from "./LogInButton";
-import { useAppDispatch } from "../../../redux/hook";
+import { useAppDispatch, useAppSelector } from "../../../redux/hook";
 import {
+  loginUser,
   setClearValidationErrors,
   setValidationErrors,
 } from "../../../redux/slices/authSlice";
+import {
+  emailLoginValidation,
+  passwordLoginValidation,
+} from "./LoginValidation";
+import { useNavigate } from "react-router-dom";
 const validationSchema = Yup.object().shape({
-  email: Yup.string()
-    .email("Enter a valid email address")
-    .required("Email is required"),
-  password: Yup.string()
-    .min(8, "Password must be at least 8 characters long")
-    .required("Password is required"),
+  email: emailLoginValidation,
+  password: passwordLoginValidation,
 });
 const LogInForm: React.FC = () => {
   const {
@@ -29,7 +31,25 @@ const LogInForm: React.FC = () => {
     resolver: yupResolver(validationSchema),
   });
   const dispatch = useAppDispatch();
-  const onSubmit: SubmitHandler<LoginInputs> = (data) => {};
+  const user = useAppSelector((state) => state.userAuth.userData);
+  const navigate = useNavigate();
+  const onSubmit: SubmitHandler<LoginInputs> = async (data) => {
+    console.log(data);
+
+    await dispatch(loginUser(data));
+  };
+  React.useEffect(() => {
+    const data = localStorage.getItem("token");
+    if (data) {
+      navigate("/");
+    }
+  }, []);
+  React.useEffect(() => {
+    if (user.token) {
+      localStorage.setItem("token", user.token);
+      navigate("/");
+    }
+  }, [user, navigate]);
   React.useEffect(() => {
     if (errors) {
       dispatch(setValidationErrors({ errors }));

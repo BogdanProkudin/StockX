@@ -1,5 +1,5 @@
-import LogInErrors from "./LoginErrors";
-import LogInForm from "./LoginForm";
+import LogInErrors from "./LogInErrors";
+import LogInForm from "./LogInForm";
 
 import styles from "./styles.module.scss";
 const LogIn = () => {

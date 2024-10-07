@@ -7,7 +7,14 @@ import {
   createSlice,
 } from "@reduxjs/toolkit";
 import { IUser } from "../../types/userAuth";
-import axios from "axios";
+
+import axios from "../../axiosConfig/axios"; // пофиксил axios так что можно теперь использовать
+// Интерфейс для состояния статуса
+enum fetchRequest {
+  LOADING = "loading",
+  SUCCESS = "success",
+  ERROR = "error",
+}
 
 // Интерфейс для состояния
 interface IUserAuthSlice {
@@ -15,6 +22,7 @@ interface IUserAuthSlice {
   validationErrors: any[];
   registrationBackendErrors: string;
   resetPass: boolean;
+  status: fetchRequest;
 }
 
 const initialState: IUserAuthSlice = {
@@ -22,6 +30,7 @@ const initialState: IUserAuthSlice = {
   validationErrors: [],
   registrationBackendErrors: "",
   resetPass: false,
+  status: fetchRequest.LOADING,
 };
 
 // Асинхронные экшены
@@ -32,7 +41,7 @@ export const registerUser = createAsyncThunk<
   { rejectValue: { message: string } } // Тип ошибки для rejectWithValue
 >("auth/registerUser", async (userData, thunkAPI) => {
   try {
-    const response = await axios.post("http://localhost:3003/signup", userData);
+    const response = await axios.post("/signup", userData);
     return response.data;
   } catch (error: any) {
     return thunkAPI.rejectWithValue({ message: error.response.data });
@@ -43,7 +52,7 @@ export const loginUser = createAsyncThunk<
   IUser, // Возвращаемый тип в случае успеха
   { email: string; password: string }, // Тип аргументов
   { rejectValue: { message: string } } // Тип ошибки для rejectWithValue
->("auth/loginUser", async (params, thunkAPI) => {
+>("auth/login", async (params, thunkAPI) => {
   try {
     const response = await axios.post("/login", params);
     return response.data;
@@ -57,10 +66,7 @@ export const resetUserPassword = createAsyncThunk<
   { rejectValue: { message: string } } // Тип ошибки для rejectWithValue
 >("auth/resetUserPassword", async (params, thunkAPI) => {
   try {
-    const response = await axios.post(
-      "http://localhost:3003/resetPassword",
-      params
-    );
+    const response = await axios.post("/resetPassword", params);
     return response.data;
   } catch (error: any) {
     return thunkAPI.rejectWithValue({ message: error.response.data });
@@ -79,6 +85,7 @@ const userAuthSlice = createSlice({
         nameList.forEach((name) => {
           if (errors[name]) {
             delete errors[name].ref;
+            state.status = fetchRequest.ERROR;
             state.validationErrors.push(errors[name].message); // юзаю иммер для мутирования состояния
           }
         });
@@ -88,6 +95,7 @@ const userAuthSlice = createSlice({
     setClearValidationErrors: (state) => {
       state.validationErrors = [];
       state.registrationBackendErrors = "";
+      state.status = fetchRequest.LOADING;
     },
     setResetPass(state, action: PayloadAction<boolean>) {
       state.resetPass = action.payload;
@@ -97,12 +105,14 @@ const userAuthSlice = createSlice({
     builder
       .addCase(registerUser.pending, (state) => {
         state.registrationBackendErrors = "";
+        state.status = fetchRequest.LOADING;
       })
       .addCase(
         registerUser.fulfilled,
         (state, action: PayloadAction<IUser>) => {
           state.userData = action.payload;
           state.validationErrors = [];
+          state.status = fetchRequest.SUCCESS;
         }
       )
       .addCase(
@@ -116,6 +126,30 @@ const userAuthSlice = createSlice({
             SerializedError // Сериализованная ошибка
           >
         ) => {
+          state.status = fetchRequest.ERROR;
+          state.registrationBackendErrors =
+            action.payload?.message || "Unknown registration error";
+        }
+      )
+      .addCase(loginUser.pending, (state) => {
+        state.registrationBackendErrors = "";
+      })
+      .addCase(loginUser.fulfilled, (state, action: PayloadAction<IUser>) => {
+        state.userData = action.payload;
+        state.validationErrors = [];
+      })
+      .addCase(
+        loginUser.rejected,
+        (
+          state,
+          action: PayloadAction<
+            { message: string } | undefined, // Полезная нагрузка для rejected
+            string, // Тип action
+            { arg: { email: string }; requestId: string }, // Доп. данные из asyncThunk
+            SerializedError // Сериализованная ошибка
+          >
+        ) => {
+          state.status = fetchRequest.ERROR;
           state.registrationBackendErrors =
             action.payload?.message || "Unknown registration error";
         }

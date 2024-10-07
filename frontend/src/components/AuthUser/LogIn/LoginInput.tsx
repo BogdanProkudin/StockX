@@ -4,7 +4,6 @@ import { LoginInputPros } from "../@types/LoginTypes";
 import { IoEyeOutline } from "react-icons/io5";
 import { IoEyeOffOutline } from "react-icons/io5";
 
-import { Link } from "react-router-dom";
 import { useAppDispatch } from "../../../redux/hook";
 import { setResetPass } from "../../../redux/slices/authSlice";
 const LogInInput: React.FC<LoginInputPros> = ({ name, register, watch }) => {

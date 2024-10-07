@@ -7,7 +7,7 @@ import styles from "./styles.module.scss";
 import SignUpButton from "./SignUpButton";
 import { Inputs } from "../@types/RegisterTypes";
 import { useEffect } from "react";
-import { useAppDispatch } from "../../../redux/hook";
+import { useAppDispatch, useAppSelector } from "../../../redux/hook";
 import {
   registerUser,
   setClearValidationErrors,
@@ -19,6 +19,8 @@ import {
   passwordValidationSchema,
   secondNameValidationSchema,
 } from "./SignUpValidation";
+import { useNavigate } from "react-router-dom";
+
 const validationSchema = Yup.object().shape({
   email: emailValidationSchema,
   password: passwordValidationSchema,
@@ -38,10 +40,17 @@ export default function App() {
     resolver: yupResolver(validationSchema),
   });
   const dispatch = useAppDispatch();
-
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    dispatch(registerUser(data));
+  const user = useAppSelector((state) => state.userAuth.userData);
+  const navigate = useNavigate();
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    await dispatch(registerUser(data));
   };
+  useEffect(() => {
+    if (user.token) {
+      navigate("/");
+    }
+  }, [user, navigate]);
+
   useEffect(() => {
     if (errors) {
       dispatch(setValidationErrors({ errors }));

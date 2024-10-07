@@ -73,7 +73,7 @@ export const login = async (req, res) => {
         expiresIn: "30d",
       }
     );
-
+    const { password, ...userData } = user._doc;
     res.status(200).json({ message: "User login successfully", token });
   } catch (error) {
     res.status(500).json({

@@ -1,0 +1,14 @@
+.header {
+  border-bottom: 1px solid #e0e0e0;
+  font-family: "proxima-nova", sans-serif;
+  .header_container {
+    max-width: 1370px;
+    margin: 0 auto;
+    .header_wrapper {
+      display: flex;
+      align-items: center;
+      height: 90px;
+      gap: 25px;
+    }
+  }
+}

@@ -1,0 +1,31 @@
+.header_auth_user {
+  display: flex;
+  gap: 10px;
+  .Login {
+    background-color: inherit;
+    a {
+      color: black;
+    }
+    &:hover {
+      background-color: black;
+      a {
+        color: white;
+      }
+    }
+  }
+  .Signup {
+    background-color: black;
+    a {
+      color: white;
+    }
+  }
+  button {
+    transition: all ease-in-out 0.2s;
+    cursor: pointer;
+    border: 1px solid black;
+    border-radius: 20px;
+    padding: 8px 16px;
+    font-size: 16px;
+    font-weight: 550;
+  }
+}
