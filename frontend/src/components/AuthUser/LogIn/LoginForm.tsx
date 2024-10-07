@@ -41,7 +41,7 @@ const LogInForm: React.FC = () => {
   React.useEffect(() => {
     const data = localStorage.getItem("token");
     if (data) {
-      navigate("/");
+      navigate("/profile");
     }
   }, []);
   React.useEffect(() => {

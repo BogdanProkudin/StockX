@@ -72,6 +72,14 @@ export const resetUserPassword = createAsyncThunk<
     return thunkAPI.rejectWithValue({ message: error.response.data });
   }
 });
+export const authMe = createAsyncThunk("auth/me", async (_, thunkAPI) => {
+  try {
+    const response = await axios.get("/authMe");
+    return response.data;
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue({ message: error.response.data });
+  }
+});
 // Slice
 
 const userAuthSlice = createSlice({
@@ -131,29 +139,16 @@ const userAuthSlice = createSlice({
             action.payload?.message || "Unknown registration error";
         }
       )
-      .addCase(loginUser.pending, (state) => {
+      .addCase(authMe.pending, (state) => {
         state.registrationBackendErrors = "";
       })
-      .addCase(loginUser.fulfilled, (state, action: PayloadAction<IUser>) => {
+      .addCase(authMe.fulfilled, (state, action: PayloadAction<IUser>) => {
         state.userData = action.payload;
         state.validationErrors = [];
       })
-      .addCase(
-        loginUser.rejected,
-        (
-          state,
-          action: PayloadAction<
-            { message: string } | undefined, // Полезная нагрузка для rejected
-            string, // Тип action
-            { arg: { email: string }; requestId: string }, // Доп. данные из asyncThunk
-            SerializedError // Сериализованная ошибка
-          >
-        ) => {
-          state.status = fetchRequest.ERROR;
-          state.registrationBackendErrors =
-            action.payload?.message || "Unknown registration error";
-        }
-      );
+      .addCase(authMe.rejected, (state) => {
+        state.status = fetchRequest.ERROR;
+      });
   },
 });
 
