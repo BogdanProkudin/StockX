@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./styles.module.scss";
-import ResetForm from "./ResetForm";
+
+import RequestResetForm from "./RequestResetForm";
 const index: React.FC = () => {
   return (
     <div className={styles.reset_pass_wrapper}>
@@ -11,7 +12,7 @@ const index: React.FC = () => {
             Please enter the email address that is associated with your StockX
             account.
           </p>
-          <ResetForm />
+          <RequestResetForm />
         </div>
       </div>
     </div>

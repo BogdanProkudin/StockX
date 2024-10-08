@@ -3,7 +3,7 @@ import styles from "./styles.module.scss";
 import { useAppDispatch } from "../../../redux/hook";
 import { resetUserPassword } from "../../../redux/slices/authSlice";
 
-const ResetForm: React.FC = () => {
+const RequestResetForm: React.FC = () => {
   const dispatch = useAppDispatch();
   const [inputValue, setInputValue] = React.useState("");
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,4 +43,4 @@ const ResetForm: React.FC = () => {
   );
 };
 
-export default ResetForm;
+export default RequestResetForm;

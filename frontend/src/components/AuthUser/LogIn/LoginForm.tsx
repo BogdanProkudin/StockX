@@ -4,7 +4,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { LoginInputs } from "../@types/LoginTypes";
-import LogInInput from "./LogInInput";
+import LogInInput from "./LoginInput";
 import LogInButton from "./LogInButton";
 import { useAppDispatch, useAppSelector } from "../../../redux/hook";
 import {
@@ -59,16 +59,14 @@ const LogInForm: React.FC = () => {
     };
   }, [errors]);
   return (
-    <div>
-      <form
-        className={styles.logIn_form_container}
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        <LogInInput name="email" register={register} watch={watch} />
-        <LogInInput name="password" register={register} watch={watch} />
-        <LogInButton />
-      </form>
-    </div>
+    <form
+      className={styles.logIn_form_container}
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      <LogInInput name="email" register={register} watch={watch} />
+      <LogInInput name="password" register={register} watch={watch} />
+      <LogInButton />
+    </form>
   );
 };
 

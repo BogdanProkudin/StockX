@@ -3,8 +3,8 @@ import styles from "../components/AuthUser/styles.module.scss";
 import AuthSwitcher from "../components/AuthUser/AuthUserModeSwitcher";
 import SignUp from "../components/AuthUser/SignUp/SignUp";
 import LogIn from "../components/AuthUser/LogIn/LogIn";
-import RessetPassword from "../components/AuthUser/RessetPassword/index";
 
+import RequestResetForm from "../components/AuthUser/ResetPassword/index";
 import { useAppSelector } from "../redux/hook";
 import HeaderAuth from "../components/AuthUser/HeaderAuth";
 
@@ -15,7 +15,7 @@ const Auth: React.FC = () => {
     <div className={styles.auth_user_page_container}>
       <HeaderAuth />
       {resetPass ? (
-        <RessetPassword />
+        <RequestResetForm />
       ) : (
         <div className={styles.auth_mode_container}>
           <AuthSwitcher authMode={authMode} setAuthMode={setAuthMode} />

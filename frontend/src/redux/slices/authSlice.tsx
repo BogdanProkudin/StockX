@@ -1,6 +1,5 @@
 import {
   ActionReducerMapBuilder,
-  CaseReducer,
   PayloadAction,
   SerializedError,
   createAsyncThunk,
@@ -61,7 +60,7 @@ export const loginUser = createAsyncThunk<
   }
 });
 export const resetUserPassword = createAsyncThunk<
-  IUser, // Возвращаемый тип в случае успеха
+  string, // Возвращаемый тип в случае успеха
   { email: string }, // Тип аргументов
   { rejectValue: { message: string } } // Тип ошибки для rejectWithValue
 >("auth/resetUserPassword", async (params, thunkAPI) => {

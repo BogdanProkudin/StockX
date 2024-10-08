@@ -11,7 +11,7 @@ const LogInInput: React.FC<LoginInputPros> = ({ name, register, watch }) => {
   const [visibPass, isVisibPass] = React.useState<boolean>(false);
   const placeholder =
     name === "email" ? "Email" : name === "password" ? "Password" : "text";
-  const inputvalue = watch(name);
+  const inputValue = watch(name);
 
   const oncClickReset = () => {
     dispatch(setResetPass(true));
@@ -39,7 +39,7 @@ const LogInInput: React.FC<LoginInputPros> = ({ name, register, watch }) => {
         )}
         <label
           className={`${styles.floating_label} ${
-            inputvalue ? styles.active : ""
+            inputValue ? styles.active : ""
           }`}
         >
           {placeholder}

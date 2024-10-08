@@ -7,11 +7,13 @@ import "./scss/styles.scss";
 import Profile from "./pages/Profile";
 import { useAppDispatch } from "./redux/hook";
 import { authMe } from "./redux/slices/authSlice";
+
+import ResetPage from "./components/AuthUser/ResetPassword/ResetPage";
 function App() {
   const dispatch = useAppDispatch();
-  React.useEffect(() => {
-    dispatch(authMe());
-  }, []);
+  // React.useEffect(() => {
+  //   dispatch(authMe());
+  // }, []);
   return (
     <>
       {/* <Header /> */}
@@ -19,6 +21,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/auth" element={<Auth />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/resetPassword/:token" element={<ResetPage />} />
       </Routes>
       {/* <AuthUserPage /> */}
     </>
