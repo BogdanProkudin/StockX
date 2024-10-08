@@ -19,6 +19,7 @@ const index: React.FC<IpopUpProps> = ({
       <ul>
         {objectArr.map((obj) => (
           <div key={obj.name} className={styles.flex_wrapper_link}>
+            {/* { тут надо иконки } */}
             <li className={styles.info_link}>{obj.name}</li>
           </div>
         ))}
