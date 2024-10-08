@@ -1,4 +1,4 @@
-import { IUser } from "../types/userAuth";
+import { IUser } from "../@types/userAuth";
 
 export const LocalUserData = () => {
   const user = localStorage.getItem("token");

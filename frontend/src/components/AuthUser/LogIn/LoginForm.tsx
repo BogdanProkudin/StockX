@@ -34,16 +34,9 @@ const LogInForm: React.FC = () => {
   const user = useAppSelector((state) => state.userAuth.userData);
   const navigate = useNavigate();
   const onSubmit: SubmitHandler<LoginInputs> = async (data) => {
-    console.log(data);
-
     await dispatch(loginUser(data));
   };
-  React.useEffect(() => {
-    const data = localStorage.getItem("token");
-    if (data) {
-      navigate("/profile");
-    }
-  }, []);
+
   React.useEffect(() => {
     if (user.token) {
       localStorage.setItem("token", user.token);

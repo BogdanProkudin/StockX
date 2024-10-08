@@ -1,8 +1,7 @@
-import { useForm } from "react-hook-form";
-import header_styles from "../styles.module.scss";
-import styles from "./styles.module.scss";
-import HeaderAuth from "../HeaderAuth";
-import ResetForm from "./ResetForm";
+import header_styles from "../components/AuthUser/styles.module.scss";
+import styles from "../components/AuthUser/ResetPassword/styles.module.scss";
+import HeaderAuth from "../components/AuthUser/HeaderAuth";
+import ResetForm from "../components/AuthUser/ResetPassword/ResetForm";
 
 const ResetPage = () => {
   return (

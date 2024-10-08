@@ -43,14 +43,8 @@ export default function App() {
   const user = useAppSelector((state) => state.userAuth.userData);
   const navigate = useNavigate();
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const res = await dispatch(registerUser(data));
+    await dispatch(registerUser(data));
   };
-  useEffect(() => {
-    const data = localStorage.getItem("token");
-    if (data) {
-      navigate("/profile");
-    }
-  }, []);
   useEffect(() => {
     if (user.token) {
       localStorage.setItem("token", user.token);

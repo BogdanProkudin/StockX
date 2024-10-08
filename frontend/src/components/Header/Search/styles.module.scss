@@ -1,6 +1,12 @@
 .root {
   position: relative;
   width: 675px;
+  &.active {
+    width: 725px;
+  }
+  &.active .header_input {
+    max-width: 632px;
+  }
   .header_input {
     width: 100%;
     max-width: 582px;

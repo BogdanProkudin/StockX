@@ -1,8 +1,8 @@
 import React from "react";
 import styles from "./styles.module.scss";
-import NotificationsIcon from "@mui/icons-material/Notifications";
+
 import { Link } from "react-router-dom";
-const HeaderNavigation = () => {
+const HeaderNavigation: React.FC = () => {
   const arrLinks: { name: string; path: string }[] = [
     {
       name: "News",
@@ -30,9 +30,6 @@ const HeaderNavigation = () => {
           </Link>
         ))}
       </nav>
-      <button className={styles.bellBtn}>
-        <NotificationsIcon />
-      </button>
     </div>
   );
 };

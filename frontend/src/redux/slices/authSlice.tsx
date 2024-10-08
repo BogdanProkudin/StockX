@@ -5,7 +5,7 @@ import {
   createAsyncThunk,
   createSlice,
 } from "@reduxjs/toolkit";
-import { IUser } from "../../types/userAuth";
+import { IUser } from "../../@types/userAuth";
 
 import axios from "../../axiosConfig/axios"; // пофиксил axios так что можно теперь использовать
 // Интерфейс для состояния статуса
@@ -107,6 +107,14 @@ const userAuthSlice = createSlice({
     setResetPass(state, action: PayloadAction<boolean>) {
       state.resetPass = action.payload;
     },
+    setLogout(state) {
+      state.userData = {
+        email: "",
+        password: "",
+        firstName: "",
+        secondName: "",
+      };
+    },
   },
   extraReducers: (builder: ActionReducerMapBuilder<IUserAuthSlice>) => {
     builder
@@ -138,6 +146,31 @@ const userAuthSlice = createSlice({
             action.payload?.message || "Unknown registration error";
         }
       )
+      .addCase(loginUser.pending, (state) => {
+        state.registrationBackendErrors = "";
+        state.status = fetchRequest.LOADING;
+      })
+      .addCase(loginUser.fulfilled, (state, action: PayloadAction<IUser>) => {
+        state.userData = action.payload;
+        state.validationErrors = [];
+        state.status = fetchRequest.SUCCESS;
+      })
+      .addCase(
+        loginUser.rejected,
+        (
+          state,
+          action: PayloadAction<
+            { message: string } | undefined, // Полезная нагрузка для rejected
+            string, // Тип action
+            { arg: { email: string; password: string }; requestId: string }, // Доп. данные из asyncThunk
+            SerializedError // Сериализованная ошибка
+          >
+        ) => {
+          state.status = fetchRequest.ERROR;
+          state.registrationBackendErrors =
+            action.payload?.message || "Unknown registration error";
+        }
+      )
       .addCase(authMe.pending, (state) => {
         state.registrationBackendErrors = "";
       })
@@ -152,6 +185,10 @@ const userAuthSlice = createSlice({
 });
 
 // Экспортируем экшены и редьюсер
-export const { setValidationErrors, setClearValidationErrors, setResetPass } =
-  userAuthSlice.actions;
+export const {
+  setValidationErrors,
+  setClearValidationErrors,
+  setResetPass,
+  setLogout,
+} = userAuthSlice.actions;
 export default userAuthSlice.reducer;

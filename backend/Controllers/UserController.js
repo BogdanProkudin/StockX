@@ -83,7 +83,7 @@ export const login = async (req, res) => {
 };
 export const auth = async (req, res) => {
   try {
-    const user = userModel.findById(req.userId);
+    const user = await userModel.findById(req.userId);
     if (!user) {
       return res.status(404).json({
         message: "No access",

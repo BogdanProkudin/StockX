@@ -2,18 +2,27 @@ import React from "react";
 import styles from "./styles.module.scss";
 import HeaderLogo from "./Logo/HeaderLogo";
 import HeaderNavigation from "./Navigation/HeaderNavigation";
-import NotificationsIcon from "@mui/icons-material/Notifications";
+
 import HeaderInput from "./Search/HeaderInput";
 import HeaderAuth from "./AuthBtns/HeaderAuth";
-const Header = () => {
+
+import HeaderUser from "./UserBtns/HeaderUser";
+
+const Header: React.FC = () => {
+  const userToken = localStorage.getItem("token");
+
   return (
     <header className={styles.header}>
       <div className={styles.header_container}>
-        <div className={styles.header_wrapper}>
+        <div
+          className={`${styles.header_wrapper} ${
+            userToken ? styles.active : ""
+          }`}
+        >
           <HeaderLogo />
           <HeaderInput />
           <HeaderNavigation />
-          <HeaderAuth />
+          {userToken ? <HeaderUser /> : <HeaderAuth />}
         </div>
       </div>
     </header>

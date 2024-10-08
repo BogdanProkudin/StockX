@@ -10,8 +10,9 @@ const HeaderInput: React.FC = () => {
   const onClickRemove = () => {
     setIsValue("");
   };
+  const userToken = localStorage.getItem("token");
   return (
-    <div className={styles.root}>
+    <div className={`${styles.root} ${userToken ? styles.active : ""}`}>
       <button className={styles.search}>
         <SearchIcon />
       </button>
