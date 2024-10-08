@@ -1,5 +1,7 @@
 import React from "react";
 import styles from "./styles.module.scss";
+import { useAppDispatch } from "../../../redux/hook";
+import { setLogout } from "../../../redux/slices/authSlice";
 interface IpopUpProps {
   objectArr: { img: string; name: string }[];
   onMouseFocus: () => void;
@@ -10,6 +12,11 @@ const index: React.FC<IpopUpProps> = ({
   onMouseFocus,
   onMouseUnFocus,
 }) => {
+  const dispatch = useAppDispatch();
+  const onClickLogout = () => {
+    localStorage.removeItem("token");
+    dispatch(setLogout());
+  };
   return (
     <div
       onMouseEnter={onMouseFocus}
@@ -20,7 +27,12 @@ const index: React.FC<IpopUpProps> = ({
         {objectArr.map((obj) => (
           <div key={obj.name} className={styles.flex_wrapper_link}>
             {/* { тут надо иконки } */}
-            <li className={styles.info_link}>{obj.name}</li>
+            <li
+              onClick={obj.name === "Log Out" ? onClickLogout : () => {}}
+              className={styles.info_link}
+            >
+              {obj.name}
+            </li>
           </div>
         ))}
       </ul>
