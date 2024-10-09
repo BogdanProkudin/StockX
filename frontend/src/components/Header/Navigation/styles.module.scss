@@ -1,8 +1,9 @@
 .header_nav_links {
   display: flex;
+  position: relative;
+  display: inline-block;
   align-items: center;
   nav {
-    position: relative;
     a {
       font-size: 18px;
       margin-right: 20px;
