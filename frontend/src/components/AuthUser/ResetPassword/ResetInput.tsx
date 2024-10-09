@@ -39,7 +39,10 @@ const ResetInput = ({
 
         <label
           className={`${styles.floating_label} ${
-            password ? styles.active : ""
+            (password.length > 0 && name === "password") ||
+            (confirmPassword.length > 1 && name === "confirmPassword")
+              ? styles.active
+              : ""
           }`}
         >
           {placeholder}

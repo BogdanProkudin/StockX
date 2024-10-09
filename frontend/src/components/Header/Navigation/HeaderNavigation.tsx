@@ -2,7 +2,12 @@ import React from "react";
 import styles from "./styles.module.scss";
 import PopUp from "../PopUp/index";
 import { Link } from "react-router-dom";
-import AddIcon from "@mui/icons-material/Add";
+import {
+  arrLinks,
+  aboutArr,
+  sellArr,
+} from "../../../assets/HeaderAssets/HeaderNavigation";
+
 const HeaderNavigation: React.FC = () => {
   const [navigate, setNavigate] = React.useState<string | null>(null);
   const isFocus = (name: string) => {
@@ -13,46 +18,12 @@ const HeaderNavigation: React.FC = () => {
     }
   };
 
-  const aboutArr: { img: string; name: string; path: string }[] = [
-    { img: "icon_profile.png", name: "How StockX Works", path: "" },
-    { img: "icon_buying.png", name: "Buying Guide", path: "" },
-    { img: "icon_selling.png", name: "Selling Guide", path: "" },
-    { img: "icon_favorites.png", name: "Verification", path: "" },
-    { img: "icon_portfolio.png", name: "Newsroom", path: "" },
-    { img: "icon_wallet.png", name: "Company", path: "" },
-  ];
-
-  const sellArr: { img: any; name: string; path: string }[] = [
-    { img: <AddIcon />, name: "New Listing", path: "" },
-    { img: "icon_buying.png", name: "Current Listings", path: "" },
-    { img: "icon_selling.png", name: "Pending Sales", path: "" },
-    { img: "icon_favorites.png", name: "History", path: "" },
-    { img: "icon_portfolio.png", name: "Professional Tools", path: "" },
-  ];
-  const arrLinks: { name: string; path: string }[] = [
-    {
-      name: "News",
-      path: "/News",
-    },
-    {
-      name: "About",
-      path: "/About",
-    },
-    {
-      name: "Help",
-      path: "/Help",
-    },
-    {
-      name: "Sell",
-      path: "/Sell",
-    },
-  ];
   return (
-    <div className={styles.header_nav_links}>
+    <div className={styles.header_navigation_links_container}>
       <nav>
         {arrLinks.map((obj) => (
           <li
-            className={styles.nav_link}
+            className={styles.header_navigation_item}
             onMouseEnter={() => isFocus(obj.name)}
             key={obj.path}
           >

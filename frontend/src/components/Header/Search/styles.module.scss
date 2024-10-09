@@ -1,13 +1,9 @@
-.root {
+.header_input_container {
   position: relative;
   flex-grow: 1;
 
-  &.active {
-  }
-  &.active .header_input {
-  }
   .header_input {
-    width: 100%;
+    width: -webkit-fill-available;
 
     height: 42px;
     border: 1px solid #e0e0e0;
@@ -32,6 +28,10 @@
     border: 0px solid black;
     cursor: pointer;
     top: 10px;
-    right: 15px;
+    right: 3px;
+    padding: 0;
   }
+}
+
+@media screen {
 }
