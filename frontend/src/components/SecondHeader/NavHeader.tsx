@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./styles.module.scss";
 import { Link } from "react-router-dom";
-const NavHeader = () => {
+const NavigationHeader = () => {
   const arrLinks: { name: string; path: string }[] = [
     { name: "Brands", path: "" },
     { name: "Deals", path: "" },
@@ -30,4 +30,4 @@ const NavHeader = () => {
   );
 };
 
-export default NavHeader;
+export default NavigationHeader;
