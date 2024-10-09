@@ -21,20 +21,11 @@
         position: relative;
         border-bottom: 2px solid whitesmoke;
         cursor: pointer;
-        &::before {
-          content: "";
-          position: absolute;
-          bottom: 0;
-          left: 50%;
-          width: 0;
-          height: 3px;
-          background-color: black;
-          transform: translateX(-50%);
-          transition: width 0.6s ease;
-        }
 
-        &:hover::before {
-          width: 100%;
+        &:hover {
+          .header_navigation_item_line {
+            width: 100%;
+          }
         }
         .dropdown_navigate_block {
           position: absolute;
@@ -48,4 +39,15 @@
       }
     }
   }
+}
+
+.header_navigation_item_line {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 3px;
+  background-color: black;
+  transform: translateX(-50%);
+  transition: width 0.6s ease;
 }

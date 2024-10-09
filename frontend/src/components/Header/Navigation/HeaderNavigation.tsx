@@ -28,6 +28,7 @@ const HeaderNavigation: React.FC = () => {
             key={obj.path}
           >
             <Link to={obj.path}>{obj.name}</Link>
+
             <div className={styles.dropdown}>
               <PopUp
                 objectArr={
