@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./styles.module.scss";
 import PopUp from "../PopUp/index";
 import { Link } from "react-router-dom";
+import AddIcon from "@mui/icons-material/Add";
 const HeaderNavigation: React.FC = () => {
   const [navigate, setNavigate] = React.useState<string | null>(null);
   const isFocus = (name: string) => {
@@ -21,8 +22,8 @@ const HeaderNavigation: React.FC = () => {
     { img: "icon_wallet.png", name: "Company", path: "" },
   ];
 
-  const sellArr: { img: string; name: string; path: string }[] = [
-    { img: "icon_profile.png", name: "New Listing", path: "" },
+  const sellArr: { img: any; name: string; path: string }[] = [
+    { img: <AddIcon />, name: "New Listing", path: "" },
     { img: "icon_buying.png", name: "Current Listings", path: "" },
     { img: "icon_selling.png", name: "Pending Sales", path: "" },
     { img: "icon_favorites.png", name: "History", path: "" },

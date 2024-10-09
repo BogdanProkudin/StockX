@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./styles.module.scss";
 import PopUp from "../PopUp/index";
 import { Link } from "react-router-dom";
-const HeaderUser = () => {
+const HeaderUser:React.FC = () => {
   const navLinksArr = [
     {
       img: (
