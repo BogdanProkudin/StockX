@@ -22,6 +22,7 @@ interface IUserAuthSlice {
   registrationBackendErrors: string;
   resetPass: boolean;
   status: fetchRequest;
+  stateAuthSwitcher: string;
 }
 
 const initialState: IUserAuthSlice = {
@@ -30,6 +31,7 @@ const initialState: IUserAuthSlice = {
   registrationBackendErrors: "",
   resetPass: false,
   status: fetchRequest.LOADING,
+  stateAuthSwitcher: "Sign Up",
 };
 
 // Асинхронные экшены
@@ -115,6 +117,9 @@ const userAuthSlice = createSlice({
         secondName: "",
       };
     },
+    setAuthSwitcher(state, action: PayloadAction<string>) {
+      state.stateAuthSwitcher = action.payload;
+    },
   },
   extraReducers: (builder: ActionReducerMapBuilder<IUserAuthSlice>) => {
     builder
@@ -190,5 +195,6 @@ export const {
   setClearValidationErrors,
   setResetPass,
   setLogout,
+  setAuthSwitcher,
 } = userAuthSlice.actions;
 export default userAuthSlice.reducer;

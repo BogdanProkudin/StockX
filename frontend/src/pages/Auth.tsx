@@ -9,7 +9,7 @@ import { useAppSelector } from "../redux/hook";
 import HeaderAuth from "../components/AuthUser/HeaderAuth";
 
 const Auth: React.FC = () => {
-  const [authMode, setAuthMode] = React.useState("Log In");
+  const authMode = useAppSelector((state) => state.userAuth.stateAuthSwitcher);
   const resetPass = useAppSelector((state) => state.userAuth.resetPass);
   return (
     <div className={styles.auth_user_page_container}>
@@ -18,7 +18,7 @@ const Auth: React.FC = () => {
         <RequestResetForm />
       ) : (
         <div className={styles.auth_mode_container}>
-          <AuthSwitcher authMode={authMode} setAuthMode={setAuthMode} />
+          <AuthSwitcher />
           {authMode === "Sign Up" ? <SignUp /> : <LogIn />}
         </div>
       )}
