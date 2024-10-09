@@ -22,6 +22,7 @@ const NavigationHeader = () => {
           {arrLinks.map((obj) => (
             <li key={obj.name} className={styles.navheader_links}>
               <Link to={obj.path}>{obj.name}</Link>
+              <div className={styles.dropdown_navigate_block}></div>
             </li>
           ))}
         </ul>
