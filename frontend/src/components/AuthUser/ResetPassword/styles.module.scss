@@ -1,0 +1,176 @@
+.reset_pass_wrapper {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  height: 60vh;
+
+  .title {
+    font-weight: 400;
+    align-items: center;
+    font-family: "proxima-nova", sans-serif;
+    margin: 0;
+  }
+  .reset_pass_block {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    margin-top: 1rem;
+    background-color: #fff;
+    border: solid 1px #e0e0e0;
+    border-radius: 4.5px;
+    padding: 16px;
+  }
+  .reset_pass_container {
+    width: 330px;
+    margin: 0 18px;
+    .reset_pass_description {
+      margin-bottom: 20px;
+      font-family: "proxima-nova", sans-serif;
+    }
+  }
+}
+
+.form_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  .input_container {
+    position: relative;
+  }
+  .input_field {
+    border: 1px solid #e5e7ea;
+    width: 85%;
+    max-height: 50px;
+    padding: 16px;
+    padding-top: 20px;
+    padding-right: 30px;
+    padding-bottom: 10px;
+    font-family: "proxima-nova", sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    outline: none;
+    transform-origin: left;
+    transition: border-color 0.3s ease;
+    &:focus {
+      border-color: #4caf50;
+    }
+  }
+  .label {
+    position: absolute;
+    font-family: "proxima-nova", sans-serif;
+    top: 50%;
+    left: 16px;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: #aaa;
+    user-select: none;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    &.active {
+      font-size: 15px;
+      font-size: 10px;
+      transform: translateY(-161%);
+    }
+  }
+  .input_container:focus-within .label {
+    font-size: 10px;
+    transform: translateY(-161%);
+  }
+  .btnReset {
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    height: 50px;
+    border-radius: 0px;
+    padding: 0px;
+    font-family: "proxima-nova", sans-serif;
+    font-weight: 600;
+    min-width: 100px;
+    text-align: center;
+    background: #0f0f0f;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+}
+
+.reset_input_container {
+  position: relative;
+  width: 128%;
+  .reset_input_password_close_icon {
+    position: absolute;
+    right: 10px;
+    top: 1.2rem;
+    cursor: pointer;
+  }
+}
+.floating_label {
+  position: absolute;
+  font-family: "proxima-nova", sans-serif;
+  top: 50%;
+  left: 16px;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: #aaa;
+  user-select: none;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  &.active {
+    font-size: 15px;
+    font-size: 10px;
+    transform: translateY(-161%);
+  }
+}
+.reset_input_container:focus-within .floating_label {
+  font-size: 10px;
+  transform: translateY(-161%);
+}
+
+.reset_form_container {
+  display: flex;
+  margin-top: 1rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin-bottom: 8px;
+  gap: 10px;
+  button {
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    height: 50px;
+    border-radius: 0px;
+    padding: 0px;
+    font-family: "proxima-nova", sans-serif;
+    font-weight: 600;
+    min-width: 100px;
+    text-align: center;
+    background: #0f0f0f;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+}
+
+.reset_input {
+  border: 1px solid #e5e7ea;
+  width: 85%;
+  max-height: 50px;
+  padding: 16px;
+  padding-top: 20px;
+  padding-right: 30px;
+  padding-bottom: 10px;
+  font-family: "proxima-nova", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  outline: none;
+  transform-origin: left;
+  transition: border-color 0.3s ease;
+
+  .reset_input:focus {
+    border-color: #4caf50;
+  }
+}

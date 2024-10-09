@@ -1,0 +1,28 @@
+.header_navigation_links_container {
+  display: flex;
+  position: relative;
+  display: inline-block;
+  align-items: center;
+  nav {
+    display: flex;
+    .header_navigation_item {
+      position: relative;
+      margin-right: 20px;
+      &:hover .dropdown {
+        visibility: visible;
+      }
+      a {
+        font-size: 18px;
+        color: black;
+      }
+      .dropdown {
+        position: absolute;
+        visibility: hidden;
+        background-color: white;
+        border: 1px solid #e0e0e0;
+        border-radius: 5px;
+        right: 0;
+      }
+    }
+  }
+}

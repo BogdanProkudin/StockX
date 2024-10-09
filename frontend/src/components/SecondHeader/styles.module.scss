@@ -1,0 +1,34 @@
+.nav_header {
+  background-color: whitesmoke;
+
+  .wrapper_nav_header {
+    ul {
+      display: flex;
+      height: 48px;
+      justify-content: center;
+      text-align: center;
+      align-items: center;
+      margin: 0;
+      padding: 0;
+      .navheader_links {
+        display: flex;
+        align-items: center;
+        font-size: 18px;
+        font-weight: 550;
+        opacity: 0.8;
+        height: 100%;
+        padding: 0 8px;
+        position: relative;
+        border-bottom: 2px solid whitesmoke;
+        &:hover {
+          border-bottom: 2px solid black;
+        }
+        a {
+          color: black;
+
+          text-align: center;
+        }
+      }
+    }
+  }
+}
