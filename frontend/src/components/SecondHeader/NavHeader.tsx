@@ -15,13 +15,28 @@ const NavigationHeader = () => {
     { name: "Accessories", path: "" },
     { name: "More Categories", path: "" },
   ];
+  const headerLinkRef = React.useRef<HTMLLIElement>(null);
+  React.useEffect(() => {
+    const liElement = headerLinkRef.current;
+
+    if (liElement) {
+      const computedStyle = window.getComputedStyle(liElement, "::before");
+      const beforeWidth = computedStyle.getPropertyValue("width");
+      console.log("Ширина ::before элемента:", beforeWidth);
+    }
+  }, [headerLinkRef]);
   return (
     <header className={styles.nav_header}>
       <div className={styles.wrapper_nav_header}>
         <ul>
           {arrLinks.map((obj) => (
-            <li key={obj.name} className={styles.navheader_links}>
+            <li
+              ref={headerLinkRef}
+              key={obj.name}
+              className={styles.navheader_links}
+            >
               <Link to={obj.path}>{obj.name}</Link>
+              <div className={styles.dropdown_navigate_block}></div>
             </li>
           ))}
         </ul>

@@ -20,12 +20,29 @@
         padding: 0 8px;
         position: relative;
         border-bottom: 2px solid whitesmoke;
-        &:hover {
-          border-bottom: 2px solid black;
+        cursor: pointer;
+        &::before {
+          content: "";
+          position: absolute;
+          bottom: 0;
+          left: 50%;
+          width: 0;
+          height: 3px;
+          background-color: black;
+          transform: translateX(-50%);
+          transition: width 0.6s ease;
         }
+
+        &:hover::before {
+          width: 100%;
+        }
+        .dropdown_navigate_block {
+          position: absolute;
+          background-color: white;
+        }
+
         a {
           color: black;
-
           text-align: center;
         }
       }
