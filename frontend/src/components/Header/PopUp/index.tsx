@@ -12,12 +12,12 @@ const index: React.FC<PopupProps> = ({ objectArr }) => {
     dispatch(setLogout());
   };
   return (
-    <ul className={styles.link_container}>
+    <ul className={styles.header_popUp_link_container}>
       {objectArr?.map((obj) => (
-        <div key={obj.name} className={styles.link_flex}>
+        <div key={obj.name} className={styles.header_popUP_link_wrapper}>
           <li
             onClick={obj.name === "Log Out" ? onClickLogout : () => {}}
-            className={styles.link}
+            className={styles.header_popUP_link}
           >
             {obj.name}
           </li>

@@ -1,11 +1,10 @@
-.link_container {
+.header_popUp_link_container {
   margin: 0;
   padding: 0;
-
-  .link_flex {
+  .header_popUP_link_wrapper {
     display: flex;
     align-items: center;
-    .link {
+    .header_popUP_link {
       width: 138px;
       cursor: pointer;
       padding: 8px 16px;
@@ -13,5 +12,16 @@
         background-color: #e0e0e0;
       }
     }
+  }
+}
+
+.navigation_link_item {
+  position: relative;
+  padding: 15px;
+  color: #fff;
+  cursor: pointer;
+
+  &:hover .dropdown_content {
+    display: block; /* Показываем выпадающий список при наведении */
   }
 }

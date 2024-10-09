@@ -1,15 +1,21 @@
 import { useForm } from "react-hook-form";
+import * as Yup from "yup";
 import styles from "./styles.module.scss";
 import { ResetInputs } from "../@types/ResetPasswordTypes";
 import ResetInput from "./ResetInput";
-
+import { yupResolver } from "@hookform/resolvers/yup";
+import { passwordValidationSchema } from "../SignUp/SignUpValidation";
+const validationSchema = Yup.object().shape({
+  password: passwordValidationSchema,
+  confirmPassword: passwordValidationSchema,
+});
 const ResetForm = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
-  } = useForm<ResetInputs>();
+  } = useForm<ResetInputs>({ resolver: yupResolver(validationSchema) });
 
   const onSubmit = (data: ResetInputs) => {
     console.log(data);

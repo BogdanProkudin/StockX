@@ -148,7 +148,7 @@ export const forgotPassword = async (req, res) => {
           <td bgcolor="#ffffff" style="padding: 40px 30px 40px 30px;">
             <p style="font-size: 18px;">Hello,</p>
             <p style="font-size: 16px; line-height: 1.6;">You requested to reset your password. Click the link below to set a new password:</p>
-            <a href="http://localhost:5173/reset-password/{${resetToken}" style="display: inline-block; padding: 10px 20px; color: white; background-color: #70bbd9; text-decoration: none; border-radius: 5px;">Reset Password</a>
+            <a href="http://localhost:5173/resetPassword/{${resetToken}" style="display: inline-block; padding: 10px 20px; color: white; background-color: #70bbd9; text-decoration: none; border-radius: 5px;">Reset Password</a>
             <p style="margin-top: 20px; font-size: 16px;">If you didn't request this, please ignore this email.</p>
           </td>
         </tr>

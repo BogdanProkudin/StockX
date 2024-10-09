@@ -1,9 +1,11 @@
-.header_nav_links {
+.header_navigation_links_container {
   display: flex;
+  position: relative;
+  display: inline-block;
   align-items: center;
   nav {
     display: flex;
-    .nav_link {
+    .header_navigation_item {
       position: relative;
       margin-right: 20px;
       &:hover .dropdown {

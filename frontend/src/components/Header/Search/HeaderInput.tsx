@@ -12,7 +12,11 @@ const HeaderInput: React.FC = () => {
   };
   const userToken = localStorage.getItem("token");
   return (
-    <div className={`${styles.root} ${userToken ? styles.active : ""}`}>
+    <div
+      className={`${styles.header_input_container} ${
+        userToken ? styles.active : ""
+      }`}
+    >
       <button className={styles.search}>
         <SearchIcon />
       </button>

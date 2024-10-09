@@ -1,15 +1,10 @@
-.root {
+.header_input_container {
   position: relative;
-  width: 675px;
-  &.active {
-    width: 725px;
-  }
-  &.active .header_input {
-    max-width: 632px;
-  }
+  flex-grow: 1;
+
   .header_input {
-    width: 100%;
-    max-width: 582px;
+    width: -webkit-fill-available;
+
     height: 42px;
     border: 1px solid #e0e0e0;
     border-radius: 10px;
@@ -33,6 +28,10 @@
     border: 0px solid black;
     cursor: pointer;
     top: 10px;
-    right: 15px;
+    right: 3px;
+    padding: 0;
   }
+}
+
+@media screen {
 }
