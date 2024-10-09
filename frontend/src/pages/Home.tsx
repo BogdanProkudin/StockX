@@ -14,7 +14,7 @@ const Home: React.FC = () => {
   return (
     <div>
       <Header />
-      {/* <NavHeader /> */}
+      <NavHeader />
       Home
       <Link to={"/auth"}>login</Link>
       <button onClick={onClickLogout}>Logout</button>
