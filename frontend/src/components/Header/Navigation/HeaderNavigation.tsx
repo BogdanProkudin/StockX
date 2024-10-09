@@ -1,40 +1,35 @@
 import React from "react";
 import styles from "./styles.module.scss";
-import popUpStyles from "../PopUp/styles.module.scss";
 import PopUp from "../PopUp/index";
 import { Link } from "react-router-dom";
+import AddIcon from "@mui/icons-material/Add";
 const HeaderNavigation: React.FC = () => {
-  const [onFocus, setOnFocus] = React.useState<boolean | null>(null);
-  const [navigateName, setNavigateName] = React.useState<string | null>(null);
-
+  const [navigate, setNavigate] = React.useState<string | null>(null);
   const isFocus = (name: string) => {
-    console.log("Enter");
-
     if (name === "About" || name === "Sell") {
-      setNavigateName(name);
-      setOnFocus(true);
+      setNavigate(name);
     } else {
-      setOnFocus(false);
+      setNavigate(null);
     }
   };
 
-  const aboutArr: { img: string; name: string }[] = [
-    { img: "icon_profile.png", name: "How StockX Works" },
-    { img: "icon_buying.png", name: "Buying Guide" },
-    { img: "icon_selling.png", name: "Selling Guide" },
-    { img: "icon_favorites.png", name: "Verification" },
-    { img: "icon_portfolio.png", name: "Newsroom" },
-    { img: "icon_wallet.png", name: "Company" },
+  const aboutArr: { img: string; name: string; path: string }[] = [
+    { img: "icon_profile.png", name: "How StockX Works", path: "" },
+    { img: "icon_buying.png", name: "Buying Guide", path: "" },
+    { img: "icon_selling.png", name: "Selling Guide", path: "" },
+    { img: "icon_favorites.png", name: "Verification", path: "" },
+    { img: "icon_portfolio.png", name: "Newsroom", path: "" },
+    { img: "icon_wallet.png", name: "Company", path: "" },
   ];
 
-  const sellArr: { img: string; name: string }[] = [
-    { img: "icon_profile.png", name: "New Listing" },
-    { img: "icon_buying.png", name: "Current Listings" },
-    { img: "icon_selling.png", name: "Pending Sales" },
-    { img: "icon_favorites.png", name: "History" },
-    { img: "icon_portfolio.png", name: "Professional Tools" },
+  const sellArr: { img: any; name: string; path: string }[] = [
+    { img: <AddIcon />, name: "New Listing", path: "" },
+    { img: "icon_buying.png", name: "Current Listings", path: "" },
+    { img: "icon_selling.png", name: "Pending Sales", path: "" },
+    { img: "icon_favorites.png", name: "History", path: "" },
+    { img: "icon_portfolio.png", name: "Professional Tools", path: "" },
   ];
-  const navigationLinks: { name: string; path: string }[] = [
+  const arrLinks: { name: string; path: string }[] = [
     {
       name: "News",
       path: "/News",
@@ -54,25 +49,26 @@ const HeaderNavigation: React.FC = () => {
   ];
   return (
     <div className={styles.header_nav_links}>
-      <nav className={popUpStyles.dropdown}>
-        {navigationLinks.map((obj) => (
-          <div
+      <nav>
+        {arrLinks.map((obj) => (
+          <li
+            className={styles.nav_link}
             onMouseEnter={() => isFocus(obj.name)}
-            className={popUpStyles.navigation_link_item}
+            key={obj.path}
           >
-            <Link key={obj.path} to={obj.path}>
-              {obj.name}
-            </Link>
-            {onFocus && (
+            <Link to={obj.path}>{obj.name}</Link>
+            <div className={styles.dropdown}>
               <PopUp
                 objectArr={
-                  navigateName === "About"
+                  navigate === "About"
                     ? aboutArr
-                    : navigateName === "Sell" && sellArr
+                    : navigate === "Sell"
+                    ? sellArr
+                    : null
                 }
               />
-            )}
-          </div>
+            </div>
+          </li>
         ))}
       </nav>
     </div>

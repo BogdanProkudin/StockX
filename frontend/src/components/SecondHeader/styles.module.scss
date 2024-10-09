@@ -1,0 +1,25 @@
+.nav_header {
+  background-color: whitesmoke;
+  .wrapper_nav_header {
+    ul {
+      display: flex;
+      height: 48px;
+      justify-content: center;
+      text-align: center;
+      align-items: center;
+      margin: 0;
+      padding: 0;
+      .navheader_links {
+        display: flex;
+        font-size: 20px;
+        font-weight: 550;
+        height: 100%;
+        padding: 0 8px;
+        a {
+          color: black;
+          text-align: center;
+        }
+      }
+    }
+  }
+}

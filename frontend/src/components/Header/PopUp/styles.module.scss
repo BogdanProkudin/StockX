@@ -1,42 +1,13 @@
-.dropdown {
-  position: relative;
-  display: flex;
-  align-items: center;
-  height: 50px;
-}
-
-.dropdown_content {
-  display: none; /* Скрываем по умолчанию */
-  background: #f1f1f1;
-  min-width: 160px;
-  position: absolute;
-  z-index: 1;
-  top: 2.2rem;
-  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-  padding: 0;
+.link_container {
   margin: 0;
-
-  li {
-    display: block;
-    color: #000;
-    text-decoration: none;
-    padding: 17px;
-    font-size: 18px;
-
-    &:hover {
-      background: #ddd;
-    }
-  }
-
-  .flex_wrapper_link {
+  padding: 0;
+  .link_flex {
     display: flex;
     align-items: center;
-
-    .info_link {
+    .link {
       width: 138px;
       cursor: pointer;
       padding: 8px 16px;
-
       &:hover {
         background-color: #e0e0e0;
       }

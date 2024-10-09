@@ -1,15 +1,14 @@
 .root {
   position: relative;
-  width: 675px;
+  flex-grow: 1;
+
   &.active {
-    width: 725px;
   }
   &.active .header_input {
-    max-width: 632px;
   }
   .header_input {
     width: 100%;
-    max-width: 582px;
+
     height: 42px;
     border: 1px solid #e0e0e0;
     border-radius: 10px;
