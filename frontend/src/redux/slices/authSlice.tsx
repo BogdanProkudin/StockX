@@ -23,6 +23,7 @@ interface IUserAuthSlice {
   resetPass: boolean;
   status: fetchRequest;
   stateAuthSwitcher: string;
+  requestResetPasswordError: string | undefined;
 }
 
 const initialState: IUserAuthSlice = {
@@ -32,6 +33,7 @@ const initialState: IUserAuthSlice = {
   resetPass: false,
   status: fetchRequest.LOADING,
   stateAuthSwitcher: "Sign Up",
+  requestResetPasswordError: "",
 };
 
 // Асинхронные экшены
@@ -120,6 +122,9 @@ const userAuthSlice = createSlice({
     setAuthSwitcher(state, action: PayloadAction<string>) {
       state.stateAuthSwitcher = action.payload;
     },
+    setRequestResetPasswordError(state, action: PayloadAction<string>) {
+      state.requestResetPasswordError = action.payload;
+    },
   },
   extraReducers: (builder: ActionReducerMapBuilder<IUserAuthSlice>) => {
     builder
@@ -185,6 +190,20 @@ const userAuthSlice = createSlice({
       })
       .addCase(authMe.rejected, (state) => {
         state.status = fetchRequest.ERROR;
+      })
+      .addCase(resetUserPassword.pending, (state) => {
+        state.status = fetchRequest.LOADING;
+        state.requestResetPasswordError = undefined;
+      })
+      .addCase(
+        resetUserPassword.fulfilled,
+        (state, action: PayloadAction<string | undefined>) => {
+          state.requestResetPasswordError = undefined;
+        }
+      )
+      .addCase(resetUserPassword.rejected, (state, action) => {
+        state.requestResetPasswordError = action.payload?.message;
+        state.status = fetchRequest.ERROR;
       });
   },
 });
@@ -196,5 +215,6 @@ export const {
   setResetPass,
   setLogout,
   setAuthSwitcher,
+  setRequestResetPasswordError,
 } = userAuthSlice.actions;
 export default userAuthSlice.reducer;

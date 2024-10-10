@@ -105,7 +105,7 @@ export const forgotPassword = async (req, res) => {
   // Поиск пользователя по email
   const user = await userModel.findOne({ email });
 
-  if (!user) return res.status(404).send("User not found");
+  if (!user) return res.status(404).send("Email not found");
   console.log("zxc");
 
   // Генерация токена (действителен 1 час)
