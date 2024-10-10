@@ -1,7 +1,10 @@
 import React from "react";
 import styles from "./styles.module.scss";
 import { useAppDispatch } from "../../../redux/hook";
-import { resetUserPassword } from "../../../redux/slices/authSlice";
+import {
+  resetUserPassword,
+  setRequestResetPasswordError,
+} from "../../../redux/slices/authSlice";
 
 const RequestResetForm: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -12,14 +15,18 @@ const RequestResetForm: React.FC = () => {
 
   const handleSendResetEmail = (e: any) => {
     e.preventDefault();
-    dispatch(resetUserPassword({ email: inputValue }));
+    if (inputValue.length >= 4) {
+      dispatch(resetUserPassword({ email: inputValue }));
+    } else {
+      dispatch(setRequestResetPasswordError("Email is too short"));
+    }
   };
   return (
     <>
-      <form className={styles.form_wrapper}>
-        <div className={styles.input_container}>
+      <form className={styles.request_reset_password_form_container}>
+        <div className={styles.request_reset_password_input_container}>
           <input
-            className={styles.input_field}
+            className={styles.request_reset_password_input_field}
             type="email"
             value={inputValue}
             onChange={onChangeInput}

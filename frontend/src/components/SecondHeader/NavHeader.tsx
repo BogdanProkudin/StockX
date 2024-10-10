@@ -17,17 +17,17 @@ const NavigationHeader = () => {
   ];
 
   const headerLinkRefs = arrLinks.map(() => React.createRef<HTMLDivElement>());
-  useEffect(() => {
-    // Пример работы с массивом ref
-    headerLinkRefs.forEach((ref) => {
-      const element = ref.current;
-      if (element) {
-        element.addEventListener("transitionend", () => {
-          console.log("ANIMATION FINISHED for", element);
-        });
-      }
-    });
-  }, [headerLinkRefs]);
+  // useEffect(() => {
+  //   // Пример работы с массивом ref
+  //   headerLinkRefs.forEach((ref) => {
+  //     const element = ref.current;
+  //     if (element) {
+  //       element.addEventListener("transitionend", () => {
+  //         console.log("ANIMATION FINISHED for", element);
+  //       });
+  //     }
+  //   });
+  // }, [headerLinkRefs]);
 
   return (
     <header className={styles.nav_header}>

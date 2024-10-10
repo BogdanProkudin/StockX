@@ -1,0 +1,119 @@
+.request_reset_password_wrapper {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  height: 60vh;
+
+  .request_reset_password_title {
+    font-weight: 400;
+    align-items: center;
+    font-family: "proxima-nova", sans-serif;
+    margin: 0;
+  }
+  .request_reset_password_container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    margin-top: 1rem;
+    background-color: #fff;
+    border: solid 1px #e0e0e0;
+    border-radius: 4.5px;
+    padding: 16px;
+  }
+  .request_reset_password_content_container {
+    width: 330px;
+    margin: 0 18px;
+    .request_reset_password_description {
+      margin-bottom: 20px;
+      font-family: "proxima-nova", sans-serif;
+    }
+  }
+}
+
+.request_reset_password_form_container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  .request_reset_password_input_container {
+    position: relative;
+  }
+  .request_reset_password_input_field {
+    border: 1px solid #e5e7ea;
+    width: 85%;
+    max-height: 50px;
+    padding: 16px;
+    padding-top: 20px;
+    padding-right: 30px;
+    padding-bottom: 10px;
+    font-family: "proxima-nova", sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    outline: none;
+    transform-origin: left;
+    transition: border-color 0.3s ease;
+    &:focus {
+      border-color: #4caf50;
+    }
+  }
+  .label {
+    position: absolute;
+    font-family: "proxima-nova", sans-serif;
+    top: 50%;
+    left: 16px;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: #aaa;
+    user-select: none;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    &.active {
+      font-size: 15px;
+      font-size: 10px;
+      transform: translateY(-161%);
+    }
+  }
+  .request_reset_password_input_container:focus-within .label {
+    font-size: 10px;
+    transform: translateY(-161%);
+  }
+  .btnReset {
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    height: 50px;
+    border-radius: 0px;
+    padding: 0px;
+    font-family: "proxima-nova", sans-serif;
+    font-weight: 600;
+    min-width: 100px;
+    text-align: center;
+    background: #0f0f0f;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+}
+
+.request_reset_password_error_container {
+  display: flex;
+  justify-content: center;
+  min-width: 250px;
+  background: #fff3f3;
+  border: 2px solid #ff6060;
+  border-radius: 5px;
+  font-family: "proxima-nova", sans-serif;
+  font-weight: 500;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+  font-size: 12px;
+  p {
+    word-break: break-all;
+    font-family: "proxima-nova", sans-serif;
+    font-size: 12px;
+  }
+}
