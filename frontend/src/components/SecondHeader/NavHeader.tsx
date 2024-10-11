@@ -17,29 +17,17 @@ const NavigationHeader = () => {
   ];
 
   const headerLinkRefs = arrLinks.map(() => React.createRef<HTMLDivElement>());
-
-  const [isAnimated, setIsAnimated] = React.useState(false);
-  useEffect(() => {
-    headerLinkRefs.forEach((ref) => {
-      const element = ref.current;
-      if (element) {
-        element.addEventListener("transitionend", () => {
-          if (element.offsetWidth == element.offsetWidth) {
-            setIsAnimated(true);
-          } else {
-            setIsAnimated(false);
-          }
-          console.log(
-            "ANIMATION FINISHED for",
-            element,
-            "Element width:",
-            element.offsetWidth,
-            isAnimated
-          );
-        });
-      }
-    });
-  }, []);
+  // useEffect(() => {
+  //   // Пример работы с массивом ref
+  //   headerLinkRefs.forEach((ref) => {
+  //     const element = ref.current;
+  //     if (element) {
+  //       element.addEventListener("transitionend", () => {
+  //         console.log("ANIMATION FINISHED for", element);
+  //       });
+  //     }
+  //   });
+  // }, [headerLinkRefs]);
 
   return (
     <header className={styles.nav_header}>

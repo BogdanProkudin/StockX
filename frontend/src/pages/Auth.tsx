@@ -4,7 +4,7 @@ import AuthSwitcher from "../components/AuthUser/AuthUserModeSwitcher";
 import SignUp from "../components/AuthUser/SignUp/SignUp";
 import LogIn from "../components/AuthUser/LogIn/LogIn";
 
-import RequestResetForm from "../components/AuthUser/ResetPassword/index";
+import RequestResetForm from "../components/AuthUser/RequestResetPassword/index";
 import { useAppSelector } from "../redux/hook";
 import HeaderAuth from "../components/AuthUser/HeaderAuth";
 

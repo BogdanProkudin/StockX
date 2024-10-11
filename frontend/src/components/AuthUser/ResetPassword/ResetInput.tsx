@@ -14,9 +14,9 @@ const ResetInput = ({
 
   return (
     <>
-      <div className={styles.reset_input_container}>
+      <div className={styles.reset_password_input_container}>
         <input
-          className={styles.reset_input}
+          className={styles.reset_password_input}
           type={isShowPassword ? "text" : "password"}
           {...register(name, {
             required: "Please confirm your password",
@@ -28,19 +28,21 @@ const ResetInput = ({
         {isShowPassword ? (
           <IoEyeOutline
             onClick={() => setIsShowPassword(!isShowPassword)}
-            className={styles.reset_input_password_close_icon}
+            className={styles.reset_password_input_close_icon}
           />
         ) : (
           <IoEyeOffOutline
             onClick={() => setIsShowPassword(!isShowPassword)}
-            className={styles.reset_input_password_close_icon}
+            className={styles.reset_password_input_close_icon}
           />
         )}
 
         <label
           className={`${styles.floating_label} ${
-            (password.length > 0 && name === "password") ||
-            (confirmPassword.length > 1 && name === "confirmPassword")
+            (password && password.length > 0 && name === "password") ||
+            (confirmPassword &&
+              confirmPassword.length > 1 &&
+              name === "confirmPassword")
               ? styles.active
               : ""
           }`}

@@ -1,19 +1,17 @@
-import React from "react";
+import ResetForm from "./ResetForm";
 import styles from "./styles.module.scss";
-
-import RequestResetForm from "./RequestResetForm";
-const index: React.FC = () => {
+const index = () => {
   return (
-    <div className={styles.reset_pass_wrapper}>
-      <h1 className={styles.title}>Reset Password</h1>
-      <div className={styles.reset_pass_block}>
-        <div className={styles.reset_pass_container}>
-          <p className={styles.reset_pass_description}>
+    <div className={styles.reset_password_container}>
+      <h1 className={styles.reset_password_title}>Create new password</h1>
+      <div className={styles.reset_password_container}>
+        <div className={styles.reset_password_content_container}>
+          <p className={styles.reset_password_description}>
             Please enter the email address that is associated with your StockX
             account.
           </p>
-          <RequestResetForm />
         </div>
+        <ResetForm />
       </div>
     </div>
   );

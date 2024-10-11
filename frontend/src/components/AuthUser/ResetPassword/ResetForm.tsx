@@ -23,7 +23,7 @@ const ResetForm = () => {
   console.log(errors);
   return (
     <form
-      className={styles.reset_form_container}
+      className={styles.reset_password_form_container}
       onSubmit={handleSubmit(onSubmit)}
     >
       <ResetInput
