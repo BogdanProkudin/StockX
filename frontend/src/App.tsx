@@ -16,7 +16,7 @@ function App() {
   const userToken = localStorage.getItem("token");
   React.useEffect(() => {
     dispatch(authMe());
-  }, [user]);
+  }, []);
   return (
     <>
       {/* <Header /> */}
