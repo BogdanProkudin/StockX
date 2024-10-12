@@ -15,10 +15,11 @@ const NavigationHeader = () => {
   const [isSubLink, setIsSubLink] = React.useState("");
   const hoverTimeout = useRef<any | null>(null);
 
-  const handleMouseEnter = () => {
+  const handleMouseEnter = (name: string) => {
     if (hoverTimeout.current) {
       clearTimeout(hoverTimeout.current);
     }
+    setIsSubLink(name);
     hoverTimeout.current = setTimeout(() => {
       setLineAnimationActive(true);
     }, 300);
@@ -52,15 +53,26 @@ const NavigationHeader = () => {
           {arrHeaderMainLinks.map((obj, index) => (
             <React.Fragment key={obj.name}>
               <li
-                onMouseEnter={() => OnMouseHover(obj.name)}
+                onMouseEnter={() => handleMouseEnter(obj.name)}
                 onMouseLeave={handleMouseLeave}
                 className={styles.navheader_links}
               >
                 <Link to={obj.path}>{obj.name}</Link>
-                <div className={styles.dropdown_menu}>
-                  {isSubLink === "Brands"
-                    ? brands.map((obj) => <li>{obj.name}</li>)
-                    : ""}
+              </li>
+
+              <li
+                className={`${styles.sub_navigation} ${
+                  isDropDownMenuVisible ? styles.active : ""
+                }`}
+              >
+                <div className={styles.sub_navigation_wrapper}>
+                  {isSubLink == "Brands"
+                    ? brands.map((obj) => (
+                        <li>
+                          <Link to={obj.path}>{obj.name}</Link>
+                        </li>
+                      ))
+                    : null}
                 </div>
               </li>
             </React.Fragment>
@@ -72,28 +84,3 @@ const NavigationHeader = () => {
 };
 
 export default NavigationHeader;
-
-{
-  /* <li
-className={`${styles.sub_navigation} ${
-  isDropDownMenuVisible ? styles.active : ""
-}`}
-></li> */
-}
-{
-  /* <div className={styles.sub_navigation_wrapper}>
-{isSubLink == "Brands"
-  ? brands.map((obj) => (
-      <li>
-        <Link to={obj.path}>{obj.name}</Link>
-      </li>
-    ))
-  : null}
-</div> */
-}
-{
-  /* <div
-                  ref={headerLinesRefs.current[index]}
-                  className={styles.header_navigation_item_line}
-                ></div> */
-}
