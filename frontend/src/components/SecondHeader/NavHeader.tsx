@@ -1,71 +1,69 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./styles.module.scss";
 import { Link } from "react-router-dom";
-import { arrHeaderMainLinks } from "../../assets/SecondHeader/HeaderDropDownLinks";
+import {
+  arrHeaderMainLinks,
+  brands,
+} from "../../assets/SecondHeader/HeaderDropDownLinks";
 
 const NavigationHeader = () => {
-  const headerLinesRefs = useRef(
-    arrHeaderMainLinks.map(() => React.createRef<HTMLDivElement>())
-  );
+  // const headerLinesRefs = useRef(
+  //   arrHeaderMainLinks.map(() => React.createRef<HTMLDivElement>())
+  // );
   const [isDropDownMenuVisible, SetIsDropDownMenuVisible] = useState(false);
   const [lineAnimationActive, setLineAnimationActive] = useState(false);
+  const [isSubLink, setIsSubLink] = React.useState("");
   const hoverTimeout = useRef<any | null>(null);
 
   const handleMouseEnter = () => {
-    // Устанавливаем тайм аут на 0.6 секунды как в css анимации
-    hoverTimeout.current = setTimeout(() => {
-      setLineAnimationActive(true);
-    }, 600);
-  };
-
-  const handleMouseLeave = () => {
-    // Если курсор был убран раньше 1 секунды, отменяем timeout
     if (hoverTimeout.current) {
       clearTimeout(hoverTimeout.current);
     }
-    setLineAnimationActive(false);
+    hoverTimeout.current = setTimeout(() => {
+      setLineAnimationActive(true);
+    }, 300);
+  };
+
+  const handleMouseLeave = () => {
+    hoverTimeout.current = setTimeout(() => {
+      setLineAnimationActive(false);
+    }, 290);
   };
 
   useEffect(() => {
-    // маф это логика открытия закрытия dropdown menu
-
     if (lineAnimationActive) {
       console.log("показать");
       SetIsDropDownMenuVisible(true);
     } else {
-      // вот тут 590 сек что бы сначало закрывалось dropdown меню, а не сработал таймер открытия и потом сразу закрытия, который был запущен с предыдущего раза
-      setTimeout(() => {
+      hoverTimeout.current = setTimeout(() => {
         SetIsDropDownMenuVisible(false);
         console.log("скрыть");
-      }, 590);
+      }, 0);
     }
   }, [lineAnimationActive]);
+
+  const OnMouseHover = (name: string) => {
+    setIsSubLink(name);
+  };
   return (
     <header className={styles.nav_header}>
       <div className={styles.wrapper_nav_header}>
         <ul>
           {arrHeaderMainLinks.map((obj, index) => (
-            <>
+            <React.Fragment key={obj.name}>
               <li
-                onMouseEnter={handleMouseEnter}
+                onMouseEnter={() => OnMouseHover(obj.name)}
                 onMouseLeave={handleMouseLeave}
-                key={obj.name}
                 className={styles.navheader_links}
               >
                 <Link to={obj.path}>{obj.name}</Link>
-                <div
-                  ref={headerLinesRefs.current[index]}
-                  className={styles.header_navigation_item_line}
-                ></div>
+                <div className={styles.dropdown_menu}>
+                  {isSubLink === "Brands"
+                    ? brands.map((obj) => <li>{obj.name}</li>)
+                    : ""}
+                </div>
               </li>
-              <li
-                className={`${styles.sub_navigation} ${
-                  isDropDownMenuVisible ? styles.active : ""
-                }`}
-              >
-                <div className={styles.dropdown_navigate_block}>Info</div>
-              </li>
-            </>
+            </React.Fragment>
           ))}
         </ul>
       </div>
@@ -74,3 +72,28 @@ const NavigationHeader = () => {
 };
 
 export default NavigationHeader;
+
+{
+  /* <li
+className={`${styles.sub_navigation} ${
+  isDropDownMenuVisible ? styles.active : ""
+}`}
+></li> */
+}
+{
+  /* <div className={styles.sub_navigation_wrapper}>
+{isSubLink == "Brands"
+  ? brands.map((obj) => (
+      <li>
+        <Link to={obj.path}>{obj.name}</Link>
+      </li>
+    ))
+  : null}
+</div> */
+}
+{
+  /* <div
+                  ref={headerLinesRefs.current[index]}
+                  className={styles.header_navigation_item_line}
+                ></div> */
+}

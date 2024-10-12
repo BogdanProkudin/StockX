@@ -1,6 +1,7 @@
 .header_popUp_link_container {
   margin: 0;
   padding: 0;
+
   .header_popUP_link_wrapper {
     display: flex;
     align-items: center;
@@ -22,6 +23,6 @@
   cursor: pointer;
 
   &:hover .dropdown_content {
-    display: block; /* Показываем выпадающий список при наведении */
+    display: block;
   }
 }
