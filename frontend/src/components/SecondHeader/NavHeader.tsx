@@ -26,12 +26,12 @@ const NavigationHeader = () => {
           const currentWidth = element.offsetWidth;
           console.log("currentWidth:", currentWidth);
 
-          if (currentWidth !== maxWidth) {
-            setIsAnimated(true);
-            setIsVisible(true);
-          } else {
+          if (currentWidth == maxWidth) {
             setIsAnimated(false);
             setIsVisible(false);
+          } else {
+            setIsAnimated(true);
+            setIsVisible(true);
           }
         });
       }
