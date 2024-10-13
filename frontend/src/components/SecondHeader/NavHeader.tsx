@@ -1,74 +1,61 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
+import { motion } from "framer-motion";
 import styles from "./styles.module.scss";
-import { Link } from "react-router-dom";
-import { arrHeaderMainLinks } from "../../assets/SecondHeader/HeaderDropDownLinks";
+const NavigationLink = ({ label, setIsComplete }: any) => {
+  const [isHovered, setIsHovered] = useState(false);
 
-const NavigationHeader = () => {
-  const headerLinesRefs = useRef(
-    arrHeaderMainLinks.map(() => React.createRef<HTMLDivElement>())
-  );
-  const [name, setName] = useState<any>({});
-  const [isDropDownMenuVisible, SetIsDropDownMenuVisible] = useState(false);
-  const [lineAnimationActive, setLineAnimationActive] = useState(false);
-  const hoverTimeout = useRef<any | null>(null);
-
-  const handleMouseEnter = (name: string, content: string | undefined) => {
-    if (hoverTimeout.current) {
-      clearTimeout(hoverTimeout.current);
-    }
-    hoverTimeout.current = setTimeout(() => {
-      console.log("NAME", name);
-
-      setLineAnimationActive(true);
-    }, 600);
+  const [isZeroWidth, setIsZeroWidth] = useState(false); // отслеживает ширину 0%
+  const handleMouseEnter = () => {
+    setIsHovered(true); // старт анимации (увеличение ширины)
   };
 
   const handleMouseLeave = () => {
-    if (hoverTimeout.current) {
-      clearTimeout(hoverTimeout.current);
-    }
-    if (lineAnimationActive) {
-      setLineAnimationActive(false);
+    setIsHovered(false); // старт анимации (уменьшение ширины)
+  };
+
+  const handleAnimationComplete = (definition: any) => {
+    if (definition.width === "0%") {
+      setIsZeroWidth(true); // ширина достигла 0%
+      setIsComplete(false);
+      console.log("Ширина достигла 0%");
+    } else {
+      setIsZeroWidth(false); // ширина не 0%, можно обрабатывать 100%
+      setIsComplete(true);
+      console.log("Ширина достигла 100%");
     }
   };
 
-  useEffect(() => {
-    if (lineAnimationActive) {
-      console.log("показать");
-      SetIsDropDownMenuVisible(true);
-    } else {
-      hoverTimeout.current = setTimeout(() => {
-        SetIsDropDownMenuVisible(false);
-        setName({});
-        console.log("скрыть");
-      }, 590);
-    }
-  }, [lineAnimationActive]);
+  return (
+    <div
+      className={styles.navheader_links}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      <span>{label}</span>
+      <motion.div
+        className={styles.header_navigation_item_line}
+        initial={{ width: 0 }}
+        animate={{ width: isHovered ? "100%" : "0%" }}
+        transition={{ duration: 0.2, ease: "easeInOut" }}
+        onAnimationComplete={handleAnimationComplete}
+      />
+    </div>
+  );
+};
+
+const NavigationHeader = () => {
+  const arrLinks = ["Brands", "Deals", "New", "Men", "Women", "Kids"];
+  const [isComplete, setIsComplete] = useState(false);
   return (
     <header className={styles.nav_header}>
       <div className={styles.wrapper_nav_header}>
-        <ul>
-          {arrHeaderMainLinks.map((obj, index) => (
+        <ul style={{ display: "flex", listStyle: "none" }}>
+          {arrLinks.map((link) => (
             <>
-              <li
-                onMouseEnter={() => handleMouseEnter(obj.name, obj.content)}
-                onMouseLeave={handleMouseLeave}
-                key={obj.name}
-                className={styles.navheader_links}
-              >
-                <Link to={obj.path}>{obj.name}</Link>
-                <div
-                  ref={headerLinesRefs.current[index]}
-                  className={styles.header_navigation_item_line}
-                ></div>
+              <li key={link} style={{ margin: "0 10px" }}>
+                <NavigationLink setIsComplete={setIsComplete} label={link} />
               </li>
-              <li
-                className={`${styles.sub_navigation} ${
-                  isDropDownMenuVisible ? styles.active : ""
-                }`}
-              >
-                <div className={styles.dropdown_navigate_block}></div>
-              </li>
+              {isComplete && <div className={styles.sub_navigation}></div>}
             </>
           ))}
         </ul>
