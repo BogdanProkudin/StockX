@@ -1,15 +1,19 @@
-export const arrHeaderMainLinks: { name: string; path: string }[] = [
-  { name: "Brands", path: "" },
-  { name: "Deals", path: "" },
-  { name: "New", path: "" },
-  { name: "Men", path: "" },
-  { name: "Women", path: "" },
-  { name: "Kids", path: "" },
-  { name: "Sneakers", path: "" },
-  { name: "Shoes", path: "" },
-  { name: "Apparel", path: "" },
-  { name: "Accessories", path: "" },
-  { name: "More Categories", path: "" },
+export const arrHeaderMainLinks: {
+  name: string;
+  path: string;
+  content?: string;
+}[] = [
+  { name: "Brands", path: "", content: "тут будет для бренда " },
+  { name: "Deals", path: "", content: "тут будет для деал " },
+  { name: "New", path: "", content: "тут будет для new " },
+  { name: "Men", path: "", content: "тут будет для деал " },
+  { name: "Women", path: "", content: "тут будет для деал " },
+  { name: "Kids", path: "", content: "тут будет для деал " },
+  { name: "Sneakers", path: "", content: "тут будет для деал " },
+  { name: "Shoes", path: "", content: "тут будет для деал " },
+  { name: "Apparel", path: "", content: "тут будет для деал " },
+  { name: "Accessories", path: "", content: "тут будет для деал " },
+  { name: "More Categories", path: "", content: "тут будет для деал " },
 ];
 export const brands = [
   { name: "All Brands", path: "" },
