@@ -1,62 +1,86 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
+import React, { useEffect, useState } from "react";
 import styles from "./styles.module.scss";
-const NavigationLink = ({ label, setIsComplete }: any) => {
-  const [isHovered, setIsHovered] = useState(false);
+import { Link } from "react-router-dom";
+import { arrHeaderMainLinks } from "../../assets/SecondHeader/HeaderDropDownLinks";
 
-  const [isZeroWidth, setIsZeroWidth] = useState(false); // отслеживает ширину 0%
-  const handleMouseEnter = () => {
-    setIsHovered(true); // старт анимации (увеличение ширины)
+const NavigationHeader = () => {
+  const [isDropDownMenuVisible, setIsDropDownMenuVisible] = useState(false); // Видимость выпадающего меню
+  const [currentHovered, setCurrentHovered] = useState<string | null>(null); // Текущий активный элемент
+  const [openTimer, setOpenTimer] = useState<any>(null); // Таймер для открытия меню
+  const [closeTimer, setCloseTimer] = useState<any>(null); // Таймер для закрытия меню
+
+  useEffect(() => {
+    // Очистка таймеров при размонтировании компонента
+    return () => {
+      if (openTimer) clearTimeout(openTimer);
+      if (closeTimer) clearTimeout(closeTimer);
+    };
+  }, [openTimer, closeTimer]);
+
+  const handleMouseEnter = (itemName: string) => {
+    // Очищаем таймер закрытия при наведении на новый элемент
+    if (closeTimer) {
+      clearTimeout(closeTimer);
+      setCloseTimer(null);
+    }
+
+    // Если элемент другой и меню не открыто, запускаем таймер для открытия
+    if (currentHovered !== itemName) {
+      if (openTimer) {
+        clearTimeout(openTimer); // Очищаем предыдущий таймер открытия
+      }
+
+      const timerId = setTimeout(() => {
+        console.log(`открыли меню для ${itemName}`);
+        setIsDropDownMenuVisible(true);
+        setCurrentHovered(itemName); // Устанавливаем текущий активный элемент
+      }, 600);
+      setOpenTimer(timerId);
+    }
   };
 
-  const handleMouseLeave = () => {
-    setIsHovered(false); // старт анимации (уменьшение ширины)
-  };
+  const handleMouseLeave = (itemName: string) => {
+    // Очищаем таймер открытия при покидании элемента
+    if (openTimer) {
+      clearTimeout(openTimer);
+      setOpenTimer(null);
+    }
 
-  const handleAnimationComplete = (definition: any) => {
-    if (definition.width === "0%") {
-      setIsZeroWidth(true); // ширина достигла 0%
-      setIsComplete(false);
-      console.log("Ширина достигла 0%");
-    } else {
-      setIsZeroWidth(false); // ширина не 0%, можно обрабатывать 100%
-      setIsComplete(true);
-      console.log("Ширина достигла 100%");
+    // Запускаем таймер для закрытия, если покидаем активный элемент
+    if (currentHovered === itemName) {
+      const timerId = setTimeout(() => {
+        console.log(`закрыли меню для ${itemName}`);
+        setIsDropDownMenuVisible(false);
+        setCurrentHovered(null); // Сбрасываем текущий активный элемент
+      }, 595);
+      setCloseTimer(timerId);
     }
   };
 
   return (
-    <div
-      className={styles.navheader_links}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      <span>{label}</span>
-      <motion.div
-        className={styles.header_navigation_item_line}
-        initial={{ width: 0 }}
-        animate={{ width: isHovered ? "100%" : "0%" }}
-        transition={{ duration: 0.2, ease: "easeInOut" }}
-        onAnimationComplete={handleAnimationComplete}
-      />
-    </div>
-  );
-};
-
-const NavigationHeader = () => {
-  const arrLinks = ["Brands", "Deals", "New", "Men", "Women", "Kids"];
-  const [isComplete, setIsComplete] = useState(false);
-  return (
     <header className={styles.nav_header}>
       <div className={styles.wrapper_nav_header}>
-        <ul style={{ display: "flex", listStyle: "none" }}>
-          {arrLinks.map((link) => (
-            <>
-              <li key={link} style={{ margin: "0 10px" }}>
-                <NavigationLink setIsComplete={setIsComplete} label={link} />
+        <ul>
+          {arrHeaderMainLinks.map((obj) => (
+            <React.Fragment key={obj.name}>
+              <li
+                onMouseEnter={() => handleMouseEnter(obj.name)}
+                onMouseLeave={() => handleMouseLeave(obj.name)}
+                className={styles.navheader_links}
+              >
+                <Link to={obj.path}>{obj.name}</Link>
+                <div className={styles.header_navigation_item_line}></div>
               </li>
-              {isComplete && <div className={styles.sub_navigation}></div>}
-            </>
+              <li
+                className={`${styles.sub_navigation} ${
+                  isDropDownMenuVisible && currentHovered === obj.name
+                    ? styles.active
+                    : ""
+                }`}
+              >
+                <div className={styles.dropdown_navigate_block}></div>
+              </li>
+            </React.Fragment>
           ))}
         </ul>
       </div>
