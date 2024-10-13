@@ -43,8 +43,11 @@ const NavigationHeader = () => {
     }
   }, [lineAnimationActive]);
 
-  const OnMouseHover = (name: string) => {
-    setIsSubLink(name);
+  const OnMouseHover = () => {
+    setLineAnimationActive(true);
+  };
+  const setMouseHover = () => {
+    setLineAnimationActive(false);
   };
   return (
     <header className={styles.nav_header}>
@@ -61,6 +64,8 @@ const NavigationHeader = () => {
               </li>
 
               <li
+                onMouseEnter={OnMouseHover}
+                onMouseLeave={setMouseHover}
                 className={`${styles.sub_navigation} ${
                   isDropDownMenuVisible ? styles.active : ""
                 }`}
