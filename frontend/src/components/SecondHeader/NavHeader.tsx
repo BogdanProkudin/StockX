@@ -18,7 +18,6 @@ const NavigationHeader = () => {
     }
     hoverTimeout.current = setTimeout(() => {
       console.log("NAME", name);
-
       setLineAnimationActive(true);
     }, 600);
   };
@@ -26,9 +25,6 @@ const NavigationHeader = () => {
   const handleMouseLeave = () => {
     if (hoverTimeout.current) {
       clearTimeout(hoverTimeout.current);
-    }
-    if (lineAnimationActive) {
-      setLineAnimationActive(false);
     }
   };
 
@@ -63,8 +59,6 @@ const NavigationHeader = () => {
                 ></div>
               </li>
               <li
-                onMouseEnter={OnMouseHover}
-                onMouseLeave={setMouseHover}
                 className={`${styles.sub_navigation} ${
                   isDropDownMenuVisible ? styles.active : ""
                 }`}
