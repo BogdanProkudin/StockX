@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
 import styles from "./styles.module.scss";
 import { Link } from "react-router-dom";
-import { arrHeaderMainLinks } from "../../assets/SecondHeader/HeaderDropDownLinks";
+import {
+  arrHeaderMainLinks,
+  brandsData,
+} from "../../assets/SecondHeader/HeaderDropDownLinks";
+import Dropdown from "./Dropdown/Dropdown";
 
 const NavigationHeader = () => {
   const [isDropDownMenuVisible, setIsDropDownMenuVisible] = useState(false);
   const [isActive, setIsActive] = useState(false);
+  const [isLinkName, setIsLinkName] = useState("");
 
   useEffect(() => {
     let showTimer: any;
@@ -21,7 +26,7 @@ const NavigationHeader = () => {
     } else {
       // Очищаем таймер показа, если есть
       clearTimeout(showTimer);
-
+      setIsLinkName("");
       // Запускаем таймер для скрытия dropdown
       hideTimer = setTimeout(() => {
         setIsDropDownMenuVisible(false);
@@ -34,35 +39,52 @@ const NavigationHeader = () => {
     };
   }, [isActive]);
 
-  const handleStart = () => {
+  const handleStart = (name: string) => {
     setIsActive(true); // Активируем таймер показа
+    setIsLinkName(name);
   };
 
   const handleStop = () => {
     setIsActive(false); // Активируем таймер скрытия
   };
+  const isOpen = () => {
+    setIsActive(true);
+  };
+  const isClose = () => {
+    setIsActive(false);
+  };
 
   return (
     <header className={styles.nav_header}>
       <div className={styles.wrapper_nav_header}>
-        <ul>
+        <ul className={styles.flex_nav_header}>
           {arrHeaderMainLinks.map((obj) => (
             <>
               <li
-                onMouseEnter={handleStart}
+                onMouseEnter={() => handleStart(obj.name)}
                 onMouseLeave={handleStop}
                 key={obj.name}
                 className={styles.navheader_links}
               >
+                {" "}
                 <Link to={obj.path}>{obj.name}</Link>
-                <div className={styles.header_navigation_item_line}></div>
+                <div
+                  className={`${styles.header_navigation_item_line} ${
+                    isLinkName === obj.name ? styles.active : ""
+                  }`}
+                ></div>
               </li>
               <li
+                onMouseEnter={isOpen}
+                onMouseLeave={isClose}
                 className={`${styles.sub_navigation} ${
                   isDropDownMenuVisible ? styles.active : ""
                 }`}
               >
-                <div className={styles.dropdown_navigate_block}></div>
+                <Dropdown
+                  subLinkName={isLinkName}
+                  content={obj.name === isLinkName ? obj.content : null}
+                />
               </li>
             </>
           ))}
