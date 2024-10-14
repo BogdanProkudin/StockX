@@ -4,57 +4,42 @@ import { Link } from "react-router-dom";
 import { arrHeaderMainLinks } from "../../assets/SecondHeader/HeaderDropDownLinks";
 
 const NavigationHeader = () => {
-  const [isDropDownMenuVisible, setIsDropDownMenuVisible] = useState(false); // Видимость выпадающего меню
-  const [currentHovered, setCurrentHovered] = useState<string | null>(null); // Текущий активный элемент
-  const [openTimer, setOpenTimer] = useState<any>(null); // Таймер для открытия меню
-  const [closeTimer, setCloseTimer] = useState<any>(null); // Таймер для закрытия меню
+  const [isDropDownMenuVisible, setIsDropDownMenuVisible] = useState(false);
+  const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
-    // Очистка таймеров при размонтировании компонента
-    return () => {
-      if (openTimer) clearTimeout(openTimer);
-      if (closeTimer) clearTimeout(closeTimer);
-    };
-  }, [openTimer, closeTimer]);
+    let showTimer: any;
+    let hideTimer: any;
 
-  const handleMouseEnter = (itemName: string) => {
-    // Очищаем таймер закрытия при наведении на новый элемент
-    if (closeTimer) {
-      clearTimeout(closeTimer);
-      setCloseTimer(null);
-    }
+    if (isActive) {
+      clearTimeout(hideTimer);
 
-    // Если элемент другой и меню не открыто, запускаем таймер для открытия
-    if (currentHovered !== itemName) {
-      if (openTimer) {
-        clearTimeout(openTimer); // Очищаем предыдущий таймер открытия
-      }
-
-      const timerId = setTimeout(() => {
-        console.log(`открыли меню для ${itemName}`);
+      //  для показа dropdown
+      showTimer = setTimeout(() => {
         setIsDropDownMenuVisible(true);
-        setCurrentHovered(itemName); // Устанавливаем текущий активный элемент
       }, 600);
-      setOpenTimer(timerId);
+    } else {
+      // Очищаем таймер показа, если есть
+      clearTimeout(showTimer);
+
+      // Запускаем таймер для скрытия dropdown
+      hideTimer = setTimeout(() => {
+        setIsDropDownMenuVisible(false);
+      }, 600);
     }
+
+    return () => {
+      clearTimeout(showTimer);
+      clearTimeout(hideTimer);
+    };
+  }, [isActive]);
+
+  const handleStart = () => {
+    setIsActive(true); // Активируем таймер показа
   };
 
-  const handleMouseLeave = (itemName: string) => {
-    // Очищаем таймер открытия при покидании элемента
-    if (openTimer) {
-      clearTimeout(openTimer);
-      setOpenTimer(null);
-    }
-
-    // Запускаем таймер для закрытия, если покидаем активный элемент
-    if (currentHovered === itemName) {
-      const timerId = setTimeout(() => {
-        console.log(`закрыли меню для ${itemName}`);
-        setIsDropDownMenuVisible(false);
-        setCurrentHovered(null); // Сбрасываем текущий активный элемент
-      }, 595);
-      setCloseTimer(timerId);
-    }
+  const handleStop = () => {
+    setIsActive(false); // Активируем таймер скрытия
   };
 
   return (
@@ -62,10 +47,11 @@ const NavigationHeader = () => {
       <div className={styles.wrapper_nav_header}>
         <ul>
           {arrHeaderMainLinks.map((obj) => (
-            <React.Fragment key={obj.name}>
+            <>
               <li
-                onMouseEnter={() => handleMouseEnter(obj.name)}
-                onMouseLeave={() => handleMouseLeave(obj.name)}
+                onMouseEnter={handleStart}
+                onMouseLeave={handleStop}
+                key={obj.name}
                 className={styles.navheader_links}
               >
                 <Link to={obj.path}>{obj.name}</Link>
@@ -73,14 +59,12 @@ const NavigationHeader = () => {
               </li>
               <li
                 className={`${styles.sub_navigation} ${
-                  isDropDownMenuVisible && currentHovered === obj.name
-                    ? styles.active
-                    : ""
+                  isDropDownMenuVisible ? styles.active : ""
                 }`}
               >
                 <div className={styles.dropdown_navigate_block}></div>
               </li>
-            </React.Fragment>
+            </>
           ))}
         </ul>
       </div>
