@@ -106,16 +106,33 @@ export const forgotPassword = async (req, res) => {
   const user = await userModel.findOne({ email });
 
   if (!user) return res.status(404).send("Email not found");
-  console.log("zxc");
-
+  if (user.passwordResetAttempts > 3) {
+    return res
+      .status(404)
+      .send(
+        "You have exceeded your password reset request limit. Try again in 24 hours."
+      );
+  }
   // Генерация токена (действителен 1 час)
-  const resetToken = jwt.sign({ id: user._id }, "secretreset", {
+  const resetToken = await jwt.sign({ id: user._id }, "secretreset", {
     expiresIn: "1h",
   });
 
+  await userModel.findOneAndUpdate(
+    { email: email },
+    { $inc: { passwordResetAttempts: 1 } }
+  );
+
+  await userModel.findOneAndUpdate(
+    { email: email },
+    { resetPasswordToken: resetToken }
+  );
+  await userModel.findOneAndUpdate(
+    { email: email },
+    { resetPasswordExpires: Date.now() + 3600000 }
+  );
   // Сохранение токена и времени его создания в БД
-  user.resetPasswordToken = resetToken;
-  user.resetPasswordExpires = Date.now() + 3600000; // 1 час
+
   await user.save();
 
   // Настройка SMTP для отправки email
@@ -148,7 +165,7 @@ export const forgotPassword = async (req, res) => {
           <td bgcolor="#ffffff" style="padding: 40px 30px 40px 30px;">
             <p style="font-size: 18px;">Hello,</p>
             <p style="font-size: 16px; line-height: 1.6;">You requested to reset your password. Click the link below to set a new password:</p>
-            <a href="http://localhost:5173/resetPassword/{${resetToken}" style="display: inline-block; padding: 10px 20px; color: white; background-color: #70bbd9; text-decoration: none; border-radius: 5px;">Reset Password</a>
+            <a href="http://localhost:5173/resetPassword/${resetToken}" style="display: inline-block; padding: 10px 20px; color: white; background-color: #70bbd9; text-decoration: none; border-radius: 5px;">Reset Password</a>
             <p style="margin-top: 20px; font-size: 16px;">If you didn't request this, please ignore this email.</p>
           </td>
         </tr>
@@ -173,3 +190,26 @@ export const forgotPassword = async (req, res) => {
     res.status(200).send("Password reset email sent");
   });
 };
+
+export const isTokenValid = async (req, res) => {
+  const { resetPasswordToken } = req.body;
+
+  const decodedUrlToken = await decodeURIComponent(resetPasswordToken);
+  console.log("ZX", decodedUrlToken);
+
+  const verifiedToken = await jwt.decode(decodedUrlToken);
+  console.log("DECODED", verifiedToken);
+
+  const user = await userModel.findOne({ _id: verifiedToken.id });
+  console.log("USERr", user);
+
+  const currentTime = Date.now();
+  const resetPasswordExpires = await user.resetPasswordExpires;
+  // Проверяем, истек ли срок действия токена
+  if (currentTime < resetPasswordExpires) {
+    console.log("Токен действителен");
+  } else {
+    console.log("Срок действия токена истек");
+  }
+};
+export const resetPassword = () => {};

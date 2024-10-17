@@ -1,57 +1,65 @@
 import React, { useEffect, useState } from "react";
 import styles from "./styles.module.scss";
 import { Link } from "react-router-dom";
-import {
-  arrHeaderMainLinks,
-  brandsData,
-} from "../../assets/SecondHeader/HeaderDropDownLinks";
+import { arrHeaderMainLinks } from "../../assets/SecondHeader/HeaderDropDownLinks";
 import Dropdown from "./Dropdown/Dropdown";
+import { teal } from "@mui/material/colors";
 
 const NavigationHeader = () => {
-  const [isDropDownMenuVisible, setIsDropDownMenuVisible] = useState(false);
-  const [isActive, setIsActive] = useState(false);
-  const [isLinkName, setIsLinkName] = useState("");
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+
+  const [isMenuHovered, setIsMenuHovered] = useState(false);
+
+  const [activeLinkName, setActiveLinkName] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const [dropdownAnimatingLink, setDropdownAnimatingLink] = useState("");
 
   useEffect(() => {
-    let showTimer: any;
-    let hideTimer: any;
+    let showDropdownTimer: any;
+    let hideDropdownTimer: any;
 
-    if (isActive) {
-      clearTimeout(hideTimer);
+    if (isMenuHovered) {
+      clearTimeout(hideDropdownTimer);
 
-      //  для показа dropdown
-      showTimer = setTimeout(() => {
-        setIsDropDownMenuVisible(true);
+      showDropdownTimer = setTimeout(() => {
+        setIsOpen(true);
+        setDropdownAnimatingLink(activeLinkName);
+        setIsDropdownVisible(true);
       }, 600);
     } else {
-      // Очищаем таймер показа, если есть
-      clearTimeout(showTimer);
-      setIsLinkName("");
-      // Запускаем таймер для скрытия dropdown
-      hideTimer = setTimeout(() => {
-        setIsDropDownMenuVisible(false);
+      clearTimeout(showDropdownTimer);
+      setActiveLinkName("");
+
+      setIsOpen(false);
+
+      hideDropdownTimer = setTimeout(() => {
+        setDropdownAnimatingLink("");
+        setIsDropdownVisible(false);
       }, 600);
     }
 
     return () => {
-      clearTimeout(showTimer);
-      clearTimeout(hideTimer);
+      clearTimeout(showDropdownTimer);
+      clearTimeout(hideDropdownTimer);
     };
-  }, [isActive]);
+  }, [isMenuHovered, activeLinkName]);
 
-  const handleStart = (name: string) => {
-    setIsActive(true); // Активируем таймер показа
-    setIsLinkName(name);
+  const handleMouseEnter = (linkName: string) => {
+    setIsMenuHovered(true);
+
+    setActiveLinkName(linkName);
   };
 
-  const handleStop = () => {
-    setIsActive(false); // Активируем таймер скрытия
+  const handleMouseLeave = () => {
+    setIsMenuHovered(false);
   };
-  const isOpen = () => {
-    setIsActive(true);
+
+  const handleDropdownMouseEnter = () => {
+    setIsMenuHovered(true);
   };
-  const isClose = () => {
-    setIsActive(false);
+
+  const handleDropdownMouseLeave = () => {
+    setIsMenuHovered(false);
   };
 
   return (
@@ -61,31 +69,32 @@ const NavigationHeader = () => {
           {arrHeaderMainLinks.map((obj) => (
             <>
               <li
-                onMouseEnter={() => handleStart(obj.name)}
-                onMouseLeave={handleStop}
+                onMouseEnter={() => handleMouseEnter(obj.name)}
+                onMouseLeave={handleMouseLeave}
                 key={obj.name}
                 className={styles.navheader_links}
               >
-                {" "}
                 <Link to={obj.path}>{obj.name}</Link>
                 <div
                   className={`${styles.header_navigation_item_line} ${
-                    isLinkName === obj.name ? styles.active : ""
+                    activeLinkName === obj.name ? styles.active : ""
                   }`}
                 ></div>
               </li>
-              <li
-                onMouseEnter={isOpen}
-                onMouseLeave={isClose}
-                className={`${styles.sub_navigation} ${
-                  isDropDownMenuVisible ? styles.active : ""
-                }`}
-              >
-                <Dropdown
-                  subLinkName={isLinkName}
-                  content={obj.name === isLinkName ? obj.content : null}
-                />
-              </li>
+              {isDropdownVisible && dropdownAnimatingLink === obj.name && (
+                <li
+                  onMouseEnter={handleDropdownMouseEnter}
+                  onMouseLeave={handleDropdownMouseLeave}
+                  className={`${styles.sub_navigation} ${
+                    isDropdownVisible ? styles.active : ""
+                  }`}
+                >
+                  <Dropdown
+                    subLinkName={dropdownAnimatingLink}
+                    content={obj.content}
+                  />
+                </li>
+              )}
             </>
           ))}
         </ul>

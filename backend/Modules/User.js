@@ -17,6 +17,15 @@ const UserSchema = new mongoose.Schema(
     secondName: {
       type: String,
     },
+    resetPasswordToken: {
+      type: String,
+    },
+    resetPasswordExpires: {
+      type: String,
+    },
+    passwordResetAttempts: {
+      type: Number,
+    },
   },
   {
     timestamps: true,

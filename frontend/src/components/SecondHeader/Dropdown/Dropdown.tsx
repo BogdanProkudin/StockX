@@ -1,21 +1,13 @@
-import React from "react";
+import React, { memo } from "react";
 import styles from "./styles.module.scss";
-import { Link } from "react-router-dom";
-import {
-  brandsData,
-  dealsData,
-} from "../../../assets/SecondHeader/HeaderDropDownLinks";
 
 interface DropdownProps {
   subLinkName: string;
   content: any;
 }
 const Dropdown: React.FC<DropdownProps> = ({ subLinkName, content }) => {
-  console.log(subLinkName);
-  console.log(content);
-  if (content == null) {
-    return 0;
-  }
+  console.log(content, subLinkName);
+
   return (
     <div className={styles.dropdown_container}>
       <div
@@ -24,33 +16,37 @@ const Dropdown: React.FC<DropdownProps> = ({ subLinkName, content }) => {
         }`}
       >
         {subLinkName === "Brands"
-          ? content?.map((obj: any) => (
-              <div className={styles.dropdown_flex_column}>
-                <span>{obj.title}</span>
-                <div
-                  className={`${styles.dropdown_sublink_main_wrapper} ${
-                    obj.title === "All Brands" ? styles.threecolumn : ""
-                  }`}
-                >
-                  {obj.sub_link.map((obj: any) => (
-                    <li className={styles.sublink}>{obj.name}</li>
-                  ))}
+          ? content?.map((obj: any) => {
+              return (
+                <div className={styles.dropdown_flex_column}>
+                  <span>{obj.title}</span>
+                  <div
+                    className={`${styles.dropdown_sublink_main_wrapper} ${
+                      obj.title === "All Brands" ? styles.threecolumn : ""
+                    }`}
+                  >
+                    {obj.sub_link.map((obj: any) => (
+                      <span className={styles.sublink}>{obj.name}</span>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))
-          : content.map((obj: any) => (
-              <div className={styles.dropdown_flex_column}>
-                <span>{obj.title}</span>
-                <div className={styles.dropdown_sublink_wrapper}>
-                  {obj.sub_link.map((obj: any) => (
-                    <li className={styles.sublink}>{obj.name}</li>
-                  ))}
+              );
+            })
+          : content.map((obj: any) => {
+              return (
+                <div className={styles.dropdown_flex_column}>
+                  <span>{obj.title}</span>
+                  <div className={styles.dropdown_sublink_wrapper}>
+                    {obj.sub_link.map((obj: any) => (
+                      <span className={styles.sublink}>{obj.name}</span>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
       </div>
     </div>
   );
 };
 
-export default Dropdown;
+export default memo(Dropdown);

@@ -1,6 +1,15 @@
+import { useEffect } from "react";
 import ResetForm from "./ResetForm";
 import styles from "./styles.module.scss";
+import { useAppDispatch } from "../../../redux/hook";
+import { isResetPasswordTokenValid } from "../../../redux/slices/authSlice";
 const index = () => {
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    const path = location.pathname;
+    const tokenFromUrl = path.split("/resetPassword/")[1];
+    dispatch(isResetPasswordTokenValid({ resetPasswordToken: tokenFromUrl }));
+  }, []);
   return (
     <div className={styles.reset_password_container}>
       <h1 className={styles.reset_password_title}>Create new password</h1>

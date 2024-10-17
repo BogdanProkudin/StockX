@@ -10,6 +10,7 @@ import { IUser } from "../../@types/userAuth";
 import axios from "../../axiosConfig/axios"; // пофиксил axios так что можно теперь использовать
 // Интерфейс для состояния статуса
 enum fetchRequest {
+  INITIAL = "",
   LOADING = "loading",
   SUCCESS = "success",
   ERROR = "error",
@@ -24,6 +25,7 @@ interface IUserAuthSlice {
   status: fetchRequest;
   stateAuthSwitcher: string;
   requestResetPasswordError: string | undefined;
+  // isEmailSent: boolean;
 }
 
 const initialState: IUserAuthSlice = {
@@ -31,9 +33,10 @@ const initialState: IUserAuthSlice = {
   validationErrors: [],
   registrationBackendErrors: "",
   resetPass: false,
-  status: fetchRequest.LOADING,
+  status: fetchRequest.INITIAL,
   stateAuthSwitcher: "Sign Up",
   requestResetPasswordError: "",
+  // isEmailSent: false,
 };
 
 // Асинхронные экшены
@@ -83,6 +86,18 @@ export const authMe = createAsyncThunk("auth/me", async (_, thunkAPI) => {
     return thunkAPI.rejectWithValue({ message: error.response.data });
   }
 });
+export const isResetPasswordTokenValid = createAsyncThunk<
+  IUser, // Возвращаемый тип в случае успеха
+  { resetPasswordToken: string }, // Тип аргументов
+  { rejectValue: { message: string } } // Тип ошибки для rejectWithValue
+>("auth/login", async (params, thunkAPI) => {
+  try {
+    const response = await axios.post("/tokenValidation", params);
+    return response.data;
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue({ message: error.response.data });
+  }
+});
 // Slice
 
 const userAuthSlice = createSlice({
@@ -106,7 +121,6 @@ const userAuthSlice = createSlice({
     setClearValidationErrors: (state) => {
       state.validationErrors = [];
       state.registrationBackendErrors = "";
-      state.status = fetchRequest.LOADING;
     },
     setResetPass(state, action: PayloadAction<boolean>) {
       state.resetPass = action.payload;
@@ -189,16 +203,16 @@ const userAuthSlice = createSlice({
         state.validationErrors = [];
       })
       .addCase(authMe.rejected, (state) => {
-        state.status = fetchRequest.ERROR;
+        // state.status = fetchRequest.ERROR;
       })
       .addCase(resetUserPassword.pending, (state) => {
         state.status = fetchRequest.LOADING;
-        state.requestResetPasswordError = undefined;
       })
       .addCase(
         resetUserPassword.fulfilled,
         (state, action: PayloadAction<string | undefined>) => {
           state.requestResetPasswordError = undefined;
+          state.status = fetchRequest.SUCCESS;
         }
       )
       .addCase(resetUserPassword.rejected, (state, action) => {
