@@ -7,6 +7,7 @@ const SignUpError = () => {
   const registrationBackendErrors = useAppSelector(
     (state) => state.userAuth.registrationBackendErrors
   );
+  console.log("SIGN UP ERRROR", registrationBackendErrors, validationErrors);
 
   return (
     <>

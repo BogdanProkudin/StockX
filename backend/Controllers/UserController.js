@@ -194,22 +194,29 @@ export const forgotPassword = async (req, res) => {
 export const isTokenValid = async (req, res) => {
   const { resetPasswordToken } = req.body;
 
-  const decodedUrlToken = await decodeURIComponent(resetPasswordToken);
-  console.log("ZX", decodedUrlToken);
+  // Декодируем токен
+  const decodedUrlToken = decodeURIComponent(resetPasswordToken);
 
-  const verifiedToken = await jwt.decode(decodedUrlToken);
-  console.log("DECODED", verifiedToken);
+  try {
+    // Проверяем токен
+    const verifiedToken = jwt.verify(decodedUrlToken, "secretreset");
+    console.log("Verified Token:", verifiedToken);
 
-  const user = await userModel.findOne({ _id: verifiedToken.id });
-  console.log("USERr", user);
+    const user = await userModel.findById(verifiedToken.id);
+    if (!user) return res.status(404).send("User not found");
 
-  const currentTime = Date.now();
-  const resetPasswordExpires = await user.resetPasswordExpires;
-  // Проверяем, истек ли срок действия токена
-  if (currentTime < resetPasswordExpires) {
-    console.log("Токен действителен");
-  } else {
-    console.log("Срок действия токена истек");
+    const currentTime = Date.now();
+
+    if (currentTime < user.resetPasswordExpires) {
+      console.log("Токен действителен");
+      return res.status(200).send("Token is valid");
+    } else {
+      console.log("Срок действия токена истек");
+      return res.status(400).send("Token has expired");
+    }
+  } catch (error) {
+    console.error("Token verification failed:", error.message);
+    return res.status(401).send("Invalid token");
   }
 };
 export const resetPassword = () => {};

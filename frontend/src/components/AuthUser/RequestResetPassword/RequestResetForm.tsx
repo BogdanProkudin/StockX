@@ -9,7 +9,9 @@ import {
 const RequestResetForm: React.FC = ({}) => {
   const dispatch = useAppDispatch();
   const [inputValue, setInputValue] = React.useState("");
-  const isSending = useAppSelector((state) => state.userAuth.status);
+  const isSending = useAppSelector(
+    (state) => state.userAuth.resetPasswordStatus
+  );
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };
