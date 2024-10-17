@@ -1,22 +1,26 @@
 import React from "react";
 import styles from "./styles.module.scss";
-import { useAppDispatch } from "../../../redux/hook";
+import { useAppDispatch, useAppSelector } from "../../../redux/hook";
 import {
   resetUserPassword,
   setRequestResetPasswordError,
 } from "../../../redux/slices/authSlice";
 
-const RequestResetForm: React.FC = () => {
+const RequestResetForm: React.FC = ({}) => {
   const dispatch = useAppDispatch();
   const [inputValue, setInputValue] = React.useState("");
+  const isSending = useAppSelector((state) => state.userAuth.status);
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };
 
-  const handleSendResetEmail = (e: any) => {
+  const handleSendResetEmail = async (e: any) => {
     e.preventDefault();
     if (inputValue.length >= 4) {
-      dispatch(resetUserPassword({ email: inputValue }));
+      const response = await dispatch(resetUserPassword({ email: inputValue }));
+      if (response.payload === "Password reset email sent") {
+        setInputValue("");
+      }
     } else {
       dispatch(setRequestResetPasswordError("Email is too short"));
     }
@@ -40,10 +44,13 @@ const RequestResetForm: React.FC = () => {
           </label>
         </div>
         <button
+          disabled={isSending === "loading" ? true : false}
           onClick={(e) => handleSendResetEmail(e)}
-          className={styles.btnReset}
+          className={`${styles.request_reset_password_button} ${
+            isSending === "loading" ? styles.active : ""
+          }`}
         >
-          Reset Password
+          {isSending === "loading" ? "Sending" : "Reset Password"}
         </button>
       </form>
     </>
