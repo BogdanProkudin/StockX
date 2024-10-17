@@ -1,7 +1,7 @@
 import { useAppSelector } from "../../../redux/hook";
 import styles from "./styles.module.scss";
-type RequestResetErrorProps = {};
-const RequestResetError = ({}: RequestResetErrorProps) => {
+
+const RequestResetError = () => {
   const requestResetPasswordError = useAppSelector(
     (state) => state.userAuth.requestResetPasswordError
   );

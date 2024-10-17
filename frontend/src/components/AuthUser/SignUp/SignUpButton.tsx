@@ -4,7 +4,7 @@ import { setClearValidationErrors } from "../../../redux/slices/authSlice";
 
 const SignUpButton = () => {
   const dispatch = useAppDispatch();
-  const status = useAppSelector((state) => state.userAuth.status);
+  const status = useAppSelector((state) => state.userAuth.loginStatus); //fixxx
   const [isClicked, setIsClicked] = React.useState(false);
   const handleSignUpButtonCLick = () => {
     console.log("SIGN UP BUTTN CLICKED");
