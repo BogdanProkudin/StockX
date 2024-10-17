@@ -1,0 +1,55 @@
+.dropdown_container {
+  max-width: 1120px;
+  padding: 16px 0 32px 0;
+  height: 300px;
+  margin: 0px auto;
+
+  .dropdown_wrapper {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(5, 1fr);
+    -webkit-box-pack: center;
+    justify-content: center;
+    list-style-type: none;
+    &.brands_wrapper {
+      grid-template-columns: 15% repeat(auto-fit, minmax(20%, 27.5%));
+    }
+    .dropdown_flex_column {
+      display: flex;
+      text-align: start;
+      flex-direction: column;
+      gap: 30px;
+      .dropdown_sublink_main_wrapper {
+        // display: grid;
+        // gap: var(--chakra-space-3);
+        // grid-template-columns: repeat(5, 1fr);
+        // list-style-type: none;
+        // margin-bottom: var(--chakra-space-6);
+        // margin-inline: 0px;
+        // padding-inline: 0px;
+        // overflow: auto;
+        // padding: var(--chakra-space-1);
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        list-style-type: none;
+        margin-inline: 0px;
+        padding-inline: 0px;
+        overflow: auto;
+        &.threecolumn {
+          grid-template-columns: repeat(5, 1fr);
+        }
+      }
+      .dropdown_sublink_wrapper {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        list-style-type: none;
+        margin-inline: 0px;
+        padding-inline: 0px;
+        overflow: auto;
+        .sublink {
+          max-width: 200px;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,33 @@
+.header_auth_user {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  .Login {
+    background-color: inherit;
+    color: black;
+    &:hover {
+      background-color: black;
+      color: white;
+    }
+  }
+  .Signup {
+    background-color: black;
+    color: white;
+  }
+  button {
+    transition: all ease-in-out 0.2s;
+    cursor: pointer;
+    border: 1px solid black;
+    border-radius: 20px;
+    padding: 8px 16px;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .bellBtn {
+    background-color: inherit;
+    border: 0px solid black;
+    cursor: pointer;
+    padding: 0;
+    margin-right: 10px;
+  }
+}
