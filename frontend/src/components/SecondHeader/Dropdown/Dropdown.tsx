@@ -1,5 +1,6 @@
 import React, { memo } from "react";
 import styles from "./styles.module.scss";
+import { Link } from "react-router-dom";
 
 interface DropdownProps {
   subLinkName: string;
@@ -19,14 +20,18 @@ const Dropdown: React.FC<DropdownProps> = ({ subLinkName, content }) => {
           ? content?.map((obj: any) => {
               return (
                 <div className={styles.dropdown_flex_column}>
-                  <span>{obj.title}</span>
+                  <b className={styles.title}>
+                    <Link to={""}>{obj.title}</Link>
+                  </b>
                   <div
                     className={`${styles.dropdown_sublink_main_wrapper} ${
                       obj.title === "All Brands" ? styles.threecolumn : ""
                     }`}
                   >
                     {obj.sub_link.map((obj: any) => (
-                      <span className={styles.sublink}>{obj.name}</span>
+                      <li className={styles.sublink}>
+                        <Link to={""}>{obj.name}</Link>
+                      </li>
                     ))}
                   </div>
                 </div>
@@ -35,10 +40,14 @@ const Dropdown: React.FC<DropdownProps> = ({ subLinkName, content }) => {
           : content.map((obj: any) => {
               return (
                 <div className={styles.dropdown_flex_column}>
-                  <span>{obj.title}</span>
+                  <b className={styles.title}>
+                    <Link to={""}>{obj.title}</Link>
+                  </b>
                   <div className={styles.dropdown_sublink_wrapper}>
                     {obj.sub_link.map((obj: any) => (
-                      <span className={styles.sublink}>{obj.name}</span>
+                      <li className={styles.sublink}>
+                        <Link to={""}>{obj.name}</Link>
+                      </li>
                     ))}
                   </div>
                 </div>
