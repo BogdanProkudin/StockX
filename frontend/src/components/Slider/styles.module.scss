@@ -1,0 +1,25 @@
+.root {
+  border-radius: 20px;
+  z-index: 1;
+  div {
+    &::after {
+      left: 25px;
+      color: white;
+      font-size: 15px;
+
+      padding: 6px 5px 5px 9px;
+      background-color: black;
+      width: 15px;
+      border-radius: 50%;
+    }
+  }
+  .root_slider {
+    .slider_link {
+      .slider_img {
+        border-radius: 20px;
+        width: 100%;
+        object-fit: contain;
+      }
+    }
+  }
+}

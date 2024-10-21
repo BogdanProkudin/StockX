@@ -4,19 +4,16 @@ import Header from "../components/Header/Header";
 import { useAppDispatch } from "../redux/hook";
 import { setLogout } from "../redux/slices/authSlice";
 import NavHeader from "../components/SecondHeader/NavHeader";
+import Slider from "../components/Slider/Slider";
 
 const Home: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const onClickLogout = () => {
-    localStorage.removeItem("token");
-    dispatch(setLogout());
-  };
   return (
     <div>
-      <Header />
-      <NavHeader />
-      <Link to={"/auth"}>login</Link>
-      <button onClick={onClickLogout}>Logout</button>
+      <br />
+      <br />
+      <br />
+      <Slider />
+      <p>info</p>
       <br />
       <br />
       <br />
@@ -29,9 +26,7 @@ const Home: React.FC = () => {
       <br />
       <br />
       <br />
-      <br />
-      <br />
-      <br />
+      <p>moreinfo</p>
       <br />
       <br />
       <br />
