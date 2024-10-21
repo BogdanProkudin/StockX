@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import ResetForm from "./ResetForm";
 import styles from "./styles.module.scss";
 import { useAppDispatch } from "../../../redux/hook";
-import { isResetPasswordTokenValid } from "../../../redux/slices/authSlice";
+
 import ResetTokenError from "./ResetTokenError";
+import { isResetPasswordTokenValid } from "../../../redux/thunks/authThunks";
 const index = () => {
   const dispatch = useAppDispatch();
   const [isTokenValid, setIsTokenValid] = useState(true);

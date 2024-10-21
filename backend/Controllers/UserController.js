@@ -10,7 +10,7 @@ export const register = async (req, res) => {
       email: req.body.email,
     });
     if (isUserExist) {
-      return res.status(404).json("Email is taken");
+      return res.status(404).json({ message: "Email is taken" });
     }
     // нужно ли добавлять  проверку на то занят ли ваш юзер нейм или нет когда фамилия и имя может повторяться
     const JWT_PAS = process.env.JWT_PAS;

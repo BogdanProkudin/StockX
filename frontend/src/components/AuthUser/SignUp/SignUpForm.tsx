@@ -9,7 +9,6 @@ import { Inputs } from "../@types/RegisterTypes";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../redux/hook";
 import {
-  registerUser,
   setClearValidationErrors,
   setValidationErrors,
 } from "../../../redux/slices/authSlice";
@@ -20,6 +19,7 @@ import {
   secondNameValidationSchema,
 } from "./SignUpValidation";
 import { useNavigate } from "react-router-dom";
+import { registerUser } from "../../../redux/thunks/authThunks";
 
 const validationSchema = Yup.object().shape({
   email: emailValidationSchema,

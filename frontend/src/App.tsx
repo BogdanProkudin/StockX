@@ -8,15 +8,12 @@ import Profile from "./pages/Profile";
 
 import ResetPage from "./pages/ResetPassword";
 import { useAppDispatch, useAppSelector } from "./redux/hook";
-import { authMe } from "./redux/slices/authSlice";
 
 function App() {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.userAuth.userData);
   const userToken = localStorage.getItem("token");
-  React.useEffect(() => {
-    dispatch(authMe());
-  }, []);
+
   return (
     <>
       {/* <Header /> */}

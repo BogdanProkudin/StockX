@@ -9,7 +9,6 @@ const SignUpButton = () => {
   const handleSignUpButtonCLick = () => {
     console.log("SIGN UP BUTTN CLICKED");
     setIsClicked(!isClicked);
-    dispatch(setClearValidationErrors());
   };
   return (
     <button onClick={() => handleSignUpButtonCLick()} type="submit">
