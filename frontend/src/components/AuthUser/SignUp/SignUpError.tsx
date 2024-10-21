@@ -15,7 +15,7 @@ const SignUpError = () => {
         <div className={styles.signUp_error_container}>
           <p>{validationErrors[0]}</p>
         </div>
-      ) : registrationBackendErrors.length > 1 ? (
+      ) : registrationBackendErrors.length >= 1 ? (
         <div className={styles.signUp_error_container}>
           <p>{registrationBackendErrors}</p>
         </div>

@@ -29,6 +29,7 @@ app.post("/login", UserController.login);
 app.get("/authMe", CheckAuth, UserController.auth);
 app.post("/resetPassword", UserController.forgotPassword);
 app.post("/tokenValidation", UserController.isTokenValid);
+app.get("/getShoes", UserController.getShoes);
 app.listen(port, (err) => {
   if (err) {
     console.log("Error starting server", err);

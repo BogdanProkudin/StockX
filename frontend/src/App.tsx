@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Auth from "./pages/Auth";
 import Home from "./pages/Home";
@@ -9,16 +9,21 @@ import Profile from "./pages/Profile";
 import ResetPage from "./pages/ResetPassword";
 import { useAppDispatch, useAppSelector } from "./redux/hook";
 
+import HeaderLayout from "./layout/HeaderLayout";
+import axios from "./axiosConfig/axios";
+
 function App() {
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.userAuth.userData);
+
   const userToken = localStorage.getItem("token");
 
   return (
     <>
       {/* <Header /> */}
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<HeaderLayout />}>
+          <Route path="" element={<Home />} />
+        </Route>
         <Route
           path="/auth"
           element={userToken ? <Navigate to="/profile" /> : <Auth />}

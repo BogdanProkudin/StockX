@@ -9,8 +9,11 @@ export const register = async (req, res) => {
     const isUserExist = await userModel.findOne({
       email: req.body.email,
     });
+
     if (isUserExist) {
-      return res.status(404).json({ message: "Email is taken" });
+      return setTimeout(() => {
+        res.status(400).json({ message: "Email is taken" });
+      }, 1000); // Задержка 1 секунда
     }
     // нужно ли добавлять  проверку на то занят ли ваш юзер нейм или нет когда фамилия и имя может повторяться
     const JWT_PAS = process.env.JWT_PAS;
@@ -36,7 +39,9 @@ export const register = async (req, res) => {
 
     const { password, ...userData } = user._doc;
 
-    res.status(200).json({ message: "User registered successfully", token }); //отправка на фронт только токена потом по этому токену будем находить юзера в бд/ или по юзер айди
+    res.status(200).json({ message: "User registered successfully", token });
+
+    //отправка на фронт только токена потом по этому токену будем находить юзера в бд/ или по юзер айди
   } catch (error) {
     console.log("ERROR REGISTRATION USER", error);
 
@@ -52,16 +57,20 @@ export const login = async (req, res) => {
       email: req.body.email,
     });
     if (!user) {
-      return res.status(404).json({
-        message: "Email or password is wrong",
-      });
+      return setTimeout(() => {
+        res.status(404).json({
+          message: "Email or password is wrong",
+        });
+      }, 1000);
     }
     const reqPass = req.body.password;
     const userPass = await bcrypt.compare(reqPass, user._doc.password);
     if (!userPass) {
-      return res.status(404).json({
-        message: "Email or password is wrong",
-      });
+      return setTimeout(() => {
+        res.status(404).json({
+          message: "Email or password is wrong",
+        });
+      }, 500);
     }
 
     const token = jwt.sign(
@@ -76,9 +85,11 @@ export const login = async (req, res) => {
     const { password, ...userData } = user._doc;
     res.status(200).json({ message: "User login successfully", token });
   } catch (error) {
-    res.status(500).json({
-      message: "Login unavaible",
-    });
+    return setTimeout(() => {
+      res.status(500).json({
+        message: "Login unavaible",
+      });
+    }, 500);
   }
 };
 export const auth = async (req, res) => {
@@ -220,3 +231,10 @@ export const isTokenValid = async (req, res) => {
   }
 };
 export const resetPassword = () => {};
+import { StockXAPI, StockXLocation } from "@vlourme/stockx-api";
+export const getShoes = async () => {
+  const api = new StockXAPI(StockXLocation.US);
+  const count = await api.searchProducts("Nike", 3);
+
+  console.log(count);
+};

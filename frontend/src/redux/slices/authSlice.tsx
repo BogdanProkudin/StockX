@@ -93,34 +93,39 @@ const userAuthSlice = createSlice({
     builder
       // Регистрация
       .addCase(registerUser.pending, (state) => {
-        state.validationErrors = [];
+        console.log("PENDING");
+
+        state.registrationBackendErrors = "";
         state.registrationStatus = fetchRequest.LOADING;
       })
       .addCase(
         registerUser.fulfilled,
         (state, action: PayloadAction<IUser>) => {
           state.userData = action.payload;
-          state.validationErrors = [];
 
-          state.registrationBackendErrors = "";
           state.registrationStatus = fetchRequest.SUCCESS;
         }
       )
       .addCase(registerUser.rejected, (state, action) => {
         state.registrationBackendErrors =
           action.payload?.message || "An unknown error occurred";
+
         state.registrationStatus = fetchRequest.ERROR;
       })
 
       // Логин
-      .addCase(loginUser.pending, setLoadingState)
+      .addCase(loginUser.pending, (state) => {
+        state.loginStatus = fetchRequest.LOADING;
+      })
       .addCase(loginUser.fulfilled, (state, action: PayloadAction<IUser>) => {
         state.userData = action.payload;
         state.validationErrors = [];
+        state.loginStatus = fetchRequest.SUCCESS;
         state.loginBackendErrors = "";
         setSuccessState(state);
       })
       .addCase(loginUser.rejected, (state, action) => {
+        state.loginStatus = fetchRequest.ERROR;
         state.loginBackendErrors = action.payload?.message || "";
       })
 
