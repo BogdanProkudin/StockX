@@ -3,7 +3,6 @@ import styles from "./styles.module.scss";
 import { Link } from "react-router-dom";
 import { arrHeaderMainLinks } from "../../assets/SecondHeader/HeaderDropDownLinks";
 import Dropdown from "./Dropdown/Dropdown";
-import { teal } from "@mui/material/colors";
 
 const NavigationHeader = () => {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
@@ -67,7 +66,7 @@ const NavigationHeader = () => {
       <div className={styles.wrapper_nav_header}>
         <ul className={styles.flex_nav_header}>
           {arrHeaderMainLinks.map((obj) => (
-            <>
+            <React.Fragment key={obj.name}>
               <li
                 onMouseEnter={() => handleMouseEnter(obj.name)}
                 onMouseLeave={handleMouseLeave}
@@ -95,7 +94,7 @@ const NavigationHeader = () => {
                   />
                 </li>
               )}
-            </>
+            </React.Fragment>
           ))}
         </ul>
       </div>

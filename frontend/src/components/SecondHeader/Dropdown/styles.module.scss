@@ -19,10 +19,11 @@
       justify-content: center;
       list-style-type: none;
     }
-    .dropdown_flex_column {
+    .dropdown_flex_column_wrapper {
       display: flex;
       text-align: start;
       flex-direction: column;
+
       gap: 20px;
       .title {
         a {

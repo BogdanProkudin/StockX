@@ -1,17 +1,29 @@
-import React from "react";
+import React, { useRef } from "react";
 import styles from "./styles.module.scss";
 import { Link } from "react-router-dom";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { useAppDispatch } from "../../../redux/hook";
 import { setAuthSwitcher } from "../../../redux/slices/authSlice";
+import NavBellPopUp from "./BellPopUp/NavBellPopUp";
 const HeaderAuth: React.FC = () => {
   const dispatch = useAppDispatch();
-
+  const [isOpen, setIsOpen] = React.useState(false);
+  const onClickBell = () => {
+    setIsOpen(!isOpen);
+  };
+  const bellBtnRef = useRef<HTMLButtonElement>(null);
   return (
     <div className={styles.header_auth_user}>
-      <button className={styles.bellBtn}>
-        <NotificationsIcon />
-      </button>
+      <div className={styles.header_bell_auth}>
+        <button
+          ref={bellBtnRef}
+          onClick={onClickBell}
+          className={styles.bellBtn}
+        >
+          <NotificationsIcon />
+        </button>
+        {isOpen && <NavBellPopUp bellRef={bellBtnRef} setIsOpen={setIsOpen} />}
+      </div>
       <Link to={"/Auth"}>
         <button
           onClick={() => dispatch(setAuthSwitcher("Log In"))}

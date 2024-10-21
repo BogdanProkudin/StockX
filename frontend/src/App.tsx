@@ -9,6 +9,7 @@ import Profile from "./pages/Profile";
 import ResetPage from "./pages/ResetPassword";
 import { useAppDispatch, useAppSelector } from "./redux/hook";
 import { authMe } from "./redux/slices/authSlice";
+import HeaderLayout from "./layout/HeaderLayout";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -21,7 +22,9 @@ function App() {
     <>
       {/* <Header /> */}
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<HeaderLayout />}>
+          <Route path="" element={<Home />} />
+        </Route>
         <Route
           path="/auth"
           element={userToken ? <Navigate to="/profile" /> : <Auth />}

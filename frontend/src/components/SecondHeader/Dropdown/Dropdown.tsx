@@ -1,14 +1,13 @@
 import React, { memo } from "react";
 import styles from "./styles.module.scss";
 import { Link } from "react-router-dom";
+import { NavigationItem } from "../../../@types/headerTypes";
 
 interface DropdownProps {
   subLinkName: string;
-  content: any;
+  content: NavigationItem[] | undefined;
 }
 const Dropdown: React.FC<DropdownProps> = ({ subLinkName, content }) => {
-  console.log(content, subLinkName);
-
   return (
     <div className={styles.dropdown_container}>
       <div
@@ -17,9 +16,9 @@ const Dropdown: React.FC<DropdownProps> = ({ subLinkName, content }) => {
         }`}
       >
         {subLinkName === "Brands"
-          ? content?.map((obj: any) => {
+          ? content?.map((obj: NavigationItem, id: number) => {
               return (
-                <div className={styles.dropdown_flex_column}>
+                <div key={id} className={styles.dropdown_flex_column_wrapper}>
                   <b className={styles.title}>
                     <Link to={""}>{obj.title}</Link>
                   </b>
@@ -28,26 +27,26 @@ const Dropdown: React.FC<DropdownProps> = ({ subLinkName, content }) => {
                       obj.title === "All Brands" ? styles.threecolumn : ""
                     }`}
                   >
-                    {obj.sub_link.map((obj: any) => (
-                      <li className={styles.sublink}>
+                    {obj.sub_link.map((obj: { name: string; path: string }) => (
+                      <span className={styles.sublink}>
                         <Link to={""}>{obj.name}</Link>
-                      </li>
+                      </span>
                     ))}
                   </div>
                 </div>
               );
             })
-          : content.map((obj: any) => {
+          : content?.map((obj: NavigationItem, id: number) => {
               return (
-                <div className={styles.dropdown_flex_column}>
+                <div key={id} className={styles.dropdown_flex_column_wrapper}>
                   <b className={styles.title}>
                     <Link to={""}>{obj.title}</Link>
                   </b>
                   <div className={styles.dropdown_sublink_wrapper}>
-                    {obj.sub_link.map((obj: any) => (
-                      <li className={styles.sublink}>
+                    {obj.sub_link.map((obj: { name: string; path: string }) => (
+                      <span className={styles.sublink}>
                         <Link to={""}>{obj.name}</Link>
-                      </li>
+                      </span>
                     ))}
                   </div>
                 </div>
