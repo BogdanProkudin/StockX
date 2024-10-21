@@ -1,6 +1,6 @@
 export interface IUser {
-  token?: string; // это то что приходит с бекенда как ответ если success
-  message?: string; // это то что приходит с бекенда как ответ если success
+  token?: string;
+  message?: string;
   email: string;
   password: string;
   firstName: string;

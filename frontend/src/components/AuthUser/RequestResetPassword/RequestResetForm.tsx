@@ -1,10 +1,8 @@
 import React from "react";
 import styles from "./styles.module.scss";
 import { useAppDispatch, useAppSelector } from "../../../redux/hook";
-import {
-  resetUserPassword,
-  setRequestResetPasswordError,
-} from "../../../redux/slices/authSlice";
+import { setRequestResetPasswordError } from "../../../redux/slices/authSlice";
+import { resetUserPassword } from "../../../redux/thunks/authThunks";
 
 const RequestResetForm: React.FC = ({}) => {
   const dispatch = useAppDispatch();

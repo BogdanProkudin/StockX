@@ -1,27 +1,34 @@
 import {
   ActionReducerMapBuilder,
-  PayloadAction,
-  SerializedError,
-  createAsyncThunk,
   createSlice,
+  PayloadAction,
 } from "@reduxjs/toolkit";
 import { IUser } from "../../@types/userAuth";
 
-import axios from "../../axiosConfig/axios";
-
-// Интерфейс для состояния статуса
-enum fetchRequest {
+import {
+  setLoadingState,
+  setErrorState,
+  setSuccessState,
+} from "../handlers/stateHelpers";
+import {
+  registerUser,
+  loginUser,
+  resetUserPassword,
+  isResetPasswordTokenValid,
+} from "../thunks/authThunks";
+export enum fetchRequest {
   INITIAL = "",
   LOADING = "loading",
   SUCCESS = "success",
   ERROR = "error",
 }
-
 // Интерфейс для состояния
-interface IUserAuthSlice {
+export interface IUserAuthSlice {
   userData: IUser;
   validationErrors: any[];
+  registrationStatus: string;
   registrationBackendErrors: string;
+  loginBackendErrors: string;
   resetPass: boolean;
   loginStatus: fetchRequest;
   resetPasswordStatus: fetchRequest;
@@ -33,6 +40,8 @@ const initialState: IUserAuthSlice = {
   userData: { email: "", password: "", firstName: "", secondName: "" },
   validationErrors: [],
   registrationBackendErrors: "",
+  registrationStatus: fetchRequest.INITIAL,
+  loginBackendErrors: "",
   resetPass: false,
   loginStatus: fetchRequest.INITIAL,
   resetPasswordStatus: fetchRequest.INITIAL,
@@ -40,69 +49,7 @@ const initialState: IUserAuthSlice = {
   requestResetPasswordError: "",
 };
 
-// Асинхронные экшены
-
-export const registerUser = createAsyncThunk<
-  IUser, // Возвращаемый тип в случае успеха
-  IUser, // Тип аргументов
-  { rejectValue: { message: string } } // Тип ошибки для rejectWithValue
->("auth/registerUser", async (userData, thunkAPI) => {
-  try {
-    const response = await axios.post("/signup", userData);
-    return response.data;
-  } catch (error: any) {
-    return thunkAPI.rejectWithValue({ message: error.response.data });
-  }
-});
-
-export const loginUser = createAsyncThunk<
-  IUser, // Возвращаемый тип в случае успеха
-  { email: string; password: string }, // Тип аргументов
-  { rejectValue: { message: string } } // Тип ошибки для rejectWithValue
->("auth/login", async (params, thunkAPI) => {
-  try {
-    const response = await axios.post("/login", params);
-    return response.data;
-  } catch (error: any) {
-    return thunkAPI.rejectWithValue({ message: error.response.data });
-  }
-});
-
-export const resetUserPassword = createAsyncThunk<
-  string, // Возвращаемый тип в случае успеха
-  { email: string }, // Тип аргументов
-  { rejectValue: { message: string } } // Тип ошибки для rejectWithValue
->("auth/resetUserPassword", async (params, thunkAPI) => {
-  try {
-    const response = await axios.post("/resetPassword", params);
-    return response.data;
-  } catch (error: any) {
-    return thunkAPI.rejectWithValue({ message: error.response.data });
-  }
-});
-
-export const authMe = createAsyncThunk("auth/me", async (_, thunkAPI) => {
-  try {
-    const response = await axios.get("/authMe");
-    return response.data;
-  } catch (error: any) {
-    return thunkAPI.rejectWithValue({ message: error.response.data });
-  }
-});
-export const isResetPasswordTokenValid = createAsyncThunk<
-  string, // Возвращаемый тип в случае успеха
-  { resetPasswordToken: string }, // Тип аргументов
-  { rejectValue: { message: string } } // Тип ошибки для rejectWithValue
->("auth/isResetPasswordTokenValid", async (params, thunkAPI) => {
-  try {
-    const response = await axios.post("/tokenValidation", params);
-    return response.data;
-  } catch (error: any) {
-    return thunkAPI.rejectWithValue({ message: error.response.data });
-  }
-});
-// Slice
-
+// Создание слайса
 const userAuthSlice = createSlice({
   name: "userAuth",
   initialState,
@@ -110,18 +57,19 @@ const userAuthSlice = createSlice({
     setValidationErrors: (state, action: PayloadAction<any>) => {
       const { errors } = action.payload;
       const nameList = ["firstName", "secondName", "email", "password"];
-      if (errors) {
-        nameList.forEach((name) => {
-          if (errors[name]) {
-            delete errors[name].ref;
-            state.validationErrors.push(errors[name].message); // используем иммер для мутирования состояния
-          }
-        });
-      }
+      nameList.forEach((name) => {
+        if (errors[name]) {
+          delete errors[name].ref;
+          state.validationErrors.push(errors[name].message);
+        }
+      });
     },
     setClearValidationErrors: (state) => {
       state.validationErrors = [];
+    },
+    setClearBackendErrors: (state) => {
       state.registrationBackendErrors = "";
+      state.loginBackendErrors = "";
     },
     setResetPass(state, action: PayloadAction<boolean>) {
       state.resetPass = action.payload;
@@ -145,30 +93,25 @@ const userAuthSlice = createSlice({
     builder
       // Регистрация
       .addCase(registerUser.pending, (state) => {
+        console.log("PENDING");
+
         state.registrationBackendErrors = "";
+        state.registrationStatus = fetchRequest.LOADING;
       })
       .addCase(
         registerUser.fulfilled,
         (state, action: PayloadAction<IUser>) => {
           state.userData = action.payload;
-          state.validationErrors = [];
+
+          state.registrationStatus = fetchRequest.SUCCESS;
         }
       )
-      .addCase(
-        registerUser.rejected,
-        (
-          state,
-          action: PayloadAction<
-            { message: string } | undefined, // Полезная нагрузка для rejected
-            string, // Тип action
-            { arg: IUser; requestId: string }, // Доп. данные из asyncThunk
-            SerializedError // Сериализованная ошибка
-          >
-        ) => {
-          state.registrationBackendErrors =
-            action.payload?.message || "Unknown registration error";
-        }
-      )
+      .addCase(registerUser.rejected, (state, action) => {
+        state.registrationBackendErrors =
+          action.payload?.message || "An unknown error occurred";
+
+        state.registrationStatus = fetchRequest.ERROR;
+      })
 
       // Логин
       .addCase(loginUser.pending, (state) => {
@@ -178,23 +121,13 @@ const userAuthSlice = createSlice({
         state.userData = action.payload;
         state.validationErrors = [];
         state.loginStatus = fetchRequest.SUCCESS;
+        state.loginBackendErrors = "";
+        setSuccessState(state);
       })
-      .addCase(
-        loginUser.rejected,
-        (
-          state,
-          action: PayloadAction<
-            { message: string } | undefined, // Полезная нагрузка для rejected
-            string, // Тип action
-            { arg: { email: string; password: string }; requestId: string }, // Доп. данные из asyncThunk
-            SerializedError // Сериализованная ошибка
-          >
-        ) => {
-          state.loginStatus = fetchRequest.ERROR;
-          state.registrationBackendErrors =
-            action.payload?.message || "Unknown login error";
-        }
-      )
+      .addCase(loginUser.rejected, (state, action) => {
+        state.loginStatus = fetchRequest.ERROR;
+        state.loginBackendErrors = action.payload?.message || "";
+      })
 
       // Восстановление пароля
       .addCase(resetUserPassword.pending, (state) => {
@@ -208,8 +141,20 @@ const userAuthSlice = createSlice({
         }
       )
       .addCase(resetUserPassword.rejected, (state, action) => {
-        state.resetPasswordStatus = fetchRequest.ERROR;
-        state.requestResetPasswordError = action.payload?.message;
+        setErrorState(
+          state,
+          action.payload?.message || "Password reset failed"
+        );
+      })
+
+      // Проверка токена для сброса пароля
+      .addCase(isResetPasswordTokenValid.pending, setLoadingState)
+      .addCase(isResetPasswordTokenValid.fulfilled, setSuccessState)
+      .addCase(isResetPasswordTokenValid.rejected, (state, action) => {
+        setErrorState(
+          state,
+          action.payload?.message || "Token validation failed"
+        );
       });
   },
 });
@@ -221,6 +166,7 @@ export const {
   setResetPass,
   setLogout,
   setAuthSwitcher,
+  setClearBackendErrors,
   setRequestResetPasswordError,
 } = userAuthSlice.actions;
 
