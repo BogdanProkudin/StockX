@@ -19,7 +19,6 @@ function App() {
 
   return (
     <>
-      {/* <Header /> */}
       <Routes>
         <Route path="/" element={<HeaderLayout />}>
           <Route path="" element={<Home />} />
@@ -31,7 +30,6 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/resetPassword/:token" element={<ResetPage />} />
       </Routes>
-      {/* <AuthUserPage /> */}
     </>
   );
 }

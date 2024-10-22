@@ -231,10 +231,3 @@ export const isTokenValid = async (req, res) => {
   }
 };
 export const resetPassword = () => {};
-import { StockXAPI, StockXLocation } from "@vlourme/stockx-api";
-export const getShoes = async () => {
-  const api = new StockXAPI(StockXLocation.US);
-  const count = await api.searchProducts("Nike", 3);
-
-  console.log(count);
-};
