@@ -1,87 +1,13 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import Header from "../components/Header/Header";
-import { useAppDispatch } from "../redux/hook";
-import { setLogout } from "../redux/slices/authSlice";
-import NavHeader from "../components/SecondHeader/NavHeader";
-import Slider from "../components/Slider/Slider";
 
+import Slider from "../components/Slider/Slider";
+import styles from "../components/Sections/rootStyles.module.scss";
+import UserSection from "../components/Sections/UserSection/UserSection";
 const Home: React.FC = () => {
   return (
-    <div>
-      <br />
-      <br />
-      <br />
+    <div className="mt-6">
       <Slider />
-      <p>info</p>
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <p>moreinfo</p>
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
+      <UserSection />
     </div>
   );
 };
