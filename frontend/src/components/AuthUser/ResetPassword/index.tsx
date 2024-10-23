@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import ResetForm from "./ResetForm";
 import styles from "./styles.module.scss";
-import { useAppDispatch } from "../../../redux/hook";
+import { useAppDispatch, useAppSelector } from "../../../redux/hook";
 
 import ResetTokenError from "./ResetTokenError";
 import { isResetPasswordTokenValid } from "../../../redux/thunks/authThunks";
 import ResetPasswordError from "./ResetPasswordError";
 const index = () => {
   const dispatch = useAppDispatch();
-  const [isTokenValid, setIsTokenValid] = useState(true);
+  const tokenStatus = useAppSelector((state) => state.userAuth.tokenStatus);
   useEffect(() => {
     const handleIsTokenValid = async () => {
       const path = location.pathname;
@@ -16,20 +16,14 @@ const index = () => {
       const response = await dispatch(
         isResetPasswordTokenValid({ resetPasswordToken: tokenFromUrl })
       );
-
-      if (response.payload === "Token is valid") {
-        console.log("TOKEN VALID");
-        setIsTokenValid(true);
-      } else {
-        console.log("TOKEN IS NOT VALID");
-        setIsTokenValid(false);
-      }
     };
     handleIsTokenValid();
   }, []);
+  console.log(tokenStatus, "TOKEM");
+
   return (
     <div className={styles.reset_password_container}>
-      {isTokenValid ? (
+      {tokenStatus !== "error" ? (
         <>
           <h1 className={styles.reset_password_title}>Create new password</h1>
           <div className={styles.reset_password_container}>

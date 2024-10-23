@@ -34,6 +34,7 @@ export interface IUserAuthSlice {
   resetPasswordStatus: fetchRequest;
   stateAuthSwitcher: string;
   requestResetPasswordError: string | undefined;
+  tokenStatus: fetchRequest;
   resetPasswordError: string[];
 }
 
@@ -47,6 +48,7 @@ const initialState: IUserAuthSlice = {
   loginStatus: fetchRequest.INITIAL,
   resetPasswordStatus: fetchRequest.INITIAL,
   stateAuthSwitcher: "Sign Up",
+  tokenStatus: fetchRequest.INITIAL,
   requestResetPasswordError: "",
   resetPasswordError: [],
 };
@@ -164,13 +166,14 @@ const userAuthSlice = createSlice({
       })
 
       // Проверка токена для сброса пароля
-      .addCase(isResetPasswordTokenValid.pending, setLoadingState)
-      .addCase(isResetPasswordTokenValid.fulfilled, setSuccessState)
+      .addCase(isResetPasswordTokenValid.pending, (state) => {
+        state.tokenStatus = fetchRequest.LOADING;
+      })
+      .addCase(isResetPasswordTokenValid.fulfilled, (state) => {
+        state.tokenStatus = fetchRequest.SUCCESS;
+      })
       .addCase(isResetPasswordTokenValid.rejected, (state, action) => {
-        setErrorState(
-          state,
-          action.payload?.message || "Token validation failed"
-        );
+        state.tokenStatus = fetchRequest.ERROR;
       });
   },
 });
