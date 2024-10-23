@@ -16,6 +16,7 @@ import {
   resetPasswordValidationSchema,
 } from "./ResetPasswordValidation";
 import ResetButton from "./ResetButton";
+import { resetPassword } from "../../../redux/thunks/authThunks";
 const validationSchema = Yup.object().shape({
   password: resetPasswordValidationSchema,
   confirmPassword: confirmPasswordValidationSchema,
@@ -28,7 +29,16 @@ const ResetForm = () => {
     watch,
   } = useForm<ResetInputs>({ resolver: yupResolver(validationSchema) });
 
-  const onSubmit = (data: ResetInputs) => {};
+  const onSubmit = (data: ResetInputs) => {
+    const path = location.pathname;
+    const tokenFromUrl = path.split("/resetPassword/")[1];
+    dispatch(
+      resetPassword({
+        resetPasswordToken: tokenFromUrl,
+        newPassword: data.password,
+      })
+    );
+  };
   const dispatch = useAppDispatch();
   useEffect(() => {
     if (errors) {
