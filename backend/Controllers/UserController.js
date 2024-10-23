@@ -240,9 +240,16 @@ export const isTokenValid = async (req, res) => {
   }
 };
 export const resetPassword = async (req, res) => {
-  const { newPassword, resetPasswordToken } = req.body;
-  const userToken = await jwt.verify(resetPasswordToken, "secretreset");
   try {
+    const { newPassword, resetPasswordToken } = req.body;
+    const verifiedToken = await jwt.verify(resetPasswordToken, "secretreset");
+
+    const salt = await bcrypt.genSalt(10);
+    const hashPass = await bcrypt.hash(newPassword, salt);
+    await userModel.findOneAndUpdate(
+      { _id: verifiedToken.id },
+      { password: hashPass }
+    );
   } catch (err) {
     console.log("ERROR RESETING PASSWORD", err);
   }

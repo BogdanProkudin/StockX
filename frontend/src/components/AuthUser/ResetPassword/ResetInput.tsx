@@ -20,8 +20,6 @@ const ResetInput = ({
           type={isShowPassword ? "text" : "password"}
           {...register(name, {
             required: "Please confirm your password",
-            validate: () =>
-              password === confirmPassword || "Passwords do not match",
           })}
         />
 
