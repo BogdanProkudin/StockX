@@ -13,7 +13,7 @@ import {
 import {
   registerUser,
   loginUser,
-  resetUserPassword,
+  requestResetPassword,
   isResetPasswordTokenValid,
 } from "../thunks/authThunks";
 export enum fetchRequest {
@@ -34,6 +34,7 @@ export interface IUserAuthSlice {
   resetPasswordStatus: fetchRequest;
   stateAuthSwitcher: string;
   requestResetPasswordError: string | undefined;
+  resetPasswordError: string[];
 }
 
 const initialState: IUserAuthSlice = {
@@ -47,6 +48,7 @@ const initialState: IUserAuthSlice = {
   resetPasswordStatus: fetchRequest.INITIAL,
   stateAuthSwitcher: "Sign Up",
   requestResetPasswordError: "",
+  resetPasswordError: [],
 };
 
 // Создание слайса
@@ -87,6 +89,19 @@ const userAuthSlice = createSlice({
     },
     setRequestResetPasswordError(state, action: PayloadAction<string>) {
       state.requestResetPasswordError = action.payload;
+    },
+    setResetPassowrdError(state, action: PayloadAction<any>) {
+      const { errors } = action.payload;
+      const nameList = ["password", "confirmPassword"];
+      nameList.forEach((name) => {
+        if (errors[name]) {
+          delete errors[name].ref;
+          state.resetPasswordError.push(errors[name].message);
+        }
+      });
+    },
+    setClearResetPasswordError(state) {
+      state.resetPasswordError = [];
     },
   },
   extraReducers: (builder: ActionReducerMapBuilder<IUserAuthSlice>) => {
@@ -130,21 +145,22 @@ const userAuthSlice = createSlice({
       })
 
       // Восстановление пароля
-      .addCase(resetUserPassword.pending, (state) => {
+      .addCase(requestResetPassword.pending, (state) => {
+        console.log("loading");
+
+        state.requestResetPasswordError = undefined;
         state.resetPasswordStatus = fetchRequest.LOADING;
       })
       .addCase(
-        resetUserPassword.fulfilled,
+        requestResetPassword.fulfilled,
         (state, action: PayloadAction<string | undefined>) => {
           state.requestResetPasswordError = undefined;
           state.resetPasswordStatus = fetchRequest.SUCCESS;
         }
       )
-      .addCase(resetUserPassword.rejected, (state, action) => {
-        setErrorState(
-          state,
-          action.payload?.message || "Password reset failed"
-        );
+      .addCase(requestResetPassword.rejected, (state, action) => {
+        state.resetPasswordStatus = fetchRequest.ERROR;
+        state.requestResetPasswordError = action.payload?.message;
       })
 
       // Проверка токена для сброса пароля
@@ -168,6 +184,8 @@ export const {
   setAuthSwitcher,
   setClearBackendErrors,
   setRequestResetPasswordError,
+  setResetPassowrdError,
+  setClearResetPasswordError,
 } = userAuthSlice.actions;
 
 export default userAuthSlice.reducer;

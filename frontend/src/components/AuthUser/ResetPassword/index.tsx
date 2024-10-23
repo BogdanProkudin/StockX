@@ -5,6 +5,7 @@ import { useAppDispatch } from "../../../redux/hook";
 
 import ResetTokenError from "./ResetTokenError";
 import { isResetPasswordTokenValid } from "../../../redux/thunks/authThunks";
+import ResetPasswordError from "./ResetPasswordError";
 const index = () => {
   const dispatch = useAppDispatch();
   const [isTokenValid, setIsTokenValid] = useState(true);
@@ -38,6 +39,7 @@ const index = () => {
                 StockX account.
               </p>
             </div>
+            <ResetPasswordError />
             <ResetForm />
           </div>
         </>

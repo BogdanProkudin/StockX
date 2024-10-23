@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 
-import { UserController, ItemController } from "./Controllers/index.js";
+import { UserController, ShoesController } from "./Controllers/index.js";
 import { ErrorValidation } from "./utils/ErrorValidation.js";
 import CheckAuth from "./utils/CheckAuth.js";
 
@@ -27,11 +27,11 @@ app.use(express.json());
 app.post("/signup", UserController.register);
 app.post("/login", UserController.login);
 app.get("/authMe", CheckAuth, UserController.auth);
-app.post("/resetPassword", UserController.forgotPassword);
+app.post("/requestResetPassword", UserController.forgotPassword);
 app.post("/tokenValidation", UserController.isTokenValid);
 //ItemsLogic
-
-app.get("/getShoes", ItemController.getShoes);
+app.post("/resetPassword", UserController.resetPassword);
+app.get("/getShoes", ShoesController.getShoes);
 app.listen(port, (err) => {
   if (err) {
     console.log("Error starting server", err);

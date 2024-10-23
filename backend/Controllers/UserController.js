@@ -116,13 +116,18 @@ export const forgotPassword = async (req, res) => {
   // Поиск пользователя по email
   const user = await userModel.findOne({ email });
 
-  if (!user) return res.status(404).send("Email not found");
+  if (!user) {
+    return setTimeout(() => {
+      res.status(404).json({ message: "Email not found" });
+    }, 2000);
+  }
   if (user.passwordResetAttempts > 3) {
-    return res
-      .status(404)
-      .send(
-        "You have exceeded your password reset request limit. Try again in 24 hours."
-      );
+    return setTimeout(() => {
+      res.status(404).json({
+        message:
+          "You have exceeded your password reset request limit. Try again in 24 hours.",
+      });
+    }, 1500);
   }
   // Генерация токена (действителен 1 час)
   const resetToken = await jwt.sign({ id: user._id }, "secretreset", {
@@ -196,9 +201,13 @@ export const forgotPassword = async (req, res) => {
     if (err) {
       console.log("error", err);
 
-      return res.status(500).send("Error sending email");
+      return setTimeout(() => {
+        res.status(500).json({ message: "Error sending email" });
+      }, 1500);
     }
-    res.status(200).send("Password reset email sent");
+    return setTimeout(() => {
+      res.status(200).json({ message: "Password reset email sent" });
+    }, 1500);
   });
 };
 
@@ -230,4 +239,11 @@ export const isTokenValid = async (req, res) => {
     return res.status(401).send("Invalid token");
   }
 };
-export const resetPassword = () => {};
+export const resetPassword = async (req, res) => {
+  const { newPassword, resetPasswordToken } = req.body;
+  const userToken = await jwt.verify(resetPasswordToken, "secretreset");
+  try {
+  } catch (err) {
+    console.log("ERROR RESETING PASSWORD", err);
+  }
+};
