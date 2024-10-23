@@ -1,7 +1,7 @@
 import { useAppSelector } from "../../../redux/hook";
 
 import styles from "./styles.module.scss";
-const SignUpButton = () => {
+const ResetButton = () => {
   const status = useAppSelector((state) => state.userAuth.registrationStatus); //fixxx
 
   return (
@@ -27,11 +27,11 @@ const SignUpButton = () => {
       ) : (
         ""
       )}
-      {status === "loading" ? "Loading..." : "Sign Up"}
+      {status === "loading" ? "Loading..." : "New Password"}
     </button>
 
     // тут надо найти иконку анимированую и подставить вместо loading и там есть не большой баг (уже пофиксил но надо потестить я потестил все норм ну чуство странное)
   );
 };
 
-export default SignUpButton;
+export default ResetButton;

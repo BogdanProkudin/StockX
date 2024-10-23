@@ -34,9 +34,21 @@ export const loginUser = createAsyncThunk<
 });
 
 // Восстановление пароля
-export const resetUserPassword = createAsyncThunk<
+export const requestResetPassword = createAsyncThunk<
   string,
   { email: string },
+  { rejectValue: { message: string } }
+>("auth/requestResetUserPassword", async (params, thunkAPI) => {
+  try {
+    const response = await axios.post("/requestResetPassword", params);
+    return response.data;
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.response.data);
+  }
+});
+export const resetPassword = createAsyncThunk<
+  string,
+  { newPassword: string; resetPasswordToken: string },
   { rejectValue: { message: string } }
 >("auth/resetUserPassword", async (params, thunkAPI) => {
   try {
