@@ -22,7 +22,7 @@ const UserSection = () => {
   console.log(data);
 
   return (
-    <div className="mb-20">
+    <div className="mb-30">
       <div className="my-5 flex gap-4">
         <h2 className=" font-bold text-xl ">Recommended For You</h2>
         <span>?</span>
