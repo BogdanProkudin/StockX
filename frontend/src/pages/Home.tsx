@@ -10,7 +10,6 @@ const Home: React.FC = () => {
       <UserSection />
       <UserSection />
       <UserSection />
-      <UserSection />
     </div>
   );
 };
