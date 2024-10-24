@@ -1,15 +1,15 @@
 import React from "react";
 import styles from "./styles.module.scss";
 import { useAppDispatch, useAppSelector } from "../../../redux/hook";
-import {
-  resetUserPassword,
-  setRequestResetPasswordError,
-} from "../../../redux/slices/authSlice";
+import { setRequestResetPasswordError } from "../../../redux/slices/authSlice";
+import { requestResetPassword } from "../../../redux/thunks/authThunks";
 
 const RequestResetForm: React.FC = ({}) => {
   const dispatch = useAppDispatch();
   const [inputValue, setInputValue] = React.useState("");
-  const isSending = useAppSelector((state) => state.userAuth.status);
+  const isSending = useAppSelector(
+    (state) => state.userAuth.resetPasswordStatus
+  );
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };
@@ -17,7 +17,9 @@ const RequestResetForm: React.FC = ({}) => {
   const handleSendResetEmail = async (e: any) => {
     e.preventDefault();
     if (inputValue.length >= 4) {
-      const response = await dispatch(resetUserPassword({ email: inputValue }));
+      const response = await dispatch(
+        requestResetPassword({ email: inputValue })
+      );
       if (response.payload === "Password reset email sent") {
         setInputValue("");
       }

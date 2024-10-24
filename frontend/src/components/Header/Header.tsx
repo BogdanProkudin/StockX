@@ -21,6 +21,7 @@ const Header: React.FC = () => {
         >
           <HeaderLogo />
           <HeaderInput />
+
           <HeaderNavigation />
           {userToken ? <HeaderUser /> : <HeaderAuth />}
         </div>

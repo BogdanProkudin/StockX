@@ -2,7 +2,9 @@ import { useAppSelector } from "../../../redux/hook";
 import styles from "./styles.module.scss";
 
 const RequestResetSucces = () => {
-  const isEmailSent = useAppSelector((state) => state.userAuth.status);
+  const isEmailSent = useAppSelector(
+    (state) => state.userAuth.resetPasswordStatus
+  );
   console.log("email", isEmailSent);
 
   return (

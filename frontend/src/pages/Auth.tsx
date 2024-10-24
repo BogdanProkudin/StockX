@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "../components/AuthUser/styles.module.scss";
 import AuthSwitcher from "../components/AuthUser/AuthUserModeSwitcher";
 import SignUp from "../components/AuthUser/SignUp/SignUp";
@@ -10,6 +10,7 @@ import HeaderAuth from "../components/AuthUser/HeaderAuth";
 
 const Auth: React.FC = () => {
   const authMode = useAppSelector((state) => state.userAuth.stateAuthSwitcher);
+
   const resetPass = useAppSelector((state) => state.userAuth.resetPass);
   return (
     <div className={styles.auth_user_page_container}>
