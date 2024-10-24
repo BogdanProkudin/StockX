@@ -4,7 +4,7 @@ import {
   PayloadAction,
 } from "@reduxjs/toolkit";
 import { IUser } from "../../@types/userAuth";
-
+import { fetchRequest } from "../../@types/status";
 import {
   setLoadingState,
   setErrorState,
@@ -16,12 +16,7 @@ import {
   requestResetPassword,
   isResetPasswordTokenValid,
 } from "../thunks/authThunks";
-export enum fetchRequest {
-  INITIAL = "",
-  LOADING = "loading",
-  SUCCESS = "success",
-  ERROR = "error",
-}
+
 // Интерфейс для состояния
 export interface IUserAuthSlice {
   userData: IUser;

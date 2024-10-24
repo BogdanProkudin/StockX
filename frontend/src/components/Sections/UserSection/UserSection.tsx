@@ -22,13 +22,13 @@ const UserSection = () => {
   console.log(data);
 
   return (
-    <div className="mb-10">
+    <div className="mb-30">
       <div className="my-5 flex gap-4">
         <h2 className=" font-bold text-xl ">Recommended For You</h2>
         <span>?</span>
       </div>
 
-      <div className="flex gap-3">
+      <div className="flex justify-between">
         {isLoading
           ? "Loading..."
           : data

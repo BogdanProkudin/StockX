@@ -2,7 +2,7 @@ import { StockXAPI, StockXLocation } from "@vlourme/stockx-api";
 export const getShoes = async (req, res) => {
   try {
     const api = new StockXAPI(StockXLocation.US);
-    const shoes = await api.searchProducts("Nike", 3);
+    const shoes = await api.searchProducts("Travis", 1);
     res.json(shoes);
   } catch (error) {
     console.error("Ошибка при получении данных с StockX:", error);
