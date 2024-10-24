@@ -6,8 +6,6 @@ import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import styles from "./styles.module.scss";
 const HeaderLayout = () => {
-  const [theme, setTheme] = React.useState("light");
-
   return (
     <>
       <div className={styles.headerBar}>

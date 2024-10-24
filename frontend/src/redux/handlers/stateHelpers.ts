@@ -1,5 +1,5 @@
 import { IUserAuthSlice } from "../slices/authSlice";
-import { fetchRequest } from "../slices/authSlice";
+import { fetchRequest } from "../../@types/status";
 
 // Установка состояния загрузки
 export const setLoadingState = (state: IUserAuthSlice) => {
