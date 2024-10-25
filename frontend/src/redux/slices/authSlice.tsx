@@ -15,6 +15,7 @@ import {
   loginUser,
   requestResetPassword,
   isResetPasswordTokenValid,
+  resetPassword,
 } from "../thunks/authThunks";
 
 // Интерфейс для состояния
@@ -30,6 +31,7 @@ export interface IUserAuthSlice {
   stateAuthSwitcher: string;
   requestResetPasswordError: string | undefined;
   tokenStatus: fetchRequest;
+  requestResetStatus: fetchRequest;
   resetPasswordError: string[];
 }
 
@@ -44,6 +46,7 @@ const initialState: IUserAuthSlice = {
   resetPasswordStatus: fetchRequest.INITIAL,
   stateAuthSwitcher: "Sign Up",
   tokenStatus: fetchRequest.INITIAL,
+  requestResetStatus: fetchRequest.INITIAL,
   requestResetPasswordError: "",
   resetPasswordError: [],
 };
@@ -146,20 +149,28 @@ const userAuthSlice = createSlice({
         console.log("loading");
 
         state.requestResetPasswordError = undefined;
-        state.resetPasswordStatus = fetchRequest.LOADING;
+        state.requestResetStatus = fetchRequest.LOADING;
       })
       .addCase(
         requestResetPassword.fulfilled,
         (state, action: PayloadAction<string | undefined>) => {
           state.requestResetPasswordError = undefined;
-          state.resetPasswordStatus = fetchRequest.SUCCESS;
+          state.requestResetStatus = fetchRequest.SUCCESS;
         }
       )
       .addCase(requestResetPassword.rejected, (state, action) => {
-        state.resetPasswordStatus = fetchRequest.ERROR;
+        state.requestResetStatus = fetchRequest.ERROR;
         state.requestResetPasswordError = action.payload?.message;
       })
-
+      .addCase(resetPassword.pending, (state) => {
+        state.resetPasswordStatus = fetchRequest.LOADING;
+      })
+      .addCase(resetPassword.fulfilled, (state) => {
+        state.resetPasswordStatus = fetchRequest.SUCCESS;
+      })
+      .addCase(resetPassword.rejected, (state, action) => {
+        state.resetPasswordStatus = fetchRequest.ERROR;
+      })
       // Проверка токена для сброса пароля
       .addCase(isResetPasswordTokenValid.pending, (state) => {
         state.tokenStatus = fetchRequest.LOADING;
