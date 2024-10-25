@@ -1,12 +1,14 @@
 .dropdown_container {
-  max-width: 920px;
+  max-width: 1000px;
   padding: 16px 0 32px 0;
-
+  height: 100%;
   margin: 0px auto;
-  max-height: 250px;
+  background-color: white;
+
   .dropdown_wrapper {
     display: grid;
     gap: 20px;
+    height: 100%;
 
     grid-template-columns: repeat(5, 1fr);
     -webkit-box-pack: center;
@@ -23,12 +25,17 @@
     .dropdown_flex_column_wrapper {
       display: flex;
       text-align: start;
+
       flex-direction: column;
 
       gap: 20px;
       .title {
+        width: 100%;
+        max-width: max-content;
+
         a {
           color: black;
+
           border-bottom: 0px solid black;
           &:hover {
             border-bottom: 1px solid black;
@@ -37,6 +44,7 @@
       }
       .dropdown_sublink_main_wrapper {
         display: grid;
+
         grid-template-columns: repeat(2, 1fr);
         list-style-type: none;
         margin-inline: 0px;
@@ -55,6 +63,7 @@
         }
         &.threecolumn {
           grid-template-columns: repeat(5, 1fr);
+
           max-width: 200px;
           margin-inline: 0px;
           padding-inline: 0px;
@@ -79,6 +88,9 @@
         overflow: auto;
 
         .sublink {
+          max-width: max-content;
+          width: 100%;
+
           margin: 5px 0;
           a {
             color: black;
