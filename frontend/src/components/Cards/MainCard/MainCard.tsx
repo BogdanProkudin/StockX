@@ -16,13 +16,13 @@ const UserCard: React.FC<userCardProps> = ({
   return (
     <Link
       to=""
-      className=" w-[190px] h-[250px] relative flex flex-col  cursor-pointer"
+      className=" w-[190px] h-[250px] relative flex flex-col items-center  cursor-pointer"
     >
       <button onClick={onClickFavorite} className="absolute right-5">
         <FavoriteBorderIcon />
       </button>
       <img
-        className="w-[170px] h-[150px] min-h-[150px] p-4"
+        className="w-[160px] h-[140px] min-h-[140px] p-4"
         src={image}
         alt=""
       />
@@ -30,7 +30,7 @@ const UserCard: React.FC<userCardProps> = ({
         <h4 className="mb-1">{title}</h4>
         <p className=" text-gray-400 text-sm">Lowest Ask</p>
         <b className=" font-mono text-[23px] f">€{base_price}</b>
-        <p className="text-xs bg-gray-100 p-1 w-3/5">min price: €{min_price}</p>
+        <p className="text-xs bg-gray-100 p-1 w-4/5">min price: €{min_price}</p>
       </div>
     </Link>
   );

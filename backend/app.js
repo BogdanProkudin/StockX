@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 
-import { UserController, ShoesController } from "./Controllers/index.js";
+import { UserController, ItemsController } from "./Controllers/index.js";
 import { ErrorValidation } from "./utils/ErrorValidation.js";
 import CheckAuth from "./utils/CheckAuth.js";
 
@@ -31,7 +31,7 @@ app.post("/requestResetPassword", UserController.forgotPassword);
 app.post("/tokenValidation", UserController.isTokenValid);
 app.post("/resetPassword", UserController.resetPassword);
 //ItemsLogic
-app.get("/getShoes", ShoesController.getShoes);
+app.get("/userSection", ItemsController.getShoes);
 app.listen(port, (err) => {
   if (err) {
     console.log("Error starting server", err);

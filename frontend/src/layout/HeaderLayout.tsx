@@ -12,9 +12,9 @@ const HeaderLayout = () => {
         <Header />
         <NavHeader />
       </div>
-      <button className={styles.btnTheme}>
+      {/* <button className={styles.btnTheme}>
         <WbSunnyIcon />
-      </button>
+      </button> */}
       <div className="container">
         <Outlet />
       </div>
