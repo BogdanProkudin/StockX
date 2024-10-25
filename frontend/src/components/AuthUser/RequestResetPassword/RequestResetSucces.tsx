@@ -3,7 +3,7 @@ import styles from "./styles.module.scss";
 
 const RequestResetSucces = () => {
   const isEmailSent = useAppSelector(
-    (state) => state.userAuth.resetPasswordStatus
+    (state) => state.userAuth.requestResetStatus
   );
   console.log("email", isEmailSent);
 
