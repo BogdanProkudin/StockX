@@ -250,7 +250,9 @@ export const resetPassword = async (req, res) => {
       { _id: verifiedToken.id },
       { password: hashPass }
     );
-    return res.status(200).json({ message: "Password was changed" });
+    return setTimeout(() => {
+      res.status(200).json({ message: "Password was changed" });
+    }, 1500);
   } catch (err) {
     console.log("ERROR RESETING PASSWORD", err);
     return res.status(400).send("Token has expired");

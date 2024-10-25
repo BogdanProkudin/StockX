@@ -2,10 +2,10 @@ import { useAppSelector } from "../../../redux/hook";
 
 import styles from "./styles.module.scss";
 const ResetButton = () => {
-  const status = useAppSelector((state) => state.userAuth.registrationStatus); //fixxx
+  const status = useAppSelector((state) => state.userAuth.resetPasswordStatus); //fixxx
 
   return (
-    <button type="submit">
+    <button className={styles.reset_password_button} type="submit">
       {status === "loading" ? (
         <svg
           aria-hidden="true"

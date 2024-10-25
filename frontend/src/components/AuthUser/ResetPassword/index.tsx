@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "../../../redux/hook";
 import ResetTokenError from "./ResetTokenError";
 import { isResetPasswordTokenValid } from "../../../redux/thunks/authThunks";
 import ResetPasswordError from "./ResetPasswordError";
+import ResetPasswordSucces from "./ResetPasswordSucces";
 const index = () => {
   const dispatch = useAppDispatch();
   const tokenStatus = useAppSelector((state) => state.userAuth.tokenStatus);
@@ -34,6 +35,7 @@ const index = () => {
               </p>
             </div>
             <ResetPasswordError />
+            <ResetPasswordSucces />
             <ResetForm />
           </div>
         </>
