@@ -423,14 +423,6 @@ const kidsData: NavigationItem[] = [
         name: "Juice Wrld x Vlone Butterfly T-shirt",
         path: "/viral-products/juice-wrld-vlone-butterfly-tshirt",
       },
-      {
-        name: "Nike Tech Fleece Full-Zip Hoodie",
-        path: "/viral-products/nike-tech-fleece-full-zip-hoodie",
-      },
-      {
-        name: "UGG Tasman Slippers",
-        path: "/viral-products/ugg-tasman-slippers",
-      },
     ],
   },
 ];

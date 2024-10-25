@@ -29,8 +29,8 @@ app.post("/login", UserController.login);
 app.get("/authMe", CheckAuth, UserController.auth);
 app.post("/requestResetPassword", UserController.forgotPassword);
 app.post("/tokenValidation", UserController.isTokenValid);
-//ItemsLogic
 app.post("/resetPassword", UserController.resetPassword);
+//ItemsLogic
 app.get("/getShoes", ShoesController.getShoes);
 app.listen(port, (err) => {
   if (err) {
