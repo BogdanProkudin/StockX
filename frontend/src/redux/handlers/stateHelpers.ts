@@ -9,7 +9,7 @@ export const setLoadingState = (state: IUserAuthSlice) => {
 // Установка состояния ошибки
 export const setErrorState = (state: IUserAuthSlice, message: string) => {
   state.loginStatus = fetchRequest.ERROR;
-  state.registrationBackendErrors = message || "An unknown error occurred";
+  state.registrationBackendError = message || "An unknown error occurred";
 };
 
 // Установка успешного состояния

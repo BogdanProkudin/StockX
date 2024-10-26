@@ -5,11 +5,7 @@ import {
 } from "@reduxjs/toolkit";
 import { IUser } from "../../@types/userAuth";
 import { fetchRequest } from "../../@types/status";
-import {
-  setLoadingState,
-  setErrorState,
-  setSuccessState,
-} from "../handlers/stateHelpers";
+import { setSuccessState } from "../handlers/stateHelpers";
 import {
   registerUser,
   loginUser,
@@ -23,8 +19,8 @@ export interface IUserAuthSlice {
   userData: IUser;
   validationErrors: any[];
   registrationStatus: string;
-  registrationBackendErrors: string;
-  loginBackendErrors: string;
+  registrationBackendError: string;
+  loginBackendError: string;
   resetPass: boolean;
   loginStatus: fetchRequest;
   resetPasswordStatus: fetchRequest;
@@ -33,14 +29,15 @@ export interface IUserAuthSlice {
   tokenStatus: fetchRequest;
   requestResetStatus: fetchRequest;
   resetPasswordError: string[];
+  resetPasswordBackendError: string;
 }
 
 const initialState: IUserAuthSlice = {
   userData: { email: "", password: "", firstName: "", secondName: "" },
   validationErrors: [],
-  registrationBackendErrors: "",
+  registrationBackendError: "",
   registrationStatus: fetchRequest.INITIAL,
-  loginBackendErrors: "",
+  loginBackendError: "",
   resetPass: false,
   loginStatus: fetchRequest.INITIAL,
   resetPasswordStatus: fetchRequest.INITIAL,
@@ -49,6 +46,7 @@ const initialState: IUserAuthSlice = {
   requestResetStatus: fetchRequest.INITIAL,
   requestResetPasswordError: "",
   resetPasswordError: [],
+  resetPasswordBackendError: "",
 };
 
 // Создание слайса
@@ -70,8 +68,8 @@ const userAuthSlice = createSlice({
       state.validationErrors = [];
     },
     setClearBackendErrors: (state) => {
-      state.registrationBackendErrors = "";
-      state.loginBackendErrors = "";
+      state.registrationBackendError = "";
+      state.loginBackendError = "";
     },
     setResetPass(state, action: PayloadAction<boolean>) {
       state.resetPass = action.payload;
@@ -110,7 +108,7 @@ const userAuthSlice = createSlice({
       .addCase(registerUser.pending, (state) => {
         console.log("PENDING");
 
-        state.registrationBackendErrors = "";
+        state.registrationBackendError = "";
         state.registrationStatus = fetchRequest.LOADING;
       })
       .addCase(
@@ -122,7 +120,7 @@ const userAuthSlice = createSlice({
         }
       )
       .addCase(registerUser.rejected, (state, action) => {
-        state.registrationBackendErrors =
+        state.registrationBackendError =
           action.payload?.message || "An unknown error occurred";
 
         state.registrationStatus = fetchRequest.ERROR;
@@ -136,12 +134,12 @@ const userAuthSlice = createSlice({
         state.userData = action.payload;
         state.validationErrors = [];
         state.loginStatus = fetchRequest.SUCCESS;
-        state.loginBackendErrors = "";
+        state.loginBackendError = "";
         setSuccessState(state);
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loginStatus = fetchRequest.ERROR;
-        state.loginBackendErrors = action.payload?.message || "";
+        state.loginBackendError = action.payload?.message || "";
       })
 
       // Восстановление пароля
@@ -163,13 +161,17 @@ const userAuthSlice = createSlice({
         state.requestResetPasswordError = action.payload?.message;
       })
       .addCase(resetPassword.pending, (state) => {
+        state.resetPasswordBackendError = "";
         state.resetPasswordStatus = fetchRequest.LOADING;
       })
       .addCase(resetPassword.fulfilled, (state) => {
         state.resetPasswordStatus = fetchRequest.SUCCESS;
+        state.resetPasswordBackendError = "";
       })
       .addCase(resetPassword.rejected, (state, action) => {
         state.resetPasswordStatus = fetchRequest.ERROR;
+        state.resetPasswordBackendError =
+          action.payload?.message || "An unknown error occurred";
       })
       // Проверка токена для сброса пароля
       .addCase(isResetPasswordTokenValid.pending, (state) => {

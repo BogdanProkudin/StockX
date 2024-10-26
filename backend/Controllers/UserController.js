@@ -1,7 +1,7 @@
 import userModel from "../Modules/User.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-
+import { resDelayed } from "../utils/Delay.js";
 import nodemailer from "nodemailer";
 
 export const register = async (req, res) => {
@@ -242,19 +242,44 @@ export const isTokenValid = async (req, res) => {
 export const resetPassword = async (req, res) => {
   try {
     const { newPassword, resetPasswordToken } = req.body;
-    const verifiedToken = await jwt.verify(resetPasswordToken, "secretreset");
 
-    const salt = await bcrypt.genSalt(10);
-    const hashPass = await bcrypt.hash(newPassword, salt);
-    await userModel.findOneAndUpdate(
-      { _id: verifiedToken.id },
-      { password: hashPass }
-    );
-    return setTimeout(() => {
-      res.status(200).json({ message: "Password was changed" });
-    }, 1500);
+    const RESET_SECRET = "secretreset";
+
+    const verifiedToken = jwt.verify(resetPasswordToken, RESET_SECRET);
+
+    const user = await userModel.findById(verifiedToken.id);
+    if (!user) {
+      return resDelayed(res, 404, "User not found", 1500);
+    }
+
+    const currentTime = Date.now();
+    if (currentTime > user.newPasswordExpires || !user.newPasswordExpires) {
+      const isSamePassword = await bcrypt.compare(newPassword, user.password);
+      if (isSamePassword) {
+        return res
+          .status(400)
+          .json({ message: "New password must be different from the old one" });
+      }
+
+      const hashPass = await bcrypt.hash(newPassword, 10);
+      await userModel.findByIdAndUpdate(user._id, {
+        password: hashPass,
+        newPasswordExpires: currentTime + 3600000,
+      });
+
+      return resDelayed(res, 200, "Password successfully updated", 1500);
+    } else {
+      return resDelayed(
+        res,
+        429,
+        "Password reset requests are limited to once per hour",
+        1500
+      );
+    }
   } catch (err) {
-    console.log("ERROR RESETING PASSWORD", err);
-    return res.status(400).send("Token has expired");
+    console.error("ERROR RESETTING PASSWORD", err);
+    return res.status(400).json({ message: "Invalid or expired token" });
   }
 };
+
+// Helper function to send delayed response
