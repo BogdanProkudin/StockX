@@ -1,7 +1,10 @@
 import React from "react";
 
 import Slider from "../components/Slider/Slider";
-import { mainSectionFetch } from "../redux/slices/homeItemsSlice";
+import {
+  mainSectionFetch,
+  userSectionFetch,
+} from "../redux/slices/homeItemsSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hook";
 
 import UserSection from "../components/Sections/UserSection/UserSection";
@@ -9,14 +12,16 @@ import MainSection from "../components/Sections/MainSection/MainSection";
 import ImageSection from "../components/Sections/ImageSection/ImageSection";
 const Home: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { recentlyViewedItems, recomendedItems } = useAppSelector(
+  const { recentlyViewedItems, recomendedItems, mainItems } = useAppSelector(
     (state) => state.homeItems
   );
   React.useEffect(() => {
+    dispatch(userSectionFetch());
+  }, []);
+  React.useEffect(() => {
     dispatch(mainSectionFetch());
   }, []);
-
-  console.log(recentlyViewedItems);
+  console.log(mainItems);
 
   return (
     <div className="mt-6">
@@ -32,9 +37,9 @@ const Home: React.FC = () => {
         description={recomendedItems.description}
       />
       <MainSection
-        mainTitle={recomendedItems.title}
-        items={recomendedItems.data}
-        description={recomendedItems.description}
+        mainTitle={mainItems.title}
+        items={mainItems.data}
+        description={mainItems.description}
       />
       <ImageSection />
     </div>
