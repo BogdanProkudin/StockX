@@ -16,6 +16,7 @@
     list-style-type: none;
     &.brands_wrapper {
       display: grid;
+
       gap: 30px;
       grid-template-columns: repeat(3, 1fr);
       -webkit-box-pack: center;

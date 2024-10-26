@@ -1,11 +1,12 @@
 import React from "react";
+import { cardAssetsProps } from "../../../assets/ImgSection/ImgSection";
+import { Link } from "react-router-dom";
 
-const ImageCard = () => {
+const ImageCard: React.FC<cardAssetsProps> = ({ img, path, alt }) => {
   return (
-    <div className="w-[234px] h-[160px]  rounded-xl">
-      <img src="" alt="" />
-      <h1>Gifts Under $100</h1>
-    </div>
+    <Link to={path} className="w-[234px] h-[160px]">
+      <img className="rounded-xl" src={img} alt={alt} />
+    </Link>
   );
 };
 

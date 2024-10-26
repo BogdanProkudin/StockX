@@ -31,7 +31,8 @@ app.post("/requestResetPassword", UserController.forgotPassword);
 app.post("/tokenValidation", UserController.isTokenValid);
 app.post("/resetPassword", UserController.resetPassword);
 //ItemsLogic
-app.get("/userSection", ItemsController.getShoes);
+app.get("/getUserItems", ItemsController.getUserItems);
+app.post("/getMainSection", ItemsController.getMainSection);
 app.listen(port, (err) => {
   if (err) {
     console.log("Error starting server", err);
