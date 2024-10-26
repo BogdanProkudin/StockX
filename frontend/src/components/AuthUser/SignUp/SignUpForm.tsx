@@ -45,9 +45,7 @@ export default function App() {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     await dispatch(registerUser(data));
   };
-  const registrationBackendErrors = useAppSelector(
-    (state) => state.userAuth.registrationBackendErrors
-  );
+
   useEffect(() => {
     if (user.token) {
       localStorage.setItem("token", user.token);

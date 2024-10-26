@@ -5,10 +5,9 @@ const LogInErrors: React.FC = () => {
   const validationErrors = useAppSelector(
     (state) => state.userAuth.validationErrors
   );
-  const loginBackendErrors = useAppSelector(
-    (state) => state.userAuth.loginBackendErrors
+  const loginBackendError = useAppSelector(
+    (state) => state.userAuth.loginBackendError
   );
-  console.log("log", loginBackendErrors);
 
   return (
     <>
@@ -16,9 +15,9 @@ const LogInErrors: React.FC = () => {
         <div className={styles.logIn_error_container}>
           <p>{validationErrors[0]}</p>
         </div>
-      ) : loginBackendErrors.length > 1 ? (
+      ) : loginBackendError.length > 1 ? (
         <div className={styles.logIn_error_container}>
-          <p>{loginBackendErrors}</p>
+          <p>{loginBackendError}</p>
         </div>
       ) : (
         ""
