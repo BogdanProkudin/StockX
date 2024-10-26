@@ -1,25 +1,17 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "../../axiosConfig/axios";
 import { fetchRequest } from "../../@types/status";
-
+interface ISection {
+  data: [];
+  description: string;
+  title: string;
+}
 interface IState {
   status: fetchRequest;
   mainStatus: fetchRequest;
-  recentlyViewedItems: {
-    data: [];
-    description: string;
-    title: string;
-  };
-  recomendedItems: {
-    data: [];
-    description: string;
-    title: string;
-  };
-  mainItems: {
-    data: [];
-    description: string;
-    title: string;
-  };
+  recentlyViewedItems: ISection;
+  recomendedItems: ISection;
+  mainSection: Array<{ status: fetchRequest; data: ISection }>;
 }
 
 const initialState: IState = {
@@ -35,11 +27,10 @@ const initialState: IState = {
     description: "",
     title: "",
   },
-  mainItems: {
-    data: [],
-    description: "",
-    title: "",
-  },
+  mainSection: Array(3).fill({
+    status: fetchRequest.LOADING,
+    data: { data: [], title: "", description: "" },
+  }),
 };
 
 export const userSectionFetch = createAsyncThunk(
@@ -55,10 +46,10 @@ export const userSectionFetch = createAsyncThunk(
 );
 export const mainSectionFetch = createAsyncThunk(
   "mainSectionFetch",
-  async (section) => {
+  async (section: number) => {
     try {
-      const res = await axios.post("/getMainSection", { count: 1 });
-      return res.data;
+      const res = await axios.post("/getMainSection", { count: section });
+      return { data: res.data, section };
     } catch (error) {
       console.log(error);
     }
@@ -90,16 +81,31 @@ const homeItemSlice = createSlice({
         state.recentlyViewedItems = action.payload.recentlyViewed;
         state.recomendedItems = action.payload.featuredItems;
       })
-      .addCase(mainSectionFetch.pending, (state) => {
-        state.mainStatus = fetchRequest.LOADING;
-        state.mainItems = { data: [], title: "", description: "" };
+      .addCase(mainSectionFetch.pending, (state, action) => {
+        const section = action.meta.arg;
+
+        state.mainSection[section] = {
+          status: fetchRequest.LOADING,
+          data: { data: [], title: "", description: "" },
+        };
       })
-      .addCase(mainSectionFetch.rejected, (state) => {
-        state.mainStatus = fetchRequest.ERROR;
+      .addCase(mainSectionFetch.rejected, (state, action) => {
+        const section = action.meta.arg;
+
+        state.mainSection[section] = {
+          status: fetchRequest.ERROR,
+          data: { data: [], title: "", description: "" },
+        };
       })
       .addCase(mainSectionFetch.fulfilled, (state, action) => {
-        state.mainStatus = fetchRequest.SUCCESS;
-        state.mainItems = action.payload;
+        if (action.payload) {
+          const section = action.meta.arg;
+          const sectionData = action.payload.data;
+          state.mainSection[section] = {
+            status: fetchRequest.SUCCESS,
+            data: sectionData,
+          };
+        }
       });
   },
 });

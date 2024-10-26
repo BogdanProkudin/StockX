@@ -10,19 +10,21 @@ import { useAppSelector } from "../../../redux/hook";
 import { Link } from "react-router-dom";
 
 import { ArrowRight } from "lucide-react";
+import { fetchRequest } from "../../../@types/status";
 
 interface UserSectionProps {
   mainTitle: string;
   items: userCardProps[];
   description: string;
+  status: fetchRequest;
 }
 
 const MainSection: React.FC<UserSectionProps> = ({
   mainTitle,
   items,
   description,
+  status,
 }) => {
-  const { mainStatus } = useAppSelector((state) => state.homeItems);
   const cardSkeleton = [...new Array(6)].map((_, i) => {
     return <Skeleton key={i} />;
   });
@@ -31,7 +33,7 @@ const MainSection: React.FC<UserSectionProps> = ({
       <div className="my-5 flex justify-between items-center">
         <div className="flex gap-3 items-center relative">
           <h1 className=" font-bold text-xl ">
-            {mainStatus === "loading" ? <TitleSkeleton /> : mainTitle}
+            {status === "loading" ? <TitleSkeleton /> : mainTitle}
           </h1>
           <span className=" group text-sm px-[6px] py-[1px]  cursor-pointer relative  bg-black text-white rounded-full  ">
             <div className="absolute hidden z-10 w-[250px] group-hover:block bg-gray-800 text-white text-sm rounded-lg px-3 py-2 bottom-full mb-2 left-1/2 transform -translate-x-1/2 ">
@@ -41,7 +43,7 @@ const MainSection: React.FC<UserSectionProps> = ({
             ?
           </span>
         </div>
-        {mainStatus === "loading" ? (
+        {status === "loading" ? (
           <TitleSkeleton />
         ) : (
           <Link
@@ -55,7 +57,7 @@ const MainSection: React.FC<UserSectionProps> = ({
       </div>
 
       <div className="flex justify-between">
-        {mainStatus === "loading"
+        {status === "loading"
           ? cardSkeleton
           : items.map((obj: userCardProps, id: number) => (
               <UserCard key={id} {...obj} />
