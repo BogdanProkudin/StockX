@@ -144,3 +144,18 @@
     font-size: 12px;
   }
 }
+
+.spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 0.75rem;
+  width: 1rem;
+  height: 1rem;
+  color: #ffffff;
+  animation: spin 1s linear infinite;
+
+  path:last-child {
+    fill: currentColor;
+  }
+}
