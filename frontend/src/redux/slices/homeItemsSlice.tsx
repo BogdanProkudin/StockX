@@ -37,7 +37,7 @@ export const userSectionFetch = createAsyncThunk(
   "userSectionFetch",
   async () => {
     try {
-      const res = await axios.get("/getUserItems");
+      const res = await axios.get("/getShoes");
       return res.data;
     } catch (error) {
       console.log(error);

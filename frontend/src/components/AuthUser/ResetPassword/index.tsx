@@ -9,22 +9,21 @@ import ResetPasswordError from "./ResetPasswordError";
 import ResetPasswordSucces from "./ResetPasswordSucces";
 const index = () => {
   const dispatch = useAppDispatch();
-  const tokenStatus = useAppSelector((state) => state.userAuth.tokenStatus);
+  const isTokenExpired = useAppSelector((state) => state.userAuth.tokenStatus);
   useEffect(() => {
     const handleIsTokenValid = async () => {
       const path = location.pathname;
       const tokenFromUrl = path.split("/resetPassword/")[1];
-      const response = await dispatch(
+      await dispatch(
         isResetPasswordTokenValid({ resetPasswordToken: tokenFromUrl })
       );
     };
     handleIsTokenValid();
   }, []);
-  console.log(tokenStatus, "TOKEM");
 
   return (
     <div className={styles.reset_password_container}>
-      {tokenStatus !== "error" ? (
+      {isTokenExpired !== "error" ? (
         <>
           <h1 className={styles.reset_password_title}>Create new password</h1>
           <div className={styles.reset_password_container}>

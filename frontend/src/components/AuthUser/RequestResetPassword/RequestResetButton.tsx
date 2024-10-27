@@ -1,13 +1,38 @@
-import { useAppSelector } from "../../../redux/hook";
+import { Dispatch, SetStateAction } from "react";
+import { useAppDispatch, useAppSelector } from "../../../redux/hook";
+import { setRequestResetPasswordError } from "../../../redux/slices/authSlice";
+import { requestResetPassword } from "../../../redux/thunks/authThunks";
 
 import styles from "./styles.module.scss";
-const ResetButton = () => {
-  const status = useAppSelector((state) => state.userAuth.resetPasswordStatus); //fixxx
-
+const RequestResetButton = ({
+  inputValue,
+  setInputValue,
+}: {
+  inputValue: string;
+  setInputValue: Dispatch<SetStateAction<string>>;
+}) => {
+  const status = useAppSelector((state) => state.userAuth.requestResetStatus);
+  const dispatch = useAppDispatch();
+  const handleSendResetEmail = async (e: any) => {
+    e.preventDefault();
+    if (inputValue.length >= 4) {
+      const response = await dispatch(
+        requestResetPassword({ email: inputValue })
+      );
+      if (response.payload === "Password reset email sent") {
+        setInputValue("");
+      }
+    } else {
+      dispatch(setRequestResetPasswordError("Email is too short"));
+    }
+  };
   return (
     <button
       disabled={status === "loading" ? true : false}
-      className={styles.reset_password_button}
+      onClick={(e) => handleSendResetEmail(e)}
+      className={`${styles.request_reset_password_button} ${
+        status === "loading" ? styles.active : ""
+      }`}
       type="submit"
     >
       {status === "loading" ? (
@@ -38,4 +63,4 @@ const ResetButton = () => {
   );
 };
 
-export default ResetButton;
+export default RequestResetButton;

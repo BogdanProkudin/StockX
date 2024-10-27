@@ -11,11 +11,9 @@ export const register = async (req, res) => {
     });
 
     if (isUserExist) {
-      return setTimeout(() => {
-        res.status(400).json({ message: "Email is taken" });
-      }, 1000); // Задержка 1 секунда
+      return resDelayed(res, 400, "Email is taken", 500);
     }
-    // нужно ли добавлять  проверку на то занят ли ваш юзер нейм или нет когда фамилия и имя может повторяться
+
     const JWT_PAS = process.env.JWT_PAS;
     const reqPass = req.body.password;
     const salt = await bcrypt.genSalt(10);
@@ -57,20 +55,12 @@ export const login = async (req, res) => {
       email: req.body.email,
     });
     if (!user) {
-      return setTimeout(() => {
-        res.status(404).json({
-          message: "Email or password is wrong",
-        });
-      }, 1000);
+      return resDelayed(res, 404, "Email or password is wrong", 1000);
     }
     const reqPass = req.body.password;
     const userPass = await bcrypt.compare(reqPass, user._doc.password);
     if (!userPass) {
-      return setTimeout(() => {
-        res.status(404).json({
-          message: "Email or password is wrong",
-        });
-      }, 500);
+      return resDelayed(res, 404, "Email or password is wrong", 500);
     }
 
     const token = jwt.sign(
@@ -85,11 +75,7 @@ export const login = async (req, res) => {
     const { password, ...userData } = user._doc;
     res.status(200).json({ message: "User login successfully", token });
   } catch (error) {
-    return setTimeout(() => {
-      res.status(500).json({
-        message: "Login unavaible",
-      });
-    }, 500);
+    return resDelayed(res, 500, "Login unavaible", 500);
   }
 };
 export const auth = async (req, res) => {
@@ -117,17 +103,15 @@ export const forgotPassword = async (req, res) => {
   const user = await userModel.findOne({ email });
 
   if (!user) {
-    return setTimeout(() => {
-      res.status(404).json({ message: "Email not found" });
-    }, 2000);
+    return resDelayed(res, 404, "Email not found", 2000);
   }
   if (user.passwordResetAttempts > 3) {
-    return setTimeout(() => {
-      res.status(404).json({
-        message:
-          "You have exceeded your password reset request limit. Try again in 24 hours.",
-      });
-    }, 1500);
+    return resDelayed(
+      res,
+      404,
+      "You have exceeded your password reset request limit. Try again in 24 hours.",
+      1500
+    );
   }
   // Генерация токена (действителен 1 час)
   const resetToken = await jwt.sign({ id: user._id }, "secretreset", {
@@ -201,13 +185,10 @@ export const forgotPassword = async (req, res) => {
     if (err) {
       console.log("error", err);
 
-      return setTimeout(() => {
-        res.status(500).json({ message: "Error sending email" });
-      }, 1500);
+      return resDelayed(res, 500, "Error sending email", 1500);
     }
-    return setTimeout(() => {
-      res.status(200).json({ message: "Password reset email sent" });
-    }, 1500);
+
+    return resDelayed(res, 200, "Password reset email sent", 1500);
   });
 };
 
@@ -239,6 +220,7 @@ export const isTokenValid = async (req, res) => {
     return res.status(401).json({ message: "Invalid token" });
   }
 };
+
 export const resetPassword = async (req, res) => {
   try {
     const { newPassword, resetPasswordToken } = req.body;
@@ -256,9 +238,12 @@ export const resetPassword = async (req, res) => {
     if (currentTime > user.newPasswordExpires || !user.newPasswordExpires) {
       const isSamePassword = await bcrypt.compare(newPassword, user.password);
       if (isSamePassword) {
-        return res
-          .status(400)
-          .json({ message: "New password must be different from the old one" });
+        return resDelayed(
+          res,
+          404,
+          "New password must be different from the old one",
+          1500
+        );
       }
 
       const hashPass = await bcrypt.hash(newPassword, 10);
@@ -273,12 +258,12 @@ export const resetPassword = async (req, res) => {
         res,
         429,
         "Password reset requests are limited to once per hour",
-        1500
+        2000
       );
     }
   } catch (err) {
     console.error("ERROR RESETTING PASSWORD", err);
-    return res.status(400).json({ message: "Invalid or expired token" });
+    return resDelayed(res, 400, "Invalid or expired token", 1500);
   }
 };
 

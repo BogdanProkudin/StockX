@@ -8,6 +8,7 @@ import { SignUpInputProps } from "../@types/RegisterTypes";
 const SignUpInput: React.FC<SignUpInputProps> = ({ register, watch, name }) => {
   const inputValue = watch(name);
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
+  console.log("INPUT VALUE", inputValue);
 
   const placeholders =
     name === "firstName"
@@ -39,7 +40,7 @@ const SignUpInput: React.FC<SignUpInputProps> = ({ register, watch, name }) => {
       )}
       <label
         className={`${styles.floating_label} ${
-          inputValue ? styles.active : ""
+          inputValue && inputValue.length > 0 ? styles.active : ""
         }`}
       >
         {placeholders}
