@@ -1,5 +1,5 @@
 import { StockXAPI, StockXLocation } from "@vlourme/stockx-api";
-export const getUserItems = async (req, res) => {
+export const getShoes = async (req, res) => {
   try {
     const api = new StockXAPI(StockXLocation.US);
     const [recentlyViewed, featuredItems] = await Promise.all([

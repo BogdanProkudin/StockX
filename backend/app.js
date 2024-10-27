@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 
-import { UserController, ItemsController } from "./Controllers/index.js";
+import { UserController, ShoesController } from "./Controllers/index.js";
 import { ErrorValidation } from "./utils/ErrorValidation.js";
 import CheckAuth from "./utils/CheckAuth.js";
 
@@ -12,6 +12,7 @@ const app = express();
 app.use(cors());
 const port = process.env.PORT;
 const DB_Connect = process.env.DATA_BASE_CONNECT;
+console.log(DB_Connect);
 
 mongoose
   .connect(`${DB_Connect}`)
@@ -29,10 +30,10 @@ app.post("/login", UserController.login);
 app.get("/authMe", CheckAuth, UserController.auth);
 app.post("/requestResetPassword", UserController.forgotPassword);
 app.post("/tokenValidation", UserController.isTokenValid);
-app.post("/resetPassword", UserController.resetPassword);
 //ItemsLogic
-app.get("/getUserItems", ItemsController.getUserItems);
-app.post("/getMainSection", ItemsController.getMainSection);
+app.post("/resetPassword", UserController.resetPassword);
+app.get("/getShoes", ShoesController.getShoes);
+app.post("/getMainSection", ShoesController.getMainSection);
 app.listen(port, (err) => {
   if (err) {
     console.log("Error starting server", err);
