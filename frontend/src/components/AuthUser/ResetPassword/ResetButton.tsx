@@ -5,7 +5,11 @@ const ResetButton = () => {
   const status = useAppSelector((state) => state.userAuth.resetPasswordStatus); //fixxx
 
   return (
-    <button className={styles.reset_password_button} type="submit">
+    <button
+      disabled={status === "loading" ? true : false}
+      className={styles.reset_password_button}
+      type="submit"
+    >
       {status === "loading" ? (
         <svg
           aria-hidden="true"
@@ -27,7 +31,7 @@ const ResetButton = () => {
       ) : (
         ""
       )}
-      {status === "loading" ? "Loading..." : "New Password"}
+      {status === "loading" ? "Sending..." : "New Password"}
     </button>
 
     // тут надо найти иконку анимированую и подставить вместо loading и там есть не большой баг (уже пофиксил но надо потестить я потестил все норм ну чуство странное)

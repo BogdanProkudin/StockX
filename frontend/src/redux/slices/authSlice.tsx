@@ -3,7 +3,7 @@ import {
   createSlice,
   PayloadAction,
 } from "@reduxjs/toolkit";
-import { IUser } from "../../@types/userAuth";
+import { IUser, IUserAuthSlice } from "../../@types/userAuth";
 import { fetchRequest } from "../../@types/status";
 import { setSuccessState } from "../handlers/stateHelpers";
 import {
@@ -13,24 +13,6 @@ import {
   isResetPasswordTokenValid,
   resetPassword,
 } from "../thunks/authThunks";
-
-// Интерфейс для состояния
-export interface IUserAuthSlice {
-  userData: IUser;
-  validationErrors: any[];
-  registrationStatus: string;
-  registrationBackendError: string;
-  loginBackendError: string;
-  resetPass: boolean;
-  loginStatus: fetchRequest;
-  resetPasswordStatus: fetchRequest;
-  stateAuthSwitcher: string;
-  requestResetPasswordError: string | undefined;
-  tokenStatus: fetchRequest;
-  requestResetStatus: fetchRequest;
-  resetPasswordError: string[];
-  resetPasswordBackendError: string;
-}
 
 const initialState: IUserAuthSlice = {
   userData: { email: "", password: "", firstName: "", secondName: "" },
@@ -106,8 +88,6 @@ const userAuthSlice = createSlice({
     builder
       // Регистрация
       .addCase(registerUser.pending, (state) => {
-        console.log("PENDING");
-
         state.registrationBackendError = "";
         state.registrationStatus = fetchRequest.LOADING;
       })
@@ -115,19 +95,18 @@ const userAuthSlice = createSlice({
         registerUser.fulfilled,
         (state, action: PayloadAction<IUser>) => {
           state.userData = action.payload;
-
           state.registrationStatus = fetchRequest.SUCCESS;
         }
       )
       .addCase(registerUser.rejected, (state, action) => {
         state.registrationBackendError =
           action.payload?.message || "An unknown error occurred";
-
         state.registrationStatus = fetchRequest.ERROR;
       })
 
       // Логин
       .addCase(loginUser.pending, (state) => {
+        state.loginBackendError = "";
         state.loginStatus = fetchRequest.LOADING;
       })
       .addCase(loginUser.fulfilled, (state, action: PayloadAction<IUser>) => {
@@ -135,7 +114,6 @@ const userAuthSlice = createSlice({
         state.validationErrors = [];
         state.loginStatus = fetchRequest.SUCCESS;
         state.loginBackendError = "";
-        setSuccessState(state);
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loginStatus = fetchRequest.ERROR;
