@@ -6,7 +6,7 @@ import { userCardProps } from "../../../@types/userCardTypes";
 import TitleSkeleton from "../TitleSkeleton";
 
 import Skeleton from "../../Cards/MainCard/Skeleton";
-import { useAppSelector } from "../../../redux/hook";
+
 import { Link } from "react-router-dom";
 
 import { ArrowRight } from "lucide-react";

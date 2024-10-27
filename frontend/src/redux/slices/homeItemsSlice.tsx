@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "../../axiosConfig/axios";
 import { fetchRequest } from "../../@types/status";
-interface ISection {
+export interface ISection {
   data: [];
   description: string;
   title: string;
