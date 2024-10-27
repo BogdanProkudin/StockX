@@ -5,7 +5,6 @@ const RequestResetSucces = () => {
   const isEmailSent = useAppSelector(
     (state) => state.userAuth.requestResetStatus
   );
-  console.log("email", isEmailSent);
 
   return (
     <>
