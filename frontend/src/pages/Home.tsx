@@ -6,39 +6,25 @@ import {
   userSectionFetch,
 } from "../redux/slices/homeItemsSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hook";
-import { useInView } from "react-intersection-observer";
 
 import UserSection from "../components/Sections/UserSection/UserSection";
 import MainSection from "../components/Sections/MainSection/MainSection";
 import ImageSection from "../components/Sections/ImageSection/ImageSection";
+import useFetchOnView from "../hooks/useFetchOnView";
 
 const Home: React.FC = () => {
   const dispatch = useAppDispatch();
   const { recentlyViewedItems, recomendedItems, mainSection } = useAppSelector(
     (state) => state.homeItems
   );
-  const { ref, inView } = useInView({
-    threshold: 0,
-    triggerOnce: true,
-  });
-  const { ref: ref2, inView: inView2 } = useInView({
-    threshold: 0,
-    triggerOnce: true,
-  });
 
   React.useEffect(() => {
     dispatch(userSectionFetch());
   }, []);
-  React.useEffect(() => {
-    if (inView) {
-      dispatch(mainSectionFetch(1));
-    }
-  }, [inView]);
-  React.useEffect(() => {
-    if (inView2) {
-      dispatch(mainSectionFetch(2));
-    }
-  }, [inView2]);
+
+  const refMainSection1 = useFetchOnView(() => mainSectionFetch(1));
+  const refMainSection2 = useFetchOnView(() => mainSectionFetch(2));
+  console.log(refMainSection2);
 
   return (
     <div className="mt-6">
@@ -54,7 +40,7 @@ const Home: React.FC = () => {
         description={recomendedItems.description}
       />
       <ImageSection />
-      <div ref={ref}>
+      <div ref={refMainSection1}>
         <MainSection
           status={mainSection[1].status}
           mainTitle={mainSection[1].data.title}
@@ -62,7 +48,7 @@ const Home: React.FC = () => {
           description={mainSection[1].data.description}
         />
       </div>
-      <div ref={ref2}>
+      <div ref={refMainSection2}>
         <MainSection
           status={mainSection[2].status}
           mainTitle={mainSection[2].data.title}
