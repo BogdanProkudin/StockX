@@ -5,10 +5,14 @@ const RequestResetSucces = () => {
   const isEmailSent = useAppSelector(
     (state) => state.userAuth.requestResetStatus
   );
+  const requestResetPasswordError = useAppSelector(
+    (state) => state.userAuth.requestResetPasswordError
+  );
+  console.log(requestResetPasswordError, "QWER");
 
   return (
     <>
-      {isEmailSent === "success" && (
+      {!requestResetPasswordError && isEmailSent === "success" && (
         <div className={styles.request_reset_password_succes_container}>
           <p>Email was sent</p>
         </div>
