@@ -2,7 +2,7 @@ import { StockXAPI, StockXLocation } from "@vlourme/stockx-api";
 export const getShoes = async (req, res) => {
   try {
     const api = new StockXAPI(StockXLocation.US);
-    const [recentlyViewed, featuredItems] = await Promise.all([
+    const [recentlyViewed, recommendedItems] = await Promise.all([
       api.searchProducts("Travis", 1),
       api.searchProducts("Jordan", 1),
     ]);
@@ -13,15 +13,13 @@ export const getShoes = async (req, res) => {
         description: "You recently viewed these products.",
         data: recentlyViewed.hits.slice(0, 6),
       },
-      featuredItems: {
+      recommendedItems: {
         title: "Recommended For You",
         description:
           "These products are inspired by your previous browsing history.",
-        data: featuredItems.hits.slice(0, 6),
+        data: recommendedItems.hits.slice(0, 6),
       },
     };
-
-    console.log(data.recentlyViewed.data);
 
     res.json(data);
   } catch (error) {
@@ -32,30 +30,32 @@ export const getShoes = async (req, res) => {
 export const getMainSection = async (req, res) => {
   try {
     const api = new StockXAPI(StockXLocation.US);
-    const [trending, featuredItems] = await Promise.all([
+    const [trendingItems, featuredItems] = await Promise.all([
       api.searchProducts("Adiddas", 1),
       api.searchProducts("Nike", 1),
     ]);
-    const section = req.body.count;
-    console.log(section);
-
-    let data;
-    if (section === 1) {
-      data = {
+    const section = req.params.section;
+    const data = {
+      trendingItems: {
         title: "Trending Sneakers",
         description:
           "'Trending' products are a curated collection of our best selling items",
-        data: trending.hits.slice(0, 6),
-      };
-    } else if (section === 2) {
-      data = {
+        data: trendingItems.hits.slice(0, 6),
+      },
+      featuredItems: {
         title: "Featured Apparel",
         description:
           "'Featured' products are a curated collection of our best selling items",
         data: featuredItems.hits.slice(0, 6),
-      };
+      },
+    };
+    console.log(section);
+
+    if (section === "trending") {
+      res.json(data.trendingItems);
+    } else {
+      res.json(data.featuredItems);
     }
-    res.json(data);
   } catch (error) {
     console.error("Ошибка при получении данных с StockX:", error);
     res.status(500).json({ message: "Ошибка сервера" });
