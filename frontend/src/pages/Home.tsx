@@ -35,9 +35,9 @@ const Home: React.FC = () => {
     dispatch(userSectionFetch());
   }, []);
 
-  const refMainSection1 = useFetchOnView(() => mainSectionFetch(1));
-  const refMainSection2 = useFetchOnView(() => mainSectionFetch(2));
-  console.log(refMainSection2);
+  // const refMainSection1 = useFetchOnView(() => mainSectionFetch(1));
+  // const refMainSection2 = useFetchOnView(() => mainSectionFetch(2));
+  // console.log(refMainSection2);
 
   return (
     <div className="mt-6">
