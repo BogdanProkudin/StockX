@@ -20,7 +20,7 @@ const Slider = () => {
       modules={[Navigation, Scrollbar, Autoplay]}
       spaceBetween={0}
       slidesPerView={1}
-      loop={true} //если хочешь чтобы он прокручивался не бесконечно можно просто поставить false но мне ольше нравится так
+      loop={true}
       navigation
       autoplay={{ delay: 20000, disableOnInteraction: false }}
     >
