@@ -6,14 +6,12 @@ export const userApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3003" }),
   endpoints: (builder) => ({
     userSectionFetch: builder.query({
-      query: () => "/getShoes", // Укажите URL эндпоинта
+      query: () => "/getShoes",
       keepUnusedDataFor: 60,
-      // Не перезапрашиваем данные при каждом монтировании, если они уже есть в кэше
     }),
   }),
 });
 
-// Экспортируем хуки для использования в компонентах
 export const { useUserSectionFetchQuery } = userApi;
 
 export const mainApi = createApi({
