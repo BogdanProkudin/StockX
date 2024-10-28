@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import Slider from "../components/Slider/Slider";
 import {
@@ -6,17 +6,30 @@ import {
   userSectionFetch,
 } from "../redux/slices/homeItemsSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hook";
+import { useInView } from "react-intersection-observer";
 
 import UserSection from "../components/Sections/UserSection/UserSection";
 import MainSection from "../components/Sections/MainSection/MainSection";
 import ImageSection from "../components/Sections/ImageSection/ImageSection";
-import useFetchOnView from "../hooks/useFetchOnView";
+import { useUserSectionFetchQuery } from "../redux/api/shoesApiSlice";
+import Skeleton from "../components/Cards/MainCard/Skeleton";
 
 const Home: React.FC = () => {
   const dispatch = useAppDispatch();
+  const [fetchData, setFetchData] = useState(false);
   const { recentlyViewedItems, recomendedItems, mainSection } = useAppSelector(
     (state) => state.homeItems
   );
+  const { ref, inView } = useInView({
+    threshold: 0,
+    triggerOnce: true,
+  });
+  const { ref: ref2, inView: inView2 } = useInView({
+    threshold: 0,
+    triggerOnce: true,
+  });
+
+  const { data, error, isLoading } = useUserSectionFetchQuery({});
 
   React.useEffect(() => {
     dispatch(userSectionFetch());
@@ -24,23 +37,24 @@ const Home: React.FC = () => {
 
   const refMainSection1 = useFetchOnView(() => mainSectionFetch(1));
   const refMainSection2 = useFetchOnView(() => mainSectionFetch(2));
-  console.log(refMainSection1, refMainSection2);
+  console.log(refMainSection2);
 
   return (
     <div className="mt-6">
       <Slider />
       <UserSection
-        mainTitle={recentlyViewedItems.title}
-        items={recentlyViewedItems.data}
-        description={recentlyViewedItems.description}
+        mainTitle={data ? data.recentlyViewed.title : ""}
+        items={data ? data.recentlyViewed.data : []}
+        description={data ? data.recentlyViewed.description : ""}
       />
       <UserSection
-        mainTitle={recomendedItems.title}
-        items={recomendedItems.data}
-        description={recomendedItems.description}
+        mainTitle={data ? data.featuredItems.title : ""}
+        items={data ? data.featuredItems.data : []}
+        description={data ? data.featuredItems.description : ""}
       />
+
       <ImageSection />
-      <div ref={refMainSection1}>
+      <div ref={ref}>
         <MainSection
           status={mainSection[1].status}
           mainTitle={mainSection[1].data.title}
@@ -48,7 +62,7 @@ const Home: React.FC = () => {
           description={mainSection[1].data.description}
         />
       </div>
-      <div ref={refMainSection2}>
+      <div ref={ref2}>
         <MainSection
           status={mainSection[2].status}
           mainTitle={mainSection[2].data.title}
