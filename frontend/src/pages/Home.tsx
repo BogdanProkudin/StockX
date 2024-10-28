@@ -24,7 +24,7 @@ const Home: React.FC = () => {
 
   const refMainSection1 = useFetchOnView(() => mainSectionFetch(1));
   const refMainSection2 = useFetchOnView(() => mainSectionFetch(2));
-  console.log(refMainSection2);
+  console.log(refMainSection1, refMainSection2);
 
   return (
     <div className="mt-6">
