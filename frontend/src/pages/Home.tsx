@@ -1,73 +1,68 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import Slider from "../components/Slider/Slider";
-import {
-  mainSectionFetch,
-  userSectionFetch,
-} from "../redux/slices/homeItemsSlice";
-import { useAppDispatch, useAppSelector } from "../redux/hook";
-import { useInView } from "react-intersection-observer";
 
 import UserSection from "../components/Sections/UserSection/UserSection";
 import MainSection from "../components/Sections/MainSection/MainSection";
 import ImageSection from "../components/Sections/ImageSection/ImageSection";
-import { useUserSectionFetchQuery } from "../redux/api/shoesApiSlice";
-import Skeleton from "../components/Cards/MainCard/Skeleton";
+import {
+  useLazyMainSectionFetchQuery,
+  useUserSectionFetchQuery,
+} from "../redux/api/mainApiSlice";
+import useFetchOnView from "../hooks/useFetchOnView";
 
 const Home: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const [fetchData, setFetchData] = useState(false);
-  const { recentlyViewedItems, recomendedItems, mainSection } = useAppSelector(
-    (state) => state.homeItems
-  );
-  const { ref, inView } = useInView({
-    threshold: 0,
-    triggerOnce: true,
+  const {
+    data: userData,
+    error: userError,
+    isLoading: userLoading,
+  } = useUserSectionFetchQuery({});
+
+  const [fetchMainSection, { data: mainData, isLoading: mainLoading }] =
+    useLazyMainSectionFetchQuery(); // это с rtk query эта функция отрабатывает не при монтирование компонента а когда
+  // ты скажешь деструтуризацией вытаскиваеешь fetchMainSection блогадаря ему ты запускаешь функцию а далле как по дефолту
+
+  const refTrending = useFetchOnView({
+    fetchFunction: fetchMainSection,
+    sectionName: "trending",
   });
-  const { ref: ref2, inView: inView2 } = useInView({
-    threshold: 0,
-    triggerOnce: true,
+  const refFeatured = useFetchOnView({
+    fetchFunction: fetchMainSection,
+    sectionName: "featured",
   });
-
-  const { data, error, isLoading } = useUserSectionFetchQuery({});
-
-  React.useEffect(() => {
-    dispatch(userSectionFetch());
-  }, []);
-
-  // const refMainSection1 = useFetchOnView(() => mainSectionFetch(1));
-  // const refMainSection2 = useFetchOnView(() => mainSectionFetch(2));
-  // console.log(refMainSection2);
-
   return (
     <div className="mt-6">
       <Slider />
       <UserSection
-        mainTitle={data ? data.recentlyViewed.title : ""}
-        items={data ? data.recentlyViewed.data : []}
-        description={data ? data.recentlyViewed.description : ""}
+        mainTitle={userData ? userData.recentlyViewed.title : ""}
+        items={userData ? userData.recentlyViewed.data : []}
+        description={userData ? userData.recentlyViewed.description : ""}
+        status={userLoading}
       />
       <UserSection
-        mainTitle={data ? data.featuredItems.title : ""}
-        items={data ? data.featuredItems.data : []}
-        description={data ? data.featuredItems.description : ""}
+        mainTitle={userData ? userData.recommendedItems.title : ""}
+        items={userData ? userData.recommendedItems.data : []}
+        description={userData ? userData.recommendedItems.description : ""}
+        status={userLoading}
       />
 
       <ImageSection />
-      <div ref={ref}>
+
+      <div ref={refTrending}>
         <MainSection
-          status={mainSection[1].status}
-          mainTitle={mainSection[1].data.title}
-          items={mainSection[1].data.data}
-          description={mainSection[1].data.description}
+          mainTitle={mainData ? mainData.title : ""} // mainData.trendingItems.title
+          items={mainData ? mainData.data : []} //mainData.trendingItems.data
+          description={mainData ? mainData.description : ""} //mainData.trendingItems.description
+          status={mainLoading}
         />
       </div>
-      <div ref={ref2}>
+
+      <div ref={refFeatured}>
         <MainSection
-          status={mainSection[2].status}
-          mainTitle={mainSection[2].data.title}
-          items={mainSection[2].data.data}
-          description={mainSection[2].data.description}
+          mainTitle={mainData ? mainData.title : ""} // mainData.featuredItems.title
+          items={mainData ? mainData.data : []} //mainData.featuredItems.data
+          description={mainData ? mainData.description : ""} //mainData.featuredItems.description
+          status={mainLoading}
         />
       </div>
     </div>
