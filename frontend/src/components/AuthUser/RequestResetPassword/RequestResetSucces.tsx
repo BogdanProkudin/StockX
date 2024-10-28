@@ -8,7 +8,6 @@ const RequestResetSucces = () => {
   const requestResetPasswordError = useAppSelector(
     (state) => state.userAuth.requestResetPasswordError
   );
-  console.log(requestResetPasswordError, "QWER");
 
   return (
     <>
