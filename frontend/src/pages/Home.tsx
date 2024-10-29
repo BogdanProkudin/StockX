@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import Slider from "../components/Slider/Slider";
 
@@ -20,8 +20,6 @@ const Home: React.FC = () => {
 
   const [fetchMainSection, { data: mainData, isLoading: mainLoading }] =
     useLazyMainSectionFetchQuery({});
-
-  // Используем useLazyQuerySubscription для подписки на данные
 
   const refTrending = useFetchOnView({
     fetchFunction: fetchMainSection,

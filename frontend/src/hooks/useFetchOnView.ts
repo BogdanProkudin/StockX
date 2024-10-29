@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 
 interface UseFetchOnViewProps {
-  fetchFunction: any;
+  fetchFunction: (sectionName: string, boolean: true) => void;
   sectionName: string;
 }
 
