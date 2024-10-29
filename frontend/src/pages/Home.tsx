@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import Slider from "../components/Slider/Slider";
 
@@ -22,17 +22,13 @@ const Home: React.FC = () => {
     useLazyMainSectionFetchQuery({}); // это с rtk query эта функция отрабатывает не при монтирование компонента а когда
   // ты скажешь деструтуризацией вытаскиваеешь fetchMainSection блогадаря ему ты запускаешь функцию а далле как по дефолту
 
-  // Используем useLazyQuerySubscription для подписки на данные
-
   const refTrending = useFetchOnView({
     fetchFunction: fetchMainSection,
     sectionName: "trending",
-    data: mainData,
   });
   const refFeatured = useFetchOnView({
     fetchFunction: fetchMainSection,
     sectionName: "featured",
-    data: mainData,
   });
   return (
     <div className="mt-6">
