@@ -30,32 +30,37 @@ export const getShoes = async (req, res) => {
 export const getMainSection = async (req, res) => {
   try {
     const api = new StockXAPI(StockXLocation.US);
-    const [trendingItems, featuredItems] = await Promise.all([
-      api.searchProducts("Adiddas", 1),
+    const section = req.params.section;
+
+    const [trending, featured] = await Promise.all([
+      api.searchProducts("Adidas", 1),
       api.searchProducts("Nike", 1),
     ]);
-    const section = req.params.section;
+
     const data = {
-      trendingItems: {
+      trending: {
         title: "Trending Sneakers",
         description:
           "'Trending' products are a curated collection of our best selling items",
-        data: trendingItems.hits.slice(0, 6),
+        data: trending.hits.slice(0, 6),
       },
-      featuredItems: {
+      featured: {
         title: "Featured Apparel",
         description:
           "'Featured' products are a curated collection of our best selling items",
-        data: featuredItems.hits.slice(0, 6),
+        data: featured.hits.slice(0, 6),
       },
     };
-    console.log(section);
 
+    const mockData = { trendingItems: {}, featuredItems: {} };
     if (section === "trending") {
-      res.json(data.trendingItems);
-    } else {
-      res.json(data.featuredItems);
+      mockData = { trendingItems: data.trending, featuredItems: {} };
     }
+    if (section === "featured") {
+      mockData = { trendingItems: data.trending, featuredItems: featured };
+    }
+    res.json(mockData);
+    console.log(mockData);
   } catch (error) {
     console.error("Ошибка при получении данных с StockX:", error);
     res.status(500).json({ message: "Ошибка сервера" });

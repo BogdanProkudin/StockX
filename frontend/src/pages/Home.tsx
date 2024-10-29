@@ -19,21 +19,20 @@ const Home: React.FC = () => {
   } = useUserSectionFetchQuery({});
 
   const [fetchMainSection, { data: mainData, isLoading: mainLoading }] =
-    useLazyMainSectionFetchQuery({}); // это с rtk query эта функция отрабатывает не при монтирование компонента а когда
-  // ты скажешь деструтуризацией вытаскиваеешь fetchMainSection блогадаря ему ты запускаешь функцию а далле как по дефолту
+    useLazyMainSectionFetchQuery({});
 
   // Используем useLazyQuerySubscription для подписки на данные
 
   const refTrending = useFetchOnView({
     fetchFunction: fetchMainSection,
     sectionName: "trending",
-    data: mainData,
   });
   const refFeatured = useFetchOnView({
     fetchFunction: fetchMainSection,
     sectionName: "featured",
-    data: mainData,
   });
+  console.log(mainData);
+
   return (
     <div className="mt-6">
       <Slider />
@@ -54,18 +53,18 @@ const Home: React.FC = () => {
 
       <div ref={refTrending}>
         <MainSection
-          mainTitle={mainData ? mainData.title : ""} // mainData.trendingItems.title
-          items={mainData ? mainData.data : []} //mainData.trendingItems.data
-          description={mainData ? mainData.description : ""} //mainData.trendingItems.description
+          mainTitle={mainData ? mainData.trendingItems.title : ""} // mainData.trendingItems.title
+          items={mainData ? mainData.trendingItems.data : []} //mainData.trendingItems.data
+          description={mainData ? mainData.trendingItems.description : ""} //mainData.trendingItems.description
           status={mainLoading}
         />
       </div>
 
       <div ref={refFeatured}>
         <MainSection
-          mainTitle={mainData ? mainData.title : ""} // mainData.featuredItems.title
-          items={mainData ? mainData.data : []} //mainData.featuredItems.data
-          description={mainData ? mainData.description : ""} //mainData.featuredItems.description
+          mainTitle={mainData ? mainData.featuredItems.title : ""} // mainData.featuredItems.title
+          items={mainData ? mainData.featuredItems.data : []} //mainData.featuredItems.data
+          description={mainData ? mainData.featuredItems.description : ""} //mainData.featuredItems.description
           status={mainLoading}
         />
       </div>
