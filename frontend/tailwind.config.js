@@ -2,7 +2,15 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        montserrat: ["Montserrat", "sans-serif"],
+        oswald: ["Oswald", "sans-serif"],
+      },
+      colors: {
+        lightGray: "#CFCFCF", // Здесь добавляем кастомный цвет
+      },
+    },
   },
   plugins: [],
 };

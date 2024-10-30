@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 import Slider from "../components/Slider/Slider";
-
+import FoundItems from "../components/FoundItems/index";
 import UserSection from "../components/Sections/UserSection/UserSection";
 import MainSection from "../components/Sections/MainSection/MainSection";
 import ImageSection from "../components/Sections/ImageSection/ImageSection";
@@ -32,8 +32,9 @@ const Home: React.FC = () => {
   console.log(mainData);
 
   return (
-    <div className="mt-6">
-      <Slider />
+    <div className=" flex items-center  justify-center mt-6">
+      <FoundItems />
+      {/* <Slider />
       <UserSection
         mainTitle={userData ? userData.recentlyViewed.title : ""}
         items={userData ? userData.recentlyViewed.data : []}
@@ -65,7 +66,7 @@ const Home: React.FC = () => {
           description={mainData ? mainData.featuredItems.description : ""} //mainData.featuredItems.description
           status={mainLoading}
         />
-      </div>
+      </div> */}
     </div>
   );
 };
