@@ -2,13 +2,27 @@ import React from "react";
 import styles from "./styles.module.scss";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
+import debounce from "lodash.debounce";
+
 const HeaderInput: React.FC = () => {
-  const [isValue, setIsValue] = React.useState("");
-  const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsValue(e.target.value);
-  };
+  const [searchValue, setSearchValue] = React.useState("");
+  const [debouncedVSearchValue, setDebouncedVSearchValue] = React.useState("");
+
   const onClickRemove = () => {
-    setIsValue("");
+    setSearchValue("");
+  };
+  const debouncedChangeHandler = React.useCallback(
+    debounce((value) => {
+      console.log("DEBOUNCE search VALue", value);
+
+      setDebouncedVSearchValue(value);
+    }, 300),
+    []
+  );
+  const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    setSearchValue(e.target.value);
+    debouncedChangeHandler(e.target.value);
   };
   const userToken = localStorage.getItem("token");
   return (
@@ -25,9 +39,9 @@ const HeaderInput: React.FC = () => {
         className={styles.header_input}
         placeholder="Search for brand, color, etc."
         type="text"
-        value={isValue}
+        value={searchValue}
       />
-      {isValue.length > 0 && (
+      {searchValue.length > 0 && (
         <button onClick={onClickRemove} className={styles.close}>
           <CloseIcon />
         </button>

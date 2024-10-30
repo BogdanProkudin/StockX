@@ -66,3 +66,13 @@ export const getMainSection = async (req, res) => {
     res.status(500).json({ message: "Ошибка сервера" });
   }
 };
+
+export const searchProducts = async () => {
+  const api = new StockXAPI(StockXLocation.US);
+  const res = await api.searchProducts("Trading Cards");
+
+  const filtered = res.hits.filter(
+    (obj) => !obj.category.includes("Shoes") && obj.brand.includes("Nike")
+  );
+  console.log(filtered.length);
+};
