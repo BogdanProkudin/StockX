@@ -57,10 +57,10 @@ export const getMainSection = async (req, res) => {
       mockData = { trendingItems: data.trending, featuredItems: {} };
     }
     if (section === "featured") {
-      mockData = { trendingItems: data.trending, featuredItems: featured };
+      mockData = { trendingItems: data.trending, featuredItems: data.featured };
     }
     res.json(mockData);
-    console.log(mockData);
+    console.log(mockData.featuredItems);
   } catch (error) {
     console.error("Ошибка при получении данных с StockX:", error);
     res.status(500).json({ message: "Ошибка сервера" });
