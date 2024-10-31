@@ -51,16 +51,17 @@ export const getMainSection = async (req, res) => {
         data: featured.hits.slice(0, 6),
       },
     };
-
-    const mockData = { trendingItems: {}, featuredItems: {} };
+    let mockData = {
+      trendingItems: {},
+      featuredItems: {},
+    };
     if (section === "trending") {
-      mockData = { trendingItems: data.trending, featuredItems: {} };
-    }
-    if (section === "featured") {
-      mockData = { trendingItems: data.trending, featuredItems: data.featured };
+      mockData.trendingItems = data.trending;
+    } else if (section === "featured") {
+      mockData.featuredItems = data.featured;
     }
     res.json(mockData);
-    console.log(mockData.featuredItems);
+    console.log(mockData);
   } catch (error) {
     console.error("Ошибка при получении данных с StockX:", error);
     res.status(500).json({ message: "Ошибка сервера" });
