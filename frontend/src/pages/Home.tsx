@@ -32,9 +32,9 @@ const Home: React.FC = () => {
   console.log(mainData);
 
   return (
-    <div className="mt-6 flex items-center justify-center">
-      <FoundItems />
-      {/* <Slider />
+    <div className="mt-6">
+      {/* <FoundItems /> */}
+      <Slider />
       <UserSection
         mainTitle={userData ? userData.recentlyViewed.title : ""}
         items={userData ? userData.recentlyViewed.data : []}
@@ -66,7 +66,7 @@ const Home: React.FC = () => {
           description={mainData ? mainData.featuredItems.description : ""} //mainData.featuredItems.description
           status={mainLoading}
         />
-      </div> */}
+      </div>
     </div>
   );
 };

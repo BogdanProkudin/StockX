@@ -29,15 +29,15 @@ const MainSection: React.FC<UserSectionProps> = ({
   });
   return (
     <div className="mb-20">
-      <div className="my-5 flex justify-between items-center">
-        <div className="flex gap-3 items-center relative">
-          <h1 className=" font-bold text-xl ">
+      <div className="my-5 flex items-center justify-between">
+        <div className="relative flex items-center gap-3">
+          <h1 className="text-xl font-bold">
             {status ? <TitleSkeleton /> : mainTitle}
           </h1>
-          <span className=" group text-sm px-[6px] py-[1px]  cursor-pointer relative  bg-black text-white rounded-full  ">
-            <div className="absolute hidden z-10 w-[250px] group-hover:block bg-gray-800 text-white text-sm rounded-lg px-3 py-2 bottom-full mb-2 left-1/2 transform -translate-x-1/2 ">
+          <span className="group relative cursor-pointer rounded-full bg-black px-[6px] py-[1px] text-sm text-white">
+            <div className="absolute bottom-full left-1/2 z-10 mb-2 hidden w-[250px] -translate-x-1/2 transform rounded-lg bg-gray-800 px-3 py-2 text-sm text-white group-hover:block">
               {description}
-              <div className="absolute w-3 h-3 bg-gray-800 transform rotate-45 -bottom-1 left-1/2 -translate-x-1/2"></div>
+              <div className="absolute -bottom-1 left-1/2 h-3 w-3 -translate-x-1/2 rotate-45 transform bg-gray-800"></div>
             </div>
             ?
           </span>
@@ -47,7 +47,7 @@ const MainSection: React.FC<UserSectionProps> = ({
         ) : (
           <Link
             to={""}
-            className="text-green-900 font-bold flex items-center gap-2 transition-colors duration-300 px-2 py-1 rounded-full hover:bg-slate-200"
+            className="flex items-center gap-2 rounded-full px-2 py-1 font-bold text-green-900 transition-colors duration-300 hover:bg-slate-200"
           >
             See All
             <ArrowRight size={20} />
@@ -58,7 +58,7 @@ const MainSection: React.FC<UserSectionProps> = ({
       <div className="flex justify-between">
         {status
           ? cardSkeleton
-          : items.map((obj: userCardProps, id: number) => (
+          : items?.map((obj: userCardProps, id: number) => (
               <UserCard key={id} {...obj} />
             ))}
       </div>
