@@ -67,12 +67,19 @@ export const getMainSection = async (req, res) => {
   }
 };
 
-export const searchProducts = async () => {
-  const api = new StockXAPI(StockXLocation.US);
-  const res = await api.searchProducts("Trading Cards");
+export const searchProducts = async (req, res) => {
+  try {
+    const searchingValue = req.params.searchingValue;
 
-  const filtered = res.hits.filter(
-    (obj) => !obj.category.includes("Shoes") && obj.brand.includes("Nike")
-  );
-  console.log(filtered.length);
+    const api = new StockXAPI(StockXLocation.US);
+    const result = await api.searchProducts(searchingValue);
+
+    // const filtered = res.hits.filter(
+    //   (obj) => !obj.category.includes("Shoes") && obj.brand.includes("Nike")
+    // );
+    return res.status(200).json({ data: result.hits });
+  } catch (err) {
+    console.log("ERROR", err);
+    return res.status(404).json({ message: "ERROR" });
+  }
 };

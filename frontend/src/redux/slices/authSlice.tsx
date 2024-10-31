@@ -5,7 +5,7 @@ import {
 } from "@reduxjs/toolkit";
 import { IUser, IUserAuthSlice } from "../../@types/userAuth";
 import { fetchRequest } from "../../@types/status";
-import { setSuccessState } from "../handlers/stateHelpers";
+
 import {
   registerUser,
   loginUser,

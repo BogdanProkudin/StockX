@@ -24,7 +24,18 @@ export const mainApi = createApi({
     }),
   }),
 });
-
-// Экспортируем хуки для использования в компонентах
 export const { useMainSectionFetchQuery, useLazyMainSectionFetchQuery } =
   mainApi;
+export const searchApi = createApi({
+  reducerPath: "searchApi",
+  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3003" }),
+  endpoints: (builder) => ({
+    searchItems: builder.query({
+      query: (searchingValue: string) => `/searchItems/${searchingValue}`,
+      keepUnusedDataFor: 60,
+    }),
+  }),
+});
+
+// Экспортируем хуки для использования в компонентах
+export const { useLazySearchItemsQuery } = searchApi;
