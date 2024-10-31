@@ -34,6 +34,7 @@ app.post("/resetPassword", UserController.resetPassword);
 //ItemsLogic
 app.get("/getShoes", ShoesController.getShoes);
 app.get("/getMainSection/:section", ShoesController.getMainSection);
+app.get("/searchItems/:searchingValue", ShoesController.searchProducts);
 app.listen(port, (err) => {
   if (err) {
     console.log("Error starting server", err);

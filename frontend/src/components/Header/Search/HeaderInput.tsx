@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./styles.module.scss";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
 import debounce from "lodash.debounce";
+import { useLazySearchItemsQuery } from "../../../redux/api/mainApiSlice";
 
 const HeaderInput: React.FC = () => {
   const [searchValue, setSearchValue] = React.useState("");
@@ -11,20 +12,27 @@ const HeaderInput: React.FC = () => {
   const onClickRemove = () => {
     setSearchValue("");
   };
-  const debouncedChangeHandler = React.useCallback(
-    debounce((value) => {
-      console.log("DEBOUNCE search VALue", value);
+  const [fetchItems, { data, isLoading }] = useLazySearchItemsQuery();
 
-      setDebouncedVSearchValue(value);
-    }, 300),
+  const handleSearch = React.useCallback(
+    debounce(async (query) => {
+      if (query.length > 0) {
+        await fetchItems(query);
+      }
+    }, 500), // задержка в миллисекундах
     []
   );
+
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     setSearchValue(e.target.value);
-    debouncedChangeHandler(e.target.value);
+    handleSearch(e.target.value);
   };
   const userToken = localStorage.getItem("token");
+  useEffect(() => {
+    console.log("IS LOADING", isLoading, "DATA", data);
+  }, [data]);
+
   return (
     <div
       className={`${styles.header_input_container} ${
