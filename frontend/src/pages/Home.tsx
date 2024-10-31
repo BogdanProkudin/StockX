@@ -32,7 +32,7 @@ const Home: React.FC = () => {
   console.log(mainData);
 
   return (
-    <div className=" flex items-center  justify-center mt-6">
+    <div className="mt-6 flex items-center justify-center">
       <FoundItems />
       {/* <Slider />
       <UserSection
