@@ -16,6 +16,7 @@ const HeaderInput: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const { searchValue, handleSearch, data, isError } = useSearch();
+
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     dispatch(setIsLoading(true));
@@ -39,6 +40,7 @@ const HeaderInput: React.FC = () => {
     dispatch(setSearchValue(""));
     window.scrollTo(0, 0);
   };
+
   return (
     <div
       className={`${styles.header_input_container} ${
