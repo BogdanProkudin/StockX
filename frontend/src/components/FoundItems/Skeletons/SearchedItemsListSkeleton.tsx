@@ -1,3 +1,4 @@
+import React from "react";
 import ContentLoader from "react-content-loader";
 
 const SearchedItemsListSkeleton = () => {
@@ -87,4 +88,4 @@ const SearchedItemsListSkeleton = () => {
   );
 };
 
-export default SearchedItemsListSkeleton;
+export default React.memo(SearchedItemsListSkeleton);

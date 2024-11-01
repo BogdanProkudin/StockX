@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useAppSelector } from "../../../redux/hook";
 import SearchedItem from "./SearchedItem";
+import React from "react";
 
 const SearchedItemsList = () => {
   const foundeditems = useAppSelector(
@@ -21,4 +22,4 @@ const SearchedItemsList = () => {
     </div>
   );
 };
-export default SearchedItemsList;
+export default React.memo(SearchedItemsList);
