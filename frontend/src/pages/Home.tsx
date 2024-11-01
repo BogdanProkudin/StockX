@@ -1,4 +1,6 @@
-// import React, { useEffect } from "react";
+
+// import React, { useEffect, useState } from "react";
+
 
 // import Slider from "../components/Slider/Slider";
 // import FoundItems from "../components/FoundItems/index";
@@ -120,6 +122,17 @@ const Home: React.FC = () => {
     sectionName: "featured",
   });
 
+<!--   console.log(mainData);
+  const [data1, setData1] = useState<any>();
+  const [data2, setData2] = useState<any>();
+  if (mainData?.trendingItems) {
+    setData1(mainData.trendingItems);
+  }
+  if (mainData?.featuredItems) {
+    setData2(mainData.featuredItems);
+  } -->
+
+
   const recentlyViewed = userData?.recentlyViewed || {
     title: "",
     data: [],
@@ -150,6 +163,7 @@ const Home: React.FC = () => {
     );
   }
 
+
   return (
     <div className="mt-6">
       <Slider />
@@ -170,18 +184,30 @@ const Home: React.FC = () => {
 
       <div ref={refTrending}>
         <MainSection
+
+<!--           mainTitle={data1 ? data1.title : ""} // mainData.trendingItems.title
+          items={data1 ? data1.data : []} //mainData.trendingItems.data
+          description={data1 ? data1.description : ""} //mainData.trendingItems.description -->
+
           mainTitle={trendingItems.title}
           items={trendingItems.data}
           description={trendingItems.description}
+
           status={mainLoading}
         />
       </div>
 
       <div ref={refFeatured}>
         <MainSection
+
+<!--           mainTitle={mainData ? data2.title : ""} // mainData.featuredItems.title
+          items={mainData ? data2.data : []} //mainData.featuredItems.data
+          description={mainData ? data2.description : ""} //mainData.featuredItems.description -->
+
           mainTitle={featuredItems.title}
           items={featuredItems.data}
           description={featuredItems.description}
+
           status={mainLoading}
         />
       </div>
