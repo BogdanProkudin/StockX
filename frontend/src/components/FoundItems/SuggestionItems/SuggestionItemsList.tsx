@@ -1,3 +1,4 @@
+import React from "react";
 import SuggestionItem from "./SuggestionItem";
 
 const SuggestionItemsList = () => {
@@ -18,4 +19,4 @@ const SuggestionItemsList = () => {
   );
 };
 
-export default SuggestionItemsList;
+export default React.memo(SuggestionItemsList);

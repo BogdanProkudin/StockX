@@ -1,3 +1,5 @@
+import React from "react";
+
 const SuggestionItem = ({ name }: { name: string }) => {
   return (
     <>
@@ -18,4 +20,4 @@ const SuggestionItem = ({ name }: { name: string }) => {
   );
 };
 
-export default SuggestionItem;
+export default React.memo(SuggestionItem);

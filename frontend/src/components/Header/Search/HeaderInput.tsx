@@ -4,45 +4,42 @@ import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
 import debounce from "lodash.debounce";
 import { useLazySearchItemsQuery } from "../../../redux/api/mainApiSlice";
-import { useAppDispatch } from "../../../redux/hook";
+import { useAppDispatch, useAppSelector } from "../../../redux/hook";
 import {
   setFoundedItems,
   setIsLoading,
+  setSearchValue,
 } from "../../../redux/slices/searchSlice";
+import { useSearch } from "../../../hooks/useSearch";
 
 const HeaderInput: React.FC = () => {
-  const [searchValue, setSearchValue] = React.useState("");
   const dispatch = useAppDispatch();
-  const onClickRemove = () => {
-    setSearchValue("");
-  };
-  const [fetchItems, { data, isLoading }] = useLazySearchItemsQuery();
 
-  const handleSearch = React.useCallback(
-    debounce(async (query) => {
-      if (query.length > 0) {
-        dispatch(setIsLoading(true));
-
-        const result = await fetchItems(query);
-        if (result.isSuccess) {
-          dispatch(setIsLoading(false));
-        }
-      }
-    }, 500), // задержка в миллисекундах
-    [],
-  );
+  const { searchValue, handleSearch, data, isError } = useSearch();
 
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    setSearchValue(e.target.value);
-    handleSearch(e.target.value);
+    const value = e.target.value;
+    dispatch(setIsLoading(true));
+    dispatch(setSearchValue(value));
+    handleSearch(value);
+    if (value.length === 0) {
+      window.scrollTo(0, 0);
+    }
   };
   const userToken = localStorage.getItem("token");
   useEffect(() => {
     if (data) {
       dispatch(setFoundedItems(data));
+      window.scrollTo(0, 0);
     }
-  }, [data]);
+    if (isError) {
+      console.error("Error fetching items :<");
+    }
+  }, [data, dispatch, isError]);
+  const onClickRemove = () => {
+    dispatch(setSearchValue(""));
+    window.scrollTo(0, 0);
+  };
 
   return (
     <div
