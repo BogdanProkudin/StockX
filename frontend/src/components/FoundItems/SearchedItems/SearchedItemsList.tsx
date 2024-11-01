@@ -6,18 +6,18 @@ const SearchedItemsList = () => {
   const foundeditems = useAppSelector(
     (state) => state.searchSlice.foundedItems,
   );
-  useEffect(() => {
-    console.log("FOUNDED", foundeditems);
-  }, [foundeditems]);
+
   return (
     <div className="flex w-full flex-col">
-      <SearchedItem />
-      <SearchedItem />
-      <SearchedItem />
-      <SearchedItem />
-      <SearchedItem />
-      <SearchedItem />
-      <SearchedItem />
+      {foundeditems.map((item) => {
+        return (
+          <SearchedItem
+            image={item.image}
+            brand={item.brand}
+            name={item.title}
+          />
+        );
+      })}
     </div>
   );
 };

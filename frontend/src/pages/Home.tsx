@@ -10,8 +10,12 @@ import {
   useUserSectionFetchQuery,
 } from "../redux/api/mainApiSlice";
 import useFetchOnView from "../hooks/useFetchOnView";
+import { useAppSelector } from "../redux/hook";
 
 const Home: React.FC = () => {
+  const searchInputValue = useAppSelector(
+    (state) => state.searchSlice.searchValue,
+  );
   const {
     data: userData,
     error: userError,
@@ -32,42 +36,49 @@ const Home: React.FC = () => {
   console.log(mainData);
 
   return (
-    <div className="mt-6">
-      {/* <FoundItems /> */}
-      <Slider />
-      <UserSection
-        mainTitle={userData ? userData.recentlyViewed.title : ""}
-        items={userData ? userData.recentlyViewed.data : []}
-        description={userData ? userData.recentlyViewed.description : ""}
-        status={userLoading}
-      />
-      <UserSection
-        mainTitle={userData ? userData.recommendedItems.title : ""}
-        items={userData ? userData.recommendedItems.data : []}
-        description={userData ? userData.recommendedItems.description : ""}
-        status={userLoading}
-      />
+    <>
+      {searchInputValue.length > 0 ? (
+        <div className="mt-6 flex items-center justify-center">
+          <FoundItems />
+        </div>
+      ) : (
+        <div className="mt-6">
+          <Slider />
+          <UserSection
+            mainTitle={userData ? userData.recentlyViewed.title : ""}
+            items={userData ? userData.recentlyViewed.data : []}
+            description={userData ? userData.recentlyViewed.description : ""}
+            status={userLoading}
+          />
+          <UserSection
+            mainTitle={userData ? userData.recommendedItems.title : ""}
+            items={userData ? userData.recommendedItems.data : []}
+            description={userData ? userData.recommendedItems.description : ""}
+            status={userLoading}
+          />
 
-      <ImageSection />
+          <ImageSection />
 
-      <div ref={refTrending}>
-        <MainSection
-          mainTitle={mainData ? mainData.trendingItems.title : ""} // mainData.trendingItems.title
-          items={mainData ? mainData.trendingItems.data : []} //mainData.trendingItems.data
-          description={mainData ? mainData.trendingItems.description : ""} //mainData.trendingItems.description
-          status={mainLoading}
-        />
-      </div>
+          <div ref={refTrending}>
+            <MainSection
+              mainTitle={mainData ? mainData.trendingItems.title : ""}
+              items={mainData ? mainData.trendingItems.data : []}
+              description={mainData ? mainData.trendingItems.description : ""}
+              status={mainLoading}
+            />
+          </div>
 
-      <div ref={refFeatured}>
-        <MainSection
-          mainTitle={mainData ? mainData.featuredItems.title : ""} // mainData.featuredItems.title
-          items={mainData ? mainData.featuredItems.data : []} //mainData.featuredItems.data
-          description={mainData ? mainData.featuredItems.description : ""} //mainData.featuredItems.description
-          status={mainLoading}
-        />
-      </div>
-    </div>
+          <div ref={refFeatured}>
+            <MainSection
+              mainTitle={mainData ? mainData.featuredItems.title : ""}
+              items={mainData ? mainData.featuredItems.data : []}
+              description={mainData ? mainData.featuredItems.description : ""}
+              status={mainLoading}
+            />
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
