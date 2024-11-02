@@ -35,6 +35,7 @@ app.post("/resetPassword", UserController.resetPassword);
 app.get("/getShoes", ShoesController.getShoes);
 app.get("/getMainSection/:section", ShoesController.getMainSection);
 app.get("/searchItems/:searchingValue", ShoesController.searchProducts);
+app.get("/loadMoreItems/:sectionName/:page", ShoesController.loadMoreItems);
 app.listen(port, (err) => {
   if (err) {
     console.log("Error starting server", err);

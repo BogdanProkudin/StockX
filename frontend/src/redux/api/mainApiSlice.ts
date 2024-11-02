@@ -19,7 +19,8 @@ export const mainApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3003" }),
   endpoints: (builder) => ({
     mainSectionFetch: builder.query({
-      query: (section: string) => `/getMainSection/${section}`,
+      query: ({ sectionName }: { sectionName: string }) =>
+        `/getMainSection/${sectionName}`,
       keepUnusedDataFor: 60,
     }),
   }),
@@ -34,8 +35,17 @@ export const searchApi = createApi({
       query: (searchingValue: string) => `/searchItems/${searchingValue}`,
       keepUnusedDataFor: 60,
     }),
+    loadMoreItems: builder.query({
+      query: ({
+        sectionName,
+        page,
+      }: {
+        sectionName: string;
+        page: number | null;
+      }) => `/loadMoreItems/${sectionName}/${page}`,
+    }),
   }),
 });
 
 // Экспортируем хуки для использования в компонентах
-export const { useLazySearchItemsQuery } = searchApi;
+export const { useLazySearchItemsQuery, useLazyLoadMoreItemsQuery } = searchApi;

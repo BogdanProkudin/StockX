@@ -12,7 +12,7 @@ const index = () => {
     return <SearchedItemsListSkeleton />;
   }
 
-  if (foundeditems.length > 0) {
+  if (foundeditems && foundeditems.length > 0) {
     return (
       <div className="flex h-full min-w-[965px] flex-col justify-center">
         <SuggestionItemsList />
