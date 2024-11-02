@@ -1,25 +1,36 @@
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 
-interface UseFetchOnViewProps {
-  fetchFunction: (sectionName: string, boolean: true) => void;
+interface FetchArgs {
   sectionName: string;
+  page: number | null;
+}
+
+interface UseFetchOnViewProps {
+  fetchFunction: (args: FetchArgs, shouldFetch: boolean) => void;
+  threshold: number; // Позволяет задать threshold
+  triggerOnce: boolean; // Позволяет задать triggerOnce
+  sectionName: string;
+  page: number | null;
 }
 
 const useFetchOnView = ({
   fetchFunction,
   sectionName,
+  page,
+  threshold,
+  triggerOnce,
 }: UseFetchOnViewProps) => {
   const { ref, inView } = useInView({
-    threshold: 0,
-    triggerOnce: true,
+    threshold,
+    triggerOnce,
   });
 
   useEffect(() => {
     if (inView) {
-      fetchFunction(sectionName, true); // просто вызываем ее и передаем название секции
+      fetchFunction({ sectionName, page }, true);
     }
-  }, [inView, sectionName]);
+  }, [inView, sectionName, page, fetchFunction]);
 
   return ref;
 };

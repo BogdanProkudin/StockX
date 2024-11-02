@@ -84,3 +84,16 @@ export const searchProducts = async (req, res) => {
     return res.status(404).json({ message: "ERROR" });
   }
 };
+
+export const loadMoreItems = async (req, res) => {
+  try {
+    const { sectionName, page } = req.params;
+    const api = new StockXAPI(StockXLocation.US);
+    const result = await api.searchProducts(sectionName, page);
+
+    return res.status(200).json({ data: result.hits });
+  } catch (err) {
+    console.log("ERROR WHILE GETTING MORE ITEMS", err);
+    return res.status(404).json({ message: "ERROR" });
+  }
+};
