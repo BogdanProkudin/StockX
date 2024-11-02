@@ -9,9 +9,18 @@ import {
   useUserSectionFetchQuery,
 } from "../redux/api/mainApiSlice";
 import useFetchOnView from "../hooks/useFetchOnView";
-import { useAppSelector } from "../redux/hook";
+import { useAppDispatch, useAppSelector } from "../redux/hook";
+import {
+  setFeaturedAccessories,
+  setFeaturedItems,
+  setTrendingItems,
+} from "../redux/slices/homeItemsSlice";
 
 const Home: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const { featuredItems, trendingItems, featuredAccessories } = useAppSelector(
+    (state) => state.homeItems,
+  );
   const searchInputValue = useAppSelector(
     (state) => state.searchSlice.searchValue,
   );
@@ -36,21 +45,34 @@ const Home: React.FC = () => {
     fetchFunction: fetchMainSection,
     sectionName: "featured",
     page: null,
-    threshold: 0,
+    threshold: 0.2,
     triggerOnce: true,
   });
-
-  const [data1, setData1] = useState<any>();
-  const [data2, setData2] = useState<any>();
-
+  const refFeaturedAccessories = useFetchOnView({
+    fetchFunction: fetchMainSection,
+    sectionName: "featuredAccessories",
+    page: null,
+    threshold: 0.2,
+    triggerOnce: true,
+  });
   useEffect(() => {
-    if (mainData && mainData.title === "Trending Sneakers") {
-      setData1(mainData);
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
     }
-    if (mainData && mainData.title === "Featured Apparel") {
-      setData2(mainData);
+  }, []);
+  useEffect(() => {
+    if (mainData) {
+      console.log("Received mainData:", mainData);
+      if (mainData.title === "Trending Sneakers") {
+        dispatch(setTrendingItems(mainData));
+      } else if (mainData.title === "Featured Apparel") {
+        dispatch(setFeaturedItems(mainData));
+      } else if (mainData.title === "Featured Accessories") {
+        dispatch(setFeaturedAccessories(mainData));
+      }
     }
   }, [mainData]);
+  console.log(mainData);
 
   const recentlyViewed = userData?.recentlyViewed || {
     title: "",
@@ -58,17 +80,6 @@ const Home: React.FC = () => {
     description: "",
   };
   const recommendedItems = userData?.recommendedItems || {
-    title: "",
-    data: [],
-    description: "",
-  };
-
-  const trendingItems = mainData?.trendingItems || {
-    title: "",
-    data: [],
-    description: "",
-  };
-  const featuredItems = mainData?.featuredItems || {
     title: "",
     data: [],
     description: "",
@@ -102,18 +113,26 @@ const Home: React.FC = () => {
 
       <div ref={refTrending}>
         <MainSection
-          mainTitle={data1 ? data1.title : ""} // mainData.trendingItems.title
-          items={data1 ? data1.data : []} //mainData.trendingItems.data
-          description={data1 ? data1.description : ""} //mainData.trendingItems.description -->
+          mainTitle={trendingItems.title}
+          items={trendingItems.data}
+          description={trendingItems.description}
           status={mainLoading}
         />
       </div>
 
       <div ref={refFeatured}>
         <MainSection
-          mainTitle={data2 ? data2.title : ""} // data2.featuredItems.title
-          items={data2 ? data2.data : []} //data2.featuredItems.data
-          description={data2 ? data2.description : ""} //mainData.featuredItems.description -->
+          mainTitle={featuredItems.title}
+          items={featuredItems.data}
+          description={featuredItems.description}
+          status={mainLoading}
+        />
+      </div>
+      <div ref={refFeaturedAccessories}>
+        <MainSection
+          mainTitle={featuredAccessories.title}
+          items={featuredAccessories.data}
+          description={featuredAccessories.description}
           status={mainLoading}
         />
       </div>

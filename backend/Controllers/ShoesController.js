@@ -24,7 +24,7 @@ export const getShoes = async (req, res) => {
     res.json(data);
   } catch (error) {
     console.error("Ошибка при получении данных с StockX:", error);
-    res.status(500).json({ message: "Ошибка сервера" });
+    res.status(500).json({ message: "Server Error" });
   }
 };
 export const getMainSection = async (req, res) => {
@@ -32,9 +32,10 @@ export const getMainSection = async (req, res) => {
     const api = new StockXAPI(StockXLocation.US);
     const section = req.params.section;
 
-    const [trending, featured] = await Promise.all([
+    const [trending, featured, featuredAcs] = await Promise.all([
       api.searchProducts("Adidas", 1),
       api.searchProducts("Nike", 1),
+      api.searchProducts("Balenciaga", 1),
     ]);
 
     const data = {
@@ -50,16 +51,26 @@ export const getMainSection = async (req, res) => {
           "'Featured' products are a curated collection of our best selling items",
         data: featured.hits.slice(0, 6),
       },
+      featuredAccessories: {
+        title: "Featured Accessories",
+        description:
+          "'Featured' products are a curated collection of our best selling items",
+        data: featuredAcs.hits.slice(0, 6),
+      },
     };
 
     if (section === "trending") {
       res.json(data.trending);
     } else if (section === "featured") {
       res.json(data.featured);
+    } else if (section === "featuredAccessories") {
+      res.json(data.featuredAccessories);
+    } else {
+      res.status(404).json({ message: "Section not found" });
     }
   } catch (error) {
     console.error("Ошибка при получении данных с StockX:", error);
-    res.status(500).json({ message: "Ошибка сервера" });
+    res.status(500).json({ message: "Server Error" });
   }
 };
 
@@ -89,6 +100,6 @@ export const loadMoreItems = async (req, res) => {
     return res.status(200).json({ data: result.hits });
   } catch (err) {
     console.log("ERROR WHILE GETTING MORE ITEMS", err);
-    return res.status(404).json({ message: "ERROR" });
+    return res.status(404).json({ message: "Server Error" });
   }
 };
