@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Slider from "../components/Slider/Slider";
 import FoundItems from "../components/FoundItems/index";
 import UserSection from "../components/Sections/UserSection/UserSection";
@@ -31,48 +31,62 @@ const Home: React.FC = () => {
     isLoading: userLoading,
   } = useUserSectionFetchQuery({});
 
-  const [fetchMainSection, { data: mainData, isLoading: mainLoading }] =
-    useLazyMainSectionFetchQuery({});
+  const [fetchTrending, { data: trendingData, isLoading: trendingLoading }] =
+    useLazyMainSectionFetchQuery();
+  const [fetchFeatured, { data: featuredData, isLoading: featuredLoading }] =
+    useLazyMainSectionFetchQuery();
+  const [
+    fetchFeaturedAccessories,
+    { data: accessoriesData, isLoading: accessoriesLoading },
+  ] = useLazyMainSectionFetchQuery();
 
   const refTrending = useFetchOnView({
-    fetchFunction: fetchMainSection,
+    fetchFunction: fetchTrending,
     sectionName: "trending",
+    threshold: 1,
     page: null,
-    threshold: 0,
     triggerOnce: true,
   });
+
   const refFeatured = useFetchOnView({
-    fetchFunction: fetchMainSection,
+    fetchFunction: fetchFeatured,
     sectionName: "featured",
+    threshold: 1,
     page: null,
-    threshold: 0.2,
     triggerOnce: true,
   });
+
   const refFeaturedAccessories = useFetchOnView({
-    fetchFunction: fetchMainSection,
+    fetchFunction: fetchFeaturedAccessories,
     sectionName: "featuredAccessories",
+    threshold: 1,
     page: null,
-    threshold: 0.2,
     triggerOnce: true,
   });
+
   useEffect(() => {
     if ("scrollRestoration" in window.history) {
       window.history.scrollRestoration = "manual";
     }
   }, []);
+
   useEffect(() => {
-    if (mainData) {
-      console.log("Received mainData:", mainData);
-      if (mainData.title === "Trending Sneakers") {
-        dispatch(setTrendingItems(mainData));
-      } else if (mainData.title === "Featured Apparel") {
-        dispatch(setFeaturedItems(mainData));
-      } else if (mainData.title === "Featured Accessories") {
-        dispatch(setFeaturedAccessories(mainData));
-      }
+    if (trendingData) {
+      dispatch(setTrendingItems(trendingData));
     }
-  }, [mainData]);
-  console.log(mainData);
+  }, [trendingData]);
+
+  useEffect(() => {
+    if (featuredData) {
+      dispatch(setFeaturedItems(featuredData));
+    }
+  }, [featuredData]);
+
+  useEffect(() => {
+    if (accessoriesData) {
+      dispatch(setFeaturedAccessories(accessoriesData));
+    }
+  }, [accessoriesData]);
 
   const recentlyViewed = userData?.recentlyViewed || {
     title: "",
@@ -116,7 +130,7 @@ const Home: React.FC = () => {
           mainTitle={trendingItems.title}
           items={trendingItems.data}
           description={trendingItems.description}
-          status={mainLoading}
+          status={trendingLoading}
         />
       </div>
 
@@ -125,15 +139,16 @@ const Home: React.FC = () => {
           mainTitle={featuredItems.title}
           items={featuredItems.data}
           description={featuredItems.description}
-          status={mainLoading}
+          status={featuredLoading}
         />
       </div>
+
       <div ref={refFeaturedAccessories}>
         <MainSection
           mainTitle={featuredAccessories.title}
           items={featuredAccessories.data}
           description={featuredAccessories.description}
-          status={mainLoading}
+          status={accessoriesLoading}
         />
       </div>
 

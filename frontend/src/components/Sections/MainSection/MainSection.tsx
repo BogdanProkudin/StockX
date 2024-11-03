@@ -32,7 +32,7 @@ const MainSection: React.FC<UserSectionProps> = ({
       <div className="my-5 flex items-center justify-between">
         <div className="relative flex items-center gap-3">
           <h1 className="text-xl font-bold">
-            {status ? <TitleSkeleton /> : mainTitle}
+            {mainTitle.length < 1 ? <TitleSkeleton /> : mainTitle}
           </h1>
           <span className="group relative cursor-pointer rounded-full bg-black px-[6px] py-[1px] text-sm text-white">
             <div className="absolute bottom-full left-1/2 z-10 mb-2 hidden w-[250px] -translate-x-1/2 transform rounded-lg bg-gray-800 px-3 py-2 text-sm text-white group-hover:block">
@@ -42,7 +42,7 @@ const MainSection: React.FC<UserSectionProps> = ({
             ?
           </span>
         </div>
-        {status ? (
+        {mainTitle.length < 1 ? (
           <TitleSkeleton />
         ) : (
           <Link
@@ -56,7 +56,7 @@ const MainSection: React.FC<UserSectionProps> = ({
       </div>
 
       <div className="flex justify-between">
-        {status
+        {mainTitle.length < 1
           ? cardSkeleton
           : items?.map((obj: userCardProps, id: number) => (
               <UserCard key={id} {...obj} />
