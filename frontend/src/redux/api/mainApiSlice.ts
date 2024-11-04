@@ -55,5 +55,6 @@ export const searchApi = createApi({
 export const {
   useLazySearchItemsQuery,
   useLazyLoadMoreItemsQuery,
-  useGetSuggestionCountQuery,
+
+  useLazyGetSuggestionCountQuery,
 } = searchApi;

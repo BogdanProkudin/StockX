@@ -1,19 +1,15 @@
 import React, { useEffect } from "react";
 import SuggestionItem from "./SuggestionItem";
-import { useGetSuggestionCountQuery } from "../../../redux/api/mainApiSlice";
+
 import { useAppSelector } from "../../../redux/hook";
+import { createSuggestionNames } from "../../../assets/SearchAssets/SuggestionItemsNames";
 
 const SuggestionItemsList = ({
   suggestionCountsArr,
 }: {
   suggestionCountsArr: number[];
 }) => {
-  const suggestionNames = [
-    { name: "sneakers", path: "", count: suggestionCountsArr[0] },
-    { name: "apparel", path: "", count: suggestionCountsArr[1] },
-    { name: "accessories", path: "", count: suggestionCountsArr[2] },
-    { name: "shoes", path: "", count: suggestionCountsArr[3] },
-  ];
+  const suggestionNames = createSuggestionNames(suggestionCountsArr);
   return (
     <div className="flex w-full flex-col">
       {suggestionNames.map((suggest) => {
