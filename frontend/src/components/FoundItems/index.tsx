@@ -1,3 +1,4 @@
+import { useGetSuggestionCountQuery } from "../../redux/api/mainApiSlice";
 import { useAppSelector } from "../../redux/hook";
 import SearchedItemsList from "./SearchedItems/SearchedItemsList";
 import SearchedItemsListSkeleton from "./Skeletons/SearchedItemsListSkeleton";
@@ -8,6 +9,8 @@ const index = () => {
   const foundeditems = useAppSelector(
     (state) => state.searchSlice.foundedItems,
   );
+  const searchValue = useAppSelector((state) => state.searchSlice.searchValue);
+  const { data: suggestionCountsArr } = useGetSuggestionCountQuery(searchValue);
   if (isLoading) {
     return <SearchedItemsListSkeleton />;
   }
@@ -15,7 +18,7 @@ const index = () => {
   if (foundeditems && foundeditems.length > 0) {
     return (
       <div className="flex h-full min-w-[965px] flex-col justify-center">
-        <SuggestionItemsList />
+        <SuggestionItemsList suggestionCountsArr={suggestionCountsArr.data} />
         <SearchedItemsList />
       </div>
     );

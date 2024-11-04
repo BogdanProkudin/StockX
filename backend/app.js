@@ -33,6 +33,10 @@ app.post("/tokenValidation", UserController.isTokenValid);
 app.post("/resetPassword", UserController.resetPassword);
 //ItemsLogic
 app.get("/getShoes", ShoesController.getShoes);
+app.get(
+  "/getSuggestionItemsCount/:section",
+  ShoesController.getSuggestionItemsCount
+);
 app.get("/getMainSection/:section", ShoesController.getMainSection);
 app.get("/searchItems/:searchingValue", ShoesController.searchProducts);
 app.get("/loadMoreItems/:sectionName/:page", ShoesController.loadMoreItems);
