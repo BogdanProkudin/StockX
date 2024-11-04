@@ -91,20 +91,19 @@ export const searchProducts = async (req, res) => {
     return res.status(404).json({ message: "ERROR" });
   }
 };
-export const getSuggestionItemsCount = async (req, res) => {
+export const getSuggestionItemsCount = async (sectionName) => {
   // const { sectionName } = req.params;
   const api = new StockXAPI(StockXLocation.US);
-  const result = (await api.searchProducts("Nike")).hits;
-  console.log(result.length, "arrat lenght ");
+  const result = (await api.searchProducts(sectionName)).hits;
 
   if (result.length >= 20) {
-    return res.status(200).json({ data: [10000, 7659, 1340, 569] });
+    return [10000, 7659, 1340, 569];
   } else if (result.length >= 15) {
-    return res.status(200).json({ data: [5000, 3359, 780, 256] });
+    return [5000, 3359, 780, 256];
   } else if (result.length >= 10) {
-    return res.status(200).json({ data: [2531, 1356, 389, 189] });
+    return [2531, 1356, 389, 189];
   } else {
-    return res.status(200).json({ data: [1351, 751, 149, 78] });
+    return [1351, 751, 149, 78];
   }
 };
 
@@ -112,9 +111,13 @@ export const loadMoreItems = async (req, res) => {
   try {
     const { sectionName, page } = req.params;
     const api = new StockXAPI(StockXLocation.US);
+    const suggestionCountList =
+      page === 1 ? getSuggestionItemsCount(sectionName) : null;
     const result = await api.searchProducts(sectionName, page);
 
-    return res.status(200).json({ data: result.hits });
+    return res
+      .status(200)
+      .json({ data: result.hits, suggestionItemsList: suggestionCountList });
   } catch (err) {
     console.log("ERROR WHILE GETTING MORE ITEMS", err);
     return res.status(404).json({ message: "Server Error" });

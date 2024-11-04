@@ -11,17 +11,26 @@ import {
   setSearchValue,
 } from "../../../redux/slices/searchSlice";
 import { useSearch } from "../../../hooks/useSearch";
+import { useNavigate } from "react-router-dom";
 
 const HeaderInput: React.FC = () => {
   const dispatch = useAppDispatch();
-
+  const navigate = useNavigate();
   const { searchValue, handleSearch, data, isError } = useSearch();
+
+  const handleKeyDown = (event: { key: string }) => {
+    if (event.key === "Enter") {
+      navigate(`/search/${searchValue}`);
+    }
+  };
 
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     dispatch(setIsLoading(true));
     dispatch(setSearchValue(value));
+
     handleSearch(value);
+
     if (value.length === 0) {
       window.scrollTo(0, 0);
     }
@@ -52,6 +61,7 @@ const HeaderInput: React.FC = () => {
       </button>
       <input
         onChange={onChangeInput}
+        onKeyDown={handleKeyDown}
         className={styles.header_input}
         placeholder="Search for brand, color, etc."
         type="text"
