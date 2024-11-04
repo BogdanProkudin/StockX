@@ -27,6 +27,7 @@ export const getShoes = async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 };
+
 export const getMainSection = async (req, res) => {
   try {
     const api = new StockXAPI(StockXLocation.US);
