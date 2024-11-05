@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import Slider from "../components/Slider/Slider";
-import FoundItems from "../components/FoundItems/index";
+
 import UserSection from "../components/Sections/UserSection/UserSection";
 import MainSection from "../components/Sections/MainSection/MainSection";
 import ImageSection from "../components/Sections/ImageSection/ImageSection";
@@ -26,9 +26,6 @@ const Home: React.FC = () => {
   const dispatch = useAppDispatch();
   const { featuredItems, trendingItems, featuredAccessories } = useAppSelector(
     (state) => state.homeItems,
-  );
-  const searchInputValue = useAppSelector(
-    (state) => state.searchSlice.searchValue,
   );
 
   const {
@@ -104,14 +101,6 @@ const Home: React.FC = () => {
     data: [],
     description: "",
   };
-
-  if (searchInputValue.length > 0) {
-    return (
-      <div className="mt-6 flex items-center justify-center">
-        <FoundItems />
-      </div>
-    );
-  }
 
   return (
     <div className="mt-6">
