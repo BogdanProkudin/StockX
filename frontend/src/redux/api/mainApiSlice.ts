@@ -44,17 +44,8 @@ export const searchApi = createApi({
         page: number | null;
       }) => `/loadMoreItems/${sectionName}/${page}`,
     }),
-
-    getSuggestionCount: builder.query({
-      query: (sectonName: string) => `/getSuggestionItemsCount/${sectonName}`,
-    }),
   }),
 });
 
 // Экспортируем хуки для использования в компонентах
-export const {
-  useLazySearchItemsQuery,
-  useLazyLoadMoreItemsQuery,
-
-  useLazyGetSuggestionCountQuery,
-} = searchApi;
+export const { useLazySearchItemsQuery, useLazyLoadMoreItemsQuery } = searchApi;

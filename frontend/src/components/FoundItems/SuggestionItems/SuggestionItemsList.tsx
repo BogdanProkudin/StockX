@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import SuggestionItem from "./SuggestionItem";
 
-import { useAppSelector } from "../../../redux/hook";
 import { createSuggestionNames } from "../../../assets/SearchAssets/SuggestionItemsNames";
 
 const SuggestionItemsList = ({

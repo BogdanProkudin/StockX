@@ -11,7 +11,6 @@ const index = () => {
   const suggestionCountsArr = useAppSelector(
     (state) => state.searchSlice.suggestionCountsArr,
   );
-  console.log("BC", suggestionCountsArr);
 
   if (isLoading) {
     return <SearchedItemsListSkeleton />;

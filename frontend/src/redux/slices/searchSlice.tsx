@@ -26,7 +26,7 @@ const searchSlice = createSlice({
       state.searchValue = action.payload;
     },
     setSuggestionCountsArr: (state, action) => {
-      state.suggestionCountsArr = action.payload.data.data;
+      state.suggestionCountsArr = action.payload.suggestionCountList;
     },
     // Дополнительные редьюсеры для работы с состоянием, если нужны
   },

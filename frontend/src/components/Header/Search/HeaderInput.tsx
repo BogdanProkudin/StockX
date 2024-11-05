@@ -2,9 +2,7 @@ import React, { useEffect } from "react";
 import styles from "./styles.module.scss";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
-import debounce from "lodash.debounce";
-import { useLazySearchItemsQuery } from "../../../redux/api/mainApiSlice";
-import { useAppDispatch, useAppSelector } from "../../../redux/hook";
+import { useAppDispatch } from "../../../redux/hook";
 import {
   setFoundedItems,
   setIsLoading,
@@ -28,9 +26,7 @@ const HeaderInput: React.FC = () => {
     const value = e.target.value;
     dispatch(setIsLoading(true));
     dispatch(setSearchValue(value));
-
     handleSearch(value);
-
     if (value.length === 0) {
       window.scrollTo(0, 0);
     }
