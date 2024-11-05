@@ -4,13 +4,25 @@ import NavHeader from "../components/SecondHeader/NavHeader";
 import { Outlet } from "react-router-dom";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
+
+import FoundItems from "../components/FoundItems/index";
 import styles from "./styles.module.scss";
+import { useAppSelector } from "../redux/hook";
 const HeaderLayout = () => {
+  const searchInputValue = useAppSelector(
+    (state) => state.searchSlice.searchValue,
+  );
   return (
     <>
       <div className={styles.headerBar}>
         <Header />
         <NavHeader />
+
+        {searchInputValue.length > 0 && (
+          <div className="mt-6 flex items-center justify-center">
+            <FoundItems />
+          </div>
+        )}
       </div>
       {/* <button className={styles.btnTheme}>
         <WbSunnyIcon />

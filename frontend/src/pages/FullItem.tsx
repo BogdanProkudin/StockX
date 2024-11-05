@@ -4,6 +4,8 @@ import { useParams } from "react-router-dom";
 
 const FullItem = () => {
   const { title } = useParams();
+  console.log(title);
+
   return (
     <div>
       <BreadCrumbs />
