@@ -75,27 +75,7 @@ export const getMainSection = async (req, res) => {
   }
 };
 
-export const searchProducts = async (req, res) => {
-  try {
-    const searchingValue = req.params.searchingValue;
-
-    const api = new StockXAPI(StockXLocation.US);
-    const result = await api.searchProducts(searchingValue);
-
-    // const filtered = res.hits.filter(
-    //   (obj) => !obj.category.includes("Shoes") && obj.brand.includes("Nike")
-    // );
-    return res.status(200).json({ data: result.hits });
-  } catch (err) {
-    console.log("ERROR", err);
-    return res.status(404).json({ message: "ERROR" });
-  }
-};
-export const getSuggestionItemsCount = async (sectionName) => {
-  // const { sectionName } = req.params;
-  const api = new StockXAPI(StockXLocation.US);
-  const result = (await api.searchProducts(sectionName)).hits;
-
+export const getSuggestionItemsCount = async (result) => {
   if (result.length >= 20) {
     return [10000, 7659, 1340, 569];
   } else if (result.length >= 15) {
@@ -106,14 +86,30 @@ export const getSuggestionItemsCount = async (sectionName) => {
     return [1351, 751, 149, 78];
   }
 };
+export const searchProducts = async (req, res) => {
+  try {
+    const searchingValue = req.params.searchingValue;
+    const api = new StockXAPI(StockXLocation.US);
+    const result = await api.searchProducts(searchingValue);
+    const suggestionCountList = await getSuggestionItemsCount(result.hits);
+
+    // const filtered = res.hits.filter(
+    //   (obj) => !obj.category.includes("Shoes") && obj.brand.includes("Nike")
+    // );
+    return res.status(200).json({
+      data: result.hits,
+      suggestionCountList: suggestionCountList,
+    });
+  } catch (err) {
+    console.log("ERROR", err);
+    return res.status(404).json({ message: "ERROR" });
+  }
+};
 
 export const loadMoreItems = async (req, res) => {
   try {
     const { sectionName, page } = req.params;
     const api = new StockXAPI(StockXLocation.US);
-    const suggestionCountList =
-      page === 1 ? getSuggestionItemsCount(sectionName) : null;
-    const result = await api.searchProducts(sectionName, page);
 
     return res
       .status(200)
