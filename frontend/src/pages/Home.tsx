@@ -15,7 +15,13 @@ import {
   setFeaturedItems,
   setTrendingItems,
 } from "../redux/slices/homeItemsSlice";
+import Apparel from "../assets/images/HolidayCampaign_XpressShipApparel_Evergreen_SecondaryA.webp";
+import Wallet from "../assets/images/Wallets-Card_Holders-Banners-ENSecondaryB.webp";
 
+import {
+  firstCardAssets,
+  secondCardAssets,
+} from "../assets/ImgSection/ImgSection";
 const Home: React.FC = () => {
   const dispatch = useAppDispatch();
   const { featuredItems, trendingItems, featuredAccessories } = useAppSelector(
@@ -123,7 +129,7 @@ const Home: React.FC = () => {
         status={userLoading}
       />
 
-      <ImageSection />
+      <ImageSection cardAssets={firstCardAssets} />
 
       <div ref={refTrending}>
         <MainSection
@@ -151,6 +157,16 @@ const Home: React.FC = () => {
           status={accessoriesLoading}
         />
       </div>
+
+      <div className="mb-10 mt-28 flex gap-5">
+        <img
+          className="cursor-pointer rounded-2xl"
+          src={Apparel}
+          alt="Apparel"
+        />
+        <img className="cursor-pointer rounded-2xl" src={Wallet} alt="Wallet" />
+      </div>
+      <ImageSection cardAssets={secondCardAssets} />
 
       {userError && <div className="text-red-500">Error loading user data</div>}
     </div>

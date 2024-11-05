@@ -7,14 +7,11 @@ import "./scss/styles.scss";
 import Profile from "./pages/Profile";
 
 import ResetPage from "./pages/ResetPassword";
-import { useAppDispatch, useAppSelector } from "./redux/hook";
 
 import HeaderLayout from "./layout/HeaderLayout";
-import axios from "./axiosConfig/axios";
+import FullItem from "./pages/FullItem";
 
 function App() {
-  const dispatch = useAppDispatch();
-
   const userToken = localStorage.getItem("token");
 
   return (
@@ -22,12 +19,14 @@ function App() {
       <Routes>
         <Route path="/" element={<HeaderLayout />}>
           <Route path="" element={<Home />} />
+          <Route path="/:id" element={<FullItem />} />
         </Route>
         <Route
           path="/auth"
           element={userToken ? <Navigate to="/profile" /> : <Auth />}
         />
         <Route path="/profile" element={<Profile />} />
+
         <Route path="/resetPassword/:token" element={<ResetPage />} />
       </Routes>
     </>

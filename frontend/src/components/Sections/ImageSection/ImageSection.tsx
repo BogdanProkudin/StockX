@@ -1,14 +1,17 @@
 import React from "react";
 import ImageCard from "../../Cards/ImageCard/ImageCard";
-import { cardAssets } from "../../../assets/ImgSection/ImgSection";
+import { cardAssetsProps } from "../../../assets/ImgSection/ImgSection";
 
-const ImageSection: React.FC = () => {
+interface ImageSectionProps {
+  cardAssets: cardAssetsProps[];
+}
+const ImageSection: React.FC<ImageSectionProps> = ({ cardAssets }) => {
   return (
     <div className="mb-10">
       <h1 className="my-5 text-xl font-bold">Holiday Gift Guides</h1>
 
       <div className="flex justify-between">
-        {cardAssets.map((obj, id) => (
+        {cardAssets.map((obj: cardAssetsProps, id: number) => (
           <ImageCard key={id} {...obj} />
         ))}
       </div>
