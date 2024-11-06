@@ -12,13 +12,13 @@ const index = () => {
   const suggestionCountsArr = useAppSelector(
     (state) => state.searchSlice.suggestionCountsArr,
   );
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
+  // useEffect(() => {
+  //   document.body.style.overflow = "hidden";
 
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, []);
+  //   return () => {
+  //     document.body.style.overflow = "auto";
+  //   };
+  // }, []);
 
   if (isLoading) {
     return <SearchedItemsListSkeleton />;
@@ -26,7 +26,7 @@ const index = () => {
 
   if (foundeditems && foundeditems.length > 0) {
     return (
-      <div className="flex h-full min-w-[965px] flex-col justify-center overflow-y-scroll">
+      <div className="h-100 flex min-w-[965px] flex-col justify-center overflow-y-scroll">
         <SuggestionItemsList suggestionCountsArr={suggestionCountsArr} />
         <SearchedItemsList />
       </div>

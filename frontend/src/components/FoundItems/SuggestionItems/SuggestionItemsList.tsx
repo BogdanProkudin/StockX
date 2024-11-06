@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import SuggestionItem from "./SuggestionItem";
 
 import { createSuggestionNames } from "../../../assets/SearchAssets/SuggestionItemsNames";
@@ -8,7 +8,10 @@ const SuggestionItemsList = ({
 }: {
   suggestionCountsArr: number[];
 }) => {
-  const suggestionNames = createSuggestionNames(suggestionCountsArr);
+  const suggestionNames = useMemo(
+    () => createSuggestionNames(suggestionCountsArr),
+    [suggestionCountsArr],
+  );
   return (
     <div className="flex w-full flex-col">
       {suggestionNames.map((suggest) => {
