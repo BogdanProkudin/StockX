@@ -11,9 +11,9 @@ import {
 import useFetchOnView from "../hooks/useFetchOnView";
 import { useAppDispatch, useAppSelector } from "../redux/hook";
 import {
-  setFeaturedAccessories,
-  setFeaturedItems,
-  setTrendingItems,
+  setAddidasItems,
+  setNikeItems,
+  setBalenciagaItems,
 } from "../redux/slices/homeItemsSlice";
 import Apparel from "../assets/images/HolidayCampaign_XpressShipApparel_Evergreen_SecondaryA.webp";
 import Wallet from "../assets/images/Wallets-Card_Holders-Banners-ENSecondaryB.webp";
@@ -21,10 +21,11 @@ import Wallet from "../assets/images/Wallets-Card_Holders-Banners-ENSecondaryB.w
 import {
   firstCardAssets,
   secondCardAssets,
+  thirdCardAssets,
 } from "../assets/ImgSection/ImgSection";
 const Home: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { featuredItems, trendingItems, featuredAccessories } = useAppSelector(
+  const { addidasItems, nikeItems, balenciagaItems } = useAppSelector(
     (state) => state.homeItems,
   );
 
@@ -34,35 +35,35 @@ const Home: React.FC = () => {
     isLoading: userLoading,
   } = useUserSectionFetchQuery({});
 
-  const [fetchTrending, { data: trendingData, isLoading: trendingLoading }] =
+  const [fetchAddidas, { data: addidasData, isLoading: trendingLoading }] =
     useLazyMainSectionFetchQuery();
-  const [fetchFeatured, { data: featuredData, isLoading: featuredLoading }] =
+  const [fetchNike, { data: nikeData, isLoading: featuredLoading }] =
     useLazyMainSectionFetchQuery();
   const [
-    fetchFeaturedAccessories,
-    { data: accessoriesData, isLoading: accessoriesLoading },
+    fetchBalenciaga,
+    { data: balenciagaData, isLoading: accessoriesLoading },
   ] = useLazyMainSectionFetchQuery();
 
-  const refTrending = useFetchOnView({
-    fetchFunction: fetchTrending,
-    sectionName: "trending",
-    threshold: 1,
+  const refAdiddas = useFetchOnView({
+    fetchFunction: fetchAddidas,
+    sectionName: "addidas",
+    threshold: 0.2,
     page: null,
     triggerOnce: true,
   });
 
-  const refFeatured = useFetchOnView({
-    fetchFunction: fetchFeatured,
-    sectionName: "featured",
-    threshold: 1,
+  const refNike = useFetchOnView({
+    fetchFunction: fetchNike,
+    sectionName: "nike",
+    threshold: 0.2,
     page: null,
     triggerOnce: true,
   });
 
-  const refFeaturedAccessories = useFetchOnView({
-    fetchFunction: fetchFeaturedAccessories,
-    sectionName: "featuredAccessories",
-    threshold: 1,
+  const refBalenciaga = useFetchOnView({
+    fetchFunction: fetchBalenciaga,
+    sectionName: "balenciaga",
+    threshold: 0.2,
     page: null,
     triggerOnce: true,
   });
@@ -74,22 +75,22 @@ const Home: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (trendingData) {
-      dispatch(setTrendingItems(trendingData));
+    if (addidasData) {
+      dispatch(setAddidasItems(addidasData));
     }
-  }, [trendingData]);
+  }, [addidasData]);
 
   useEffect(() => {
-    if (featuredData) {
-      dispatch(setFeaturedItems(featuredData));
+    if (nikeData) {
+      dispatch(setNikeItems(nikeData));
     }
-  }, [featuredData]);
+  }, [nikeData]);
 
   useEffect(() => {
-    if (accessoriesData) {
-      dispatch(setFeaturedAccessories(accessoriesData));
+    if (balenciagaData) {
+      dispatch(setBalenciagaItems(balenciagaData));
     }
-  }, [accessoriesData]);
+  }, [balenciagaData]);
 
   const recentlyViewed = userData?.recentlyViewed || {
     title: "",
@@ -120,34 +121,25 @@ const Home: React.FC = () => {
 
       <ImageSection cardAssets={firstCardAssets} />
 
-      <div ref={refTrending}>
+      <div ref={refAdiddas}>
         <MainSection
-          mainTitle={trendingItems.title}
-          items={trendingItems.data}
-          description={trendingItems.description}
+          mainTitle={addidasItems.title}
+          items={addidasItems.data}
+          description={addidasItems.description}
           status={trendingLoading}
         />
       </div>
 
-      <div ref={refFeatured}>
+      <div ref={refNike}>
         <MainSection
-          mainTitle={featuredItems.title}
-          items={featuredItems.data}
-          description={featuredItems.description}
+          mainTitle={nikeItems.title}
+          items={nikeItems.data}
+          description={nikeItems.description}
           status={featuredLoading}
         />
       </div>
 
-      <div ref={refFeaturedAccessories}>
-        <MainSection
-          mainTitle={featuredAccessories.title}
-          items={featuredAccessories.data}
-          description={featuredAccessories.description}
-          status={accessoriesLoading}
-        />
-      </div>
-
-      <div className="mb-10 mt-28 flex gap-5">
+      <div className="mb-10 flex gap-5">
         <img
           className="cursor-pointer rounded-2xl"
           src={Apparel}
@@ -155,8 +147,16 @@ const Home: React.FC = () => {
         />
         <img className="cursor-pointer rounded-2xl" src={Wallet} alt="Wallet" />
       </div>
+      <div ref={refBalenciaga}>
+        <MainSection
+          mainTitle={balenciagaItems.title}
+          items={balenciagaItems.data}
+          description={balenciagaItems.description}
+          status={accessoriesLoading}
+        />
+      </div>
       <ImageSection cardAssets={secondCardAssets} />
-
+      <ImageSection cardAssets={thirdCardAssets} />
       {userError && <div className="text-red-500">Error loading user data</div>}
     </div>
   );
