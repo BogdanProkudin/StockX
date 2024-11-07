@@ -17,12 +17,6 @@ const HeaderLayout = () => {
       <div className={styles.headerBar}>
         <Header />
         <NavHeader />
-
-        {searchInputValue.length > 0 && (
-          <div className="mt-6 flex items-center justify-center">
-            <FoundItems />
-          </div>
-        )}
       </div>
       {/* <button className={styles.btnTheme}>
         <WbSunnyIcon />
