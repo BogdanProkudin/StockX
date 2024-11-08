@@ -2,7 +2,7 @@ import React from "react";
 import BreadCrumbs from "../components/BreadCrumbs/BreadCrumbs";
 import { useParams } from "react-router-dom";
 
-const FullItem = () => {
+const FullProduct = () => {
   const { title } = useParams();
 
   return (
@@ -13,4 +13,4 @@ const FullItem = () => {
   );
 };
 
-export default FullItem;
+export default FullProduct;

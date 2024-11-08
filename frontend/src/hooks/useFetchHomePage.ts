@@ -4,31 +4,26 @@ import { useEffect } from "react";
 import useFetchOnView from "./useFetchOnView";
 import { useAppDispatch } from "../redux/hook";
 import {
-  setFeaturedAccessories,
-  setFeaturedItems,
-  setTrendingItems,
+  setAddidasItems,
+  setBalenciagaItems,
+  setNikeItems,
 } from "../redux/slices/homeItemsSlice";
 
-export const useFetchHomePage = (section: string, setData: Function) => {
+export const useFetchHomePage = (section: string) => {
   const [fetchData, { data, isLoading }] = useLazyMainSectionFetchQuery();
   const dispatch = useAppDispatch();
-  useEffect(() => {
-    if (data) {
-      setData(data);
-    }
-  }, [data, setData]);
 
   useEffect(() => {
     console.log("SECTIONNAME", section, "DATA", data);
     if (data) {
-      if (data.title === "Trending Items") {
-        dispatch(setTrendingItems(data));
+      if (data.title === "Addidas Sneakers") {
+        dispatch(setAddidasItems(data));
       }
-      if (data.title === "Featured Apparel Items") {
-        dispatch(setFeaturedItems(data));
+      if (data.title === "Nike Sneakers") {
+        dispatch(setNikeItems(data));
       }
-      if (data.title === "Featured Accessories Items") {
-        dispatch(setFeaturedAccessories(data));
+      if (data.title === "Balenciaga Accessories") {
+        dispatch(setBalenciagaItems(data));
       }
     }
   }, [section, data]);

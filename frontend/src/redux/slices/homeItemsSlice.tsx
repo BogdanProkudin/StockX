@@ -7,32 +7,32 @@ interface IitemsProps {
   description: string;
 }
 interface IHomeItems {
-  trendingItems: IitemsProps;
-  featuredItems: IitemsProps;
-  featuredAccessories: IitemsProps;
+  addidasItems: IitemsProps;
+  nikeItems: IitemsProps;
+  balenciagaItems: IitemsProps;
 }
 
 const initialState: IHomeItems = {
-  trendingItems: { title: "", data: [], description: "" },
-  featuredItems: { title: "", data: [], description: "" },
-  featuredAccessories: { title: "", data: [], description: "" },
+  addidasItems: { title: "", data: [], description: "" },
+  nikeItems: { title: "", data: [], description: "" },
+  balenciagaItems: { title: "", data: [], description: "" },
 };
 const homeItems = createSlice({
   name: "homeItems",
   initialState,
   reducers: {
-    setTrendingItems: (state, action) => {
-      state.trendingItems = action.payload;
+    setAddidasItems: (state, action) => {
+      state.addidasItems = action.payload;
     },
-    setFeaturedItems: (state, action) => {
-      state.featuredItems = action.payload;
+    setNikeItems: (state, action) => {
+      state.nikeItems = action.payload;
     },
-    setFeaturedAccessories: (state, action) => {
-      state.featuredAccessories = action.payload;
+    setBalenciagaItems: (state, action) => {
+      state.balenciagaItems = action.payload;
     },
   },
 });
 
-export const { setTrendingItems, setFeaturedItems, setFeaturedAccessories } =
+export const { setAddidasItems, setNikeItems, setBalenciagaItems } =
   homeItems.actions;
 export default homeItems.reducer;

@@ -32,39 +32,45 @@ export const getMainSection = async (req, res) => {
     const api = new StockXAPI(StockXLocation.US);
     const section = req.params.section;
 
-    const [trending, featured, featuredAcs] = await Promise.all([
+    const [adidas, nike, balenciaga, accessories] = await Promise.all([
       api.searchProducts("Adidas", 1),
       api.searchProducts("Nike", 1),
       api.searchProducts("Balenciaga", 1),
+      api.searchProducts("Accessories", 1),
     ]);
 
     const data = {
-      trending: {
-        title: "Trending Items",
-        description:
-          "'Trending' products are a curated collection of our best selling items",
-        data: trending.hits.slice(0, 6),
+      adidas: {
+        title: "Addidas Sneakers",
+        description: "Top styles making waves this season",
+        data: adidas.hits.slice(0, 6),
       },
-      featured: {
-        title: "Featured Apparel Items",
+      nike: {
+        title: "Nike Sneakers",
+        description: "Standout designs for every collection",
+        data: nike.hits.slice(0, 6),
+      },
+      balenciaga: {
+        title: "Balenciaga Accessories",
+        description: "Accessories to complete any look",
+        data: balenciaga.hits.slice(0, 6),
+      },
+      accessories: {
+        title: "Featured Accessories",
         description:
           "'Featured' products are a curated collection of our best selling items",
-        data: featured.hits.slice(0, 6),
-      },
-      featuredAccessories: {
-        title: "Featured Accessories Items",
-        description:
-          "'Featured' products are a curated collection of our best selling items",
-        data: featuredAcs.hits.slice(0, 6),
+        data: accessories.hits.slice(0, 6),
       },
     };
 
-    if (section === "trending") {
-      res.json(data.trending);
-    } else if (section === "featured") {
-      res.json(data.featured);
-    } else if (section === "featuredAccessories") {
-      res.json(data.featuredAccessories);
+    if (section === "addidas") {
+      res.json(data.adidas);
+    } else if (section === "nike") {
+      res.json(data.nike);
+    } else if (section === "balenciaga") {
+      res.json(data.balenciaga);
+    } else if (section === "accessories") {
+      res.json(data.accessories);
     } else {
       res.status(404).json({ message: "Section not found" });
     }

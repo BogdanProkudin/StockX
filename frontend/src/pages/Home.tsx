@@ -11,9 +11,9 @@ import {
 import useFetchOnView from "../hooks/useFetchOnView";
 import { useAppDispatch, useAppSelector } from "../redux/hook";
 import {
-  setFeaturedAccessories,
-  setFeaturedItems,
-  setTrendingItems,
+  setAddidasItems,
+  setNikeItems,
+  setBalenciagaItems,
 } from "../redux/slices/homeItemsSlice";
 import Apparel from "../assets/images/HolidayCampaign_XpressShipApparel_Evergreen_SecondaryA.webp";
 import Wallet from "../assets/images/Wallets-Card_Holders-Banners-ENSecondaryB.webp";
@@ -21,12 +21,12 @@ import Wallet from "../assets/images/Wallets-Card_Holders-Banners-ENSecondaryB.w
 import {
   firstCardAssets,
   secondCardAssets,
+  thirdCardAssets,
 } from "../assets/ImgSection/ImgSection";
-import { useFetchHomePage } from "../hooks/useFetchHomePage.tsx";
+import { useFetchHomePage } from "../hooks/useFetchHomePage";
 const Home: React.FC = () => {
   const dispatch = useAppDispatch();
-
-  const { featuredItems, trendingItems, featuredAccessories } = useAppSelector(
+  const { addidasItems, nikeItems, balenciagaItems } = useAppSelector(
     (state) => state.homeItems,
   );
 
@@ -36,23 +36,10 @@ const Home: React.FC = () => {
     isLoading: userLoading,
   } = useUserSectionFetchQuery({});
 
-  const {
-    data: trendingData,
-    isLoading: trendingLoading,
-    ref: refTrending,
-  } = useFetchHomePage("trending", setTrendingItems);
-
-  const {
-    data: featuredData,
-    isLoading: featuredLoading,
-    ref: refFeatured,
-  } = useFetchHomePage("featured", setFeaturedItems);
-
-  const {
-    data: accessoriesData,
-    isLoading: accessoriesLoading,
-    ref: refFeaturedAccessories,
-  } = useFetchHomePage("featuredAccessories", setFeaturedItems);
+  // Используем для секций
+  const { ref: refAdiddas } = useFetchHomePage("addidas");
+  const { ref: refNike } = useFetchHomePage("nike");
+  const { ref: refBalenciaga } = useFetchHomePage("balenciaga");
 
   useEffect(() => {
     if ("scrollRestoration" in window.history) {
@@ -89,30 +76,21 @@ const Home: React.FC = () => {
 
       <ImageSection cardAssets={firstCardAssets} />
 
-      <div ref={refTrending}>
+      <div ref={refAdiddas}>
         <MainSection
-          mainTitle={trendingItems.title}
-          items={trendingItems.data}
-          description={trendingItems.description}
-          status={trendingLoading}
+          mainTitle={addidasItems.title}
+          items={addidasItems.data}
+          description={addidasItems.description}
+          status={false}
         />
       </div>
 
-      <div ref={refFeatured}>
+      <div ref={refNike}>
         <MainSection
-          mainTitle={featuredItems.title}
-          items={featuredItems.data}
-          description={featuredItems.description}
-          status={featuredLoading}
-        />
-      </div>
-
-      <div ref={refFeaturedAccessories}>
-        <MainSection
-          mainTitle={featuredAccessories.title}
-          items={featuredAccessories.data}
-          description={featuredAccessories.description}
-          status={accessoriesLoading}
+          mainTitle={nikeItems.title}
+          items={nikeItems.data}
+          description={nikeItems.description}
+          status={false}
         />
       </div>
 
@@ -124,8 +102,16 @@ const Home: React.FC = () => {
         />
         <img className="cursor-pointer rounded-2xl" src={Wallet} alt="Wallet" />
       </div>
+      <div ref={refBalenciaga}>
+        <MainSection
+          mainTitle={balenciagaItems.title}
+          items={balenciagaItems.data}
+          description={balenciagaItems.description}
+          status={false}
+        />
+      </div>
       <ImageSection cardAssets={secondCardAssets} />
-
+      <ImageSection cardAssets={thirdCardAssets} />
       {userError && <div className="text-red-500">Error loading user data</div>}
     </div>
   );
