@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import styles from "./styles.module.scss";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
-import { useAppDispatch } from "../../../redux/hook";
+import { useAppDispatch, useAppSelector } from "../../../redux/hook";
 import {
   setFoundedItems,
   setIsLoading,
@@ -16,6 +16,7 @@ const HeaderInput: React.FC = () => {
   const navigate = useNavigate();
   const { searchValue, handleSearch, data, isError } = useSearch();
 
+  const userToken = localStorage.getItem("token");
   const handleKeyDown = (event: { key: string }) => {
     if (event.key === "Enter") {
       navigate(`/search/${searchValue}`);
@@ -24,14 +25,16 @@ const HeaderInput: React.FC = () => {
 
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
+
     dispatch(setIsLoading(true));
     dispatch(setSearchValue(value));
     handleSearch(value);
     if (value.length === 0) {
+      dispatch(setFoundedItems([]));
       window.scrollTo(0, 0);
     }
   };
-  const userToken = localStorage.getItem("token");
+
   useEffect(() => {
     if (data) {
       dispatch(setFoundedItems(data));
@@ -40,9 +43,11 @@ const HeaderInput: React.FC = () => {
     if (isError) {
       console.error("Error fetching items :<");
     }
-  }, [data, dispatch, isError]);
+  }, [data, isError]);
+
   const onClickRemove = () => {
     dispatch(setSearchValue(""));
+    dispatch(setFoundedItems([]));
     window.scrollTo(0, 0);
   };
 

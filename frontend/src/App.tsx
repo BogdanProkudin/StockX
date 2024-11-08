@@ -1,5 +1,4 @@
-import React from "react";
-
+import React, { useMemo } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Auth from "./pages/Auth";
 import Home from "./pages/Home";
@@ -11,41 +10,30 @@ import FoundItems from "./components/FoundItems";
 import { useAppSelector } from "./redux/hook";
 
 import "./scss/styles.scss";
-import FullProduct from "./pages/ProductItem";
+import FullProduct from "./pages/ProductPage";
+
+type ComponentType = React.FC;
 
 function App() {
-  const userToken = localStorage.getItem("token");
+  const userToken = useMemo(() => localStorage.getItem("token"), []);
   const searchInputValue = useAppSelector(
     (state) => state.searchSlice.searchValue,
   );
 
+  const renderMainContent = (Component: ComponentType) =>
+    searchInputValue.length > 0 ? (
+      <div className="mt-6 flex items-center justify-center">
+        <FoundItems />
+      </div>
+    ) : (
+      <Component />
+    );
+
   return (
     <Routes>
       <Route path="/" element={<HeaderLayout />}>
-        <Route
-          path=""
-          element={
-            searchInputValue.length > 0 ? (
-              <div className="mt-6 flex items-center justify-center">
-                <FoundItems />
-              </div>
-            ) : (
-              <Home />
-            )
-          }
-        />
-        <Route
-          path=":id"
-          element={
-            searchInputValue.length > 0 ? (
-              <div className="mt-6 flex items-center justify-center">
-                <FoundItems />
-              </div>
-            ) : (
-              <FullProduct />
-            )
-          }
-        />
+        <Route path="" element={renderMainContent(Home)} />
+        <Route path=":id" element={renderMainContent(FullProduct)} />
       </Route>
 
       <Route

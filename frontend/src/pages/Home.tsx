@@ -139,7 +139,7 @@ const Home: React.FC = () => {
         />
       </div>
 
-      <div className="mb-10 flex gap-5">
+      <div className="mb-10 mt-28 flex gap-5">
         <img
           className="cursor-pointer rounded-2xl"
           src={Apparel}

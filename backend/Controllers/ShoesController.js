@@ -99,13 +99,19 @@ export const searchProducts = async (req, res) => {
     const api = new StockXAPI(StockXLocation.US);
     const result = await api.searchProducts(searchingValue);
     const suggestionCountList = await getSuggestionItemsCount(result.hits);
-
+    const currentTime = Date.now();
     // const filtered = res.hits.filter(
     //   (obj) => !obj.category.includes("Shoes") && obj.brand.includes("Nike")
     // );
+    function generateRequestId() {
+      return Math.floor(100000 + Math.random() * 900000).toString();
+    }
+
+    const requestId = generateRequestId();
     return res.status(200).json({
       data: result.hits,
       suggestionCountList: suggestionCountList,
+      requestId: requestId,
     });
   } catch (err) {
     console.log("ERROR", err);
