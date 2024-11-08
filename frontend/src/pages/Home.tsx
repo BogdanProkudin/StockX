@@ -4,17 +4,10 @@ import Slider from "../components/Slider/Slider";
 import UserSection from "../components/Sections/UserSection/UserSection";
 import MainSection from "../components/Sections/MainSection/MainSection";
 import ImageSection from "../components/Sections/ImageSection/ImageSection";
-import {
-  useLazyMainSectionFetchQuery,
-  useUserSectionFetchQuery,
-} from "../redux/api/mainApiSlice";
-import useFetchOnView from "../hooks/useFetchOnView";
-import { useAppDispatch, useAppSelector } from "../redux/hook";
-import {
-  setAddidasItems,
-  setNikeItems,
-  setBalenciagaItems,
-} from "../redux/slices/homeItemsSlice";
+import { useUserSectionFetchQuery } from "../redux/api/mainApiSlice";
+
+import { useAppSelector } from "../redux/hook";
+
 import Apparel from "../assets/images/HolidayCampaign_XpressShipApparel_Evergreen_SecondaryA.webp";
 import Wallet from "../assets/images/Wallets-Card_Holders-Banners-ENSecondaryB.webp";
 
@@ -25,7 +18,6 @@ import {
 } from "../assets/ImgSection/ImgSection";
 import { useFetchHomePage } from "../hooks/useFetchHomePage";
 const Home: React.FC = () => {
-  const dispatch = useAppDispatch();
   const { addidasItems, nikeItems, balenciagaItems } = useAppSelector(
     (state) => state.homeItems,
   );

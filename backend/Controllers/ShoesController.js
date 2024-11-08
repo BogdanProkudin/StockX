@@ -41,17 +41,17 @@ export const getMainSection = async (req, res) => {
 
     const data = {
       adidas: {
-        title: "Addidas Sneakers",
+        title: "Addidas Collection",
         description: "Top styles making waves this season",
         data: adidas.hits.slice(0, 6),
       },
       nike: {
-        title: "Nike Sneakers",
+        title: "Nike Collection",
         description: "Standout designs for every collection",
         data: nike.hits.slice(0, 6),
       },
       balenciaga: {
-        title: "Balenciaga Accessories",
+        title: "Balenciaga Collection",
         description: "Accessories to complete any look",
         data: balenciaga.hits.slice(0, 6),
       },

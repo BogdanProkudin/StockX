@@ -16,13 +16,13 @@ export const useFetchHomePage = (section: string) => {
   useEffect(() => {
     console.log("SECTIONNAME", section, "DATA", data);
     if (data) {
-      if (data.title === "Addidas Sneakers") {
+      if (data.title === "Addidas Collection") {
         dispatch(setAddidasItems(data));
       }
-      if (data.title === "Nike Sneakers") {
+      if (data.title === "Nike Collection") {
         dispatch(setNikeItems(data));
       }
-      if (data.title === "Balenciaga Accessories") {
+      if (data.title === "Balenciaga Collection") {
         dispatch(setBalenciagaItems(data));
       }
     }
@@ -35,7 +35,7 @@ export const useFetchHomePage = (section: string) => {
     ref: useFetchOnView({
       fetchFunction: fetchData,
       sectionName: section,
-      threshold: 1,
+      threshold: 0.2,
       page: null,
       triggerOnce: true,
     }),
