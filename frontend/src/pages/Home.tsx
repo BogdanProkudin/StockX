@@ -104,72 +104,62 @@ const Home: React.FC = () => {
   };
 
   return (
-    <>
-      {searchValue.length <= 0 && (
-        <div className="mt-6">
-          <Slider />
-          <UserSection
-            mainTitle={recentlyViewed.title}
-            items={recentlyViewed.data}
-            description={recentlyViewed.description}
-            status={userLoading}
-          />
-          <UserSection
-            mainTitle={recommendedItems.title}
-            items={recommendedItems.data}
-            description={recommendedItems.description}
-            status={userLoading}
-          />
+    <div className="mt-6">
+      <Slider />
+      <UserSection
+        mainTitle={recentlyViewed.title}
+        items={recentlyViewed.data}
+        description={recentlyViewed.description}
+        status={userLoading}
+      />
+      <UserSection
+        mainTitle={recommendedItems.title}
+        items={recommendedItems.data}
+        description={recommendedItems.description}
+        status={userLoading}
+      />
 
-          <ImageSection cardAssets={firstCardAssets} />
+      <ImageSection cardAssets={firstCardAssets} />
 
-          <div ref={refTrending}>
-            <MainSection
-              mainTitle={trendingItems.title}
-              items={trendingItems.data}
-              description={trendingItems.description}
-              status={trendingLoading}
-            />
-          </div>
+      <div ref={refTrending}>
+        <MainSection
+          mainTitle={trendingItems.title}
+          items={trendingItems.data}
+          description={trendingItems.description}
+          status={trendingLoading}
+        />
+      </div>
 
-          <div ref={refFeatured}>
-            <MainSection
-              mainTitle={featuredItems.title}
-              items={featuredItems.data}
-              description={featuredItems.description}
-              status={featuredLoading}
-            />
-          </div>
+      <div ref={refFeatured}>
+        <MainSection
+          mainTitle={featuredItems.title}
+          items={featuredItems.data}
+          description={featuredItems.description}
+          status={featuredLoading}
+        />
+      </div>
 
-          <div ref={refFeaturedAccessories}>
-            <MainSection
-              mainTitle={featuredAccessories.title}
-              items={featuredAccessories.data}
-              description={featuredAccessories.description}
-              status={accessoriesLoading}
-            />
-          </div>
+      <div ref={refFeaturedAccessories}>
+        <MainSection
+          mainTitle={featuredAccessories.title}
+          items={featuredAccessories.data}
+          description={featuredAccessories.description}
+          status={accessoriesLoading}
+        />
+      </div>
 
-          <div className="mb-10 mt-28 flex gap-5">
-            <img
-              className="cursor-pointer rounded-2xl"
-              src={Apparel}
-              alt="Apparel"
-            />
-            <img
-              className="cursor-pointer rounded-2xl"
-              src={Wallet}
-              alt="Wallet"
-            />
-          </div>
-          <ImageSection cardAssets={secondCardAssets} />
+      <div className="mb-10 mt-28 flex gap-5">
+        <img
+          className="cursor-pointer rounded-2xl"
+          src={Apparel}
+          alt="Apparel"
+        />
+        <img className="cursor-pointer rounded-2xl" src={Wallet} alt="Wallet" />
+      </div>
+      <ImageSection cardAssets={secondCardAssets} />
 
-          {userError && (
-            <div className="text-red-500">Error loading user data</div>
-          )}
-        </div>
-      )}
-    </>
+      {userError && <div className="text-red-500">Error loading user data</div>}
+    </div>
   );
 };
 

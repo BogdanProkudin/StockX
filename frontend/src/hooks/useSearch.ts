@@ -10,7 +10,8 @@ import {
 export const useSearch = () => {
   const dispatch = useAppDispatch();
   const searchValue = useAppSelector((state) => state.searchSlice.searchValue);
-  const [fetchItems, { data, isLoading, isError }] = useLazySearchItemsQuery();
+  const [fetchItems, { data, isLoading, isError, isSuccess }] =
+    useLazySearchItemsQuery();
 
   const handleSearch = React.useCallback(
     debounce(async (query) => {
@@ -32,5 +33,6 @@ export const useSearch = () => {
     data,
     isLoading,
     isError,
+    isSuccess,
   };
 };
