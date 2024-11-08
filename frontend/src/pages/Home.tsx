@@ -23,6 +23,7 @@ import {
   secondCardAssets,
   thirdCardAssets,
 } from "../assets/ImgSection/ImgSection";
+import { useFetchHomePage } from "../hooks/useFetchHomePage";
 const Home: React.FC = () => {
   const dispatch = useAppDispatch();
   const { addidasItems, nikeItems, balenciagaItems } = useAppSelector(
@@ -35,62 +36,16 @@ const Home: React.FC = () => {
     isLoading: userLoading,
   } = useUserSectionFetchQuery({});
 
-  const [fetchAddidas, { data: addidasData, isLoading: trendingLoading }] =
-    useLazyMainSectionFetchQuery();
-  const [fetchNike, { data: nikeData, isLoading: featuredLoading }] =
-    useLazyMainSectionFetchQuery();
-  const [
-    fetchBalenciaga,
-    { data: balenciagaData, isLoading: accessoriesLoading },
-  ] = useLazyMainSectionFetchQuery();
-
-  const refAdiddas = useFetchOnView({
-    fetchFunction: fetchAddidas,
-    sectionName: "addidas",
-    threshold: 0.2,
-    page: null,
-    triggerOnce: true,
-  });
-
-  const refNike = useFetchOnView({
-    fetchFunction: fetchNike,
-    sectionName: "nike",
-    threshold: 0.2,
-    page: null,
-    triggerOnce: true,
-  });
-
-  const refBalenciaga = useFetchOnView({
-    fetchFunction: fetchBalenciaga,
-    sectionName: "balenciaga",
-    threshold: 0.2,
-    page: null,
-    triggerOnce: true,
-  });
+  // Используем для секций
+  const { ref: refAdiddas } = useFetchHomePage("addidas");
+  const { ref: refNike } = useFetchHomePage("nike");
+  const { ref: refBalenciaga } = useFetchHomePage("balenciaga");
 
   useEffect(() => {
     if ("scrollRestoration" in window.history) {
       window.history.scrollRestoration = "manual";
     }
   }, []);
-
-  useEffect(() => {
-    if (addidasData) {
-      dispatch(setAddidasItems(addidasData));
-    }
-  }, [addidasData]);
-
-  useEffect(() => {
-    if (nikeData) {
-      dispatch(setNikeItems(nikeData));
-    }
-  }, [nikeData]);
-
-  useEffect(() => {
-    if (balenciagaData) {
-      dispatch(setBalenciagaItems(balenciagaData));
-    }
-  }, [balenciagaData]);
 
   const recentlyViewed = userData?.recentlyViewed || {
     title: "",
@@ -126,7 +81,7 @@ const Home: React.FC = () => {
           mainTitle={addidasItems.title}
           items={addidasItems.data}
           description={addidasItems.description}
-          status={trendingLoading}
+          status={false}
         />
       </div>
 
@@ -135,7 +90,7 @@ const Home: React.FC = () => {
           mainTitle={nikeItems.title}
           items={nikeItems.data}
           description={nikeItems.description}
-          status={featuredLoading}
+          status={false}
         />
       </div>
 
@@ -152,7 +107,7 @@ const Home: React.FC = () => {
           mainTitle={balenciagaItems.title}
           items={balenciagaItems.data}
           description={balenciagaItems.description}
-          status={accessoriesLoading}
+          status={false}
         />
       </div>
       <ImageSection cardAssets={secondCardAssets} />
