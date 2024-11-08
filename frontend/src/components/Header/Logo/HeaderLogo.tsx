@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const HeaderLogo = () => {
   return (
     <div className={styles.header_navbar}>
-      <Link to={"/"}>
+      <Link onClick={() => window.location.reload()} to={"/"}>
         <svg
           id="stockx-logo"
           viewBox="0 0 331 66"

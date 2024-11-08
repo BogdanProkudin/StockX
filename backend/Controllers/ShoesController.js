@@ -27,7 +27,6 @@ export const getShoes = async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 };
-
 export const getMainSection = async (req, res) => {
   try {
     const api = new StockXAPI(StockXLocation.US);
@@ -41,19 +40,19 @@ export const getMainSection = async (req, res) => {
 
     const data = {
       trending: {
-        title: "Trending Sneakers",
+        title: "Trending Items",
         description:
           "'Trending' products are a curated collection of our best selling items",
         data: trending.hits.slice(0, 6),
       },
       featured: {
-        title: "Featured Apparel",
+        title: "Featured Apparel Items",
         description:
           "'Featured' products are a curated collection of our best selling items",
         data: featured.hits.slice(0, 6),
       },
       featuredAccessories: {
-        title: "Featured Accessories",
+        title: "Featured Accessories Items",
         description:
           "'Featured' products are a curated collection of our best selling items",
         data: featuredAcs.hits.slice(0, 6),

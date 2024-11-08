@@ -22,9 +22,10 @@ import {
   firstCardAssets,
   secondCardAssets,
 } from "../assets/ImgSection/ImgSection";
+import { useFetchHomePage } from "../hooks/useFetchHomePage.tsx";
 const Home: React.FC = () => {
   const dispatch = useAppDispatch();
-  const searchValue = useAppSelector((state) => state.searchSlice.searchValue);
+
   const { featuredItems, trendingItems, featuredAccessories } = useAppSelector(
     (state) => state.homeItems,
   );
@@ -35,62 +36,29 @@ const Home: React.FC = () => {
     isLoading: userLoading,
   } = useUserSectionFetchQuery({});
 
-  const [fetchTrending, { data: trendingData, isLoading: trendingLoading }] =
-    useLazyMainSectionFetchQuery();
-  const [fetchFeatured, { data: featuredData, isLoading: featuredLoading }] =
-    useLazyMainSectionFetchQuery();
-  const [
-    fetchFeaturedAccessories,
-    { data: accessoriesData, isLoading: accessoriesLoading },
-  ] = useLazyMainSectionFetchQuery();
+  const {
+    data: trendingData,
+    isLoading: trendingLoading,
+    ref: refTrending,
+  } = useFetchHomePage("trending", setTrendingItems);
 
-  const refTrending = useFetchOnView({
-    fetchFunction: fetchTrending,
-    sectionName: "trending",
-    threshold: 1,
-    page: null,
-    triggerOnce: true,
-  });
+  const {
+    data: featuredData,
+    isLoading: featuredLoading,
+    ref: refFeatured,
+  } = useFetchHomePage("featured", setFeaturedItems);
 
-  const refFeatured = useFetchOnView({
-    fetchFunction: fetchFeatured,
-    sectionName: "featured",
-    threshold: 1,
-    page: null,
-    triggerOnce: true,
-  });
-
-  const refFeaturedAccessories = useFetchOnView({
-    fetchFunction: fetchFeaturedAccessories,
-    sectionName: "featuredAccessories",
-    threshold: 1,
-    page: null,
-    triggerOnce: true,
-  });
+  const {
+    data: accessoriesData,
+    isLoading: accessoriesLoading,
+    ref: refFeaturedAccessories,
+  } = useFetchHomePage("featuredAccessories", setFeaturedItems);
 
   useEffect(() => {
     if ("scrollRestoration" in window.history) {
       window.history.scrollRestoration = "manual";
     }
   }, []);
-
-  useEffect(() => {
-    if (trendingData) {
-      dispatch(setTrendingItems(trendingData));
-    }
-  }, [trendingData]);
-
-  useEffect(() => {
-    if (featuredData) {
-      dispatch(setFeaturedItems(featuredData));
-    }
-  }, [featuredData]);
-
-  useEffect(() => {
-    if (accessoriesData) {
-      dispatch(setFeaturedAccessories(accessoriesData));
-    }
-  }, [accessoriesData]);
 
   const recentlyViewed = userData?.recentlyViewed || {
     title: "",
