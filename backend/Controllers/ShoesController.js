@@ -33,11 +33,13 @@ export const getMainSection = async (req, res) => {
     const api = new StockXAPI(StockXLocation.US);
     const section = req.params.section;
 
-    const [adidas, nike, balenciaga] = await Promise.all([
+    const [adidas, nike, balenciaga, accessories] = await Promise.all([
       api.searchProducts("Adidas", 1),
       api.searchProducts("Nike", 1),
       api.searchProducts("Balenciaga", 1),
+      api.searchProducts("Accessories", 1),
     ]);
+    console.log(test.hits.slice(0, 6));
 
     const data = {
       adidas: {
@@ -55,6 +57,12 @@ export const getMainSection = async (req, res) => {
         description: "Accessories to complete any look",
         data: balenciaga.hits.slice(0, 6),
       },
+      accessories: {
+        title: "Featured Accessories",
+        description:
+          "'Featured' products are a curated collection of our best selling items",
+        data: accessories.hits.slice(0, 6),
+      },
     };
 
     if (section === "addidas") {
@@ -63,6 +71,8 @@ export const getMainSection = async (req, res) => {
       res.json(data.nike);
     } else if (section === "balenciaga") {
       res.json(data.balenciaga);
+    } else if (section === "accessories") {
+      res.json(data.accessories);
     } else {
       res.status(404).json({ message: "Section not found" });
     }
