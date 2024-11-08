@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useAppSelector } from "../../redux/hook";
 import SearchedItemsList from "./SearchedItems/SearchedItemsList";
 import SearchedItemsListSkeleton from "./Skeletons/SearchedItemsListSkeleton";
@@ -12,13 +11,6 @@ const index = () => {
   const suggestionCountsArr = useAppSelector(
     (state) => state.searchSlice.suggestionCountsArr,
   );
-  // useEffect(() => {
-  //   document.body.style.overflow = "hidden";
-
-  //   return () => {
-  //     document.body.style.overflow = "auto";
-  //   };
-  // }, []);
 
   if (isLoading) {
     return <SearchedItemsListSkeleton />;
@@ -26,7 +18,7 @@ const index = () => {
 
   if (foundeditems && foundeditems.length > 0) {
     return (
-      <div className="h-100 flex min-w-[965px] flex-col justify-center overflow-y-scroll">
+      <div className="h-100 flex min-w-[965px] flex-col justify-center">
         <SuggestionItemsList suggestionCountsArr={suggestionCountsArr} />
         <SearchedItemsList />
       </div>
