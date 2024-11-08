@@ -1,16 +1,19 @@
-import React, { ReactPortal, useMemo } from "react";
+import React, { useMemo } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Auth from "./pages/Auth";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import ResetPage from "./pages/ResetPassword";
 import HeaderLayout from "./layout/HeaderLayout";
-import FullItem from "./pages/FullItem";
+
 import FoundItems from "./components/FoundItems";
 import { useAppSelector } from "./redux/hook";
 
 import "./scss/styles.scss";
+import FullProduct from "./pages/ProductPage";
+
 type ComponentType = React.FC;
+
 function App() {
   const userToken = useMemo(() => localStorage.getItem("token"), []);
   const searchInputValue = useAppSelector(
@@ -30,7 +33,7 @@ function App() {
     <Routes>
       <Route path="/" element={<HeaderLayout />}>
         <Route path="" element={renderMainContent(Home)} />
-        <Route path=":id" element={renderMainContent(FullItem)} />
+        <Route path=":id" element={renderMainContent(FullProduct)} />
       </Route>
 
       <Route

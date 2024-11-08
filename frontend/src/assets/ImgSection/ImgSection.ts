@@ -8,6 +8,12 @@ import under250 from "../images/7.webp";
 import grail from "../images/8.webp";
 import giftsman from "../images/9.webp";
 import giftswoman from "../images/10.webp";
+import Hoodies from "../images/12.webp";
+import Jackets from "../images/13.webp";
+import Handbags from "../images/14.webp";
+import Watches from "../images/15.webp";
+import Lego from "../images/16.webp";
+
 export interface cardAssetsProps {
   img: string;
   path: string;
@@ -27,4 +33,11 @@ export const secondCardAssets: cardAssetsProps[] = [
   { img: grail, path: "", alt: "Grail Gifts" },
   { img: giftsman, path: "", alt: "Gifts For Him" },
   { img: giftswoman, path: "", alt: "Gifts For Her" },
+];
+export const thirdCardAssets: cardAssetsProps[] = [
+  { img: Hoodies, path: "", alt: "Hoodies" },
+  { img: Jackets, path: "", alt: "Jackets" },
+  { img: Handbags, path: "", alt: "HandBags" },
+  { img: Watches, path: "", alt: "Watches" },
+  { img: Lego, path: "", alt: "Lego" },
 ];
