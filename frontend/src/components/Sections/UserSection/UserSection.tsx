@@ -11,14 +11,12 @@ interface UserSectionProps {
   mainTitle: string;
   items: userCardProps[];
   description: string;
-  isLoading: boolean;
 }
 
 const UserSection: React.FC<UserSectionProps> = ({
   mainTitle,
   items,
   description,
-  isLoading,
 }) => {
   const cardSkeleton = [...new Array(6)].map((_, i) => {
     return <Skeleton key={i} />;
@@ -27,7 +25,7 @@ const UserSection: React.FC<UserSectionProps> = ({
     <div className="mb-20">
       <div className="relative my-5 flex items-center gap-3">
         <h1 className="text-xl font-bold">
-          {isLoading ? <TitleSkeleton /> : mainTitle}
+          {mainTitle.length < 1 ? <TitleSkeleton /> : mainTitle}
         </h1>
         <span className="group relative cursor-pointer rounded-full bg-black px-[6px] py-[1px] text-sm text-white">
           <div className="absolute bottom-full left-1/2 z-10 mb-2 hidden w-[250px] -translate-x-1/2 transform rounded-lg bg-gray-800 px-3 py-2 text-sm text-white group-hover:block">
@@ -39,7 +37,7 @@ const UserSection: React.FC<UserSectionProps> = ({
       </div>
 
       <div className="flex justify-between">
-        {isLoading
+        {mainTitle.length < 1
           ? cardSkeleton
           : items.map((obj: userCardProps, id: number) => (
               <UserCard key={id} {...obj} />

@@ -6,7 +6,7 @@ export const userApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3003" }),
   endpoints: (builder) => ({
     userSectionFetch: builder.query({
-      query: () => "/getShoes",
+      query: () => "/getUserSection",
       keepUnusedDataFor: 60,
     }),
   }),
@@ -20,13 +20,29 @@ export const mainApi = createApi({
   endpoints: (builder) => ({
     mainSectionFetch: builder.query({
       query: ({ sectionName }: { sectionName: string }) =>
-        `/getMainSection/${sectionName}`,
+        `/getCollectionSection/${sectionName}`,
       keepUnusedDataFor: 60,
     }),
   }),
 });
 export const { useMainSectionFetchQuery, useLazyMainSectionFetchQuery } =
   mainApi;
+
+export const instagramApi = createApi({
+  reducerPath: "instagramApi",
+  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3003" }),
+  endpoints: (builder) => ({
+    instagramSectionFetch: builder.query({
+      query: () => "/getInstagramSection",
+      keepUnusedDataFor: 60,
+    }),
+  }),
+});
+export const {
+  useInstagramSectionFetchQuery,
+  useLazyInstagramSectionFetchQuery,
+} = instagramApi;
+
 export const searchApi = createApi({
   reducerPath: "searchApi",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3003" }),
