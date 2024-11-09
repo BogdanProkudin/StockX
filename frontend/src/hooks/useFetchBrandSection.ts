@@ -11,7 +11,7 @@ import {
   setSupremeItems,
 } from "../redux/slices/homeItemsSlice";
 
-export const useFetchHomePage = (section: string) => {
+export const useFetchBrandSection = (section: string) => {
   const [fetchData, { data, isLoading }] = useLazyMainSectionFetchQuery();
   const dispatch = useAppDispatch();
 

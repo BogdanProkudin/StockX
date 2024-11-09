@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import styles from "./styles.module.scss";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
-import { useAppDispatch, useAppSelector } from "../../../redux/hook";
+import { useAppDispatch } from "../../../redux/hook";
 import {
   setFoundedItems,
   setIsLoading,
@@ -16,7 +16,7 @@ const HeaderInput: React.FC = () => {
   const navigate = useNavigate();
   const { searchValue, handleSearch, data, isError } = useSearch();
 
-  const userToken = localStorage.getItem("token");
+  const userToken = useMemo(() => localStorage.getItem("token"), []);
   const handleKeyDown = (event: { key: string }) => {
     if (event.key === "Enter") {
       navigate(`/search/${searchValue}`);
@@ -25,7 +25,6 @@ const HeaderInput: React.FC = () => {
 
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-
     dispatch(setIsLoading(true));
     dispatch(setSearchValue(value));
     handleSearch(value);
