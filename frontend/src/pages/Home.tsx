@@ -1,54 +1,35 @@
 import React, { useEffect } from "react";
 import Slider from "../components/Slider/Slider";
-
 import UserSection from "../components/Sections/UserSection/UserSection";
 import MainSection from "../components/Sections/MainSection/MainSection";
 import ImageSection from "../components/Sections/ImageSection/ImageSection";
-import { useUserSectionFetchQuery } from "../redux/api/mainApiSlice";
-
 import { useAppSelector } from "../redux/hook";
-
 import Apparel from "../assets/images/HolidayCampaign_XpressShipApparel_Evergreen_SecondaryA.webp";
 import Wallet from "../assets/images/Wallets-Card_Holders-Banners-ENSecondaryB.webp";
-
 import {
   firstCardAssets,
   secondCardAssets,
   thirdCardAssets,
 } from "../assets/ImgSection/ImgSection";
-import { useFetchHomePage } from "../hooks/useFetchHomePage";
+import { useFetchBrandSection } from "../hooks/useFetchBrandSection";
+
+import { useFetchUserSection } from "../hooks/useFetchUserSection";
+
 const Home: React.FC = () => {
   const { addidasItems, nikeItems, balenciagaItems } = useAppSelector(
     (state) => state.homeItems,
   );
-
-  const {
-    data: userData,
-    error: userError,
-    isLoading: userLoading,
-  } = useUserSectionFetchQuery({});
-
-  // Используем для секций
-  const { ref: refAdiddas } = useFetchHomePage("addidas");
-  const { ref: refNike } = useFetchHomePage("nike");
-  const { ref: refBalenciaga } = useFetchHomePage("balenciaga");
+  const { recommendedItems, recentlyViewed, userError, userLoading } =
+    useFetchUserSection();
+  const { ref: refAdiddas } = useFetchBrandSection("addidas");
+  const { ref: refNike } = useFetchBrandSection("nike");
+  const { ref: refBalenciaga } = useFetchBrandSection("balenciaga");
 
   useEffect(() => {
     if ("scrollRestoration" in window.history) {
       window.history.scrollRestoration = "manual";
     }
   }, []);
-
-  const recentlyViewed = userData?.recentlyViewed || {
-    title: "",
-    data: [],
-    description: "",
-  };
-  const recommendedItems = userData?.recommendedItems || {
-    title: "",
-    data: [],
-    description: "",
-  };
 
   return (
     <div className="mt-6">
@@ -57,13 +38,13 @@ const Home: React.FC = () => {
         mainTitle={recentlyViewed.title}
         items={recentlyViewed.data}
         description={recentlyViewed.description}
-        status={userLoading}
+        isLoading={userLoading}
       />
       <UserSection
         mainTitle={recommendedItems.title}
         items={recommendedItems.data}
         description={recommendedItems.description}
-        status={userLoading}
+        isLoading={userLoading}
       />
 
       <ImageSection cardAssets={firstCardAssets} />
@@ -73,7 +54,6 @@ const Home: React.FC = () => {
           mainTitle={addidasItems.title}
           items={addidasItems.data}
           description={addidasItems.description}
-          status={false}
         />
       </div>
 
@@ -82,7 +62,6 @@ const Home: React.FC = () => {
           mainTitle={nikeItems.title}
           items={nikeItems.data}
           description={nikeItems.description}
-          status={false}
         />
       </div>
 
@@ -99,7 +78,6 @@ const Home: React.FC = () => {
           mainTitle={balenciagaItems.title}
           items={balenciagaItems.data}
           description={balenciagaItems.description}
-          status={false}
         />
       </div>
       <ImageSection cardAssets={secondCardAssets} />
