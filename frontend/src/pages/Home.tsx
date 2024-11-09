@@ -18,9 +18,13 @@ import {
 } from "../assets/ImgSection/ImgSection";
 import { useFetchHomePage } from "../hooks/useFetchHomePage";
 const Home: React.FC = () => {
-  const { addidasItems, nikeItems, balenciagaItems } = useAppSelector(
-    (state) => state.homeItems,
-  );
+  const {
+    addidasItems,
+    nikeItems,
+    balenciagaItems,
+    accessories,
+    supremeItems,
+  } = useAppSelector((state) => state.homeItems);
 
   const {
     data: userData,
@@ -32,7 +36,8 @@ const Home: React.FC = () => {
   const { ref: refAdiddas } = useFetchHomePage("addidas");
   const { ref: refNike } = useFetchHomePage("nike");
   const { ref: refBalenciaga } = useFetchHomePage("balenciaga");
-
+  const { ref: refAccessories } = useFetchHomePage("accessories");
+  const { ref: refSupreme } = useFetchHomePage("supreme");
   useEffect(() => {
     if ("scrollRestoration" in window.history) {
       window.history.scrollRestoration = "manual";
@@ -73,7 +78,6 @@ const Home: React.FC = () => {
           mainTitle={addidasItems.title}
           items={addidasItems.data}
           description={addidasItems.description}
-          status={false}
         />
       </div>
 
@@ -82,7 +86,6 @@ const Home: React.FC = () => {
           mainTitle={nikeItems.title}
           items={nikeItems.data}
           description={nikeItems.description}
-          status={false}
         />
       </div>
 
@@ -99,10 +102,23 @@ const Home: React.FC = () => {
           mainTitle={balenciagaItems.title}
           items={balenciagaItems.data}
           description={balenciagaItems.description}
-          status={false}
         />
       </div>
       <ImageSection cardAssets={secondCardAssets} />
+      <div className="mb-28" ref={refAccessories}>
+        <MainSection
+          mainTitle={accessories.title}
+          items={accessories.data}
+          description={accessories.description}
+        />
+      </div>
+      <div ref={refSupreme}>
+        <MainSection
+          mainTitle={supremeItems.title}
+          items={supremeItems.data}
+          description={supremeItems.description}
+        />
+      </div>
       <ImageSection cardAssets={thirdCardAssets} />
       {userError && <div className="text-red-500">Error loading user data</div>}
     </div>

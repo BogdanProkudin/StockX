@@ -4,9 +4,11 @@ import { useEffect } from "react";
 import useFetchOnView from "./useFetchOnView";
 import { useAppDispatch } from "../redux/hook";
 import {
+  setAccessories,
   setAddidasItems,
   setBalenciagaItems,
   setNikeItems,
+  setSupremeItems,
 } from "../redux/slices/homeItemsSlice";
 
 export const useFetchHomePage = (section: string) => {
@@ -24,6 +26,12 @@ export const useFetchHomePage = (section: string) => {
       }
       if (data.title === "Balenciaga Collection") {
         dispatch(setBalenciagaItems(data));
+      }
+      if (data.title === "Featured Accessories") {
+        dispatch(setAccessories(data));
+      }
+      if (data.title === "Supreme Collection") {
+        dispatch(setSupremeItems(data));
       }
     }
   }, [section, data]);

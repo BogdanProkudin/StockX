@@ -32,11 +32,12 @@ export const getMainSection = async (req, res) => {
     const api = new StockXAPI(StockXLocation.US);
     const section = req.params.section;
 
-    const [adidas, nike, balenciaga, accessories] = await Promise.all([
+    const [adidas, nike, balenciaga, accessories, supreme] = await Promise.all([
       api.searchProducts("Adidas", 1),
       api.searchProducts("Nike", 1),
       api.searchProducts("Balenciaga", 1),
       api.searchProducts("Accessories", 1),
+      api.searchProducts("Supreme", 1),
     ]);
 
     const data = {
@@ -61,6 +62,12 @@ export const getMainSection = async (req, res) => {
           "'Featured' products are a curated collection of our best selling items",
         data: accessories.hits.slice(0, 6),
       },
+      supreme: {
+        title: "Supreme Collection",
+        description:
+          "Supreme Collection features a curated selection of iconic streetwear essentials, blending bold style with unparalleled quality",
+        data: supreme.hits.slice(0, 6),
+      },
     };
 
     if (section === "addidas") {
@@ -71,6 +78,8 @@ export const getMainSection = async (req, res) => {
       res.json(data.balenciaga);
     } else if (section === "accessories") {
       res.json(data.accessories);
+    } else if (section === "supreme") {
+      res.json(data.supreme);
     } else {
       res.status(404).json({ message: "Section not found" });
     }
