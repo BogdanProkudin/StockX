@@ -22,6 +22,11 @@ export const useFetchUserSection = () => {
     isLoading: userLoading,
   } = useUserSectionFetchQuery({});
   useEffect(() => {
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+  }, []);
+  useEffect(() => {
     if (userData) {
       if (userData.recentlyViewed) {
         setRecentlyViewed(userData.recentlyViewed);

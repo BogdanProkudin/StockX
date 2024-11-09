@@ -25,12 +25,6 @@ const Home: React.FC = () => {
   const { ref: refNike } = useFetchBrandSection("nike");
   const { ref: refBalenciaga } = useFetchBrandSection("balenciaga");
 
-  useEffect(() => {
-    if ("scrollRestoration" in window.history) {
-      window.history.scrollRestoration = "manual";
-    }
-  }, []);
-
   return (
     <div className="mt-6">
       <Slider />
