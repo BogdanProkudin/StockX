@@ -15,14 +15,12 @@ interface UserSectionProps {
   mainTitle: string;
   items: userCardProps[];
   description: string;
-  status: boolean;
 }
 
 const MainSection: React.FC<UserSectionProps> = ({
   mainTitle,
   items,
   description,
-  status,
 }) => {
   const cardSkeleton = [...new Array(6)].map((_, i) => {
     return <Skeleton key={i} />;
