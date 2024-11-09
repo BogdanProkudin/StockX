@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userAuth from "./slices/authSlice";
-import { mainApi, searchApi } from "./api/mainApiSlice";
+import { mainApi, searchApi, instagramApi } from "./api/mainApiSlice";
 import { userApi } from "./api/mainApiSlice";
 import homeItems from "./slices/homeItemsSlice";
 import searchSlice from "./slices/searchSlice";
@@ -12,12 +12,14 @@ export const store = configureStore({
     [userApi.reducerPath]: userApi.reducer,
     [mainApi.reducerPath]: mainApi.reducer,
     [searchApi.reducerPath]: searchApi.reducer,
+    [instagramApi.reducerPath]: instagramApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
       userApi.middleware,
       mainApi.middleware,
       searchApi.middleware,
+      instagramApi.middleware,
     ), // добавление api.middleware
 });
 export type RootState = ReturnType<typeof store.getState>;

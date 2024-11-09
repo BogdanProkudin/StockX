@@ -14,17 +14,24 @@ import {
 import { useFetchBrandSection } from "../hooks/useFetchBrandSection";
 
 import { useFetchUserSection } from "../hooks/useFetchUserSection";
+import { useFetchInstagramSection } from "../hooks/useFetchInstagramSection";
+import InstagramSection from "../components/Sections/InstagramSection/InstagramSection";
 
 const Home: React.FC = () => {
-  const { addidasItems, nikeItems, balenciagaItems } = useAppSelector(
-    (state) => state.homeItems,
-  );
-  const { recommendedItems, recentlyViewed, userError, userLoading } =
-    useFetchUserSection();
+  const {
+    addidasItems,
+    nikeItems,
+    balenciagaItems,
+    accessories,
+    supremeItems,
+  } = useAppSelector((state) => state.homeItems);
+  const { recommendedItems, recentlyViewed, userError } = useFetchUserSection();
   const { ref: refAdiddas } = useFetchBrandSection("addidas");
   const { ref: refNike } = useFetchBrandSection("nike");
   const { ref: refBalenciaga } = useFetchBrandSection("balenciaga");
-
+  const { ref: refAccessories } = useFetchBrandSection("accessories");
+  const { ref: refSupreme } = useFetchBrandSection("supreme");
+  const { ref: refInstagramSection } = useFetchInstagramSection("instagram");
   return (
     <div className="mt-6">
       <Slider />
@@ -32,13 +39,11 @@ const Home: React.FC = () => {
         mainTitle={recentlyViewed.title}
         items={recentlyViewed.data}
         description={recentlyViewed.description}
-        isLoading={userLoading}
       />
       <UserSection
         mainTitle={recommendedItems.title}
         items={recommendedItems.data}
         description={recommendedItems.description}
-        isLoading={userLoading}
       />
 
       <ImageSection cardAssets={firstCardAssets} />
@@ -75,7 +80,7 @@ const Home: React.FC = () => {
         />
       </div>
       <ImageSection cardAssets={secondCardAssets} />
-      {/* <div className="mb-28" ref={refAccessories}>
+      <div className="mb-28" ref={refAccessories}>
         <MainSection
           mainTitle={accessories.title}
           items={accessories.data}
@@ -88,8 +93,11 @@ const Home: React.FC = () => {
           items={supremeItems.data}
           description={supremeItems.description}
         />
-      </div> */}
+      </div>
       <ImageSection cardAssets={thirdCardAssets} />
+      <div ref={refInstagramSection}>
+        <InstagramSection />
+      </div>
       {userError && <div className="text-red-500">Error loading user data</div>}
     </div>
   );

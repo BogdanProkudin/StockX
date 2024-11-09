@@ -2,11 +2,18 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
-
-import { UserController, ShoesController } from "./Controllers/index.js";
+import path from "path";
+import {
+  UserController,
+  ShoesController,
+  FiltrationController,
+} from "./Controllers/index.js";
 import { ErrorValidation } from "./utils/ErrorValidation.js";
 import CheckAuth from "./utils/CheckAuth.js";
+import { fileURLToPath } from "url";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 dotenv.config();
 const app = express();
 app.use(cors());
@@ -24,6 +31,7 @@ mongoose
   });
 
 app.use(express.json());
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 //User
 app.post("/signup", UserController.register);
 app.post("/login", UserController.login);
@@ -32,11 +40,15 @@ app.post("/requestResetPassword", UserController.forgotPassword);
 app.post("/tokenValidation", UserController.isTokenValid);
 app.post("/resetPassword", UserController.resetPassword);
 //ItemsLogic
-app.get("/getShoes", ShoesController.getShoes);
-
-app.get("/getMainSection/:section", ShoesController.getMainSection);
-app.get("/searchItems/:searchingValue", ShoesController.searchProducts);
-app.get("/loadMoreItems/:sectionName/:page", ShoesController.loadMoreItems);
+app.get("/getUserSection", ShoesController.getUserSection);
+app.get("/getCollectionSection/:section", ShoesController.getCollectionSection);
+app.get("/getInstagramSection", ShoesController.getInstagramSection);
+//FiltrationLogic
+app.get("/searchItems/:searchingValue", FiltrationController.searchProducts);
+app.get(
+  "/loadMoreItems/:sectionName/:page",
+  FiltrationController.loadMoreItems
+);
 app.listen(port, (err) => {
   if (err) {
     console.log("Error starting server", err);
