@@ -1,4 +1,5 @@
 import { StockXAPI, StockXLocation } from "@vlourme/stockx-api";
+import { query } from "express";
 export const getUserSection = async (req, res) => {
   try {
     const api = new StockXAPI(StockXLocation.US);
@@ -88,13 +89,16 @@ export const getCollectionSection = async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 };
+
 export const getInstagramSection = async (req, res) => {
   try {
     const api = new StockXAPI(StockXLocation.US);
-    const baseUrl = `${req.protocol}://${req.get("host")}/uploads/`;
+    const baseUrl = `${req.protocol}://${req.get(
+      "host"
+    )}/uploads/instagramSection/`;
     const [asics, jordan4] = await Promise.all([
       api.searchProducts("ASICS"),
-      api.searchProducts("Jordan 4 Retro Military Blue (2024)"),
+      api.searchProducts("Jordan 4 Retro Military BLue"),
     ]);
 
     const data = [
@@ -107,6 +111,7 @@ export const getInstagramSection = async (req, res) => {
         data: jordan4.hits,
       },
     ];
+
     res.json(data);
   } catch (error) {
     console.error("Ошибка при получении данных с StockX:", error);
