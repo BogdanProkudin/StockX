@@ -39,6 +39,7 @@ const SearchedItemsList = () => {
             image={item.image}
             brand={item.brand}
             name={item.title}
+            color={item.color}
           />
         );
       })}

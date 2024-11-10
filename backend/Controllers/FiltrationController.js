@@ -1,4 +1,7 @@
 import { StockXAPI, StockXLocation } from "@vlourme/stockx-api";
+import { log } from "node:console";
+import { it } from "node:test";
+import axios from "axios";
 export const getSuggestionItemsCount = async (result) => {
   if (result.length >= 20) {
     return [10000, 7659, 1340, 569];
@@ -14,22 +17,32 @@ export const searchProducts = async (req, res) => {
   try {
     const searchingValue = req.params.searchingValue;
     const api = new StockXAPI(StockXLocation.US);
-    const result = await api.searchProducts(searchingValue);
-    const suggestionCountList = await getSuggestionItemsCount(result.hits);
-    const currentTime = Date.now();
-    // const filtered = res.hits.filter(
-    //   (obj) => !obj.category.includes("Shoes") && obj.brand.includes("Nike")
-    // );
+
+    const url = `https://api.sneakersapi.dev/search?query=${searchingValue}`;
     function generateRequestId() {
       return Math.floor(100000 + Math.random() * 900000).toString();
     }
 
     const requestId = generateRequestId();
-    return res.status(200).json({
-      data: result.hits,
-      suggestionCountList: suggestionCountList,
-      requestId: requestId,
-    });
+
+    axios
+      .get(url)
+      .then(async (response) => {
+        const suggestionCountList = await getSuggestionItemsCount(
+          response.data.hits
+        );
+        console.log("RES", response.data);
+        return res.status(200).json({
+          data: response.data.hits,
+          suggestionCountList: suggestionCountList,
+          requestId: requestId,
+        });
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+
+    const currentTime = Date.now();
   } catch (err) {
     console.log("ERROR", err);
     return res.status(404).json({ message: "ERROR" });
@@ -39,9 +52,17 @@ export const searchProducts = async (req, res) => {
 export const loadMoreItems = async (req, res) => {
   try {
     const { sectionName, page } = req.params;
-    const api = new StockXAPI(StockXLocation.US);
-    const result = await api.searchProducts(sectionName, page);
-    return res.status(200).json({ data: result.hits });
+    const url = `https://api.sneakersapi.dev/search?query=${sectionName}&page=${page}`;
+    axios
+      .get(url)
+      .then((response) => {
+        return res.status(200).json({
+          data: response.data.hits,
+        });
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error); // Ошибка при запросе
+      });
   } catch (err) {
     console.log("ERROR WHILE GETTING MORE ITEMS", err);
     return res.status(404).json({ message: "Server Error" });
