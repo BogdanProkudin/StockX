@@ -1,5 +1,6 @@
 import { StockXAPI, StockXLocation } from "@vlourme/stockx-api";
 import { query } from "express";
+import axios from "axios";
 export const getUserSection = async (req, res) => {
   try {
     const api = new StockXAPI(StockXLocation.US);
@@ -92,23 +93,44 @@ export const getCollectionSection = async (req, res) => {
 
 export const getInstagramSection = async (req, res) => {
   try {
-    const api = new StockXAPI(StockXLocation.US);
     const baseUrl = `${req.protocol}://${req.get(
       "host"
     )}/uploads/instagramSection/`;
-    const [asics, jordan4] = await Promise.all([
-      api.searchProducts("ASICS"),
-      api.searchProducts("Jordan 4 Retro Military BLue"),
-    ]);
+
+    function GetData(title) {
+      const url = `https://api.sneakersapi.dev/search?query=${title}`;
+      axios
+        .get(url)
+        .then((response) => {
+          return res.status(200).json({
+            data: response.data.hits,
+          });
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+        });
+    }
 
     const data = [
       {
         image: `${baseUrl}asics.webp`,
-        data: asics.hits,
+        data: GetData("Asics"),
       },
       {
         image: `${baseUrl}jordan4.webp`,
-        data: jordan4.hits,
+        data: GetData("Jordan 4 Retro Military Blue"),
+      },
+      {
+        image: `${baseUrl}ounisotka.webp`,
+        data: GetData("Onitsuka Tiger Mexico 66 Kill Bill"),
+      },
+      {
+        image: `${baseUrl}newbalance.webp`,
+        data: GetData("New Balance 860v2 Aime Leon Dore Blue"),
+      },
+      {
+        image: `${baseUrl}purpledunk.webp`,
+        data: GetData(" Nike SB Dunk Low Concepts Purple Lobster"),
       },
     ];
 
