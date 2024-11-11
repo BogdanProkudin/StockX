@@ -97,40 +97,49 @@ export const getInstagramSection = async (req, res) => {
       "host"
     )}/uploads/instagramSection/`;
 
-    function GetData(title) {
+    async function GetData(title) {
       const url = `https://api.sneakersapi.dev/search?query=${title}`;
-      axios
-        .get(url)
-        .then((response) => {
-          return res.status(200).json({
-            data: response.data.hits,
-          });
-        })
-        .catch((error) => {
-          console.error("Error fetching data:", error);
-        });
+      try {
+        const response = await axios.get(url);
+        return response.data.hits;
+      } catch (error) {
+        console.error("Ошибка при получении данных:", error);
+        return null;
+      }
     }
-
+    const [
+      asicsData,
+      jordan4Data,
+      ounisotkaData,
+      newBalanceData,
+      lobsterDunkData,
+    ] = await Promise.all([
+      GetData("Asics"),
+      GetData("Jordan 4 Retro Military Blue"),
+      GetData("Onitsuka Tiger Mexico 66 Kill Bill"),
+      GetData("New Balance 860v2 Aime Leon Dore Blue"),
+      GetData(" Nike SB Dunk Low Concepts Purple Lobster"),
+    ]);
     const data = [
       {
         image: `${baseUrl}asics.webp`,
-        data: GetData("Asics"),
+        data: asicsData,
       },
       {
         image: `${baseUrl}jordan4.webp`,
-        data: GetData("Jordan 4 Retro Military Blue"),
+        data: jordan4Data,
       },
       {
         image: `${baseUrl}ounisotka.webp`,
-        data: GetData("Onitsuka Tiger Mexico 66 Kill Bill"),
+        data: ounisotkaData,
       },
       {
         image: `${baseUrl}newbalance.webp`,
-        data: GetData("New Balance 860v2 Aime Leon Dore Blue"),
+        data: newBalanceData,
       },
       {
         image: `${baseUrl}purpledunk.webp`,
-        data: GetData(" Nike SB Dunk Low Concepts Purple Lobster"),
+        data: lobsterDunkData,
       },
     ];
 
