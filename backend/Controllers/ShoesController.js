@@ -113,12 +113,34 @@ export const getInstagramSection = async (req, res) => {
       ounisotkaData,
       newBalanceData,
       lobsterDunkData,
+      nikeLd,
+      jordan1Retro,
+      onitsukaTiger,
+      nikeVapor,
+      nikeAirMax,
+      jordan5,
+      nikeV2K,
+      prada,
+      newBalanceT500,
+      jordan1Travis,
+      nikeNocta,
     ] = await Promise.all([
       GetData("Asics"),
       GetData("Jordan 4 Retro Military Blue"),
       GetData("Onitsuka Tiger Mexico 66 Kill Bill"),
       GetData("New Balance 860v2 Aime Leon Dore Blue"),
-      GetData(" Nike SB Dunk Low Concepts Purple Lobster"),
+      GetData("Nike SB Dunk Low Concepts Purple Lobster"),
+      GetData("Nike LD-1000 SP Stussy Action Green"),
+      GetData("Jordan 1 Retro Low OG Black Toe (2023)"),
+      GetData("Onitsuka Tiger Mexico 66 Kill Bill"),
+      GetData("Nike Vapor Street Off-White Polarized Blue (Women's)"),
+      GetData("Nike Air Max 1 '86 OG Big Bubble Air Max Day (2024)"),
+      GetData("Jordan 5 Retro A Ma Maniére Dusk"), //еще 1 кроссвок
+      GetData("Nike V2K Run Summit White Metallic Silver (Women's)"),
+      GetData("Prada Monolith 55mm Pointy Loafer Black Brushed"), // еще носки
+      GetData("New Balance T500 Aime Leon Dore White Black"),
+      GetData("Jordan 1 Retro Low OG SP Travis Scott Canary"),
+      GetData("Nike NOCTA Glide Drake Bright Crimson"), //еще кофта
     ]);
     const data = [
       {
@@ -140,6 +162,50 @@ export const getInstagramSection = async (req, res) => {
       {
         image: `${baseUrl}purpledunk.webp`,
         data: lobsterDunkData,
+      },
+      {
+        image: `${baseUrl}nikeLd.webp`,
+        data: nikeLd,
+      },
+      {
+        image: `${baseUrl}jordan1old.webp`,
+        data: jordan1Retro,
+      },
+      {
+        image: `${baseUrl}ounisotka2.webp`,
+        data: onitsukaTiger,
+      },
+      {
+        image: `${baseUrl}nikeVapor.webp`,
+        data: nikeVapor,
+      },
+      {
+        image: `${baseUrl}nikeAirMax.webp`,
+        data: nikeAirMax,
+      },
+      {
+        image: `${baseUrl}jordan5.webp`,
+        data: jordan5,
+      },
+      {
+        image: `${baseUrl}nikev2k.webp`,
+        data: nikeV2K,
+      },
+      {
+        image: `${baseUrl}prada.webp`,
+        data: prada,
+      },
+      {
+        image: `${baseUrl}newbalance500.webp`,
+        data: newBalanceT500,
+      },
+      {
+        image: `${baseUrl}travis1.webp`,
+        data: jordan1Travis,
+      },
+      {
+        image: `${baseUrl}nikenokta.webp`,
+        data: nikeNocta,
       },
     ];
 
