@@ -33,5 +33,11 @@
   }
 }
 
-@media screen {
+@media screen and (max-width: 1000px) {
+  .header_input_container {
+    flex-grow: 0;
+    .header_input {
+      width: 100%;
+    }
+  }
 }
