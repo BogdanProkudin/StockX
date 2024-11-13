@@ -16,3 +16,21 @@
     }
   }
 }
+
+@media screen and (max-width: 950px) {
+  .header {
+    .header_container {
+      margin: 0px 25px;
+    }
+  }
+}
+@media screen and (max-width: 900px) {
+  .header {
+    .header_container {
+      margin: 0px 15px;
+      .header_wrapper {
+        gap: 10px;
+      }
+    }
+  }
+}

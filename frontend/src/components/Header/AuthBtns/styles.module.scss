@@ -35,3 +35,15 @@
     margin-right: 10px;
   }
 }
+
+@media screen and (max-width: 1000px) {
+  .header_auth_user {
+    .Login {
+      font-size: 14px;
+    }
+    .Signup {
+      min-width: 87px;
+      font-size: 14px;
+    }
+  }
+}
