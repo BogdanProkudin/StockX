@@ -10,6 +10,7 @@ export default {
       colors: {
         lightGray: "#CFCFCF", // Здесь добавляем кастомный цвет
         blackGray: "#5F5F5F",
+        blackTextColor: "#242424",
       },
     },
   },
