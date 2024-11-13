@@ -1,4 +1,5 @@
-import FilterSelect from "./FilterSelect";
+import FilterBreadCrumb from "./FilterBreadCrumb";
+import FilterSelect from "./FilterSelect/FilterSelect";
 
 const FilterContent = () => {
   return (
@@ -6,7 +7,7 @@ const FilterContent = () => {
       <div className="h-[300px] w-[300px] bg-red-500"></div>
       <div className="h-[300px] w-[927px] bg-amber-500">
         <div className="flex justify-between p-2">
-          <span>Home / Search</span>
+          <FilterBreadCrumb />
           <FilterSelect />
         </div>
       </div>
