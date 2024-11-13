@@ -1,8 +1,11 @@
-import FilterContent from "../components/SearchedItems/SearchedContent";
-import HeaderLayout from "../layout/HeaderLayout";
+import SearchedContent from "../components/SearchedItems/SearchedContent";
 
 const FilterPage = () => {
-  return <div>{/* <FilterContent /> */}</div>;
+  return (
+    <div className="min-w-[1240px]">
+      <SearchedContent />
+    </div>
+  );
 };
 
 export default FilterPage;
