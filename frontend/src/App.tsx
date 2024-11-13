@@ -11,7 +11,7 @@ import { useAppSelector } from "./redux/hook";
 
 import "./scss/styles.scss";
 import FullProduct from "./pages/ProductPage";
-import FilterContent from "./components/FilterPage/FilterContent";
+import SearchedContent from "./components/SearchedItems/SearchedContent";
 
 type ComponentType = React.FC;
 
@@ -35,7 +35,7 @@ function App() {
       <Route path="/" element={<HeaderLayout />}>
         <Route path="" element={renderMainContent(Home)} />
         <Route path=":id" element={renderMainContent(FullProduct)} />
-        <Route path="/search/:BrandName" element={<FilterContent />} />
+        <Route path="/search/:BrandName" element={<SearchedContent />} />
       </Route>
 
       <Route
