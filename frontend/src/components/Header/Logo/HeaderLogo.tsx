@@ -2,9 +2,14 @@ import React from "react";
 import styles from "./styles.module.scss";
 import { Link } from "react-router-dom";
 const HeaderLogo = () => {
+  const handleLogoClick = () => {
+    setTimeout(() => {
+      window.location.reload();
+    }, 500);
+  };
   return (
     <div className={styles.header_navbar}>
-      <Link to={"/"}>
+      <Link onClick={handleLogoClick} to={"/"}>
         <svg
           id="stockx-logo"
           viewBox="0 0 331 66"

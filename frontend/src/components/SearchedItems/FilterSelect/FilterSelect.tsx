@@ -61,10 +61,7 @@ const FilterSelect = () => {
     value: "1",
   });
 
-  const handleSelectFilter = (
-    newValue: FilterOption | null,
-    actionMeta: ActionMeta<FilterOption>,
-  ) => {
+  const handleSelectFilter = (newValue: FilterOption | null) => {
     if (newValue) {
       setSelectedFilter(newValue);
       console.log(newValue.label);
