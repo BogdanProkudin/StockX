@@ -3,6 +3,7 @@ import { userCardProps } from "../../@types/userCardTypes";
 interface ISearchSlice {
   foundedItems: userCardProps[];
   isLoading: boolean;
+  isSearching: boolean;
   searchValue: string;
   suggestionCountsArr: number[];
   categoryNames: string[];
@@ -11,6 +12,7 @@ const initialState: ISearchSlice = {
   foundedItems: [],
   isLoading: false,
   searchValue: "",
+  isSearching: false,
   suggestionCountsArr: [],
   categoryNames: [],
 };
@@ -33,6 +35,9 @@ const searchSlice = createSlice({
     setCategoryNames: (state, action) => {
       state.categoryNames = action.payload;
     },
+    setIsSearching: (state, action) => {
+      state.isSearching = action.payload;
+    },
     // Дополнительные редьюсеры для работы с состоянием, если нужны
   },
 });
@@ -42,6 +47,7 @@ export const {
   setSearchValue,
   setSuggestionCountsArr,
   setCategoryNames,
+  setIsSearching,
 } = searchSlice.actions;
 // Экспортируем редьюсер
 export default searchSlice.reducer;
