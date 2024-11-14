@@ -21,6 +21,18 @@ const InstagramSection = () => {
     setCurrentSlide(swiper.realIndex);
   };
   const [isModal, setIsModal] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<
+    (typeof instagramSectionItems)[0] | null
+  >(null);
+  const openModal = (item: (typeof instagramSectionItems)[0]) => {
+    setSelectedItem(item);
+    setIsModal(true);
+  };
+
+  const closeModal = () => {
+    setIsModal(false);
+    setSelectedItem(null);
+  };
   return (
     <div className="mb-20">
       <h1 className="text-xl font-bold">
@@ -71,7 +83,7 @@ const InstagramSection = () => {
               {instagramSectionItems.map((obj, id) => (
                 <SwiperSlide key={id}>
                   <div
-                    onClick={() => setIsModal(true)}
+                    onClick={() => openModal(obj)}
                     className="group relative h-[292px] w-[292px] cursor-pointer overflow-hidden rounded-2xl transition-all duration-100 hover:bg-black"
                   >
                     <img
@@ -86,6 +98,9 @@ const InstagramSection = () => {
                 </SwiperSlide>
               ))}
             </Swiper>
+            {isModal && selectedItem && (
+              <Modal closeModal={closeModal} item={selectedItem} />
+            )}
           </>
         )}
       </div>

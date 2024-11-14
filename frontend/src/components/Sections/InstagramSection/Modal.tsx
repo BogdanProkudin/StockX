@@ -1,10 +1,18 @@
 import React from "react";
-
-const Modal = () => {
+interface Imodal {
+  closeModal: () => void;
+  item: {
+    image: string;
+    data: [];
+  };
+}
+const Modal: React.FC<Imodal> = ({ closeModal, item }) => {
   return (
-    <div className="h-full w-full bg-slate-500">
-      <div className="w-[300px] bg-white text-black">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+      <div className="w-[300px] rounded-lg bg-white p-4 text-black shadow-lg">
         <h1>Modal</h1>
+        <p>Your modal content goes here.</p>
+        <button onClick={closeModal}>Close</button>
       </div>
     </div>
   );
