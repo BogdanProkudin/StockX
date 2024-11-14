@@ -64,4 +64,8 @@ export const searchApi = createApi({
 });
 
 // Экспортируем хуки для использования в компонентах
-export const { useLazySearchItemsQuery, useLazyLoadMoreItemsQuery } = searchApi;
+export const {
+  useLazySearchItemsQuery,
+  useSearchItemsQuery,
+  useLazyLoadMoreItemsQuery,
+} = searchApi;

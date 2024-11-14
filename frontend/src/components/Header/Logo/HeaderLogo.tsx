@@ -1,11 +1,14 @@
-import React from "react";
 import styles from "./styles.module.scss";
 import { Link } from "react-router-dom";
+import { useAppDispatch } from "../../../redux/hook";
+import { setSearchValue } from "../../../redux/slices/searchSlice";
 const HeaderLogo = () => {
+  const dispatch = useAppDispatch();
   const handleLogoClick = () => {
+    dispatch(setSearchValue(""));
     setTimeout(() => {
       window.location.reload();
-    }, 500);
+    }, 200);
   };
   return (
     <div className={styles.header_navbar}>
