@@ -5,12 +5,14 @@ interface ISearchSlice {
   isLoading: boolean;
   searchValue: string;
   suggestionCountsArr: number[];
+  categoryNames: string[];
 }
 const initialState: ISearchSlice = {
   foundedItems: [],
   isLoading: false,
   searchValue: "",
   suggestionCountsArr: [],
+  categoryNames: [],
 };
 const searchSlice = createSlice({
   name: "searchSlice",
@@ -28,6 +30,9 @@ const searchSlice = createSlice({
     setSuggestionCountsArr: (state, action) => {
       state.suggestionCountsArr = action.payload.suggestionCountList;
     },
+    setCategoryNames: (state, action) => {
+      state.categoryNames = action.payload;
+    },
     // Дополнительные редьюсеры для работы с состоянием, если нужны
   },
 });
@@ -36,6 +41,7 @@ export const {
   setIsLoading,
   setSearchValue,
   setSuggestionCountsArr,
+  setCategoryNames,
 } = searchSlice.actions;
 // Экспортируем редьюсер
 export default searchSlice.reducer;

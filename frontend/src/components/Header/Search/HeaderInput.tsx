@@ -2,8 +2,9 @@ import React, { useEffect, useMemo } from "react";
 import styles from "./styles.module.scss";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
-import { useAppDispatch } from "../../../redux/hook";
+import { useAppDispatch, useAppSelector } from "../../../redux/hook";
 import {
+  setCategoryNames,
   setFoundedItems,
   setIsLoading,
   setSearchValue,
@@ -19,7 +20,9 @@ const HeaderInput: React.FC = () => {
   const userToken = useMemo(() => localStorage.getItem("token"), []);
   const handleKeyDown = (event: { key: string }) => {
     if (event.key === "Enter") {
-      navigate(`/search/${searchValue}`);
+      navigate(`/search?s=${searchValue}`);
+
+      dispatch(setCategoryNames(["Clear All", `Search:"${searchValue}"`]));
     }
   };
 

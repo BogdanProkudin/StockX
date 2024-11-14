@@ -23,7 +23,7 @@ function App() {
   );
 
   const renderMainContent = (Component: ComponentType) =>
-    searchInputValue.length > 0 ? (
+    searchInputValue && searchInputValue.length > 0 ? (
       <div className="mt-6 flex items-center justify-center">
         <FoundItems />
       </div>
@@ -36,7 +36,7 @@ function App() {
       <Route path="/" element={<HeaderLayout />}>
         <Route path="" element={renderMainContent(Home)} />
         <Route path=":id" element={renderMainContent(FullProduct)} />
-        <Route path="/search/:BrandName" element={<FilterPage />} />
+        <Route path="/search" element={<FilterPage />} />
       </Route>
 
       <Route
