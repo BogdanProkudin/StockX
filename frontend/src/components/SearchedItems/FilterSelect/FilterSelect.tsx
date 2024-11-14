@@ -1,9 +1,8 @@
-import { CheckIcon } from "lucide-react";
 import { useEffect, useState } from "react";
-import Select, { ActionMeta, GroupBase, StylesConfig } from "react-select";
+import Select, { GroupBase, StylesConfig } from "react-select";
 import Control from "./FilterControl";
 import Option from "./FilterOptions";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 const customStyles: StylesConfig<
   FilterOption,

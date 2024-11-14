@@ -16,7 +16,6 @@ const ChosenCategoryList = () => {
     const params = new URLSearchParams(window.location.search);
     const searchTerm = params.get("s");
     dispatch(setCategoryNames(["Clear All", `Search:"${searchTerm}"`]));
-    dispatch(setSearchValue(searchTerm));
   }, []);
 
   return (

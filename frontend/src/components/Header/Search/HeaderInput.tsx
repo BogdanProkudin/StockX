@@ -7,6 +7,7 @@ import {
   setCategoryNames,
   setFoundedItems,
   setIsLoading,
+  setIsSearching,
   setSearchValue,
 } from "../../../redux/slices/searchSlice";
 import { useSearch } from "../../../hooks/useSearch";
@@ -21,17 +22,20 @@ const HeaderInput: React.FC = () => {
   const handleKeyDown = (event: { key: string }) => {
     if (event.key === "Enter") {
       navigate(`/search?s=${searchValue}`);
-
+      dispatch(setIsSearching(false));
       dispatch(setCategoryNames(["Clear All", `Search:"${searchValue}"`]));
     }
   };
 
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
+    dispatch(setIsSearching(true));
     dispatch(setIsLoading(true));
     dispatch(setSearchValue(value));
+
     handleSearch(value);
     if (value.length === 0) {
+      dispatch(setIsSearching(false));
       dispatch(setFoundedItems([]));
       window.scrollTo(0, 0);
     }
@@ -40,6 +44,7 @@ const HeaderInput: React.FC = () => {
   useEffect(() => {
     if (data) {
       dispatch(setFoundedItems(data));
+
       window.scrollTo(0, 0);
     }
     if (isError) {
@@ -48,6 +53,7 @@ const HeaderInput: React.FC = () => {
   }, [data, isError]);
 
   const onClickRemove = () => {
+    dispatch(setIsSearching(false));
     dispatch(setSearchValue(""));
     dispatch(setFoundedItems([]));
     window.scrollTo(0, 0);
