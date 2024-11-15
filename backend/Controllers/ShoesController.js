@@ -125,7 +125,9 @@ export const getInstagramSection = async (req, res) => {
       jordan1Travis,
       nikeNocta,
     ] = await Promise.all([
-      GetData("Asics"),
+      GetData(
+        "ASICS Novalis Gel-Teremoa Kiko Kostadinov Novalis Java Pewter Purple"
+      ),
       GetData("Jordan 4 Retro Military Blue"),
       GetData("Onitsuka Tiger Mexico 66 Kill Bill"),
       GetData("New Balance 860v2 Aime Leon Dore Blue"),
@@ -142,14 +144,25 @@ export const getInstagramSection = async (req, res) => {
       GetData("Jordan 1 Retro Low OG SP Travis Scott Canary"),
       GetData("Nike NOCTA Glide Drake Bright Crimson"), //еще кофта
     ]);
+
     const data = [
       {
         image: `${baseUrl}asics.webp`,
-        data: asicsData,
+        data: [
+          asicsData.find(
+            (el) =>
+              el.title ===
+              "ASICS Novalis Gel-Teremoa Kiko Kostadinov Novalis Java Pewter Purple"
+          ),
+        ],
       },
       {
         image: `${baseUrl}jordan4.webp`,
-        data: jordan4Data,
+        data: [
+          jordan4Data.find(
+            (el) => el.title === "Jordan 4 Retro Military Blue (2024)"
+          ),
+        ],
       },
       {
         image: `${baseUrl}ounisotka.webp`,
