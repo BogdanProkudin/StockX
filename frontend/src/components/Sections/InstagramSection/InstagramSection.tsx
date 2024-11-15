@@ -9,6 +9,7 @@ import "swiper/css";
 import TitleSkeleton from "../TitleSkeleton";
 import Modal from "./Modal";
 import Skeleton from "./Skeleton";
+import { userCardProps } from "../../../@types/userCardTypes";
 
 const InstagramSection = () => {
   const instagramSectionItems = useAppSelector(
@@ -21,10 +22,11 @@ const InstagramSection = () => {
     setCurrentSlide(swiper.realIndex);
   };
   const [isModal, setIsModal] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<
-    (typeof instagramSectionItems)[0] | null
-  >(null);
-  const openModal = (item: (typeof instagramSectionItems)[0]) => {
+  const [selectedItem, setSelectedItem] = useState<{
+    image: string;
+    data: userCardProps[];
+  } | null>(null);
+  const openModal = (item: { image: string; data: userCardProps[] }) => {
     setSelectedItem(item);
     setIsModal(true);
   };

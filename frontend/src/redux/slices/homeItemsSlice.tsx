@@ -12,7 +12,7 @@ interface IHomeItems {
   balenciagaItems: IitemsProps;
   accessories: IitemsProps;
   supremeItems: IitemsProps;
-  instagramSectionItems: { data: []; image: "" }[];
+  instagramSectionItems: { data: userCardProps[]; image: "" }[];
 }
 
 const initialState: IHomeItems = {
