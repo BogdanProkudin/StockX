@@ -32,13 +32,13 @@ const Modal: React.FC<Imodal> = ({ closeModal, item }) => {
               <X />
             </button>
           </div>
-          <div className="mt-7">
+          <div>
             <div className="mb-3 flex items-center gap-1">
-              <h1 className="text-xl">Shop this look</h1>{" "}
+              <h1 className="text-xl">Shop this look</h1>
               <span className="text-md">({item.data.length} item)</span>
             </div>
 
-            <div className="flex h-[600px] flex-wrap justify-between overflow-scroll">
+            <div className="flex h-[600px] flex-wrap justify-between">
               {item.data.map((obj, id) => (
                 <Link to={`/${obj.title}`} key={id}>
                   <div className="relative mb-10 h-[212px] w-[200px]">

@@ -159,8 +159,8 @@ export const getInstagramSection = async (req, res) => {
       {
         image: `${baseUrl}jordan4.webp`,
         data: [
-          jordan4Data.find(
-            (el) => el.title === "Jordan 4 Retro Military Blue (2024)"
+          ...jordan4Data.filter((el) =>
+            /^Jordan 4 Retro Military Blue \(2024.*\)$/.test(el.title)
           ),
         ],
       },
