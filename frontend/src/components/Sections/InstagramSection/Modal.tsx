@@ -85,7 +85,7 @@ const Modal: React.FC<Imodal> = ({ closeModal, modalSlide }) => {
                       <span className="text-md">({obj.data.length} item)</span>
                     </div>
 
-                    <div className="flex h-[600px] flex-wrap justify-between">
+                    <div className="flex flex-wrap justify-between">
                       {obj.data.map((obj, id) => (
                         <Link to={`/${obj.title}`} key={id}>
                           <div className="relative mb-10 h-[212px] w-[200px]">
