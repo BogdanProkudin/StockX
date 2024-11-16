@@ -9,6 +9,9 @@ const ChosenCategoryItem: React.FC<ChosenCategoryItemProps> = ({
       <span className="text-blackTextColor text-center text-sm">
         {categoryName}
       </span>
+      {categoryName !== "Clear All" && (
+        <hr className="border-textDisabled ml-1 mr-[6px] mt-[0.2rem] h-3 border-0 border-l border-solid opacity-60"></hr>
+      )}
     </button>
   );
 };

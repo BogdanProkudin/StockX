@@ -12,6 +12,7 @@ export default {
         categoryButtonColor: "#EDEDED",
         blackGray: "#5F5F5F",
         blackTextColor: "#242424",
+        textDisabled: "#a1a5a4",
       },
     },
   },

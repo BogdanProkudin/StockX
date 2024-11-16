@@ -19,7 +19,7 @@ const ChosenCategoryList = () => {
   }, []);
 
   return (
-    <div className="flex h-10 w-full items-center gap-1 bg-green-600">
+    <div className="flex h-10 w-full items-center gap-1">
       {categoryName.map((category) => {
         return <ChosenCategoryItem categoryName={category} />;
       })}
