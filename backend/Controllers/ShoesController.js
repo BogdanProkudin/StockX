@@ -34,12 +34,22 @@ export const getCollectionSection = async (req, res) => {
     const api = new StockXAPI(StockXLocation.US);
     const section = req.params.section;
 
-    const [adidas, nike, balenciaga, accessories, supreme] = await Promise.all([
+    const [
+      adidas,
+      nike,
+      balenciaga,
+      accessories,
+      supreme,
+      timberland,
+      rickowens,
+    ] = await Promise.all([
       api.searchProducts("Adidas", 1),
       api.searchProducts("Nike", 1),
       api.searchProducts("Balenciaga", 1),
       api.searchProducts("Accessories", 1),
       api.searchProducts("Supreme", 1),
+      api.searchProducts("Timberland", 1),
+      api.searchProducts("Rick Owens", 1),
     ]);
 
     const data = {
@@ -70,6 +80,18 @@ export const getCollectionSection = async (req, res) => {
           "Supreme Collection features a curated selection of iconic streetwear essentials, blending bold style with unparalleled quality",
         data: supreme.hits.slice(0, 6),
       },
+      timberland: {
+        title: "Timberland Collection",
+        description:
+          "Timberland Collection presents a carefully curated range of rugged essentials, merging outdoor durability with urban style and unmatched craftsmanship",
+        data: timberland.hits.slice(0, 6),
+      },
+      rickowens: {
+        title: "Rick Owens Collection",
+        description:
+          "Rick Owens x Collection offers a distinctive blend of avant-garde design and street sophistication, combining cutting-edge fashion with unrivaled quality.",
+        data: rickowens.hits.slice(0, 6),
+      },
     };
 
     if (section === "addidas") {
@@ -82,6 +104,10 @@ export const getCollectionSection = async (req, res) => {
       res.json(data.accessories);
     } else if (section === "supreme") {
       res.json(data.supreme);
+    } else if (section === "timberland") {
+      res.json(data.timberland);
+    } else if (section === "rickowens") {
+      res.json(data.rickowens);
     } else {
       res.status(404).json({ message: "Section not found" });
     }
@@ -141,14 +167,14 @@ export const getInstagramSection = async (req, res) => {
       GetData("Nike Vapor Street Off-White Polarized Blue (Women's)"),
       GetData("Nike Air Max 1 '86 OG Big Bubble Air Max Day (2024)"),
       GetData("Jordan 5 Retro A Ma Maniére Dusk"),
-      GetData("Jordan 5 Retro Off-White Sail"), //еще 1 кроссвок
+      GetData("Jordan 5 Retro Off-White Sail"),
       GetData("Nike V2K Run Summit White Metallic Silver (Women's)"),
       GetData("Prada Monolith 55mm Pointy Loafer Black Brushed Leather"),
-      GetData("Nike Everyday Plus Cushioned Crew Socks (6 Pairs) White"), // еще носки
+      GetData("Nike Everyday Plus Cushioned Crew Socks (6 Pairs) White"),
       GetData("New Balance T500 Aime Leon Dore White Black"),
       GetData("Jordan 1 Retro Low OG SP Travis Scott Canary (Women's)"),
       GetData("Nike NOCTA Glide Drake Bright Crimson"),
-      GetData("Nike x NOCTA L'Art DRX Long Sleeve Jersey Multicolor"), //еще кофта
+      GetData("Nike x NOCTA L'Art DRX Long Sleeve Jersey Multicolor"),
     ]);
 
     const data = [
