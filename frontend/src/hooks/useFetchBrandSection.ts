@@ -9,6 +9,8 @@ import {
   setBalenciagaItems,
   setNikeItems,
   setSupremeItems,
+  setTimberlandItems,
+  setRickOwensItems,
 } from "../redux/slices/homeItemsSlice";
 
 export const useFetchBrandSection = (section: string) => {
@@ -32,6 +34,12 @@ export const useFetchBrandSection = (section: string) => {
       }
       if (data.title === "Supreme Collection") {
         dispatch(setSupremeItems(data));
+      }
+      if (data.title === "Timberland Collection") {
+        dispatch(setTimberlandItems(data));
+      }
+      if (data.title === "Rick Owens Collection") {
+        dispatch(setRickOwensItems(data));
       }
     }
   }, [section, data]);
