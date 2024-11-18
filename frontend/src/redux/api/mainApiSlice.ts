@@ -27,7 +27,19 @@ export const mainApi = createApi({
 });
 export const { useMainSectionFetchQuery, useLazyMainSectionFetchQuery } =
   mainApi;
-
+export const mainImageApi = createApi({
+  reducerPath: "mainImageApi",
+  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3003" }),
+  endpoints: (builder) => ({
+    imageSectionFetch: builder.query({
+      query: ({ sectionName }: { sectionName: string }) =>
+        `/getImageSection/${sectionName}`,
+      keepUnusedDataFor: 60,
+    }),
+  }),
+});
+export const { useImageSectionFetchQuery, useLazyImageSectionFetchQuery } =
+  mainImageApi;
 export const instagramApi = createApi({
   reducerPath: "instagramApi",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3003" }),

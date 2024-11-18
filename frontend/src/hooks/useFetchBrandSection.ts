@@ -11,6 +11,7 @@ import {
   setSupremeItems,
   setTimberlandItems,
   setRickOwensItems,
+  setControllersItems,
 } from "../redux/slices/homeItemsSlice";
 
 export const useFetchBrandSection = (section: string) => {
@@ -40,6 +41,9 @@ export const useFetchBrandSection = (section: string) => {
       }
       if (data.title === "Rick Owens Collection") {
         dispatch(setRickOwensItems(data));
+      }
+      if (data.title === "Controllers Collection") {
+        dispatch(setControllersItems(data));
       }
     }
   }, [section, data]);
