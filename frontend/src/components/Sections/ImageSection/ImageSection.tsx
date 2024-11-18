@@ -3,12 +3,13 @@ import ImageCard from "../../Cards/ImageCard/ImageCard";
 import { cardAssetsProps } from "../../../assets/ImgSection/ImgSection";
 
 interface ImageSectionProps {
+  title: string;
   cardAssets: cardAssetsProps[];
 }
-const ImageSection: React.FC<ImageSectionProps> = ({ cardAssets }) => {
+const ImageSection: React.FC<ImageSectionProps> = ({ cardAssets, title }) => {
   return (
     <div className="mb-10">
-      <h1 className="my-5 text-xl font-bold">Holiday Gift Guides</h1>
+      <h1 className="my-5 text-xl font-bold">{title}</h1>
 
       <div className="flex justify-between">
         {cardAssets.map((obj: cardAssetsProps, id: number) => (
