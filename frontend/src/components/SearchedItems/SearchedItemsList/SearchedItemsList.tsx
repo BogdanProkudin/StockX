@@ -16,9 +16,9 @@ const SearchedItemsList: React.FC<SearchedItemsListProps> = ({
   const sortData = (data: userCardProps[]) => {
     switch (sortQuery) {
       case "priceAsc":
-        return data.slice().sort((a, b) => a.avg_price - b.avg_price);
+        return data.slice().sort((a, b) => a.base_price - b.base_price);
       case "priceDesc":
-        return data.slice().sort((a, b) => b.avg_price - a.avg_price);
+        return data.slice().sort((a, b) => b.base_price - a.base_price);
       case "releaseDate":
         return data.slice().sort((a, b) => {
           const dateA = a.release_date ? new Date(a.release_date).getTime() : 0;
