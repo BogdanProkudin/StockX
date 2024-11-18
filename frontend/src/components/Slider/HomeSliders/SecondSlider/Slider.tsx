@@ -1,13 +1,11 @@
 import React from "react";
-
 import styles from "./styles.module.scss";
-
 import { Link } from "react-router-dom";
 import { Navigation, Scrollbar, Autoplay } from "swiper/modules";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import { sliderArr } from "../../assets/SliderAssets/Slider";
+import { secondSlider } from "../../../../assets/SliderAssets/Slider";
 import "swiper/css";
 import "swiper/css/navigation";
 
@@ -24,13 +22,11 @@ const Slider = () => {
       navigation
       autoplay={{ delay: 20000, disableOnInteraction: false }}
     >
-      {sliderArr.map((obj, id) => (
+      {secondSlider.map((obj, id) => (
         <SwiperSlide className={styles.root_slider} key={id}>
-          <div>
-            <Link className={styles.slider_link} to={obj.path}>
-              <img className={styles.slider_img} src={obj.img} alt={obj.alt} />
-            </Link>
-          </div>
+          <Link className={styles.slider_link} to={obj.path}>
+            <img className={styles.slider_img} src={obj.img} alt={obj.alt} />
+          </Link>
         </SwiperSlide>
       ))}
     </Swiper>

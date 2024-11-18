@@ -12,6 +12,8 @@ interface IHomeItems {
   balenciagaItems: IitemsProps;
   accessories: IitemsProps;
   supremeItems: IitemsProps;
+  timberlandItems: IitemsProps;
+  rickOwensItems: IitemsProps;
   instagramSectionItems: { data: userCardProps[]; image: "" }[];
 }
 
@@ -21,6 +23,8 @@ const initialState: IHomeItems = {
   balenciagaItems: { title: "", data: [], description: "" },
   accessories: { title: "", data: [], description: "" },
   supremeItems: { title: "", data: [], description: "" },
+  timberlandItems: { title: "", data: [], description: "" },
+  rickOwensItems: { title: "", data: [], description: "" },
   instagramSectionItems: [{ data: [], image: "" }],
 };
 const homeItems = createSlice({
@@ -45,6 +49,12 @@ const homeItems = createSlice({
     setInstagramItems: (state, action) => {
       state.instagramSectionItems = action.payload;
     },
+    setTimberlandItems: (state, action) => {
+      state.timberlandItems = action.payload;
+    },
+    setRickOwensItems: (state, action) => {
+      state.rickOwensItems = action.payload;
+    },
   },
 });
 
@@ -55,5 +65,7 @@ export const {
   setAccessories,
   setSupremeItems,
   setInstagramItems,
+  setTimberlandItems,
+  setRickOwensItems,
 } = homeItems.actions;
 export default homeItems.reducer;
