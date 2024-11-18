@@ -14,6 +14,9 @@ export const updateCategories = (
     newSearchParams.delete("s");
     setSearchParams(newSearchParams);
   }
+  if (updatedCategories.length === 1) {
+    return dispatch(setCategoryNames([]));
+  }
 
   dispatch(setCategoryNames(updatedCategories));
 };
