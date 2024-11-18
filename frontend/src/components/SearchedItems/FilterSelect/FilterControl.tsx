@@ -1,4 +1,3 @@
-import { ReactNode } from "react";
 import { ControlProps, components } from "react-select";
 
 const Control = ({ children, ...props }: ControlProps<any, false>) => (

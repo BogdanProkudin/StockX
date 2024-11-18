@@ -60,7 +60,12 @@ export const searchApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3003" }),
   endpoints: (builder) => ({
     searchItems: builder.query({
-      query: (searchingValue: string) => `/searchItems/${searchingValue}`,
+      query: (searchingValue: string) => {
+        if (searchingValue.length !== 0 || searchingValue === null) {
+          return `/searchItems/${searchingValue}`;
+        }
+        return "/searchItems/Supreme";
+      },
       keepUnusedDataFor: 60,
     }),
     loadMoreItems: builder.query({
