@@ -21,6 +21,8 @@ const ChosenCategoryItem: React.FC<ChosenCategoryItemProps> = React.memo(
       const updatedCategoryNames = categoryNames.filter(
         (el) => el !== categoryName,
       );
+      console.log("CLICKED", updatedCategoryNames);
+
       updateCategories(
         updatedCategoryNames,
         searchParams,

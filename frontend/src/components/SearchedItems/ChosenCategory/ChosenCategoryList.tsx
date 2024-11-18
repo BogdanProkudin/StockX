@@ -17,7 +17,7 @@ const ChosenCategoryList: React.FC = React.memo(() => {
       ? ["Clear All", `Search: "${searchTerm}"`]
       : [];
     dispatch(setCategoryNames(defaultCategories));
-  }, [searchParams, dispatch]);
+  }, [dispatch]);
 
   return (
     <div className="flex h-10 w-full items-center gap-1">
