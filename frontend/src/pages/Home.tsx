@@ -5,11 +5,6 @@ import MainSection from "../components/Sections/MainSection/MainSection";
 import ImageSection from "../components/Sections/ImageSection/ImageSection";
 import { useAppSelector } from "../redux/hook";
 
-import {
-  firstCardAssets,
-  secondCardAssets,
-  thirdCardAssets,
-} from "../assets/ImgSection/ImgSection";
 import { useFetchBrandSection } from "../hooks/useFetchBrandSection";
 
 import { useFetchUserSection } from "../hooks/useFetchUserSection";
@@ -18,6 +13,7 @@ import InstagramSection from "../components/Sections/InstagramSection/InstagramS
 import TopSlider from "../components/Slider/HomeSliders/FirstSlider/Slider";
 import BottSlider from "../components/Slider/HomeSliders/SecondSlider/Slider";
 import CardSection from "../components/Sections/CardSection/CardSection";
+import { useFetchImageSection } from "../hooks/useFetchImageSection";
 const Home: React.FC = () => {
   const {
     addidasItems,
@@ -27,6 +23,11 @@ const Home: React.FC = () => {
     supremeItems,
     timberlandItems,
     rickOwensItems,
+    controllersItems,
+    popularImageItems,
+    holidayImageItems,
+    seasonalImageItems,
+    browseImageItems,
   } = useAppSelector((state) => state.homeItems);
   const { recommendedItems, recentlyViewed, userError } = useFetchUserSection();
   const { ref: refAdiddas } = useFetchBrandSection("addidas");
@@ -36,7 +37,13 @@ const Home: React.FC = () => {
   const { ref: refSupreme } = useFetchBrandSection("supreme");
   const { ref: refTimberland } = useFetchBrandSection("timberland");
   const { ref: refRickOwens } = useFetchBrandSection("rickowens");
+  const { ref: refControllers } = useFetchBrandSection("controllers");
+  const { ref: refPopular } = useFetchImageSection("popular");
+  const { ref: refHoliday } = useFetchImageSection("holiday");
+  const { ref: refSeasonal } = useFetchImageSection("seasonal");
+  const { ref: refBrowse } = useFetchImageSection("browse");
   const { ref: refInstagramSection } = useFetchInstagramSection("instagram");
+
   return (
     <div className="mt-6">
       <TopSlider />
@@ -50,7 +57,12 @@ const Home: React.FC = () => {
         items={recommendedItems.data}
         description={recommendedItems.description}
       />
-      <ImageSection cardAssets={firstCardAssets} />
+      <div ref={refPopular}>
+        <ImageSection
+          cardAssets={popularImageItems.data}
+          title={popularImageItems.title}
+        />
+      </div>
       <div ref={refAdiddas}>
         <MainSection
           mainTitle={addidasItems.title}
@@ -73,7 +85,13 @@ const Home: React.FC = () => {
           description={balenciagaItems.description}
         />
       </div>
-      <ImageSection cardAssets={secondCardAssets} />
+      <div ref={refHoliday}>
+        <ImageSection
+          cardAssets={holidayImageItems.data}
+          title={holidayImageItems.title}
+        />
+      </div>
+
       <div className="mb-28" ref={refAccessories}>
         <MainSection
           mainTitle={accessories.title}
@@ -88,7 +106,12 @@ const Home: React.FC = () => {
           description={supremeItems.description}
         />
       </div>
-      <ImageSection cardAssets={thirdCardAssets} />
+      <div ref={refSeasonal}>
+        <ImageSection
+          cardAssets={seasonalImageItems.data}
+          title={seasonalImageItems.title}
+        />
+      </div>
       <div ref={refInstagramSection}>
         <InstagramSection />
       </div>
@@ -105,6 +128,19 @@ const Home: React.FC = () => {
           mainTitle={rickOwensItems.title}
           items={rickOwensItems.data}
           description={rickOwensItems.description}
+        />
+      </div>
+      <div ref={refBrowse}>
+        <ImageSection
+          cardAssets={browseImageItems.data}
+          title={browseImageItems.title}
+        />
+      </div>
+      <div ref={refControllers}>
+        <MainSection
+          mainTitle={controllersItems.title}
+          items={controllersItems.data}
+          description={controllersItems.description}
         />
       </div>
       {userError && <div className="text-red-500">Error loading user data</div>}

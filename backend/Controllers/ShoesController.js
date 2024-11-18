@@ -42,6 +42,7 @@ export const getCollectionSection = async (req, res) => {
       supreme,
       timberland,
       rickowens,
+      controllers,
     ] = await Promise.all([
       api.searchProducts("Adidas", 1),
       api.searchProducts("Nike", 1),
@@ -50,6 +51,7 @@ export const getCollectionSection = async (req, res) => {
       api.searchProducts("Supreme", 1),
       api.searchProducts("Timberland", 1),
       api.searchProducts("Rick Owens", 1),
+      api.searchProducts("Controllers", 1),
     ]);
 
     const data = {
@@ -92,6 +94,11 @@ export const getCollectionSection = async (req, res) => {
           "Rick Owens x Collection offers a distinctive blend of avant-garde design and street sophistication, combining cutting-edge fashion with unrivaled quality.",
         data: rickowens.hits.slice(0, 6),
       },
+      controllers: {
+        title: "Controllers Collection",
+        description: "Controllers for every taste from ordinary to very rare",
+        data: controllers.hits.slice(0, 6),
+      },
     };
 
     if (section === "addidas") {
@@ -108,6 +115,8 @@ export const getCollectionSection = async (req, res) => {
       res.json(data.timberland);
     } else if (section === "rickowens") {
       res.json(data.rickowens);
+    } else if (section === "controllers") {
+      res.json(data.controllers);
     } else {
       res.status(404).json({ message: "Section not found" });
     }
@@ -334,7 +343,64 @@ export const getInstagramSection = async (req, res) => {
 
     res.json(data);
   } catch (error) {
-    console.error("Ошибка при получении данных с StockX:", error);
+    console.error("Errors while getting instagram section:", error);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+export const getImageSection = async (req, res) => {
+  try {
+    const section = req.params.section;
+    const baseUrl = `${req.protocol}://${req.get(
+      "host"
+    )}/uploads/imageSection/`;
+    //add paths
+    const firstCardAssets = [
+      { img: `${baseUrl}1.webp`, path: "", alt: "Jordan" },
+      { img: `${baseUrl}2.webp`, path: "", alt: "Supreme" },
+      { img: `${baseUrl}3.webp`, path: "", alt: "Louis Vuitton" },
+      { img: `${baseUrl}4.webp`, path: "", alt: "UGG" },
+      { img: `${baseUrl}5.webp`, path: "", alt: "Fears Of God Essentials" },
+    ];
+    const secondCardAssets = [
+      { img: `${baseUrl}6.webp`, path: "", alt: "Gifts Under 100" },
+      { img: `${baseUrl}7.webp`, path: "", alt: "Gifts Under 250" },
+      { img: `${baseUrl}8.webp`, path: "", alt: "Grail Gifts" },
+      { img: `${baseUrl}9.webp`, path: "", alt: "Gifts For Him" },
+      { img: `${baseUrl}10.webp`, path: "", alt: "Gifts For Her" },
+    ];
+    const thirdCardAssets = [
+      { img: `${baseUrl}12.webp`, path: "", alt: "Hoodies" },
+      { img: `${baseUrl}13.webp`, path: "", alt: "Jackets" },
+      { img: `${baseUrl}14.webp`, path: "", alt: "HandBags" },
+      { img: `${baseUrl}15.webp`, path: "", alt: "Watches" },
+      { img: `${baseUrl}16.webp`, path: "", alt: "Lego" },
+    ];
+    const fourCardAssets = [
+      { img: `${baseUrl}17.webp`, path: "", alt: "Nike" },
+      { img: `${baseUrl}18.webp`, path: "", alt: "Asics" },
+      { img: `${baseUrl}19.webp`, path: "", alt: "New Balance" },
+      { img: `${baseUrl}20.webp`, path: "", alt: "Crors" },
+      { img: `${baseUrl}21.webp`, path: "", alt: "Adidas" },
+    ];
+    const data = {
+      firstCard: { title: "Popular Brands", data: firstCardAssets },
+      secondCard: { title: "Holiday Gift Guides", data: secondCardAssets },
+      thirdCard: { title: "Seasonal Favorites", data: thirdCardAssets },
+      fourCard: { title: "Browse More Brands", data: fourCardAssets },
+    };
+    if (section === "popular") {
+      res.json(data.firstCard);
+    } else if (section === "holiday") {
+      res.json(data.secondCard);
+    } else if (section === "seasonal") {
+      res.json(data.thirdCard);
+    } else if (section === "browse") {
+      res.json(data.fourCard);
+    } else {
+      res.status(404).json({ message: "Section not found" });
+    }
+  } catch (error) {
+    console.error("Errors while getting image section", error);
     res.status(500).json({ message: "Server Error" });
   }
 };
