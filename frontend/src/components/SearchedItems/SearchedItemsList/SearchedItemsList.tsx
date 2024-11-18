@@ -1,7 +1,7 @@
-import { useEffect } from "react";
+import React from "react";
+import { useSearchParams } from "react-router-dom";
 import { userCardProps } from "../../../@types/userCardTypes";
 import SearchedItem from "./SearchedItem";
-import { useSearchParams } from "react-router-dom";
 
 type SearchedItemsListProps = {
   items: userCardProps[];
@@ -12,42 +12,30 @@ const SearchedItemsList: React.FC<SearchedItemsListProps> = ({
   items,
   isLoading,
 }) => {
-  // Функция для сортировки данных
+  const [searchParams] = useSearchParams();
+  const sortQuery: any = searchParams.get("sort");
+
   const sortData = (data: userCardProps[]) => {
-    switch (sortQuery) {
-      case "priceAsc":
-        return data.slice().sort((a, b) => a.base_price - b.base_price);
-      case "priceDesc":
-        return data.slice().sort((a, b) => b.base_price - a.base_price);
-      case "releaseDate":
-        return data.slice().sort((a, b) => {
-          const dateA = a.release_date ? new Date(a.release_date).getTime() : 0;
-          const dateB = b.release_date ? new Date(b.release_date).getTime() : 0;
-          return dateB - dateA;
-        });
-      case "alphabetical":
-        return data.slice().sort((a, b) => a.title.localeCompare(b.title));
-      default:
-        return data;
-    }
+    const sortFunctions: Record<
+      string,
+      (a: userCardProps, b: userCardProps) => number
+    > = {
+      priceAsc: (a, b) => a.base_price - b.base_price,
+      priceDesc: (a, b) => b.base_price - a.base_price,
+      releaseDate: (a, b) =>
+        (new Date(b.release_date || 0).getTime() || 0) -
+        (new Date(a.release_date || 0).getTime() || 0),
+      alphabetical: (a, b) => a.title.localeCompare(b.title),
+    };
+    return sortFunctions[sortQuery]
+      ? [...data].sort(sortFunctions[sortQuery])
+      : data;
   };
 
-  if (isLoading) {
-    return <div>LOADING...</div>;
-  }
-  const [searchParams] = useSearchParams();
-  const sortQuery = searchParams.get("sort");
+  if (isLoading) return <div>Loading...</div>;
 
-  useEffect(() => {
-    console.log("Query was changed:", sortQuery);
-  }, [sortQuery]);
   const sortedItems = sortData(items);
-  useEffect(() => {
-    console.log("изменились айтемы", items);
-  }, [items]);
-  useEffect(() => {
-    console.log("сортированные айтемы", sortedItems);
-  }, [sortedItems]);
+  if (!sortedItems.length) return <div>No items found</div>;
 
   return (
     <div className="mt-5 grid w-full grid-cols-1 items-start gap-6 sm:grid-cols-2 md:grid-cols-4">

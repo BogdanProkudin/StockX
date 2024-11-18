@@ -1,24 +1,63 @@
 import CloseIcon from "@mui/icons-material/Close";
+import React from "react";
+import { useAppDispatch, useAppSelector } from "../../../redux/hook";
+import { setCategoryNames } from "../../../redux/slices/searchSlice";
+import { useSearchParams } from "react-router-dom";
+import { updateCategories } from "../../../utils/updateCategories";
+
 type ChosenCategoryItemProps = {
   categoryName: string;
 };
-const ChosenCategoryItem: React.FC<ChosenCategoryItemProps> = ({
-  categoryName,
-}) => {
-  return (
-    <button className="bg-categoryButtonColor text-text-primary mb-1 mr-1 mt-1 inline-flex h-[30px] min-h-[22px] min-w-[20px] max-w-full cursor-pointer items-center justify-center rounded-2xl px-2 py-2 pl-3 pr-3 align-top font-sans text-sm text-xs font-normal leading-tight shadow outline-2 outline-offset-2">
-      <span className="text-blackTextColor text-center text-sm">
-        {categoryName}
-      </span>
-      {categoryName !== "Clear All" && (
-        <>
-          <hr className="border-textDisabled ml-1 mr-[6px] mt-[0.2rem] h-3 border-0 border-l border-solid opacity-60"></hr>
 
-          <CloseIcon style={{ fontSize: "16px", marginTop: "1.6px" }} />
-        </>
-      )}
-    </button>
-  );
-};
+const ChosenCategoryItem: React.FC<ChosenCategoryItemProps> = React.memo(
+  ({ categoryName }) => {
+    const categoryNames = useAppSelector(
+      (state) => state.searchSlice.categoryNames,
+    );
+    const [searchParams, setSearchParams] = useSearchParams();
+    const dispatch = useAppDispatch();
+
+    const handleDeleteCategoryItem = () => {
+      const updatedCategoryNames = categoryNames.filter(
+        (el) => el !== categoryName,
+      );
+      updateCategories(
+        updatedCategoryNames,
+        searchParams,
+        setSearchParams,
+        dispatch,
+      );
+    };
+
+    const handleDeleteAllItems = () => {
+      updateCategories([], searchParams, setSearchParams, dispatch);
+    };
+    const handleCategoryItemClick = () => {
+      if (categoryName === "Clear All") {
+        handleDeleteAllItems();
+      }
+    };
+
+    return (
+      <button className="text-text-primary mb-1 mr-1 mt-1 inline-flex h-[30px] min-h-[22px] min-w-[20px] max-w-full cursor-pointer items-center justify-center rounded-2xl bg-categoryButtonColor px-2 py-2 pl-3 pr-3 align-top font-sans text-sm text-xs font-normal leading-tight shadow outline-2 outline-offset-2">
+        <span
+          onClick={handleCategoryItemClick}
+          className="text-center text-sm text-blackTextColor"
+        >
+          {categoryName}
+        </span>
+        {categoryName !== "Clear All" && (
+          <>
+            <hr className="ml-1 mr-[6px] mt-[0.2rem] h-3 border-0 border-l border-solid border-textDisabled opacity-60" />
+            <CloseIcon
+              onClick={handleDeleteCategoryItem}
+              style={{ fontSize: "16px", marginTop: "1.6px" }}
+            />
+          </>
+        )}
+      </button>
+    );
+  },
+);
 
 export default ChosenCategoryItem;
