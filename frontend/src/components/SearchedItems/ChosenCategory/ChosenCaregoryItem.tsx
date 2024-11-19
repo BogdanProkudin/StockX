@@ -18,10 +18,10 @@ const ChosenCategoryItem: React.FC<ChosenCategoryItemProps> = React.memo(
     const dispatch = useAppDispatch();
 
     const handleDeleteCategoryItem = () => {
-      const updatedCategoryNames = categoryNames.filter(
-        (el) => el !== categoryName,
-      );
-      console.log("CLICKED", updatedCategoryNames);
+      const updatedCategoryNames = categoryNames.filter((el) => {
+        return el !== categoryName;
+      });
+      console.log(updatedCategoryNames, "QQQ");
 
       updateCategories(
         updatedCategoryNames,

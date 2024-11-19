@@ -20,10 +20,10 @@ const HeaderInput: React.FC = () => {
 
   const userToken = useMemo(() => localStorage.getItem("token"), []);
   const handleKeyDown = (event: { key: string }) => {
-    if (event.key === "Enter") {
+    if (event.key === "Enter" && searchValue.length > 0) {
       navigate(`/search?s=${searchValue}`);
       dispatch(setIsSearching(false));
-      dispatch(setCategoryNames(["Clear All", `Search:"${searchValue}"`]));
+      dispatch(setCategoryNames(["Clear All", `Search: "${searchValue}"`]));
     }
   };
 
