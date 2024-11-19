@@ -5,6 +5,7 @@ import {
   searchApi,
   instagramApi,
   mainImageApi,
+  mainCardApi,
 } from "./api/mainApiSlice";
 import { userApi } from "./api/mainApiSlice";
 import homeItems from "./slices/homeItemsSlice";
@@ -17,6 +18,7 @@ export const store = configureStore({
     [userApi.reducerPath]: userApi.reducer,
     [mainApi.reducerPath]: mainApi.reducer,
     [mainImageApi.reducerPath]: mainImageApi.reducer,
+    [mainCardApi.reducerPath]: mainCardApi.reducer,
     [searchApi.reducerPath]: searchApi.reducer,
     [instagramApi.reducerPath]: instagramApi.reducer,
   },
@@ -26,6 +28,7 @@ export const store = configureStore({
       mainApi.middleware,
       mainImageApi.middleware,
       searchApi.middleware,
+      mainCardApi.middleware,
       instagramApi.middleware,
     ), // добавление api.middleware
 });

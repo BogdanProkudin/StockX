@@ -14,6 +14,7 @@ import TopSlider from "../components/Slider/HomeSliders/FirstSlider/Slider";
 import BottSlider from "../components/Slider/HomeSliders/SecondSlider/Slider";
 import CardSection from "../components/Sections/CardSection/CardSection";
 import { useFetchImageSection } from "../hooks/useFetchImageSection";
+import { useFetchCardSection } from "../hooks/useFetchCardSection";
 const Home: React.FC = () => {
   const {
     addidasItems,
@@ -28,6 +29,8 @@ const Home: React.FC = () => {
     holidayImageItems,
     seasonalImageItems,
     browseImageItems,
+    topCard,
+    bottCard,
   } = useAppSelector((state) => state.homeItems);
   const { recommendedItems, recentlyViewed, userError } = useFetchUserSection();
   const { ref: refAdiddas } = useFetchBrandSection("addidas");
@@ -42,6 +45,8 @@ const Home: React.FC = () => {
   const { ref: refHoliday } = useFetchImageSection("holiday");
   const { ref: refSeasonal } = useFetchImageSection("seasonal");
   const { ref: refBrowse } = useFetchImageSection("browse");
+  const { ref: refTopCards } = useFetchCardSection("topCards");
+  const { ref: refBottCards } = useFetchCardSection("bottCards");
   const { ref: refInstagramSection } = useFetchInstagramSection("instagram");
 
   return (
@@ -77,7 +82,9 @@ const Home: React.FC = () => {
           description={nikeItems.description}
         />
       </div>
-      <CardSection />
+      <div ref={refTopCards}>
+        <CardSection data={topCard.data} />
+      </div>
       <div ref={refBalenciaga}>
         <MainSection
           mainTitle={balenciagaItems.title}
@@ -129,6 +136,9 @@ const Home: React.FC = () => {
           items={rickOwensItems.data}
           description={rickOwensItems.description}
         />
+      </div>
+      <div ref={refBottCards}>
+        <CardSection data={bottCard.data} />
       </div>
       <div ref={refBrowse}>
         <ImageSection

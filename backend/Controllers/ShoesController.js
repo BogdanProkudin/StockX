@@ -404,3 +404,33 @@ export const getImageSection = async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 };
+export const getCardSection = async (req, res) => {
+  try {
+    const section = req.params.section;
+    const baseUrl = `${req.protocol}://${req.get("host")}/uploads/pathSection/`;
+    //add paths
+    const topAssets = [
+      { img: `${baseUrl}holiday.webp`, path: "", alt: "Apparel" },
+      { img: `${baseUrl}wallet.webp`, path: "", alt: "Wallets" },
+    ];
+    const bottAssets = [
+      { img: `${baseUrl}dunks.webp`, path: "", alt: "Dunks Retail" },
+      { img: `${baseUrl}giftCard.webp`, path: "", alt: "Gift Cards" },
+    ];
+
+    const data = {
+      firstCard: { sectionName: "top", data: topAssets },
+      secondCard: { sectionName: "bott", data: bottAssets },
+    };
+    if (section === "topCards") {
+      res.json(data.firstCard);
+    } else if (section === "bottCards") {
+      res.json(data.secondCard);
+    } else {
+      res.status(404).json({ message: "Section not found" });
+    }
+  } catch (error) {
+    console.error("Errors while getting card section", error);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
