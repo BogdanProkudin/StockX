@@ -8,11 +8,12 @@ export default {
         oswald: ["Oswald", "sans-serif"],
       },
       colors: {
-        lightGray: "#CFCFCF", // Здесь добавляем кастомный цвет
+        lightGray: "#CFCFCF",
         categoryButtonColor: "#EDEDED",
         blackGray: "#5F5F5F",
         blackTextColor: "#242424",
         textDisabled: "#a1a5a4",
+        customDeel: "hsl(0, 0%, 80%)",
       },
     },
   },

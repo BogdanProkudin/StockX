@@ -3,6 +3,7 @@ import Select, { GroupBase, StylesConfig } from "react-select";
 import Control from "./FilterControl";
 import Option from "./FilterOptions";
 import { useSearchParams } from "react-router-dom";
+import FilterSkeleton from "./FilterSkeleton";
 
 const customStyles: StylesConfig<
   FilterOption,
@@ -50,25 +51,28 @@ const customStyles: StylesConfig<
   }),
 };
 
-interface FilterOption {
+export interface FilterOption {
   label: string;
   value: string;
 }
 
-const FilterSelect = () => {
+const FilterSelect = ({ isLoading }: { isLoading: boolean }) => {
   const [searchParams, setSearchParams] = useSearchParams();
+
   const [selectedFilter, setSelectedFilter] = useState<FilterOption>({
-    label: "Featured",
+    label: "",
     value: "1",
   });
 
   useEffect(() => {
-    const sortQuery = searchParams.get("sort");
-    setSelectedFilter({
-      label: sortQuery ? sortQuery : "Featured",
-      value: "1",
-    });
-  }, []);
+    if (!isLoading) {
+      const sortQuery = searchParams.get("sort");
+      setSelectedFilter({
+        label: sortQuery ? sortQuery : "Featured",
+        value: "1",
+      });
+    }
+  }, [isLoading]);
 
   const handleSelectFilter = (newValue: FilterOption | null) => {
     if (newValue) {
@@ -92,7 +96,7 @@ const FilterSelect = () => {
     <Select<FilterOption, false>
       onChange={handleSelectFilter}
       value={selectedFilter}
-      components={{ Control, Option }}
+      components={{ Control: isLoading ? FilterSkeleton : Control, Option }}
       options={sortOptions}
       isSearchable={false}
       styles={customStyles}
