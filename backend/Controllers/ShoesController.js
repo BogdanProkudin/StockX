@@ -439,11 +439,43 @@ export const getSliderInfo = async (req, res) => {
     const section = req.params.section;
     const baseUrl = `${req.protocol}://${req.get("host")}/uploads/Slider/`;
     //add paths
-    const topSlider = [
-      { img: `${baseUrl}NikeKobe5.webp`, path: "", alt: "Nike Kobe 5" },
-      { img: `${baseUrl}SupremeWeek.webp`, path: "", alt: "Supreme" },
-      { img: `${baseUrl}TrendHodi.webp`, path: "", alt: "Trending Hoodies" },
-    ];
+
+    const getCurrentSliderSet = () => {
+      const sliderSets = [
+        [
+          { img: `${baseUrl}NikeKobe5.webp`, path: "", alt: "Nike Kobe 5" },
+          { img: `${baseUrl}SupremeWeek.webp`, path: "", alt: "Supreme" },
+          {
+            img: `${baseUrl}TrendHodi.webp`,
+            path: "",
+            alt: "Trending Hoodies",
+          },
+        ],
+        [
+          { img: `${baseUrl}NikeKd4.webp`, path: "", alt: "Nike KD 4" },
+          { img: `${baseUrl}Aj4.webp`, path: "", alt: "Jordan 4" },
+          { img: `${baseUrl}Deals.webp`, path: "", alt: "Hot Deals" },
+        ],
+      ];
+      //Логика для теста если будет желание потестить в четные минуты одни слайды в нечетные другие. Также позже улучшу логику для переиспользование
+      // const currentMinute = new Date().getMinutes();
+
+      // const setIndex = currentMinute % 2;
+
+      const today = new Date();
+
+      const dayOfYear = Math.floor(
+        (today - new Date(today.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24
+      );
+      const setIndex = dayOfYear % 2;
+      return sliderSets[setIndex].map((image) => ({
+        img: image.img,
+        alt: image.alt,
+        path: "",
+      }));
+    };
+    const topSlider = getCurrentSliderSet();
+
     const bottSlider = [
       { img: `${baseUrl}Design.webp`, path: "", alt: "Designer" },
       { img: `${baseUrl}TNF.webp`, path: "", alt: "TNF" },
