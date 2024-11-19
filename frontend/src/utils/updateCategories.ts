@@ -10,7 +10,10 @@ export const updateCategories = (
 ) => {
   const newSearchParams = new URLSearchParams(searchParams);
 
-  if (newSearchParams.has("s")) {
+  if (
+    newSearchParams.has("s") &&
+    !updatedCategories.includes(`Search: "${newSearchParams.get("s")}"`)
+  ) {
     newSearchParams.delete("s");
     setSearchParams(newSearchParams);
   }
