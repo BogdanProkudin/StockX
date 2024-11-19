@@ -40,6 +40,19 @@ export const mainImageApi = createApi({
 });
 export const { useImageSectionFetchQuery, useLazyImageSectionFetchQuery } =
   mainImageApi;
+export const mainCardApi = createApi({
+  reducerPath: "mainCardApi",
+  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3003" }),
+  endpoints: (builder) => ({
+    cardSectionFetch: builder.query({
+      query: ({ sectionName }: { sectionName: string }) =>
+        `/getCardSection/${sectionName}`,
+      keepUnusedDataFor: 60,
+    }),
+  }),
+});
+export const { useCardSectionFetchQuery, useLazyCardSectionFetchQuery } =
+  mainCardApi;
 export const instagramApi = createApi({
   reducerPath: "instagramApi",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3003" }),
@@ -55,6 +68,19 @@ export const {
   useLazyInstagramSectionFetchQuery,
 } = instagramApi;
 
+export const sliderApi = createApi({
+  reducerPath: "sliderApi",
+  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3003" }),
+  endpoints: (builder) => ({
+    sliderFetch: builder.query({
+      query: ({ sectionName }: { sectionName: string }) =>
+        `/getSliderInfo/${sectionName}`,
+      keepUnusedDataFor: 60,
+    }),
+  }),
+});
+
+export const { useSliderFetchQuery, useLazySliderFetchQuery } = sliderApi;
 export const searchApi = createApi({
   reducerPath: "searchApi",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3003" }),

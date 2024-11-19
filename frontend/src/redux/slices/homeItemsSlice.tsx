@@ -6,7 +6,7 @@ interface IitemsProps {
   data: userCardProps[];
   description: string;
 }
-interface IimageProps {
+export interface IimageProps {
   img: string;
   path: string;
   alt: string;
@@ -24,6 +24,10 @@ interface IHomeItems {
   holidayImageItems: { title: string; data: IimageProps[] };
   seasonalImageItems: { title: string; data: IimageProps[] };
   browseImageItems: { title: string; data: IimageProps[] };
+  topCard: { sectionName: string; data: IimageProps[] };
+  bottCard: { sectionName: string; data: IimageProps[] };
+  topSlider: { sectionName: string; data: IimageProps[] };
+  bottSlider: { sectionName: string; data: IimageProps[] };
   instagramSectionItems: { data: userCardProps[]; image: "" }[];
 }
 
@@ -40,6 +44,10 @@ const initialState: IHomeItems = {
   holidayImageItems: { title: "", data: [] },
   seasonalImageItems: { title: "", data: [] },
   browseImageItems: { title: "", data: [] },
+  topCard: { sectionName: "", data: [] },
+  bottCard: { sectionName: "", data: [] },
+  topSlider: { sectionName: "", data: [] },
+  bottSlider: { sectionName: "", data: [] },
   instagramSectionItems: [{ data: [], image: "" }],
 };
 const homeItems = createSlice({
@@ -85,6 +93,18 @@ const homeItems = createSlice({
     setBrowseImage: (state, action) => {
       state.browseImageItems = action.payload;
     },
+    setTopCard: (state, action) => {
+      state.topCard = action.payload;
+    },
+    setBottCard: (state, action) => {
+      state.bottCard = action.payload;
+    },
+    setTopSlider: (state, action) => {
+      state.topSlider = action.payload;
+    },
+    setBottSlider: (state, action) => {
+      state.bottSlider = action.payload;
+    },
   },
 });
 
@@ -102,5 +122,9 @@ export const {
   setHolidayImage,
   setSeasonalImage,
   setBrowseImage,
+  setTopCard,
+  setBottCard,
+  setTopSlider,
+  setBottSlider,
 } = homeItems.actions;
 export default homeItems.reducer;

@@ -404,3 +404,63 @@ export const getImageSection = async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 };
+export const getCardSection = async (req, res) => {
+  try {
+    const section = req.params.section;
+    const baseUrl = `${req.protocol}://${req.get("host")}/uploads/pathSection/`;
+    //add paths
+    const topAssets = [
+      { img: `${baseUrl}holiday.webp`, path: "", alt: "Apparel" },
+      { img: `${baseUrl}wallet.webp`, path: "", alt: "Wallets" },
+    ];
+    const bottAssets = [
+      { img: `${baseUrl}dunks.webp`, path: "", alt: "Dunks Retail" },
+      { img: `${baseUrl}giftCard.webp`, path: "", alt: "Gift Cards" },
+    ];
+
+    const data = {
+      firstCard: { sectionName: "top", data: topAssets },
+      secondCard: { sectionName: "bott", data: bottAssets },
+    };
+    if (section === "topCards") {
+      res.json(data.firstCard);
+    } else if (section === "bottCards") {
+      res.json(data.secondCard);
+    } else {
+      res.status(404).json({ message: "Section not found" });
+    }
+  } catch (error) {
+    console.error("Errors while getting card section", error);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+export const getSliderInfo = async (req, res) => {
+  try {
+    const section = req.params.section;
+    const baseUrl = `${req.protocol}://${req.get("host")}/uploads/Slider/`;
+    //add paths
+    const topSlider = [
+      { img: `${baseUrl}NikeKobe5.webp`, path: "", alt: "Nike Kobe 5" },
+      { img: `${baseUrl}SupremeWeek.webp`, path: "", alt: "Supreme" },
+      { img: `${baseUrl}TrendHodi.webp`, path: "", alt: "Trending Hoodies" },
+    ];
+    const bottSlider = [
+      { img: `${baseUrl}Design.webp`, path: "", alt: "Designer" },
+      { img: `${baseUrl}TNF.webp`, path: "", alt: "TNF" },
+    ];
+    const data = {
+      firstSlider: { sectionName: "top", data: topSlider },
+      secondSlider: { sectionName: "bott", data: bottSlider },
+    };
+    if (section === "topSlider") {
+      res.json(data.firstSlider);
+    } else if (section === "bottSlider") {
+      res.json(data.secondSlider);
+    } else {
+      res.status(404).json({ message: "Section not found" });
+    }
+  } catch (error) {
+    console.error("Errors while getting slider info", error);
+    res.status(500).json({ message: "Server Error" });
+  }
+};

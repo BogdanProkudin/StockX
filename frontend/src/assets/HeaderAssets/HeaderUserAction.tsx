@@ -1,3 +1,14 @@
+import {
+  UserRound,
+  ScanBarcode,
+  HandCoins,
+  Heart,
+  GalleryVerticalEnd,
+  Wallet,
+  Settings,
+  LogOut,
+} from "lucide-react";
+
 export const navLinksArr = [
   {
     img: (
@@ -39,13 +50,21 @@ export const navLinksArr = [
     path: "/profile",
   },
 ];
-export const profileArr: { img: string; name: string; path: string }[] = [
-  { img: "icon_profile.png", name: "Profile", path: "" },
-  { img: "icon_buying.png", name: "Buying", path: "" },
-  { img: "icon_selling.png", name: "Selling", path: "" },
-  { img: "icon_favorites.png", name: "Favorites", path: "" },
-  { img: "icon_portfolio.png", name: "Portfolio", path: "" },
-  { img: "icon_wallet.png", name: "Wallet", path: "" },
-  { img: "icon_settings.png", name: "Settings", path: "" },
-  { img: "icon_logout.png", name: "Log Out", path: "" },
+export const profileArr: {
+  img: any;
+  name: string;
+  path: string;
+}[] = [
+  {
+    img: <UserRound size={18} />,
+    name: "Profile",
+    path: "",
+  },
+  { img: <ScanBarcode size={18} />, name: "Buying", path: "" },
+  { img: <HandCoins size={18} />, name: "Selling", path: "" },
+  { img: <Heart size={18} />, name: "Favorites", path: "" },
+  { img: <GalleryVerticalEnd size={18} />, name: "Portfolio", path: "" },
+  { img: <Wallet size={18} />, name: "Wallet", path: "" },
+  { img: <Settings size={18} />, name: "Settings", path: "" },
+  { img: <LogOut size={18} />, name: "Log Out", path: "" },
 ];

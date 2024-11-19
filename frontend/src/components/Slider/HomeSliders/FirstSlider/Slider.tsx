@@ -6,14 +6,18 @@ import { Link } from "react-router-dom";
 import { Navigation, Scrollbar, Autoplay } from "swiper/modules";
 import { Swiper as SwiperType } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { IimageProps } from "../../../../redux/slices/homeItemsSlice";
 
-import { sliderArr } from "../../../../assets/SliderAssets/Slider";
 import "swiper/css";
 import "swiper/css/navigation";
 
 import "swiper/css/scrollbar";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-const Slider = () => {
+import SliderSkeleton from "./Skeleton";
+interface iSliderProps {
+  data: IimageProps[];
+}
+const Slider: React.FC<iSliderProps> = ({ data }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const onClickNextSlide = () => {
     setCurrentSlide(currentSlide + 1);
@@ -26,11 +30,25 @@ const Slider = () => {
   };
   return (
     <div className="relative">
-      <div onClick={onClickNextSlide} className={styles.customSwiperButtonNext}>
+      <div
+        onClick={onClickNextSlide}
+        className={styles.customSwiperButtonNext}
+        style={{
+          opacity: data.length > 1 ? 1 : 0,
+          pointerEvents: data.length > 1 ? "auto" : "none",
+        }}
+      >
         <ChevronRight />
       </div>
 
-      <div onClick={onClickPrevSlide} className={styles.customSwiperButtonPrev}>
+      <div
+        onClick={onClickPrevSlide}
+        className={styles.customSwiperButtonPrev}
+        style={{
+          opacity: data.length > 1 ? 1 : 0,
+          pointerEvents: data.length > 1 ? "auto" : "none",
+        }}
+      >
         <ChevronLeft />
       </div>
       <Swiper
@@ -46,19 +64,25 @@ const Slider = () => {
         }}
         onSlideChange={handleSlideChange}
       >
-        {sliderArr.map((obj, id) => (
-          <SwiperSlide className={styles.root_slider} key={id}>
-            <div>
-              <Link className={styles.slider_link} to={obj.path}>
-                <img
-                  className={styles.slider_img}
-                  src={obj.img}
-                  alt={obj.alt}
-                />
-              </Link>
-            </div>
-          </SwiperSlide>
-        ))}
+        {data.length < 1 ? (
+          <SliderSkeleton />
+        ) : (
+          <>
+            {data.map((obj, id) => (
+              <SwiperSlide className={styles.root_slider} key={id}>
+                <div>
+                  <Link className={styles.slider_link} to={obj.path}>
+                    <img
+                      className={styles.slider_img}
+                      src={obj.img}
+                      alt={obj.alt}
+                    />
+                  </Link>
+                </div>
+              </SwiperSlide>
+            ))}
+          </>
+        )}
       </Swiper>
     </div>
   );

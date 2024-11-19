@@ -1,3 +1,8 @@
+.swiperButtonNext,
+.swiperButtonPrev {
+  display: none;
+}
+
 .customSwiperButtonNext,
 .customSwiperButtonPrev {
   position: absolute;
@@ -40,23 +45,13 @@
 .root {
   border-radius: 25px;
   z-index: 1;
-  height: 384px;
-  .swiperButtonNext,
-  .swiperButtonPrev {
-    display: none;
-  }
 
   .root_slider {
-    height: 384px;
-
     .slider_link {
-      height: 100%;
-
       .slider_img {
         border-radius: 25px;
         width: 100%;
         height: 100%;
-
         object-fit: contain;
       }
     }
