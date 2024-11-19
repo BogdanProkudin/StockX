@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ContentLoader from "react-content-loader";
 
 const SearchedItemsListSkeleton = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <div className="flex h-full min-w-[965px] flex-col justify-center">
       <ContentLoader
