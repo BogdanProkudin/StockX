@@ -45,6 +45,7 @@ app.get("/getCollectionSection/:section", ShoesController.getCollectionSection);
 app.get("/getInstagramSection", ShoesController.getInstagramSection);
 app.get("/getImageSection/:section", ShoesController.getImageSection);
 app.get("/getCardSection/:section", ShoesController.getCardSection);
+app.get("/getSliderInfo/:section", ShoesController.getSliderInfo);
 //FiltrationLogic
 app.get("/searchItems/:searchingValue", FiltrationController.searchProducts);
 app.get(

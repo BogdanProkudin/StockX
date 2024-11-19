@@ -15,6 +15,7 @@ import BottSlider from "../components/Slider/HomeSliders/SecondSlider/Slider";
 import CardSection from "../components/Sections/CardSection/CardSection";
 import { useFetchImageSection } from "../hooks/useFetchImageSection";
 import { useFetchCardSection } from "../hooks/useFetchCardSection";
+import { useFetchSliderSection } from "../hooks/useFetchSlider";
 const Home: React.FC = () => {
   const {
     addidasItems,
@@ -31,8 +32,13 @@ const Home: React.FC = () => {
     browseImageItems,
     topCard,
     bottCard,
+    topSlider,
+    bottSlider,
   } = useAppSelector((state) => state.homeItems);
   const { recommendedItems, recentlyViewed, userError } = useFetchUserSection();
+
+  const { ref: refTopSlider } = useFetchSliderSection("topSlider");
+  const { ref: refBottSlider } = useFetchSliderSection("bottSlider");
   const { ref: refAdiddas } = useFetchBrandSection("addidas");
   const { ref: refNike } = useFetchBrandSection("nike");
   const { ref: refBalenciaga } = useFetchBrandSection("balenciaga");
@@ -51,7 +57,9 @@ const Home: React.FC = () => {
 
   return (
     <div className="mt-6">
-      <TopSlider />
+      <div ref={refTopSlider}>
+        <TopSlider data={topSlider.data} />
+      </div>
       <UserSection
         mainTitle={recentlyViewed.title}
         items={recentlyViewed.data}
@@ -129,7 +137,9 @@ const Home: React.FC = () => {
           description={timberlandItems.description}
         />
       </div>
-      <BottSlider />
+      <div ref={refBottSlider}>
+        <BottSlider data={bottSlider.data} />
+      </div>
       <div ref={refRickOwens}>
         <MainSection
           mainTitle={rickOwensItems.title}

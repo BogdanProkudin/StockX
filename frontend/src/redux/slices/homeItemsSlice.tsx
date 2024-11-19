@@ -26,6 +26,8 @@ interface IHomeItems {
   browseImageItems: { title: string; data: IimageProps[] };
   topCard: { sectionName: string; data: IimageProps[] };
   bottCard: { sectionName: string; data: IimageProps[] };
+  topSlider: { sectionName: string; data: IimageProps[] };
+  bottSlider: { sectionName: string; data: IimageProps[] };
   instagramSectionItems: { data: userCardProps[]; image: "" }[];
 }
 
@@ -44,6 +46,8 @@ const initialState: IHomeItems = {
   browseImageItems: { title: "", data: [] },
   topCard: { sectionName: "", data: [] },
   bottCard: { sectionName: "", data: [] },
+  topSlider: { sectionName: "", data: [] },
+  bottSlider: { sectionName: "", data: [] },
   instagramSectionItems: [{ data: [], image: "" }],
 };
 const homeItems = createSlice({
@@ -95,6 +99,12 @@ const homeItems = createSlice({
     setBottCard: (state, action) => {
       state.bottCard = action.payload;
     },
+    setTopSlider: (state, action) => {
+      state.topSlider = action.payload;
+    },
+    setBottSlider: (state, action) => {
+      state.bottSlider = action.payload;
+    },
   },
 });
 
@@ -114,5 +124,7 @@ export const {
   setBrowseImage,
   setTopCard,
   setBottCard,
+  setTopSlider,
+  setBottSlider,
 } = homeItems.actions;
 export default homeItems.reducer;
