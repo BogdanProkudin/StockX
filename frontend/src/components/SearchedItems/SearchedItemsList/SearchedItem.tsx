@@ -5,7 +5,6 @@ const SearchedItem: React.FC<userCardProps> = ({
   image,
   title,
   base_price,
-  min_price,
 }) => {
   const onClickFavorite = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();

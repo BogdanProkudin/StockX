@@ -1,22 +1,28 @@
+import { useRef } from "react";
 import { useSearchParams } from "react-router-dom";
-import {
-  useLazySearchItemsQuery,
-  useSearchItemsQuery,
-} from "../../redux/api/mainApiSlice";
+import { useSearchItemsQuery } from "../../redux/api/mainApiSlice";
 import ChosenCategoryList from "./ChosenCategory/ChosenCategoryList";
 import FilterBreadCrumb from "./FilterSelect/FilterBreadCrumb";
 import FilterSelect from "./FilterSelect/FilterSelect";
-import { useEffect } from "react";
 import SearchedItemsList from "./SearchedItemsList/SearchedItemsList";
+import { useAppSelector } from "../../redux/hook";
 
 const SearchedContent = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const searchQuery = searchParams.get("s");
-  if (searchQuery === null) {
-    return <div>ERROR</div>;
-  }
-  const { data, isLoading, isError, isSuccess } =
-    useSearchItemsQuery(searchQuery);
+  const renderCount = useRef(0); // Хранит количество рендеров
+  renderCount.current += 1;
+
+  const [searchParams] = useSearchParams();
+  const categoryNames = useAppSelector(
+    (state) => state.searchSlice.categoryNames,
+  );
+  const searchQuery = searchParams.get("s") ? searchParams.get("s") : null;
+
+  const { data, isLoading, isError, isSuccess } = useSearchItemsQuery(
+    searchQuery ?? "",
+  );
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error occurred</div>;
+  console.log(`Render count: ${renderCount.current}`); // Логируем количество рендеров
 
   return (
     <div className="mt-3 flex h-full w-24 min-w-[1240px] items-start justify-between">
@@ -26,13 +32,12 @@ const SearchedContent = () => {
           <FilterBreadCrumb />
           <FilterSelect />
         </div>
-        <h1 className="text-blackTextColor text-lg">
-          Browse <b>1000</b> results for "nike"
-        </h1>
-        <div className="flex flex-col">
-          <ChosenCategoryList />
-          <SearchedItemsList items={data && data.data} isLoading={isLoading} />
-        </div>
+        {categoryNames.includes(`Search: "${searchQuery}"`) && (
+          <h1 className="text-lg text-blackTextColor">
+            Browse <b>1000</b> results for "nike"
+          </h1>
+        )}
+        <div className="flex flex-col"></div>
       </div>
     </div>
   );
