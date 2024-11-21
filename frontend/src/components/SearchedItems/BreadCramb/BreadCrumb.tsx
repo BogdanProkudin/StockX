@@ -1,8 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../../redux/hook";
 import { setSearchValue } from "../../../redux/slices/searchSlice";
+import BreadCrumbkeleton from "./BreadCrumbSkeleton";
+import BreadCrumbSkeleton from "./BreadCrumbSkeleton";
 
-const FilterBreadCrumb = () => {
+const FilterBreadCrumb = ({ isLoading }: { isLoading: boolean }) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const handleBackToMainPage = () => {
@@ -10,16 +12,16 @@ const FilterBreadCrumb = () => {
     dispatch(setSearchValue(""));
   };
   return (
-    <div>
+    <div className="flex gap-2">
       <span
         onClick={handleBackToMainPage}
-        className="cursor-pointer text-blackGray"
+        className="h-7 cursor-pointer text-blackGray"
       >
-        Home
+        {isLoading ? <BreadCrumbSkeleton /> : "Home"}
       </span>
       <span className="text-blackGray"> / </span>
-      <span className="cursor-pointer border-b-2 border-blackGray text-blackGray">
-        Search
+      <span className="h-7 cursor-pointer border-b-2 border-blackGray text-blackGray">
+        {isLoading ? <BreadCrumbSkeleton /> : "Search"}
       </span>
     </div>
   );
