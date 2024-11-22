@@ -32,7 +32,7 @@ const SearchedContent = () => {
           </h1>
         )}
         <div className="flex flex-col">
-          <ChosenCategoryList />
+          <ChosenCategoryList isLoading={isLoading} />
           <SearchedItemsList items={data && data.data} isLoading={isLoading} />
         </div>
       </div>
