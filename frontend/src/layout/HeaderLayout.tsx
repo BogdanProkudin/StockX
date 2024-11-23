@@ -2,8 +2,9 @@ import Header from "../components/Header/Header";
 import NavHeader from "../components/SecondHeader/NavHeader";
 
 import styles from "./styles.module.scss";
-import { useAppSelector } from "../redux/hook";
+
 import { Outlet } from "react-router-dom";
+import Footer from "../components/Footer/Footer";
 const HeaderLayout = () => {
   return (
     <>
@@ -17,6 +18,7 @@ const HeaderLayout = () => {
       <div className="container">
         <Outlet />
       </div>
+      <Footer />
     </>
   );
 };
