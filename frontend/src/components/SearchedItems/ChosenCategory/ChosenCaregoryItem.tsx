@@ -23,7 +23,6 @@ const ChosenCategoryItem: React.FC<ChosenCategoryItemProps> = React.memo(
       const updatedCategoryNames = categoryNames.filter((el) => {
         return el !== categoryName;
       });
-      console.log(updatedCategoryNames, "QQQ");
 
       updateCategories(
         updatedCategoryNames,
