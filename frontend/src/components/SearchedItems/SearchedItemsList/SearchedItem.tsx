@@ -11,6 +11,9 @@ const SearchedItem: React.FC<userCardProps> = ({
   const onClickFavorite = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
   };
+  if (!image) {
+    console.log("NO IMAGe ");
+  }
   return (
     <>
       <Link
@@ -22,7 +25,11 @@ const SearchedItem: React.FC<userCardProps> = ({
         </button>
         <img
           className="h-[140px] min-h-[140px] w-full object-contain p-4"
-          src={image}
+          src={
+            image
+              ? image
+              : "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Image_not_available.png/640px-Image_not_available.png"
+          }
           alt=""
         />
         <div className="px-4 py-0">

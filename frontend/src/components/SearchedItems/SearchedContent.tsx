@@ -28,7 +28,7 @@ const SearchedContent = () => {
         </div>
         {categoryNames.includes(`Search: "${searchQuery}"`) && (
           <h1 className="text-lg text-blackTextColor">
-            Browse <b>1000</b> results for "nike"
+            Browse <b>{isLoading ? "..." : "1000"}</b> results for "nike"
           </h1>
         )}
         <div className="flex flex-col">
