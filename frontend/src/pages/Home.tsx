@@ -16,7 +16,7 @@ import CardSection from "../components/Sections/CardSection/CardSection";
 import { useFetchImageSection } from "../hooks/useFetchImageSection";
 import { useFetchCardSection } from "../hooks/useFetchCardSection";
 import { useFetchSliderSection } from "../hooks/useFetchSlider";
-import Footer from "../components/Footer/Footer";
+
 const Home: React.FC = () => {
   const {
     addidasItems,
@@ -157,14 +157,14 @@ const Home: React.FC = () => {
           title={browseImageItems.title}
         />
       </div>
-      <div ref={refControllers}>
+      <div className="mb-32" ref={refControllers}>
         <MainSection
           mainTitle={controllersItems.title}
           items={controllersItems.data}
           description={controllersItems.description}
         />
       </div>
-      <Footer />
+
       {userError && <div className="text-red-500">Error loading user data</div>}
     </div>
   );
