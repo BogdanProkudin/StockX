@@ -4,6 +4,7 @@ import { setCategoryNames } from "../../../redux/slices/searchSlice";
 import { useSearchParams } from "react-router-dom";
 import ChosenCategoryItem from "./ChosenCaregoryItem";
 import clsx from "clsx";
+import ChosenCategorySkeleton from "./ChosenCategoryItemSkeleton";
 
 const ChosenCategoryList: React.FC<{ isLoading: boolean }> = React.memo(
   ({ isLoading }) => {
@@ -26,16 +27,15 @@ const ChosenCategoryList: React.FC<{ isLoading: boolean }> = React.memo(
       <div
         className={clsx("", {
           "flex h-10 w-full items-center gap-1": categoryNames.length > 0,
-          "hidden h-0": categoryNames.length === 0,
         })}
       >
-        {categoryNames.map((category) => (
-          <ChosenCategoryItem
-            key={category}
-            isLoading={isLoading}
-            categoryName={category}
-          />
-        ))}
+        {isLoading
+          ? ["Clear All", ""].map((category, index) => (
+              <ChosenCategorySkeleton key={index} categoryName={category} />
+            ))
+          : categoryNames.map((category) => (
+              <ChosenCategoryItem key={category} categoryName={category} />
+            ))}
       </div>
     );
   },
