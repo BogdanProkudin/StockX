@@ -2,6 +2,7 @@ import React from "react";
 import { useSearchParams } from "react-router-dom";
 import { userCardProps } from "../../../@types/userCardTypes";
 import SearchedItem from "./SearchedItem";
+import SearchedItemSkeleton from "./SearchedItemSkeleton";
 
 type SearchedItemsListProps = {
   items: userCardProps[];
@@ -32,7 +33,7 @@ const SearchedItemsList: React.FC<SearchedItemsListProps> = ({
       : data;
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <SearchedItemSkeleton />;
 
   const sortedItems = sortData(items);
   if (!sortedItems.length) return <div>No items found</div>;

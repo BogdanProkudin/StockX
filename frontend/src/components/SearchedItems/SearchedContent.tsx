@@ -26,11 +26,12 @@ const SearchedContent = () => {
           <FilterBreadCrumb isLoading={isLoading} />
           <FilterSelect isLoading={isLoading} />
         </div>
-        {categoryNames.includes(`Search: "${searchQuery}"`) && (
-          <h1 className="text-lg text-blackTextColor">
-            Browse <b>1000</b> results for "nike"
-          </h1>
-        )}
+
+        <h1 className="text-lg text-blackTextColor">
+          {searchQuery &&
+            `Browse ${isLoading ? "..." : "1000"} results for ${searchQuery}`}
+        </h1>
+
         <div className="flex flex-col">
           <ChosenCategoryList isLoading={isLoading} />
           <SearchedItemsList items={data && data.data} isLoading={isLoading} />
