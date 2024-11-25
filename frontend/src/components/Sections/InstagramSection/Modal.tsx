@@ -51,7 +51,7 @@ const Modal: React.FC<Imodal> = ({ closeModal, modalSlide }) => {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div
         ref={modalRef}
-        className="h-[637px] w-[1120px] rounded-2xl bg-white text-black shadow-lg"
+        className="h-[637px] w-[1120px] rounded-3xl bg-white text-black shadow-lg"
       >
         <Swiper
           className={styles.customButtons}
