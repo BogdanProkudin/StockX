@@ -1,18 +1,38 @@
 import { useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../../redux/hook";
+import { setCategoryNames } from "../../../redux/slices/searchSlice";
+import { useSearchParams } from "react-router-dom";
 
-const CategoryItem = () => {
+const CategoryItem = ({
+  categoryName,
+  subcategoryName,
+}: {
+  categoryName: string;
+  subcategoryName: string[];
+}) => {
   const [isShowDropDown, setIsShowDropDown] = useState(false);
 
-  return (
-    <div
-      onClick={() => setIsShowDropDown(!isShowDropDown)}
-      className="flex h-full w-full cursor-pointer flex-col bg-lime-600"
-    >
-      <div className="flex items-center justify-between p-4">
-        <p className="select-none pb-0 text-base font-semibold text-blackTextColor">
-          CATEGORY
-        </p>
+  const [selectedSubCategory, setSelectedSubCategory] = useState("");
 
+  const [searchParams, setSearchParams] = useSearchParams();
+  const handleSelectSubCategory = async (selectedSubCategoryName: string) => {
+    setSelectedSubCategory(selectedSubCategoryName);
+
+    setIsShowDropDown(false);
+    searchParams.set("category", selectedSubCategoryName);
+    setSearchParams(searchParams);
+  };
+
+  return (
+    <div className="border- border-E2E8F0 flex h-full w-full flex-col border-b-2 border-t-2">
+      <div
+        onClick={() => setIsShowDropDown(!isShowDropDown)}
+        className="flex cursor-pointer items-center justify-between p-4"
+      >
+        <p className="select-none pb-0 text-base font-semibold text-blackTextColor">
+          {categoryName}
+        </p>
+        {selectedSubCategory.length > 1 && <span>{selectedSubCategory}</span>}
         <svg
           viewBox="0 0 50 50"
           focusable="false"
@@ -25,15 +45,21 @@ const CategoryItem = () => {
         </svg>
       </div>
       <div
-        className={`flex flex-col overflow-hidden bg-neutral-900 pl-6 transition-all duration-300 ease-in-out ${
+        className={`flex flex-col gap-3 overflow-hidden pl-4 transition-all duration-300 ease-in-out ${
           isShowDropDown ? "max-h-64" : "max-h-0"
         }`}
       >
-        <a className="pt-2 hover:underline">Sneakers</a>
-        <a className="pt-2 hover:underline">Apprarel</a>
-        <a className="pt-2 hover:underline">Shoes</a>
-        <a className="pt-2 hover:underline">Accessories</a>
-        <a className="pt-2 hover:underline">Sneakers</a>
+        {subcategoryName.map((subName) => {
+          return (
+            <a
+              onClick={() => handleSelectSubCategory(subName)}
+              key={subName}
+              className={`w-fit cursor-pointer text-[16px] font-[500] ${selectedSubCategory === subName ? "border-b-2 border-black" : ""} hover:${selectedSubCategory === subName ? "no-underline" : "underline"}`}
+            >
+              {subName}
+            </a>
+          );
+        })}
       </div>
     </div>
   );

@@ -9,6 +9,7 @@ export default {
       },
       colors: {
         lightGray: "#CFCFCF",
+        E2E8F0: "#E2E8F0",
         categoryButtonColor: "#EDEDED",
         blackGray: "#5F5F5F",
         blackTextColor: "#242424",

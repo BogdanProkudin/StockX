@@ -1,4 +1,30 @@
+import CategoryItem from "./CategoryItem";
+
 const CategoryList = () => {
-  const categoryListItems = ["Sneakers", "Apparel", "Shoes", "Accessories"];
-  return <div></div>;
+  const categoryListItems = [
+    {
+      categoryName: "CATEGORY",
+      subcategoryName: [
+        "Snikers",
+        "Apparel",
+        "Shoes",
+        "Accessories",
+        "Collectibles",
+      ],
+    },
+  ];
+  return (
+    <div>
+      {categoryListItems.map((categoryName) => {
+        return (
+          <CategoryItem
+            categoryName={categoryName.categoryName}
+            subcategoryName={categoryName.subcategoryName}
+          />
+        );
+      })}
+    </div>
+  );
 };
+
+export default CategoryList;
