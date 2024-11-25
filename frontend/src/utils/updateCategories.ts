@@ -17,6 +17,10 @@ export const updateCategories = (
     newSearchParams.delete("s");
     setSearchParams(newSearchParams);
   }
+  if (newSearchParams.has("category")) {
+    newSearchParams.delete("category");
+    setSearchParams(newSearchParams);
+  }
   if (updatedCategories.length === 1) {
     return dispatch(setCategoryNames([]));
   }
