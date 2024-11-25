@@ -1,5 +1,5 @@
 import React from "react";
-import { footerLinks } from "../../../assets/Footer/Footer";
+import { footerLinks } from "../../../assets/Footer/Footer.tsx";
 import { Link } from "react-router-dom";
 
 const NavFooter = () => {
