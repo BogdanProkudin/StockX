@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../redux/hook";
 import { setCategoryNames } from "../../../redux/slices/searchSlice";
 import { useSearchParams } from "react-router-dom";
@@ -17,11 +17,16 @@ const ChosenCategoryList: React.FC<{ isLoading: boolean }> = React.memo(
 
     useEffect(() => {
       const searchTerm = searchParams.get("s");
-      const defaultCategories = searchTerm
-        ? ["Clear All", `Search: "${searchTerm}"`, "BOSS", "Q"]
-        : [];
+      const categoryTerm = searchParams.get("category");
+
+      const defaultCategories = ["Clear All"];
+      if (searchTerm) defaultCategories.push(`Search: "${searchTerm}"`);
+      if (categoryTerm) defaultCategories.push(categoryTerm);
+
       dispatch(setCategoryNames(defaultCategories));
-    }, [dispatch]);
+    }, [dispatch, searchParams]);
+
+    const skeletonCategories = ["Clear All", ""];
 
     return (
       <div
@@ -30,7 +35,7 @@ const ChosenCategoryList: React.FC<{ isLoading: boolean }> = React.memo(
         })}
       >
         {isLoading
-          ? ["Clear All", ""].map((category, index) => (
+          ? skeletonCategories.map((category, index) => (
               <ChosenCategorySkeleton key={index} categoryName={category} />
             ))
           : categoryNames.map((category) => (
