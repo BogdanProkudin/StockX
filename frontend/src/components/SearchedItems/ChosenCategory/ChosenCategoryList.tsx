@@ -19,9 +19,17 @@ const ChosenCategoryList: React.FC<{ isLoading: boolean }> = React.memo(
       const searchTerm = searchParams.get("s");
       const categoryTerm = searchParams.get("category");
 
-      const defaultCategories = ["Clear All"];
-      if (searchTerm) defaultCategories.push(`Search: "${searchTerm}"`);
-      if (categoryTerm) defaultCategories.push(categoryTerm);
+      const defaultCategories = searchTerm
+        ? ["Clear All"]
+        : categoryTerm
+          ? ["Clear All"]
+          : [];
+      if (searchTerm) {
+        defaultCategories.push(`Search: "${searchTerm}"`);
+      }
+      if (categoryTerm) {
+        defaultCategories.push(categoryTerm);
+      }
 
       dispatch(setCategoryNames(defaultCategories));
     }, [dispatch, searchParams]);
