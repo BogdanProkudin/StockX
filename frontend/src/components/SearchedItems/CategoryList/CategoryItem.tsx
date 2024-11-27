@@ -1,6 +1,11 @@
 import { useState } from "react";
 
 import { useSearchParams } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../../redux/hook";
+import {
+  setCategoryNames,
+  setSelectedSubCategory,
+} from "../../../redux/slices/searchSlice";
 
 const CategoryItem = ({
   categoryName,
@@ -11,11 +16,16 @@ const CategoryItem = ({
 }) => {
   const [isShowDropDown, setIsShowDropDown] = useState(false);
 
-  const [selectedSubCategory, setSelectedSubCategory] = useState("");
-
+  const dispatch = useAppDispatch();
+  const selectedSubCategory = useAppSelector(
+    (state) => state.searchSlice.selectedSubCategory,
+  );
+  const categoryNames = useAppSelector(
+    (state) => state.searchSlice.categoryNames,
+  );
   const [searchParams, setSearchParams] = useSearchParams();
   const handleSelectSubCategory = (selectedSubCategoryName: string) => {
-    setSelectedSubCategory(selectedSubCategoryName);
+    dispatch(setSelectedSubCategory(selectedSubCategoryName));
 
     setIsShowDropDown(false);
     searchParams.set("category", selectedSubCategoryName);

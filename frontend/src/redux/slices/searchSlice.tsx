@@ -7,6 +7,7 @@ interface ISearchSlice {
   searchValue: string;
   suggestionCountsArr: number[];
   categoryNames: string[];
+  selectedSubCategory: string;
 }
 const initialState: ISearchSlice = {
   foundedItems: [],
@@ -15,6 +16,7 @@ const initialState: ISearchSlice = {
   isSearching: false,
   suggestionCountsArr: [],
   categoryNames: [],
+  selectedSubCategory: "",
 };
 const searchSlice = createSlice({
   name: "searchSlice",
@@ -38,6 +40,9 @@ const searchSlice = createSlice({
     setIsSearching: (state, action) => {
       state.isSearching = action.payload;
     },
+    setSelectedSubCategory: (state, action) => {
+      state.selectedSubCategory = action.payload;
+    },
     // Дополнительные редьюсеры для работы с состоянием, если нужны
   },
 });
@@ -48,6 +53,7 @@ export const {
   setSuggestionCountsArr,
   setCategoryNames,
   setIsSearching,
+  setSelectedSubCategory,
 } = searchSlice.actions;
 // Экспортируем редьюсер
 export default searchSlice.reducer;
