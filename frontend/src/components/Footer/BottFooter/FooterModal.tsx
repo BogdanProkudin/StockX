@@ -1,22 +1,38 @@
 import React, { useEffect, useState } from "react";
 import {
-  bottFooterArray,
+  languages,
   countries,
   currencies,
 } from "../../../assets/Footer/Footer";
+import FooterPopUp from "./FooterPopUp";
+interface IfooterModel {
+  onClose: () => void;
+  country: string;
+  language: string;
+  currency: string;
+  handleSaveChanges: (
+    selectedCountry: string,
+    selectedLanguage: string,
+    selectedCurrency: string,
+  ) => void;
+}
+const FooterModal: React.FC<IfooterModel> = ({
+  onClose,
+  country,
+  language,
+  currency,
+  handleSaveChanges,
+}) => {
+  const [openPopUp, setOpenPopUp] = useState<string | null>(null);
+  const [selectedCountry, setSelectedCountry] = useState<string>(country);
+  const [selectedLanguage, setSelectedLanguage] = useState<string>(language);
+  const [selectedCurrency, setSelectedCurrency] = useState<string>(currency);
 
-const FooterModal = () => {
-  const [countryOpen, setCountryOpen] = useState(false);
-  const [languageOpen, setLanguageOpen] = useState(false);
-  const [currencyOpen, setCurrencyOpen] = useState(false);
-  const onClickOpenCountry = () => {
-    setCountryOpen(!countryOpen);
+  const handlePopUp = (value: string) => {
+    setOpenPopUp((prev) => (prev === value ? null : value));
   };
-  const onClickOpenLanguage = () => {
-    setLanguageOpen(!languageOpen);
-  };
-  const onClickOpenCurrency = () => {
-    setCurrencyOpen(!currencyOpen);
+  const onSave = () => {
+    handleSaveChanges(selectedCountry, selectedLanguage, selectedCurrency);
   };
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -33,63 +49,44 @@ const FooterModal = () => {
           Choose your language & your preferred currency below
         </p>
         <div className="absolute left-0 top-[70px] w-full border border-[#e8e8e8]" />
-        <div className="mt-3 flex flex-col">
-          <p className="mb-1">Region</p>
-          <div className="relative max-h-[290px] cursor-pointer overflow-y-auto rounded-lg border border-[#a4a4a4] px-4 py-2">
-            <li className="" onClick={onClickOpenCountry}>
-              Countries
-            </li>
-            {countryOpen && (
-              <>
-                <div className="absolute left-0 top-9 w-full border border-[#e8e8e8]" />
-                {countries.map((obj) => (
-                  <li className="mb-1 hover:bg-slate-400" key={obj.code}>
-                    {obj.name}
-                  </li>
-                ))}
-              </>
-            )}
-          </div>
-        </div>
-        <div className="mt-3 flex flex-col">
-          <p className="mb-1">Language</p>
-          <div className="relative max-h-[290px] cursor-pointer overflow-y-auto rounded-lg border border-[#a4a4a4] px-4 py-2">
-            <li className="" onClick={onClickOpenLanguage}>
-              English
-            </li>
-            {languageOpen && (
-              <>
-                <div className="absolute left-0 top-9 w-full border border-[#e8e8e8]" />
-                {bottFooterArray.map((el, id) => (
-                  <li className="mb-1 hover:bg-slate-400" key={id}>
-                    {el}
-                  </li>
-                ))}
-              </>
-            )}
-          </div>
-        </div>
-        <div className="mt-3 flex flex-col">
-          <p className="mb-1">Currency</p>
-          <div className="relative max-h-[290px] cursor-pointer overflow-y-auto rounded-lg border border-[#a4a4a4] px-4 py-2">
-            <li className="" onClick={onClickOpenCurrency}>
-              EUR
-            </li>
-            {currencyOpen && (
-              <>
-                <div className="absolute left-0 top-9 w-full border border-[#e8e8e8]" />
-                {currencies.map((obj) => (
-                  <li className="mb-1 hover:bg-slate-400" key={obj.code}>
-                    {obj.symbol}
-                  </li>
-                ))}
-              </>
-            )}
-          </div>
-        </div>
-        <div>
-          <button>Cancel</button>
-          <button>Save Changes</button>
+        <FooterPopUp
+          title={"Region"}
+          selectedTitle={selectedCountry}
+          setSelectedTitle={setSelectedCountry}
+          open={openPopUp === "country"}
+          setOpen={() => handlePopUp("country")}
+          value={countries}
+        />
+        <FooterPopUp
+          title={"Language"}
+          selectedTitle={selectedLanguage}
+          setSelectedTitle={setSelectedLanguage}
+          open={openPopUp === "language"}
+          setOpen={() => handlePopUp("language")}
+          value={languages}
+        />
+        <FooterPopUp
+          title={"Currency"}
+          selectedTitle={selectedCurrency}
+          setSelectedTitle={setSelectedCurrency}
+          open={openPopUp === "currency"}
+          setOpen={() => handlePopUp("currency")}
+          value={currencies}
+        />
+        <div className="mt-7 flex items-center justify-between">
+          <div className="z-1 absolute left-0 top-[335px] w-full border border-[#e8e8e8]" />
+          <button
+            onClick={onClose}
+            className="rounded-3xl border border-black px-4 py-1.5 text-lg font-bold transition-all duration-200 ease-in-out hover:bg-black hover:text-white"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={onSave}
+            className="rounded-3xl border border-black bg-black px-4 py-1.5 text-lg font-bold text-white transition-all duration-200 ease-in-out"
+          >
+            Save Changes
+          </button>
         </div>
       </div>
     </div>
