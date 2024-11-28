@@ -33,15 +33,15 @@ const SearchedItemsList: React.FC<SearchedItemsListProps> = ({
       : data;
   };
 
-  if (isLoading) return <SearchedItemSkeleton />;
+  if (isLoading || !items) return <SearchedItemSkeleton />;
 
   const sortedItems = sortData(items);
   if (!sortedItems.length) return <div>No items found</div>;
 
   return (
     <div className="mt-5 grid w-full grid-cols-1 items-start gap-6 sm:grid-cols-2 md:grid-cols-4">
-      {sortedItems.map((item) => (
-        <SearchedItem key={item.id} {...item} />
+      {sortedItems.map((item, index) => (
+        <SearchedItem key={index} {...item} />
       ))}
     </div>
   );

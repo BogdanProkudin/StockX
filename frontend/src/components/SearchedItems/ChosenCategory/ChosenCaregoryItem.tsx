@@ -17,13 +17,10 @@ const ChosenCategoryItem: React.FC<ChosenCategoryItemProps> = React.memo(
     );
     const [searchParams, setSearchParams] = useSearchParams();
     const dispatch = useAppDispatch();
-
     const handleDeleteCategoryItem = () => {
       const updatedCategoryNames = categoryNames.filter((el) => {
         return el !== categoryName;
       });
-      console.log(updatedCategoryNames);
-
       updateCategories(
         updatedCategoryNames,
         searchParams,
