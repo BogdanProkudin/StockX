@@ -26,7 +26,7 @@ const FooterPopUp: React.FC<IfooterPopUpProps> = ({
     setOpen(false);
   };
   return (
-    <div>
+    <>
       <h3 className="mb-2 mt-3">
         {title}
         {title === "Currency" && (
@@ -42,18 +42,22 @@ const FooterPopUp: React.FC<IfooterPopUpProps> = ({
       </h3>
       <div className="">
         <li
-          className="z-9 relative max-h-[290px] cursor-pointer rounded-lg border border-[#a4a4a4] px-4 py-2"
+          className={`z-9 relative max-h-[290px] cursor-pointer rounded-lg border border-[#a4a4a4] px-4 py-2 ${
+            open ? "rounded-b-none" : ""
+          }`}
           onClick={onClickClose}
         >
           {selectedTitle}
         </li>
 
         {open && (
-          <div className="absolute z-10 max-h-[290px] w-4/5 cursor-pointer overflow-y-auto rounded-lg border border-[#a4a4a4] bg-white">
+          <div className="scroll absolute z-10 max-h-[290px] w-[500px] cursor-pointer overflow-y-auto rounded-lg rounded-t-none border-b border-l border-r border-[#a4a4a4] bg-white">
             {value.map((obj, id) => (
               <li
                 onClick={() => onClickValue(obj.value)}
-                className="mb-1 p-1 hover:bg-[green] hover:text-white"
+                className={`mb-1 p-1 hover:bg-[#008000] hover:text-white ${
+                  id === value.length - 1 ? "mb-0" : ""
+                }`}
                 key={id}
               >
                 {obj.value}
@@ -62,7 +66,7 @@ const FooterPopUp: React.FC<IfooterPopUpProps> = ({
           </div>
         )}
       </div>
-    </div>
+    </>
   );
 };
 

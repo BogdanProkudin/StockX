@@ -43,7 +43,7 @@ const FooterModal: React.FC<IfooterModel> = ({
   }, []);
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="relative h-[405px] w-[540px] rounded-xl bg-white px-5 py-4">
+      <div className="relative -top-[50px] h-[405px] w-[540px] rounded-xl bg-white px-5 py-4">
         <h1 className="text-xl">Change your settings</h1>
         <p className="text-sm">
           Choose your language & your preferred currency below
