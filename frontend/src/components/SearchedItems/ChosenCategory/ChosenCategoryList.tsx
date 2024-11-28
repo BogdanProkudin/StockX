@@ -18,7 +18,6 @@ const ChosenCategoryList: React.FC<{ isLoading: boolean }> = React.memo(
     useEffect(() => {
       const searchTerm = searchParams.get("s");
       const categoryTerm = searchParams.get("category");
-
       const defaultCategories = searchTerm
         ? ["Clear All"]
         : categoryTerm

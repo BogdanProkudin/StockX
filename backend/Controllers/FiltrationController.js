@@ -17,8 +17,9 @@ export const searchProducts = async (req, res) => {
   try {
     const searchingValue = req.params.searchingValue;
     const api = new StockXAPI(StockXLocation.US);
+    console.log(searchingValue);
 
-    const url = `https://api.sneakersapi.dev/search?query=${searchingValue}`;
+    const url = `https://api.sneakersapi.dev/search?query=${searchingValue.toLowerCase()}`;
     function generateRequestId() {
       return Math.floor(100000 + Math.random() * 900000).toString();
     }

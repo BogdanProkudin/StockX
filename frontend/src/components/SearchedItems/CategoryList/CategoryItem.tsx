@@ -1,36 +1,23 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 
-import { useSearchParams } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../../redux/hook";
-import {
-  setCategoryNames,
-  setSelectedSubCategory,
-} from "../../../redux/slices/searchSlice";
-
-const CategoryItem = ({
-  categoryName,
-  subcategoryName,
-}: {
+import { useAppSelector } from "../../../redux/hook";
+type CategoryItemProps = {
   categoryName: string;
-  subcategoryName: string[];
+  subcategoryNames: string[];
+  setIsShowDropDown: Dispatch<SetStateAction<boolean>>;
+  handleSelectSubCategory: (selectedSubCategory: string) => void;
+  isShowDropDown: boolean;
+};
+const CategoryItem: React.FC<CategoryItemProps> = ({
+  isShowDropDown,
+  setIsShowDropDown,
+  subcategoryNames,
+  handleSelectSubCategory,
+  categoryName,
 }) => {
-  const [isShowDropDown, setIsShowDropDown] = useState(false);
-
-  const dispatch = useAppDispatch();
   const selectedSubCategory = useAppSelector(
     (state) => state.searchSlice.selectedSubCategory,
   );
-  const categoryNames = useAppSelector(
-    (state) => state.searchSlice.categoryNames,
-  );
-  const [searchParams, setSearchParams] = useSearchParams();
-  const handleSelectSubCategory = (selectedSubCategoryName: string) => {
-    dispatch(setSelectedSubCategory(selectedSubCategoryName));
-
-    setIsShowDropDown(false);
-    searchParams.set("category", selectedSubCategoryName);
-    setSearchParams(searchParams);
-  };
 
   return (
     <div className="border- border-E2E8F0 flex h-full w-full flex-col border-b-2 border-t-2">
@@ -58,7 +45,7 @@ const CategoryItem = ({
           isShowDropDown ? "max-h-64" : "max-h-0"
         }`}
       >
-        {subcategoryName.map((subName) => {
+        {subcategoryNames.map((subName) => {
           return (
             <a
               onClick={() => handleSelectSubCategory(subName)}

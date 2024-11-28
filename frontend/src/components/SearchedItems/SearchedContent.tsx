@@ -1,5 +1,8 @@
 import { useSearchParams } from "react-router-dom";
-import { useSearchItemsQuery } from "../../redux/api/mainApiSlice";
+import {
+  useLazySearchItemsQuery,
+  useSearchItemsQuery,
+} from "../../redux/api/mainApiSlice";
 import ChosenCategoryList from "./ChosenCategory/ChosenCategoryList";
 import FilterBreadCrumb from "./BreadCramb/BreadCrumb";
 import FilterSelect from "./FilterSelect/FilterSelect";
@@ -8,22 +11,21 @@ import SearchedItemsList from "./SearchedItemsList/SearchedItemsList";
 import { useAppSelector } from "../../redux/hook";
 import CategoryItem from "./CategoryList/CategoryItem";
 import CategoryList from "./CategoryList/CategoryList";
+import { useEffect } from "react";
 
 const SearchedContent = () => {
   const [searchParams] = useSearchParams();
-  const categoryNames = useAppSelector(
-    (state) => state.searchSlice.categoryNames,
-  );
+
   const searchQuery = searchParams.get("s") ? searchParams.get("s") : null;
 
-  const { data, isLoading, isError, isSuccess } = useSearchItemsQuery(
-    searchQuery ?? "",
-  );
-
+  const [fetchData, { data, isLoading }] = useLazySearchItemsQuery();
+  useEffect(() => {
+    fetchData(searchQuery ?? "");
+  }, []);
   return (
     <div className="mt-3 flex h-full w-24 min-w-[1240px] items-start justify-between">
       <div className="h-full w-[300px]">
-        <CategoryList />
+        <CategoryList fetchData={fetchData} searchQuery={searchQuery ?? ""} />
       </div>
       <div className="h-full w-[927px] p-2">
         <div className="flex h-10 justify-between">
