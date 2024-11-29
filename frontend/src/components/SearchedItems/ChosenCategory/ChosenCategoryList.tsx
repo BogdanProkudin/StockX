@@ -50,11 +50,7 @@ const ChosenCategoryList: React.FC<{ isLoading: boolean; fetchData: any }> =
               <ChosenCategorySkeleton key={index} categoryName={category} />
             ))
           : categoryNames.map((category) => (
-              <ChosenCategoryItem
-                fetchData={fetchData}
-                key={category}
-                categoryName={category}
-              />
+              <ChosenCategoryItem key={category} categoryName={category} />
             ))}
       </div>
     );

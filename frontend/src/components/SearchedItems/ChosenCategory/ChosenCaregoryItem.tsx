@@ -7,17 +7,10 @@ import { updateCategories } from "../../../utils/updateCategories";
 
 type ChosenCategoryItemProps = {
   categoryName: string;
-  fetchData: ({
-    searchingValue,
-    isCategorySearch,
-  }: {
-    searchingValue: string;
-    isCategorySearch: boolean;
-  }) => void;
 };
 
 const ChosenCategoryItem: React.FC<ChosenCategoryItemProps> = React.memo(
-  ({ categoryName, fetchData }) => {
+  ({ categoryName }) => {
     const categoryNames = useAppSelector(
       (state) => state.searchSlice.categoryNames,
     );
@@ -32,12 +25,11 @@ const ChosenCategoryItem: React.FC<ChosenCategoryItemProps> = React.memo(
         searchParams,
         setSearchParams,
         dispatch,
-        fetchData,
       );
     };
 
     const handleDeleteAllItems = () => {
-      updateCategories([], searchParams, setSearchParams, dispatch, fetchData);
+      updateCategories([], searchParams, setSearchParams, dispatch);
     };
     const handleCategoryItemClick = () => {
       if (categoryName === "Clear All") {
