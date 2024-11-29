@@ -4,6 +4,7 @@ import { useLazySearchItemsQuery } from "../redux/api/mainApiSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hook";
 import {
   setIsLoading,
+  setSelectedSubCategory,
   setSuggestionCountsArr,
 } from "../redux/slices/searchSlice";
 
@@ -16,11 +17,13 @@ export const useSearch = () => {
   const handleSearch = React.useCallback(
     debounce(async (query) => {
       if (query.length > 0) {
-        const result = await fetchItems(query);
+        const result = await fetchItems({
+          searchingValue: query,
+        });
 
         if (result.isSuccess) {
           dispatch(setIsLoading(false));
-
+          dispatch(setSelectedSubCategory(""));
           dispatch(setSuggestionCountsArr(result.data));
         }
       }

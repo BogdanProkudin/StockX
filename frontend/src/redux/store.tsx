@@ -21,6 +21,7 @@ export const store = configureStore({
     [mainImageApi.reducerPath]: mainImageApi.reducer,
     [sliderApi.reducerPath]: sliderApi.reducer,
     [mainCardApi.reducerPath]: mainCardApi.reducer,
+
     [searchApi.reducerPath]: searchApi.reducer,
     [instagramApi.reducerPath]: instagramApi.reducer,
   },
@@ -28,6 +29,7 @@ export const store = configureStore({
     getDefaultMiddleware().concat(
       userApi.middleware,
       mainApi.middleware,
+
       mainImageApi.middleware,
       searchApi.middleware,
       mainCardApi.middleware,

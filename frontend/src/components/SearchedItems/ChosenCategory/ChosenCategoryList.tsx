@@ -1,13 +1,16 @@
 import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../redux/hook";
-import { setCategoryNames } from "../../../redux/slices/searchSlice";
+import {
+  setCategoryNames,
+  setSelectedSubCategory,
+} from "../../../redux/slices/searchSlice";
 import { useSearchParams } from "react-router-dom";
 import ChosenCategoryItem from "./ChosenCaregoryItem";
 import clsx from "clsx";
 import ChosenCategorySkeleton from "./ChosenCategoryItemSkeleton";
 
-const ChosenCategoryList: React.FC<{ isLoading: boolean }> = React.memo(
-  ({ isLoading }) => {
+const ChosenCategoryList: React.FC<{ isLoading: boolean; fetchData: any }> =
+  React.memo(({ isLoading, fetchData }) => {
     const categoryNames = useAppSelector(
       (state) => state.searchSlice.categoryNames,
     );
@@ -27,6 +30,7 @@ const ChosenCategoryList: React.FC<{ isLoading: boolean }> = React.memo(
         defaultCategories.push(`Search: "${searchTerm}"`);
       }
       if (categoryTerm) {
+        dispatch(setSelectedSubCategory(categoryTerm));
         defaultCategories.push(categoryTerm);
       }
 
@@ -46,11 +50,14 @@ const ChosenCategoryList: React.FC<{ isLoading: boolean }> = React.memo(
               <ChosenCategorySkeleton key={index} categoryName={category} />
             ))
           : categoryNames.map((category) => (
-              <ChosenCategoryItem key={category} categoryName={category} />
+              <ChosenCategoryItem
+                fetchData={fetchData}
+                key={category}
+                categoryName={category}
+              />
             ))}
       </div>
     );
-  },
-);
+  });
 
 export default ChosenCategoryList;

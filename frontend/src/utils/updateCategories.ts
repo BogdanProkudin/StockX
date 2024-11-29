@@ -10,6 +10,13 @@ export const updateCategories = (
   searchParams: URLSearchParams,
   setSearchParams: (params: URLSearchParams) => void,
   dispatch: Dispatch,
+  fetchData: ({
+    searchingValue,
+    isCategorySearch,
+  }: {
+    searchingValue: string;
+    isCategorySearch: boolean;
+  }) => void | undefined,
 ) => {
   const newSearchParams = new URLSearchParams(searchParams);
   if (updatedCategories.length === 0) {
@@ -28,6 +35,11 @@ export const updateCategories = (
     newSearchParams.delete("category");
     setSearchParams(newSearchParams);
     dispatch(setSelectedSubCategory(""));
+
+    fetchData({
+      isCategorySearch: false,
+      searchingValue: newSearchParams.get("s") ?? "",
+    });
   }
 
   if (updatedCategories.length === 1) {
