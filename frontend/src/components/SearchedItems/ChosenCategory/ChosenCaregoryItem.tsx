@@ -1,17 +1,23 @@
 import CloseIcon from "@mui/icons-material/Close";
 import React from "react";
 import { useAppDispatch, useAppSelector } from "../../../redux/hook";
-import { setCategoryNames } from "../../../redux/slices/searchSlice";
+
 import { useSearchParams } from "react-router-dom";
 import { updateCategories } from "../../../utils/updateCategories";
-import ChosenCategorySkeleton from "./ChosenCategoryItemSkeleton";
 
 type ChosenCategoryItemProps = {
   categoryName: string;
+  fetchData: ({
+    searchingValue,
+    isCategorySearch,
+  }: {
+    searchingValue: string;
+    isCategorySearch: boolean;
+  }) => void;
 };
 
 const ChosenCategoryItem: React.FC<ChosenCategoryItemProps> = React.memo(
-  ({ categoryName }) => {
+  ({ categoryName, fetchData }) => {
     const categoryNames = useAppSelector(
       (state) => state.searchSlice.categoryNames,
     );
@@ -26,11 +32,12 @@ const ChosenCategoryItem: React.FC<ChosenCategoryItemProps> = React.memo(
         searchParams,
         setSearchParams,
         dispatch,
+        fetchData,
       );
     };
 
     const handleDeleteAllItems = () => {
-      updateCategories([], searchParams, setSearchParams, dispatch);
+      updateCategories([], searchParams, setSearchParams, dispatch, fetchData);
     };
     const handleCategoryItemClick = () => {
       if (categoryName === "Clear All") {

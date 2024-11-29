@@ -86,11 +86,12 @@ export const searchApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3003" }),
   endpoints: (builder) => ({
     searchItems: builder.query({
-      query: (searchingValue: string) => {
-        if (searchingValue.length !== 0 || searchingValue === null) {
-          return `/searchItems/${searchingValue}`;
+      query: ({ searchingValue }: { searchingValue: string }) => {
+        if (searchingValue && searchingValue.length > 0) {
+          return `/searchItems/${searchingValue}}`;
+        } else {
+          return `/searchItems/Supreme`;
         }
-        return "/searchItems/Supreme";
       },
       keepUnusedDataFor: 60,
     }),
@@ -103,6 +104,12 @@ export const searchApi = createApi({
         page: number | null;
       }) => `/loadMoreItems/${sectionName}/${page}`,
     }),
+    searchCategoryItems: builder.query({
+      query: (searchingValue: string) => {
+        return `/searchCategoryItems/${searchingValue}`;
+      },
+      keepUnusedDataFor: 60,
+    }),
   }),
 });
 
@@ -110,5 +117,6 @@ export const searchApi = createApi({
 export const {
   useLazySearchItemsQuery,
   useSearchItemsQuery,
+  useLazySearchCategoryItemsQuery,
   useLazyLoadMoreItemsQuery,
 } = searchApi;

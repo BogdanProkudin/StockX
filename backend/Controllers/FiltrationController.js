@@ -15,9 +15,7 @@ export const getSuggestionItemsCount = async (result) => {
 };
 export const searchProducts = async (req, res) => {
   try {
-    const searchingValue = req.params.searchingValue;
-    const api = new StockXAPI(StockXLocation.US);
-    console.log(searchingValue);
+    const { searchingValue } = req.params;
 
     const url = `https://api.sneakersapi.dev/search?query=${searchingValue.toLowerCase()}`;
     function generateRequestId() {
@@ -32,7 +30,7 @@ export const searchProducts = async (req, res) => {
         const suggestionCountList = await getSuggestionItemsCount(
           response.data.hits
         );
-        console.log("RES", response.data);
+
         return res.status(200).json({
           data: response.data.hits,
           suggestionCountList: suggestionCountList,
@@ -42,8 +40,6 @@ export const searchProducts = async (req, res) => {
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-
-    const currentTime = Date.now();
   } catch (err) {
     console.log("ERROR", err);
     return res.status(404).json({ message: "ERROR" });
@@ -62,10 +58,52 @@ export const loadMoreItems = async (req, res) => {
         });
       })
       .catch((error) => {
-        console.error("Error fetching data:", error); // Ошибка при запросе
+        console.error("Error fetching data:", error);
       });
   } catch (err) {
     console.log("ERROR WHILE GETTING MORE ITEMS", err);
     return res.status(404).json({ message: "Server Error" });
   }
 };
+
+// export const searchCategoryProduct = async () => {
+//   const nikeItems = [];
+
+//   const url = `https://api.sneakersapi.dev/search?page=${0}&query=nike hat `;
+
+//   const url2 = `https://api.sneakersapi.dev/search?page=${1}&query=nike hat `;
+
+//   try {
+//     const response = await axios.get(url);
+
+//     const updated = await response.data.hits.filter((el) => {
+//       if (
+//         el.category.includes("Accessories") &&
+//         !el.category.includes("Shoes")
+//       ) {
+//         return el;
+//       }
+//     });
+//     nikeItems.push(...updated);
+//     if (updated.length < 20) {
+//       console.log("pidor");
+
+//       const response2 = await axios.get(url2);
+//       const updated2 = await response2.data.hits.filter((el) => {
+//         if (
+//           el.category.includes("Accessories") &&
+//           !el.category.includes("Shoes")
+//         ) {
+//           return el;
+//         }
+//       });
+//       nikeItems.push(...updated2);
+//     }
+
+//     console.log("Items fetched:", nikeItems.length);
+
+//     return;
+//   } catch (error) {
+//     console.error("Error fetching data:", error);
+//   }
+// };

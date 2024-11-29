@@ -27,7 +27,7 @@ mongoose
     console.log("DB is working");
   })
   .catch((err) => {
-    console.log(err);
+    console.log("DB ERROR", err);
   });
 
 app.use(express.json());
@@ -48,6 +48,7 @@ app.get("/getCardSection/:section", ShoesController.getCardSection);
 app.get("/getSliderInfo/:section", ShoesController.getSliderInfo);
 //FiltrationLogic
 app.get("/searchItems/:searchingValue", FiltrationController.searchProducts);
+
 app.get(
   "/loadMoreItems/:sectionName/:page",
   FiltrationController.loadMoreItems
