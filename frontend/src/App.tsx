@@ -33,7 +33,7 @@ function App() {
     <Routes>
       <Route path="/" element={<HeaderLayout />}>
         <Route path="" element={renderMainContent(Home)} />
-        <Route path=":id" element={renderMainContent(FullProduct)} />
+        <Route path=":title" element={renderMainContent(FullProduct)} />
         <Route path="/search" element={renderMainContent(FilterPage)} />
       </Route>
 
