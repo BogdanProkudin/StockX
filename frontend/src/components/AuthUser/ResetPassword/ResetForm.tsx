@@ -36,7 +36,7 @@ const ResetForm = () => {
       resetPassword({
         resetPasswordToken: tokenFromUrl,
         newPassword: data.password,
-      })
+      }),
     );
   };
   const dispatch = useAppDispatch();

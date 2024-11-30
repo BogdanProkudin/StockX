@@ -14,10 +14,10 @@ const SignUpInput: React.FC<SignUpInputProps> = ({ register, watch, name }) => {
     name === "firstName"
       ? "First Name"
       : name === "secondName"
-      ? "Last Name"
-      : name === "email"
-      ? "Email Address"
-      : "Password";
+        ? "Last Name"
+        : name === "email"
+          ? "Email Address"
+          : "Password";
   return (
     <div className={styles.signUP_input_container}>
       <input

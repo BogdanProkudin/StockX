@@ -3,7 +3,7 @@ import styles from "./styles.module.scss";
 
 const RequestResetError = () => {
   const requestResetPasswordError = useAppSelector(
-    (state) => state.userAuth.requestResetPasswordError
+    (state) => state.userAuth.requestResetPasswordError,
   );
   return (
     <>

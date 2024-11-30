@@ -1,43 +1,52 @@
+import React, { useCallback, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useAppDispatch } from "../../../redux/hook";
 import { setSelectedSubCategory } from "../../../redux/slices/searchSlice";
 import CategoryItem from "./CategoryItem";
-import { useEffect, useState } from "react";
 
-const CategoryList = () => {
+interface Category {
+  categoryName: string;
+  subcategoryNames: string[];
+}
+
+const categoryListItems: Category[] = [
+  {
+    categoryName: "CATEGORY",
+    subcategoryNames: ["Jackets", "BackPacks", "Shoes", "Hat", "Trousers"],
+  },
+];
+
+const CategoryList: React.FC = () => {
   const dispatch = useAppDispatch();
   const [isShowDropDown, setIsShowDropDown] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
-  const handleSelectSubCategory = (selectedSubCategoryName: string) => {
-    dispatch(setSelectedSubCategory(selectedSubCategoryName));
 
-    setIsShowDropDown(false);
+  const handleSelectSubCategory = useCallback(
+    (selectedSubCategoryName: string) => {
+      dispatch(setSelectedSubCategory(selectedSubCategoryName));
+      setIsShowDropDown(false);
 
-    searchParams.set("category", selectedSubCategoryName);
-    setSearchParams(searchParams);
-  };
-
-  const categoryListItems = [
-    {
-      categoryName: "CATEGORY",
-      subcategoryNames: ["Jackets", "BackPacks", "Shoes", "Hat", "Trousers"],
+      const newSearchParams = new URLSearchParams(searchParams);
+      newSearchParams.set("category", selectedSubCategoryName);
+      setSearchParams(newSearchParams);
     },
-  ];
+    [dispatch, searchParams, setSearchParams],
+  );
+
   return (
     <div>
-      {categoryListItems.map((categoryName) => {
-        return (
-          <CategoryItem
-            handleSelectSubCategory={handleSelectSubCategory}
-            isShowDropDown={isShowDropDown}
-            setIsShowDropDown={setIsShowDropDown}
-            categoryName={categoryName.categoryName}
-            subcategoryNames={categoryName.subcategoryNames}
-          />
-        );
-      })}
+      {categoryListItems.map((category) => (
+        <CategoryItem
+          key={category.categoryName}
+          handleSelectSubCategory={handleSelectSubCategory}
+          isShowDropDown={isShowDropDown}
+          setIsShowDropDown={setIsShowDropDown}
+          categoryName={category.categoryName}
+          subcategoryNames={category.subcategoryNames}
+        />
+      ))}
     </div>
   );
 };
 
-export default CategoryList;
+export default React.memo(CategoryList);

@@ -5,7 +5,9 @@ import styles from "./styles.module.scss";
 
 import { Outlet } from "react-router-dom";
 import Footer from "../components/Footer/Footer";
+import { useAppSelector } from "../redux/hook";
 const HeaderLayout = () => {
+  const isSearching = useAppSelector((state) => state.searchSlice.isSearching);
   return (
     <>
       <div className={styles.headerBar}>
@@ -18,7 +20,7 @@ const HeaderLayout = () => {
       <div className="container">
         <Outlet />
       </div>
-      <Footer />
+      {!isSearching && <Footer />}
     </>
   );
 };

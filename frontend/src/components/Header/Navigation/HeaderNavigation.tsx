@@ -35,8 +35,8 @@ const HeaderNavigation: React.FC = () => {
                   navigate === "About"
                     ? aboutArr
                     : navigate === "Sell"
-                    ? sellArr
-                    : null
+                      ? sellArr
+                      : null
                 }
               />
             </div>

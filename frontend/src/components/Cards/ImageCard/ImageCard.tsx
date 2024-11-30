@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const ImageCard: React.FC<cardAssetsProps> = ({ img, path, alt }) => {
   return (
-    <Link to={path} className="w-[234px] h-[160px]">
+    <Link to={path} className="h-[160px] w-[234px]">
       <img className="rounded-xl" src={img} alt={alt} />
     </Link>
   );

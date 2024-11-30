@@ -4,7 +4,7 @@ export const emailValidationSchema = Yup.string()
   .required("Email is required")
   .matches(
     /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/,
-    "Email must be vailed"
+    "Email must be vailed",
   )
   .test("len", "Must be at least 3 symbols before '@'", (value) => {
     return value ? value.split("@")[0].length >= 3 : false;

@@ -3,10 +3,10 @@ import styles from "./styles.module.scss";
 
 const RequestResetSucces = () => {
   const isEmailSent = useAppSelector(
-    (state) => state.userAuth.requestResetStatus
+    (state) => state.userAuth.requestResetStatus,
   );
   const requestResetPasswordError = useAppSelector(
-    (state) => state.userAuth.requestResetPasswordError
+    (state) => state.userAuth.requestResetPasswordError,
   );
 
   return (
