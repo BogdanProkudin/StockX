@@ -31,19 +31,19 @@ const FullProduct = () => {
       {product && (
         <>
           <BreadCrumbs category={product.category} title={product.title} />
-          <div className="flex">
-            <div className="w-[656px]">
+          <div className="flex gap-2">
+            <div className="w-[636px]">
               <h1 className="text-3xl font-bold">{product.brand}</h1>
               <h3 className="text-sm opacity-70">{product.title}</h3>
               <div className="flex justify-center">
                 <img
-                  className="mt-2 h-[404px] w-[576px]"
+                  className="mt-2 h-[404px] w-[546px]"
                   src={product.image}
                   alt={product.title}
                 />
               </div>
             </div>
-            <div className="flex flex-col gap-2">
+            <div className="flex w-[480px] flex-col gap-2">
               <div className="flex items-center gap-2">
                 <Rocket size={16} />
                 <p className="text-sm">

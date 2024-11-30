@@ -38,7 +38,12 @@ li {
 .container {
   max-width: 1240px;
   margin: 0 auto;
+  &.productPage {
+    max-width: 1120px;
+    margin: 0 auto;
+  }
 }
+
 .scroll {
   &::-webkit-scrollbar {
     width: 8px;
