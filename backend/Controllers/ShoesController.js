@@ -457,10 +457,6 @@ export const getSliderInfo = async (req, res) => {
           { img: `${baseUrl}Deals.webp`, path: "", alt: "Hot Deals" },
         ],
       ];
-      //Логика для теста если будет желание потестить в четные минуты одни слайды в нечетные другие. Также позже улучшу логику для переиспользование
-      // const currentMinute = new Date().getMinutes();
-
-      // const setIndex = currentMinute % 2;
 
       const today = new Date();
 

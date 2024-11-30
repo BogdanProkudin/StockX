@@ -27,7 +27,7 @@ const CardFooter = () => {
       {footerCardArray.map((obj, id) => (
         <div
           key={id}
-          className="flex w-[410px] gap-3 rounded-xl bg-[#393939] p-[20px] text-white"
+          className="flex h-[119px] w-[410px] gap-3 rounded-xl bg-[#393939] p-[15px] text-white"
         >
           <div className="mt-1">{obj.img}</div>
           <div>
