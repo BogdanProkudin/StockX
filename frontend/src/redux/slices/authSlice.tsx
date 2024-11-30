@@ -96,7 +96,7 @@ const userAuthSlice = createSlice({
         (state, action: PayloadAction<IUser>) => {
           state.userData = action.payload;
           state.registrationStatus = fetchRequest.SUCCESS;
-        }
+        },
       )
       .addCase(registerUser.rejected, (state, action) => {
         state.registrationBackendError =
@@ -132,7 +132,7 @@ const userAuthSlice = createSlice({
         (state, action: PayloadAction<string | undefined>) => {
           state.requestResetPasswordError = undefined;
           state.requestResetStatus = fetchRequest.SUCCESS;
-        }
+        },
       )
       .addCase(requestResetPassword.rejected, (state, action) => {
         state.requestResetStatus = fetchRequest.ERROR;

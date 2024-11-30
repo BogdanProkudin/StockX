@@ -2,10 +2,10 @@ import { useAppSelector } from "../../../redux/hook";
 import styles from "./styles.module.scss";
 const SignUpError = () => {
   const validationErrors = useAppSelector(
-    (state) => state.userAuth.validationErrors
+    (state) => state.userAuth.validationErrors,
   );
   const registrationBackendErrors = useAppSelector(
-    (state) => state.userAuth.registrationBackendError
+    (state) => state.userAuth.registrationBackendError,
   );
   console.log("SIGN UP ERRROR", registrationBackendErrors, validationErrors);
 

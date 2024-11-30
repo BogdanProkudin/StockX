@@ -2,10 +2,10 @@ import { useAppSelector } from "../../../redux/hook";
 import styles from "./styles.module.scss";
 const ResetPasswordError = () => {
   const resetPasswordError = useAppSelector(
-    (state) => state.userAuth.resetPasswordError
+    (state) => state.userAuth.resetPasswordError,
   );
   const resetPasswordBackendError = useAppSelector(
-    (state) => state.userAuth.resetPasswordBackendError
+    (state) => state.userAuth.resetPasswordBackendError,
   );
   return (
     <>

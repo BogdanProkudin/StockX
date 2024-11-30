@@ -16,7 +16,7 @@ const FilterSkeleton = ({ children, ...props }: any) => (
       >
         <rect x="0" y="0" rx="4" ry="4" width="70" height="15" />
       </ContentLoader>
-      <span className="text-customDeel pl-1 pr-1">|</span>
+      <span className="pl-1 pr-1 text-customDeel">|</span>
       <ExpandMoreIcon
         fontSize="large"
         style={{ paddingRight: "10px", paddingTop: "1px" }}

@@ -15,7 +15,7 @@ const index = () => {
       const path = location.pathname;
       const tokenFromUrl = path.split("/resetPassword/")[1];
       await dispatch(
-        isResetPasswordTokenValid({ resetPasswordToken: tokenFromUrl })
+        isResetPasswordTokenValid({ resetPasswordToken: tokenFromUrl }),
       );
     };
     handleIsTokenValid();

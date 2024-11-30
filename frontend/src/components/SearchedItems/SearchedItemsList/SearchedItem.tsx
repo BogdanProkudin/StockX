@@ -1,13 +1,10 @@
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { userCardProps } from "../../../@types/userCardTypes";
-import { Link } from "react-router-dom";
-import SearchedItemSkeleton from "./SearchedItemSkeleton";
 
-const SearchedItem: React.FC<userCardProps> = ({
-  image,
-  title,
-  base_price,
-}) => {
+import { Link } from "react-router-dom";
+
+import { SearchItem } from "../../../types/searchTypes";
+
+const SearchedItem: React.FC<SearchItem> = ({ image, title, base_price }) => {
   const onClickFavorite = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
   };
