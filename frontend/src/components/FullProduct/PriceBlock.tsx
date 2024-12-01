@@ -1,5 +1,5 @@
 import React from "react";
-import { getRandomEvery30Seconds } from "../../utils/updateSoldItems";
+import { GenerateSoldItem } from "../../utils/updateSoldItems";
 import model from "../../assets/images/soldModel.gif";
 interface PriceBlockProps {
   price: number;
@@ -9,7 +9,7 @@ const PriceBlock: React.FC<PriceBlockProps> = ({ price, lastSale }) => {
   const totalPrice = Math.round(price);
   const lastSalePrice = Math.round(lastSale);
 
-  const randomItems = getRandomEvery30Seconds();
+  const randomItems = GenerateSoldItem(totalPrice);
   return (
     <div className="rounded-xl border border-[#a4a4a4] p-4">
       <div className="flex items-center justify-between">

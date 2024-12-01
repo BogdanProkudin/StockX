@@ -1,22 +1,19 @@
-export function getRandomEvery30Seconds() {
-  const soldItems = Math.floor(Math.random() * 10000);
-  const today = Date.now();
-  const savedData = localStorage.getItem("RandomNumber");
-  const parsedData = savedData ? JSON.parse(savedData) : null;
+import { useMemo } from "react";
 
-  if (
-    !parsedData ||
-    today - Number(parsedData.timeStamps) >= 3 * 24 * 60 * 60 * 1000
-  ) {
-    localStorage.setItem(
-      "RandomNumber",
-      JSON.stringify({
-        timeStamps: today,
-        soldItems,
-      }),
-    );
-    return soldItems;
-  }
+export function GenerateSoldItem(totalPrice: number) {
+  const generateUniqueNumber = (totalPrice: number, currentSeed: number) => {
+    const randomSeed = Math.floor(totalPrice * currentSeed);
 
-  return parsedData.soldItems;
+    return Math.abs(randomSeed % 1001);
+  };
+  const currentSeed = useMemo(() => {
+    const THREE_DAYS_IN_MS = 3 * 24 * 60 * 60 * 1000;
+    return Math.floor(Date.now() / THREE_DAYS_IN_MS);
+  }, []);
+
+  const randomNumber = useMemo(
+    () => generateUniqueNumber(totalPrice, currentSeed),
+    [totalPrice, currentSeed],
+  );
+  return randomNumber;
 }
