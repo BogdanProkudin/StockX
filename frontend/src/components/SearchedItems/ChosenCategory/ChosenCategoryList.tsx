@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../redux/hook";
 import {
   setCategoryNames,
+  setSelectedBrand,
   setSelectedSubCategory,
 } from "../../../redux/slices/searchSlice";
 import { useSearchParams } from "react-router-dom";
@@ -11,11 +12,10 @@ import ChosenCategorySkeleton from "./ChosenCategoryItemSkeleton";
 
 interface ChosenCategoryListProps {
   isLoading: boolean;
-  fetchData: (params: { searchingValue: string }) => void;
 }
 
 const ChosenCategoryList: React.FC<ChosenCategoryListProps> = React.memo(
-  ({ isLoading, fetchData }) => {
+  ({ isLoading }) => {
     const categoryNames = useAppSelector(
       (state) => state.searchSlice.categoryNames,
     );
@@ -25,10 +25,10 @@ const ChosenCategoryList: React.FC<ChosenCategoryListProps> = React.memo(
     useEffect(() => {
       const searchTerm = searchParams.get("s");
       const categoryTerm = searchParams.get("category");
-
+      const brandTerm = searchParams.get("brand");
       const defaultCategories = [];
 
-      if (searchTerm || categoryTerm) {
+      if (searchTerm || categoryTerm || brandTerm) {
         defaultCategories.push("Clear All");
       }
 
@@ -39,6 +39,10 @@ const ChosenCategoryList: React.FC<ChosenCategoryListProps> = React.memo(
       if (categoryTerm) {
         dispatch(setSelectedSubCategory(categoryTerm));
         defaultCategories.push(categoryTerm);
+      }
+      if (brandTerm) {
+        dispatch(setSelectedBrand(brandTerm));
+        defaultCategories.push(brandTerm);
       }
 
       dispatch(setCategoryNames(defaultCategories));

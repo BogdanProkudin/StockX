@@ -1,48 +1,30 @@
-import CloseIcon from "@mui/icons-material/Close";
 import React, { useCallback } from "react";
 import { useAppDispatch, useAppSelector } from "../../../redux/hook";
 import { useSearchParams } from "react-router-dom";
 import { updateCategories } from "../../../utils/updateCategories";
-
+import CloseIcon from "@mui/icons-material/Close";
 interface ChosenCategoryItemProps {
   categoryName: string;
+  isClearAll?: boolean;
 }
 
 const ChosenCategoryItem: React.FC<ChosenCategoryItemProps> = React.memo(
-  ({ categoryName }) => {
+  ({ categoryName, isClearAll }) => {
     const categoryNames = useAppSelector(
       (state) => state.searchSlice.categoryNames,
     );
     const [searchParams, setSearchParams] = useSearchParams();
     const dispatch = useAppDispatch();
 
-    const handleDeleteCategoryItem = useCallback(() => {
-      const updatedCategoryNames = categoryNames.filter(
-        (el) => el !== categoryName,
-      );
+    const handleClick = useCallback(() => {
       updateCategories(
-        updatedCategoryNames,
+        categoryName,
+        categoryNames,
+        dispatch,
         searchParams,
         setSearchParams,
-        dispatch,
       );
-    }, [categoryNames, categoryName, searchParams, setSearchParams, dispatch]);
-
-    const handleDeleteAllItems = useCallback(() => {
-      updateCategories([], searchParams, setSearchParams, dispatch);
-    }, [searchParams, setSearchParams, dispatch]);
-
-    const handleClick = useCallback(
-      (e: React.MouseEvent) => {
-        e.stopPropagation();
-        if (categoryName === "Clear All") {
-          handleDeleteAllItems();
-        }
-      },
-      [categoryName, handleDeleteAllItems],
-    );
-
-    const isClearAll = categoryName === "Clear All";
+    }, [categoryName, categoryNames, dispatch, searchParams, setSearchParams]);
 
     return (
       <button
@@ -60,7 +42,7 @@ const ChosenCategoryItem: React.FC<ChosenCategoryItemProps> = React.memo(
           <>
             <hr className="ml-1 mr-[6px] mt-[0.2rem] h-3 border-0 border-l border-solid border-textDisabled opacity-60" />
             <CloseIcon
-              onClick={handleDeleteCategoryItem}
+              onClick={handleClick}
               className="text-gray-600 transition-colors duration-200 hover:text-gray-800"
               style={{ fontSize: "16px", marginTop: "1.6px" }}
             />

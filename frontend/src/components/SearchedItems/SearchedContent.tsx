@@ -7,6 +7,7 @@ import FilterSelect from "./FilterSelect/FilterSelect";
 import SearchedItemsList from "./SearchedItemsList/SearchedItemsList";
 import CategoryList from "./CategoryList/CategoryList";
 import { useEffect } from "react";
+import BrandsList from "./BrandsList/BrandsList";
 
 const SearchedContent = () => {
   const [searchParams] = useSearchParams();
@@ -41,6 +42,7 @@ const SearchedContent = () => {
     <div className="mx-auto mt-3 flex h-full w-full max-w-[1240px] items-start justify-between px-4">
       <div className="h-full w-[300px]">
         <CategoryList />
+        <BrandsList />
       </div>
       <div className="h-full w-full max-w-[927px] p-2">
         <div className="flex h-10 justify-between">
@@ -54,7 +56,7 @@ const SearchedContent = () => {
         </h1>
 
         <div className="flex flex-col">
-          <ChosenCategoryList isLoading={isLoading} fetchData={fetchData} />
+          <ChosenCategoryList isLoading={isLoading} />
           <SearchedItemsList
             items={data?.data}
             isLoading={isLoading}

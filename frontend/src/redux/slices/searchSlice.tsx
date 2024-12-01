@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { userCardProps } from "../../@types/userCardTypes";
 interface ISearchSlice {
   foundedItems: userCardProps[];
@@ -8,6 +8,7 @@ interface ISearchSlice {
   suggestionCountsArr: number[];
   categoryNames: string[];
   selectedSubCategory: string;
+  selectedBrand: string;
 }
 const initialState: ISearchSlice = {
   foundedItems: [],
@@ -17,6 +18,7 @@ const initialState: ISearchSlice = {
   suggestionCountsArr: [],
   categoryNames: [],
   selectedSubCategory: "",
+  selectedBrand: "",
 };
 const searchSlice = createSlice({
   name: "searchSlice",
@@ -43,6 +45,9 @@ const searchSlice = createSlice({
     setSelectedSubCategory: (state, action) => {
       state.selectedSubCategory = action.payload;
     },
+    setSelectedBrand: (state, action: PayloadAction<string>) => {
+      state.selectedBrand = action.payload;
+    },
     // Дополнительные редьюсеры для работы с состоянием, если нужны
   },
 });
@@ -54,6 +59,7 @@ export const {
   setCategoryNames,
   setIsSearching,
   setSelectedSubCategory,
+  setSelectedBrand,
 } = searchSlice.actions;
 // Экспортируем редьюсер
 export default searchSlice.reducer;
