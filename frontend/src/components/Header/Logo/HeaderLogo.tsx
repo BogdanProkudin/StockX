@@ -1,14 +1,18 @@
 import styles from "./styles.module.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../../redux/hook";
-import { setSearchValue } from "../../../redux/slices/searchSlice";
+import {
+  setIsSearching,
+  setSearchValue,
+} from "../../../redux/slices/searchSlice";
 const HeaderLogo = () => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const handleLogoClick = () => {
     dispatch(setSearchValue(""));
-    setTimeout(() => {
-      window.location.reload();
-    }, 200);
+    dispatch(setIsSearching(false));
+    navigate("/");
+    window.scrollTo(0, 0);
   };
   return (
     <div className={styles.header_navbar}>
