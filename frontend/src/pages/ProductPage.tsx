@@ -54,7 +54,7 @@ const FullProduct = () => {
               <SizePopUp />
               <PriceBlock
                 price={product.base_price}
-                lastSale={product.min_price}
+                min_price={product.min_price}
               />
             </div>
           </div>
