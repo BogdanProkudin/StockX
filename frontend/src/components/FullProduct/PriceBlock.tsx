@@ -1,15 +1,37 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { getRandomEvery30Seconds } from "../../utils/updateSoldItems";
 import model from "../../assets/images/soldModel.gif";
 interface PriceBlockProps {
   price: number;
-  lastSale: number;
+  min_price: number;
 }
-const PriceBlock: React.FC<PriceBlockProps> = ({ price, lastSale }) => {
+const PriceBlock: React.FC<PriceBlockProps> = ({ price, min_price }) => {
   const totalPrice = Math.round(price);
-  const lastSalePrice = Math.round(lastSale);
+  const minPrice = Math.round(min_price);
+  const generateUniqueNumber = (productId: any, currentSeed: number) => {
+    const randomSeed = Math.floor(totalPrice * currentSeed);
+    const randomSeed2 = Math.floor(minPrice * currentSeed);
+    return Math.abs(randomSeed % 1001) + Math.abs(randomSeed2 % 1001); // Возвращаем значение от 0 до 1000
+  };
 
-  const randomItems = getRandomEvery30Seconds();
+  const RandomNumberComponent = ({ productId }: any) => {
+    const currentSeed = useMemo(() => {
+      const THREE_DAYS_IN_MS = 3 * 10000;
+
+      
+     return  Math.floor(Date.now() / THREE_DAYS_IN_MS),
+      
+    }, []);
+   
+    const randomNumber = useMemo(
+      () => generateUniqueNumber(productId, currentSeed),
+      [productId, currentSeed],
+    );
+    console.log(randomNumber);
+
+    return randomNumber;
+  };
+
   return (
     <div className="rounded-xl border border-[#a4a4a4] p-4">
       <div className="flex items-center justify-between">
@@ -22,7 +44,8 @@ const PriceBlock: React.FC<PriceBlockProps> = ({ price, lastSale }) => {
         <div className="flex items-center gap-1">
           <img className="w-10" src={model} alt="sold model" />
           <p className="font-semibold">
-            <span>{randomItems}</span> Sold in Last 3 Days!
+            <span>{RandomNumberComponent(totalPrice)}</span> Sold in Last 3
+            Days!
           </p>
         </div>
       </div>
@@ -35,7 +58,7 @@ const PriceBlock: React.FC<PriceBlockProps> = ({ price, lastSale }) => {
         </button>
       </div>
       <div className="mt-5 flex items-center justify-between border-t pb-1 pt-3">
-        <span className="font-semibold">Last Sale: €{lastSalePrice}</span>
+        <span className="font-semibold">Last Sale: €{minPrice}</span>
         <span className="cursor-pointer border-b-2 border-[#006340] font-bold text-[#006340]">
           View Market Data
         </span>
