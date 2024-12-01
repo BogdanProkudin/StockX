@@ -1,49 +1,40 @@
 import React from "react";
 import { useSearchParams } from "react-router-dom";
-import { userCardProps } from "../../../@types/userCardTypes";
+import { SearchItem } from "../../../types/searchTypes";
 import SearchedItem from "./SearchedItem";
 import SearchedItemSkeleton from "./SearchedItemSkeleton";
+import { sortItems } from "../../../utils/sortUtils";
 
-type SearchedItemsListProps = {
-  items: userCardProps[];
+interface SearchedItemsListProps {
+  items?: SearchItem[];
   isLoading: boolean;
-};
+  total: number;
+  currentPage: number;
+  totalPages: number;
+}
 
 const SearchedItemsList: React.FC<SearchedItemsListProps> = ({
   items,
   isLoading,
 }) => {
-  const [searchParams] = useSearchParams();
-  const sortQuery: any = searchParams.get("sort");
-
-  const sortData = (data: userCardProps[]) => {
-    const sortFunctions: Record<
-      string,
-      (a: userCardProps, b: userCardProps) => number
-    > = {
-      priceAsc: (a, b) => a.base_price - b.base_price,
-      priceDesc: (a, b) => b.base_price - a.base_price,
-      releaseDate: (a, b) =>
-        (new Date(b.release_date || 0).getTime() || 0) -
-        (new Date(a.release_date || 0).getTime() || 0),
-      alphabetical: (a, b) => a.title.localeCompare(b.title),
-    };
-    return sortFunctions[sortQuery]
-      ? [...data].sort(sortFunctions[sortQuery])
-      : data;
-  };
+  const [searchParams, setSearchParams] = useSearchParams();
+  const sortQuery = searchParams.get("sort");
 
   if (isLoading || !items) return <SearchedItemSkeleton />;
+  if (!items.length)
+    return <div className="mt-4 text-center">No items found</div>;
 
-  const sortedItems = sortData(items);
-  if (!sortedItems.length) return <div>No items found</div>;
+  const sortedItems = sortItems(items, sortQuery);
 
   return (
-    <div className="mt-5 grid w-full grid-cols-1 items-start gap-6 sm:grid-cols-2 md:grid-cols-4">
-      {sortedItems.map((item, index) => (
-        <SearchedItem key={index} {...item} />
-      ))}
-    </div>
+    <>
+      <div className="mt-5 grid w-full grid-cols-1 items-start gap-6 sm:grid-cols-2 md:grid-cols-4">
+        {sortedItems.map((item) => (
+          <SearchedItem key={item.id} {...item} />
+        ))}
+      </div>
+      <div></div>
+    </>
   );
 };
 

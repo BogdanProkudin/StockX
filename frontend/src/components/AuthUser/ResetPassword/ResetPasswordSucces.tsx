@@ -3,10 +3,10 @@ import styles from "./styles.module.scss";
 
 const ResetPasswordSucces = () => {
   const isPasswordReset = useAppSelector(
-    (state) => state.userAuth.resetPasswordStatus
+    (state) => state.userAuth.resetPasswordStatus,
   );
   const resetPasswordError = useAppSelector(
-    (state) => state.userAuth.resetPasswordError
+    (state) => state.userAuth.resetPasswordError,
   );
 
   return (

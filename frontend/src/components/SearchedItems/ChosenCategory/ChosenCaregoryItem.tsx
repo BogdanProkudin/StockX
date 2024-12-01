@@ -1,56 +1,49 @@
-import CloseIcon from "@mui/icons-material/Close";
-import React from "react";
+import React, { useCallback } from "react";
 import { useAppDispatch, useAppSelector } from "../../../redux/hook";
-
 import { useSearchParams } from "react-router-dom";
 import { updateCategories } from "../../../utils/updateCategories";
-
-type ChosenCategoryItemProps = {
+import CloseIcon from "@mui/icons-material/Close";
+interface ChosenCategoryItemProps {
   categoryName: string;
-};
+  isClearAll?: boolean;
+}
 
 const ChosenCategoryItem: React.FC<ChosenCategoryItemProps> = React.memo(
-  ({ categoryName }) => {
+  ({ categoryName, isClearAll }) => {
     const categoryNames = useAppSelector(
       (state) => state.searchSlice.categoryNames,
     );
     const [searchParams, setSearchParams] = useSearchParams();
     const dispatch = useAppDispatch();
-    const handleDeleteCategoryItem = () => {
-      const updatedCategoryNames = categoryNames.filter((el) => {
-        return el !== categoryName;
-      });
+
+    const handleClick = useCallback(() => {
       updateCategories(
-        updatedCategoryNames,
+        categoryName,
+        categoryNames,
+        dispatch,
         searchParams,
         setSearchParams,
-        dispatch,
       );
-    };
-
-    const handleDeleteAllItems = () => {
-      updateCategories([], searchParams, setSearchParams, dispatch);
-    };
-    const handleCategoryItemClick = () => {
-      if (categoryName === "Clear All") {
-        handleDeleteAllItems();
-      }
-    };
+    }, [categoryName, categoryNames, dispatch, searchParams, setSearchParams]);
 
     return (
-      <button className="text-text-primary mb-1 mr-1 mt-1 inline-flex h-[30px] min-h-[22px] min-w-[20px] max-w-full cursor-pointer items-center justify-center rounded-2xl bg-categoryButtonColor px-2 py-2 pl-3 pr-3 align-top font-sans text-sm text-xs font-normal leading-tight shadow outline-2 outline-offset-2">
-        <span
-          onClick={handleCategoryItemClick}
-          className="text-center text-sm text-blackTextColor"
-        >
+      <button
+        className="text-text-primary mb-1 mr-1 mt-1 inline-flex h-[30px] min-h-[22px] min-w-[20px] max-w-full cursor-pointer items-center justify-center rounded-2xl bg-categoryButtonColor px-3 py-2 font-sans text-sm font-normal leading-tight shadow outline-2 outline-offset-2 transition-colors duration-200 hover:bg-gray-200"
+        onClick={handleClick}
+        aria-label={
+          isClearAll ? "Clear all filters" : `Remove ${categoryName} filter`
+        }
+      >
+        <span className="text-center text-sm text-blackTextColor">
           {categoryName}
         </span>
 
-        {categoryName !== "Clear All" && (
+        {!isClearAll && (
           <>
             <hr className="ml-1 mr-[6px] mt-[0.2rem] h-3 border-0 border-l border-solid border-textDisabled opacity-60" />
             <CloseIcon
-              onClick={handleDeleteCategoryItem}
+              onClick={handleClick}
+              className="text-gray-600 transition-colors duration-200 hover:text-gray-800"
               style={{ fontSize: "16px", marginTop: "1.6px" }}
             />
           </>
@@ -59,5 +52,7 @@ const ChosenCategoryItem: React.FC<ChosenCategoryItemProps> = React.memo(
     );
   },
 );
+
+ChosenCategoryItem.displayName = "ChosenCategoryItem";
 
 export default ChosenCategoryItem;

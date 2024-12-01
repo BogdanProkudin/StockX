@@ -9,6 +9,7 @@ import {
   setIsLoading,
   setIsSearching,
   setSearchValue,
+  setSelectedSubCategory,
 } from "../../../redux/slices/searchSlice";
 import { useSearch } from "../../../hooks/useSearch";
 import { useNavigate } from "react-router-dom";
@@ -23,6 +24,7 @@ const HeaderInput: React.FC = () => {
     if (event.key === "Enter" && searchValue.length > 0) {
       navigate(`/search?s=${searchValue}`);
       dispatch(setIsSearching(false));
+      dispatch(setSelectedSubCategory(""));
       dispatch(setCategoryNames(["Clear All", `Search: "${searchValue}"`]));
     }
   };

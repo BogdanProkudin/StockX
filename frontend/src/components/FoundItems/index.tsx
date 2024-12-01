@@ -2,34 +2,57 @@ import { useAppSelector } from "../../redux/hook";
 import SearchedItemsList from "./SearchedItems/SearchedItemsList";
 import SearchedItemsListSkeleton from "./Skeletons/SearchedItemsListSkeleton";
 import SuggestionItemsList from "./SuggestionItems/SuggestionItemsList";
+import { MESSAGES } from "./constants";
 
-const index = () => {
-  const isLoading = useAppSelector((state) => state.searchSlice.isLoading);
-  const foundeditems = useAppSelector(
-    (state) => state.searchSlice.foundedItems,
-  );
-  const suggestionCountsArr = useAppSelector(
-    (state) => state.searchSlice.suggestionCountsArr,
-  );
+import { ErrorBoundary } from "react-error-boundary";
+import { motion } from "framer-motion";
+import { SearchState } from "../../@types/foundPageTypes";
+
+const ErrorFallback = () => (
+  <div
+    role="alert"
+    className="flex h-full min-w-[965px] justify-center text-red-500"
+  >
+    {MESSAGES.LOAD_ERROR}
+  </div>
+);
+
+const Index = () => {
+  const { isLoading, foundedItems, suggestionCountsArr } =
+    useAppSelector<SearchState>((state) => state.searchSlice);
 
   if (isLoading) {
     return <SearchedItemsListSkeleton />;
   }
 
-  if (foundeditems && foundeditems.length > 0) {
+  if (foundedItems && foundedItems.length > 0) {
     return (
-      <div className="h-100 flex min-w-[965px] flex-col justify-center">
-        <SuggestionItemsList suggestionCountsArr={suggestionCountsArr} />
-        <SearchedItemsList />
-      </div>
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
+        <motion.div
+          className="h-100 flex min-w-[965px] flex-col justify-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
+        >
+          <SuggestionItemsList suggestionCountsArr={suggestionCountsArr} />
+          <SearchedItemsList />
+        </motion.div>
+      </ErrorBoundary>
     );
   }
 
   return (
-    <div className="flex h-full min-w-[965px] justify-center">
-      <p>NOTHING WAS FOUND</p>
-    </div>
+    <motion.div
+      className="flex h-full min-w-[965px] items-center justify-center text-gray-600"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+      role="status"
+      aria-label="No results found"
+    >
+      {MESSAGES.NOTHING_FOUND}
+    </motion.div>
   );
 };
 
-export default index;
+export default Index;

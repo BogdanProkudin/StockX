@@ -1,5 +1,6 @@
 import React from "react";
 import { GenerateSoldItem } from "../../utils/updateSoldItems";
+
 import model from "../../assets/images/soldModel.gif";
 interface PriceBlockProps {
   price: number;

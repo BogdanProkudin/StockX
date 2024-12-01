@@ -1,13 +1,11 @@
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { userCardProps } from "../../../@types/userCardTypes";
-import { Link } from "react-router-dom";
-import SearchedItemSkeleton from "./SearchedItemSkeleton";
 
-const SearchedItem: React.FC<userCardProps> = ({
-  image,
-  title,
-  base_price,
-}) => {
+import { Link } from "react-router-dom";
+
+import { SearchItem } from "../../../types/searchTypes";
+import { imageNotFound } from "../../../assets/images/imageNotFound";
+
+const SearchedItem: React.FC<SearchItem> = ({ image, title, base_price }) => {
   const onClickFavorite = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
   };
@@ -25,11 +23,7 @@ const SearchedItem: React.FC<userCardProps> = ({
         </button>
         <img
           className="h-[140px] min-h-[140px] w-full object-contain p-4"
-          src={
-            image
-              ? image
-              : "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Image_not_available.png/640px-Image_not_available.png"
-          }
+          src={image ? image : imageNotFound}
           alt=""
         />
         <div className="px-4 py-0">

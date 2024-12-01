@@ -5,10 +5,11 @@ import styles from "./styles.module.scss";
 
 import { matchPath, Outlet, useLocation } from "react-router-dom";
 import Footer from "../components/Footer/Footer";
+import { useAppSelector } from "../redux/hook";
 const HeaderLayout = () => {
   const location = useLocation();
   const isProductPage = matchPath("/:title", location.pathname);
-
+  const isSearching = useAppSelector((state) => state.searchSlice.searchValue);
   return (
     <>
       <div className={styles.headerBar}>
@@ -21,7 +22,7 @@ const HeaderLayout = () => {
       <div className={`container ${isProductPage ? "productPage" : ""}`}>
         <Outlet />
       </div>
-      <Footer />
+      {!isSearching && <Footer />}
     </>
   );
 };

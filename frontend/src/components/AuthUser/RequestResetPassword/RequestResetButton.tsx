@@ -17,7 +17,7 @@ const RequestResetButton = ({
     e.preventDefault();
     if (inputValue.length >= 4) {
       const response = await dispatch(
-        requestResetPassword({ email: inputValue })
+        requestResetPassword({ email: inputValue }),
       );
       if (response.payload === "Password reset email sent") {
         setInputValue("");
