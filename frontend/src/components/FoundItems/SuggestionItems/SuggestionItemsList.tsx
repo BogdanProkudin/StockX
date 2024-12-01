@@ -3,7 +3,7 @@ import SuggestionItem from "./SuggestionItem";
 import { motion } from "framer-motion";
 import { createSuggestionNames } from "../../../assets/SearchAssets/SuggestionItemsNames";
 import styles from "./SuggestionItems.module.css";
-import { SuggestionItem as SuggestionItemType } from "../types";
+import { ISuggestionItem } from "../../../@types/foundPageTypes";
 
 interface SuggestionItemsListProps {
   suggestionCountsArr: number[];
@@ -14,24 +14,26 @@ const container = {
   show: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1
-    }
-  }
+      staggerChildren: 0.1,
+    },
+  },
 };
 
 const item = {
   hidden: { opacity: 0, x: -20 },
-  show: { opacity: 1, x: 0 }
+  show: { opacity: 1, x: 0 },
 };
 
-const SuggestionItemsList: React.FC<SuggestionItemsListProps> = ({ suggestionCountsArr }) => {
-  const suggestionNames = useMemo<SuggestionItemType[]>(
+const SuggestionItemsList: React.FC<SuggestionItemsListProps> = ({
+  suggestionCountsArr,
+}) => {
+  const suggestionNames = useMemo<ISuggestionItem[]>(
     () => createSuggestionNames(suggestionCountsArr),
-    [suggestionCountsArr]
+    [suggestionCountsArr],
   );
 
   return (
-    <motion.div 
+    <motion.div
       className={styles.container}
       variants={container}
       initial="hidden"

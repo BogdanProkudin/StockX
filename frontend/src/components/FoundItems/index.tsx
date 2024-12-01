@@ -3,9 +3,10 @@ import SearchedItemsList from "./SearchedItems/SearchedItemsList";
 import SearchedItemsListSkeleton from "./Skeletons/SearchedItemsListSkeleton";
 import SuggestionItemsList from "./SuggestionItems/SuggestionItemsList";
 import { MESSAGES } from "./constants";
-import { SearchState } from "./types";
+
 import { ErrorBoundary } from "react-error-boundary";
 import { motion } from "framer-motion";
+import { SearchState } from "../../@types/foundPageTypes";
 
 const ErrorFallback = () => (
   <div
