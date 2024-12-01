@@ -3,26 +3,24 @@ import { getRandomEvery30Seconds } from "../../utils/updateSoldItems";
 import model from "../../assets/images/soldModel.gif";
 interface PriceBlockProps {
   price: number;
-  min_price: number;
+  lastSale: number;
 }
-const PriceBlock: React.FC<PriceBlockProps> = ({ price, min_price }) => {
+const PriceBlock: React.FC<PriceBlockProps> = ({ price, lastSale }) => {
   const totalPrice = Math.round(price);
-  const minPrice = Math.round(min_price);
+  const lastSalePrice = Math.round(lastSale);
   const generateUniqueNumber = (productId: any, currentSeed: number) => {
     const randomSeed = Math.floor(totalPrice * currentSeed);
-    const randomSeed2 = Math.floor(minPrice * currentSeed);
-    return Math.abs(randomSeed % 1001) + Math.abs(randomSeed2 % 1001); // Возвращаем значение от 0 до 1000
+
+    return Math.abs(randomSeed % 1001); // Возвращаем значение от 0 до 1000
   };
 
   const RandomNumberComponent = ({ productId }: any) => {
     const currentSeed = useMemo(() => {
       const THREE_DAYS_IN_MS = 3 * 10000;
 
-      
-     return  Math.floor(Date.now() / THREE_DAYS_IN_MS),
-      
+      return Math.floor(Date.now() / THREE_DAYS_IN_MS);
     }, []);
-   
+    console.log("CURENT", currentSeed);
     const randomNumber = useMemo(
       () => generateUniqueNumber(productId, currentSeed),
       [productId, currentSeed],
@@ -58,7 +56,7 @@ const PriceBlock: React.FC<PriceBlockProps> = ({ price, min_price }) => {
         </button>
       </div>
       <div className="mt-5 flex items-center justify-between border-t pb-1 pt-3">
-        <span className="font-semibold">Last Sale: €{minPrice}</span>
+        <span className="font-semibold">Last Sale: €{lastSalePrice}</span>
         <span className="cursor-pointer border-b-2 border-[#006340] font-bold text-[#006340]">
           View Market Data
         </span>
