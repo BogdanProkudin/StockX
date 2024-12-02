@@ -21,13 +21,9 @@ import { useMemo } from "react";
 //   return randomNumber;
 // }
 
-export function GenerateSoldItem(
-  totalPrice: number,
-  maxPrice: number,
-  minPrice: number,
-) {
+export function GenerateSoldItem(totalPrice: number, maxPrice: number) {
   const generateUniqueNumber = (totalPrice: number, currentSeed: number) => {
-    const avgPrice = maxPrice - minPrice;
+    const avgPrice = maxPrice - totalPrice;
     const checkPrice = avgPrice === 0 ? totalPrice : avgPrice;
     const randomSeed = Math.floor(checkPrice * currentSeed);
     return Math.abs(randomSeed % 10001);

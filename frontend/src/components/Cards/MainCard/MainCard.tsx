@@ -13,9 +13,11 @@ const UserCard: React.FC<userCardProps> = ({
   const onClickFavorite = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
   };
+  const formattedUrl = title.replace(/\s+/g, "-");
+
   return (
     <Link
-      to={`/${title}`}
+      to={`/${formattedUrl}`}
       className="relative flex h-[250px] w-[190px] cursor-pointer flex-col items-center"
     >
       <button onClick={onClickFavorite} className="absolute right-5">

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import BreadCrumbs from "../components/BreadCrumbs/BreadCrumbs";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { userCardProps } from "../@types/userCardTypes";
 import { Rocket } from "lucide-react";
@@ -10,15 +10,19 @@ import SizePopUp from "../components/FullProduct/SizePopUp";
 const FullProduct = () => {
   const { title } = useParams();
   const [product, setProduct] = useState<userCardProps | null>(null);
+  const navigate = useNavigate();
+  const productName = title?.replace(/-/g, " ");
+  const formattedUrl = title?.replace(/\s+/g, "-");
+
   useEffect(() => {
     async function fetchFullProduct() {
-      console.log(title);
+      console.log(productName);
 
       const res = await axios.get(
-        `https://api.sneakersapi.dev/search?query=${title}`,
+        `https://api.sneakersapi.dev/search?query=${productName}`,
       );
       const data = res.data.hits.find(
-        (el: userCardProps) => el.title === title,
+        (el: userCardProps) => el.title === productName,
       );
 
       setProduct(data);

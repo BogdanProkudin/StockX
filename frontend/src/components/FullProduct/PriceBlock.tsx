@@ -14,8 +14,22 @@ const PriceBlock: React.FC<PriceBlockProps> = ({
 }) => {
   const totalPrice = Math.round(price);
   const lastSalePrice = Math.round(min_price);
+  let lastSale: number = lastSalePrice;
+  if (lastSalePrice === totalPrice) {
+    if (totalPrice < 100) {
+      const random = Math.floor(Math.random() * 30);
+      lastSale = lastSale + random;
+    } else if (totalPrice < 500) {
+      const random = Math.floor(Math.random() * 300);
+      lastSale = lastSale + random;
+    } else {
+      const random = Math.floor(Math.random() * 600);
+      lastSale = lastSale + random;
+    }
+  }
   const maxPrice = Math.round(max_price);
-  const randomItems = GenerateSoldItem(totalPrice, maxPrice, lastSalePrice);
+  const randomItems = GenerateSoldItem(totalPrice, maxPrice);
+
   return (
     <div className="rounded-xl border border-[#a4a4a4] p-4">
       <div className="flex items-center justify-between">
@@ -41,7 +55,7 @@ const PriceBlock: React.FC<PriceBlockProps> = ({
         </button>
       </div>
       <div className="mt-5 flex items-center justify-between border-t pb-1 pt-3">
-        <span className="font-semibold">Last Sale: €{lastSalePrice}</span>
+        <span className="font-semibold">Last Sale: €{lastSale}</span>
         <span className="cursor-pointer border-b-2 border-[#006340] font-bold text-[#006340]">
           View Market Data
         </span>
