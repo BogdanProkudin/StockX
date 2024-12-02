@@ -5,17 +5,21 @@ import { Link } from "react-router-dom";
 import { SearchItem } from "../../../types/searchTypes";
 import { imageNotFound } from "../../../assets/images/imageNotFound";
 
-const SearchedItem: React.FC<SearchItem> = ({ image, title, base_price }) => {
+const SearchedItem: React.FC<SearchItem> = ({
+  image,
+  title,
+  slug,
+  base_price,
+}) => {
   const onClickFavorite = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
   };
-  if (!image) {
-    console.log("NO IMAGe ");
-  }
+
+  const formattedUrl = slug.slice(0, -6);
   return (
     <>
       <Link
-        to={`/${title}`}
+        to={`/${formattedUrl}`}
         className="relative flex h-full w-[200px] cursor-pointer flex-col items-center"
       >
         <button onClick={onClickFavorite} className="absolute right-5">

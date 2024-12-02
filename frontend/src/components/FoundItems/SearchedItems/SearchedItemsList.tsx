@@ -40,6 +40,7 @@ const SearchedItemsList = () => {
             brand={item.brand}
             name={item.title}
             color={item.color}
+            slug={item.slug}
           />
         );
       })}
