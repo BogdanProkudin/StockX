@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Auth from "./pages/Auth";
 import Home from "./pages/Home";
@@ -17,6 +17,11 @@ import FilterPage from "./pages/FilterPage";
 type ComponentType = React.FC;
 
 function App() {
+  const originalTitle = localStorage.getItem("title");
+
+  useEffect(() => {
+    console.log("local storage app:", originalTitle);
+  }, [originalTitle]);
   const userToken = useMemo(() => localStorage.getItem("token"), []);
   const isSearching = useAppSelector((state) => state.searchSlice.isSearching);
   const searchValue = useAppSelector((state) => state.searchSlice.searchValue);
@@ -33,7 +38,7 @@ function App() {
     <Routes>
       <Route path="/" element={<HeaderLayout />}>
         <Route path="" element={renderMainContent(Home)} />
-        <Route path=":title" element={renderMainContent(FullProduct)} />
+        <Route path=":slug" element={renderMainContent(FullProduct)} />
         <Route path="search" element={renderMainContent(FilterPage)} />
       </Route>
 
