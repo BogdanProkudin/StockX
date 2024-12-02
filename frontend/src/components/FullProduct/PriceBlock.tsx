@@ -4,13 +4,18 @@ import { GenerateSoldItem } from "../../utils/updateSoldItems";
 import model from "../../assets/images/soldModel.gif";
 interface PriceBlockProps {
   price: number;
-  lastSale: number;
+  min_price: number;
+  max_price: number;
 }
-const PriceBlock: React.FC<PriceBlockProps> = ({ price, lastSale }) => {
+const PriceBlock: React.FC<PriceBlockProps> = ({
+  price,
+  min_price,
+  max_price,
+}) => {
   const totalPrice = Math.round(price);
-  const lastSalePrice = Math.round(lastSale);
-
-  const randomItems = GenerateSoldItem(totalPrice);
+  const lastSalePrice = Math.round(min_price);
+  const maxPrice = Math.round(max_price);
+  const randomItems = GenerateSoldItem(totalPrice, maxPrice, lastSalePrice);
   return (
     <div className="rounded-xl border border-[#a4a4a4] p-4">
       <div className="flex items-center justify-between">
