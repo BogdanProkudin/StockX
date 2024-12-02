@@ -14,9 +14,12 @@ const UserCard: React.FC<userCardProps> = ({
     e.stopPropagation();
   };
   const formattedUrl = title.replace(/\s+/g, "-");
-
+  const onClickAddTitle = () => {
+    localStorage.setItem("title", title);
+  };
   return (
     <Link
+      onClick={onClickAddTitle}
       to={`/${formattedUrl}`}
       className="relative flex h-[250px] w-[190px] cursor-pointer flex-col items-center"
     >

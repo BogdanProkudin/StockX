@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import BreadCrumbs from "../components/BreadCrumbs/BreadCrumbs";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import { userCardProps } from "../@types/userCardTypes";
 import { Rocket } from "lucide-react";
@@ -10,25 +10,26 @@ import SizePopUp from "../components/FullProduct/SizePopUp";
 const FullProduct = () => {
   const { title } = useParams();
   const [product, setProduct] = useState<userCardProps | null>(null);
-  const navigate = useNavigate();
-  const productName = title?.replace(/-/g, " ");
-  const formattedUrl = title?.replace(/\s+/g, "-");
-
+  const originalTitle = localStorage.getItem("title");
+  console.log("local storage:", originalTitle);
   useEffect(() => {
     async function fetchFullProduct() {
-      console.log(productName);
+      console.log(title);
 
       const res = await axios.get(
-        `https://api.sneakersapi.dev/search?query=${productName}`,
+        `https://api.sneakersapi.dev/search?query=${originalTitle}`,
       );
       const data = res.data.hits.find(
-        (el: userCardProps) => el.title === productName,
+        (el: userCardProps) => el.title === originalTitle,
       );
 
       setProduct(data);
       console.log(data);
     }
     fetchFullProduct();
+    return () => {
+      localStorage.removeItem("title");
+    };
   }, []);
   return (
     <div className="w-[1120px]">
