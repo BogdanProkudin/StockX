@@ -35,7 +35,12 @@ const FullProduct = () => {
     <div className="w-[1120px]">
       {product && (
         <>
-          <BreadCrumbs category={product.category} title={product.title} />
+          <BreadCrumbs
+            label={product.labels}
+            brand={product.brand}
+            title={product.title}
+            slug={product.slug}
+          />
           <div className="flex gap-2">
             <div className="w-[636px]">
               <h1 className="text-3xl font-bold">{product.brand}</h1>
