@@ -8,6 +8,7 @@ export interface SearchResponse {
 export interface SearchItem {
   id: string;
   title: string;
+  slug: string;
   base_price: number;
   release_date?: string;
   image: string;

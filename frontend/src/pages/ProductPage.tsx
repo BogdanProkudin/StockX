@@ -8,28 +8,23 @@ import PriceBlock from "../components/FullProduct/PriceBlock";
 import SizePopUp from "../components/FullProduct/SizePopUp";
 
 const FullProduct = () => {
-  const { title } = useParams();
+  const { slug } = useParams();
   const [product, setProduct] = useState<userCardProps | null>(null);
-  const originalTitle = localStorage.getItem("title");
-  console.log("local storage:", originalTitle);
-  useEffect(() => {
-    async function fetchFullProduct() {
-      console.log(title);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    async function fetchFullProduct() {
       const res = await axios.get(
-        `https://api.sneakersapi.dev/search?query=${originalTitle}`,
+        `https://api.sneakersapi.dev/search?query=${slug}`,
       );
       const data = res.data.hits.find(
-        (el: userCardProps) => el.title === originalTitle,
+        (el: userCardProps) => el.slug.slice(0, -6) === slug,
       );
 
       setProduct(data);
       console.log(data);
     }
     fetchFullProduct();
-    return () => {
-      localStorage.removeItem("title");
-    };
   }, []);
   return (
     <div className="w-[1120px]">

@@ -6,17 +6,17 @@ import { Link } from "react-router-dom";
 
 const UserCard: React.FC<userCardProps> = ({
   image,
+  slug,
   title,
   base_price,
+
   min_price,
 }) => {
   const onClickFavorite = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
   };
-  const formattedUrl = title.replace(/\s+/g, "-");
-  const onClickAddTitle = () => {
-    localStorage.setItem("title", title);
-  };
+  const formattedUrl = slug.slice(0, -6);
+  const onClickAddTitle = () => {};
   return (
     <Link
       onClick={onClickAddTitle}

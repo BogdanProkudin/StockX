@@ -23,6 +23,7 @@ const SearchedContent = () => {
   }>();
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const searchParams: SearchParams = {
       searchingValue: [searchQuery, categoryQuery].filter(Boolean).join(" "),
       page,
