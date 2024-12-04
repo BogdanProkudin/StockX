@@ -10,7 +10,7 @@ import SizePopUp from "../components/FullProduct/SizePopUp";
 const FullProduct = () => {
   const { slug } = useParams();
   const [product, setProduct] = useState<userCardProps | null>(null);
-  // const [isPrice, setIsPrice] = useState(product?.base_price);
+  const [isPrice, setIsPrice] = useState(product?.base_price);
 
   useEffect(() => {
     window.scrollTo(0, 0);
