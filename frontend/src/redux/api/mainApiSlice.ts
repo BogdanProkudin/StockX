@@ -86,12 +86,44 @@ export const searchApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3003" }),
   endpoints: (builder) => ({
     searchItems: builder.query({
-      query: ({ searchingValue }: { searchingValue: string }) => {
+      query: ({
+        searchingValue,
+        categoryQuery,
+        brandQuery,
+        genderQuery,
+      }: {
+        searchingValue: string;
+        categoryQuery: string | undefined;
+        brandQuery: string | undefined;
+        genderQuery: string | undefined;
+      }) => {
+        let url = "/searchProducts";
+
         if (searchingValue && searchingValue.length > 0) {
-          return `/searchItems/${searchingValue}}`;
+          url += `/${encodeURIComponent(searchingValue)}`;
         } else {
-          return `/searchItems/Supreme`;
+          url += "/all";
         }
+
+        const queryParams = [];
+
+        if (categoryQuery) {
+          queryParams.push(`category=${encodeURIComponent(categoryQuery)}`);
+        }
+
+        if (brandQuery) {
+          queryParams.push(`brand=${encodeURIComponent(brandQuery)}`);
+        }
+        if (genderQuery) {
+          queryParams.push(`gender=${encodeURIComponent(genderQuery)}`);
+        }
+
+        if (queryParams.length > 0) {
+          url += `?${queryParams.join("&")}`;
+        }
+
+        console.log("Final URL:", url);
+        return url;
       },
       keepUnusedDataFor: 60,
     }),
@@ -105,8 +137,17 @@ export const searchApi = createApi({
       }) => `/loadMoreItems/${sectionName}/${page}`,
     }),
     searchCategoryItems: builder.query({
-      query: (searchingValue: string) => {
-        return `/searchCategoryItems/${searchingValue}`;
+      query: ({
+        searchQuery,
+        categoryQuery,
+      }: {
+        searchQuery?: string;
+        categoryQuery?: string;
+      }) => {
+        const params = new URLSearchParams();
+        if (searchQuery) params.append("searchQuery", searchQuery);
+        if (categoryQuery) params.append("categoryQuery", categoryQuery);
+        return `/searchCategoryProduct?${params.toString()}`;
       },
       keepUnusedDataFor: 60,
     }),

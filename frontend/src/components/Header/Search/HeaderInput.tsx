@@ -9,6 +9,7 @@ import {
   setIsLoading,
   setIsSearching,
   setSearchValue,
+  setSelectedBrand,
   setSelectedSubCategory,
 } from "../../../redux/slices/searchSlice";
 import { useSearch } from "../../../hooks/useSearch";
@@ -24,7 +25,9 @@ const HeaderInput: React.FC = () => {
     if (event.key === "Enter" && searchValue.length > 0) {
       navigate(`/search?s=${searchValue}`);
       dispatch(setIsSearching(false));
+      dispatch(setSelectedBrand(""));
       dispatch(setSelectedSubCategory(""));
+      handleSearch({ query: "", isSearching: false });
       dispatch(setCategoryNames(["Clear All", `Search: "${searchValue}"`]));
     }
   };
@@ -35,7 +38,7 @@ const HeaderInput: React.FC = () => {
     dispatch(setIsLoading(true));
     dispatch(setSearchValue(value));
 
-    handleSearch(value);
+    handleSearch({ query: value, isSearching: true });
     if (value.length === 0) {
       dispatch(setIsSearching(false));
       dispatch(setFoundedItems([]));

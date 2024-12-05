@@ -9,6 +9,7 @@ interface ISearchSlice {
   categoryNames: string[];
   selectedSubCategory: string;
   selectedBrand: string;
+  selectedGender: string;
 }
 const initialState: ISearchSlice = {
   foundedItems: [],
@@ -19,6 +20,7 @@ const initialState: ISearchSlice = {
   categoryNames: [],
   selectedSubCategory: "",
   selectedBrand: "",
+  selectedGender: "",
 };
 const searchSlice = createSlice({
   name: "searchSlice",
@@ -48,6 +50,9 @@ const searchSlice = createSlice({
     setSelectedBrand: (state, action: PayloadAction<string>) => {
       state.selectedBrand = action.payload;
     },
+    setSelectedGender: (state, action: PayloadAction<string>) => {
+      state.selectedGender = action.payload;
+    },
     // Дополнительные редьюсеры для работы с состоянием, если нужны
   },
 });
@@ -59,6 +64,7 @@ export const {
   setCategoryNames,
   setIsSearching,
   setSelectedSubCategory,
+  setSelectedGender,
   setSelectedBrand,
 } = searchSlice.actions;
 // Экспортируем редьюсер

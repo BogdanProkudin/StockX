@@ -15,10 +15,14 @@ export const useSearch = () => {
     useLazySearchItemsQuery();
 
   const handleSearch = React.useCallback(
-    debounce(async (query) => {
-      if (query.length > 0) {
+    debounce(async ({ query, isSearching }) => {
+      console.log("z", isSearching, query);
+
+      if (query.length > 0 && isSearching) {
         const result = await fetchItems({
           searchingValue: query,
+          categoryQuery: undefined,
+          brandQuery: undefined,
         });
 
         if (result.isSuccess) {

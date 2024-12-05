@@ -6,7 +6,7 @@ export interface FoundItem {
   color: string;
 }
 
-export interface SuggestionItem {
+export interface ISuggestionItem {
   name: string;
   count: number;
 }

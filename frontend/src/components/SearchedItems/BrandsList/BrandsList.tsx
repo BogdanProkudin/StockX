@@ -15,7 +15,19 @@ interface IBrandItem {
 const BrandsListItems: IBrandItem[] = [
   {
     brandName: "BRANDS",
-    subBrandNames: ["Nike", "Adidas", "Puma", "Converse", "Yeezy", "Jordan"],
+    subBrandNames: [
+      "Nike",
+      "adidas",
+      "Puma",
+      "Converse",
+      "Yeezy",
+      "Jordan",
+      "Supreme",
+      "Travis Scott",
+      "Converse",
+      "NBA",
+      "Reebok",
+    ],
   },
 ];
 const BrandsList = React.memo(() => {
