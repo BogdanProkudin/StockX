@@ -18,9 +18,7 @@ const FullProduct = () => {
       const res = await axios.get(
         `https://api.sneakersapi.dev/search?query=${slug}`,
       );
-      const data = res.data.hits.find(
-        (el: userCardProps) => el.slug.slice(0, -6) === slug,
-      );
+      const data = res.data.hits[0];
 
       setProduct(data);
       console.log(data);

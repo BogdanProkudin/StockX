@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../../redux/hook";
 import {
   setCategoryNames,
   setSelectedBrand,
+  setSelectedGender,
   setSelectedSubCategory,
 } from "../../../redux/slices/searchSlice";
 import { useSearchParams } from "react-router-dom";
@@ -26,9 +27,10 @@ const ChosenCategoryList: React.FC<ChosenCategoryListProps> = React.memo(
       const searchTerm = searchParams.get("s");
       const categoryTerm = searchParams.get("category");
       const brandTerm = searchParams.get("brand");
+      const genderTerm = searchParams.get("gender");
       const defaultCategories = [];
 
-      if (searchTerm || categoryTerm || brandTerm) {
+      if (searchTerm || categoryTerm || brandTerm || genderTerm) {
         defaultCategories.push("Clear All");
       }
 
@@ -43,6 +45,10 @@ const ChosenCategoryList: React.FC<ChosenCategoryListProps> = React.memo(
       if (brandTerm) {
         dispatch(setSelectedBrand(brandTerm));
         defaultCategories.push(brandTerm);
+      }
+      if (genderTerm) {
+        dispatch(setSelectedGender(genderTerm));
+        defaultCategories.push(genderTerm);
       }
 
       dispatch(setCategoryNames(defaultCategories));

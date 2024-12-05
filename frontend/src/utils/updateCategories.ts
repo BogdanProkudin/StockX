@@ -4,6 +4,7 @@ import { Dispatch } from "redux";
 import {
   setCategoryNames,
   setSelectedBrand,
+  setSelectedGender,
   setSelectedSubCategory,
 } from "../redux/slices/searchSlice";
 
@@ -17,6 +18,7 @@ export const updateCategories = (
   if (categoryToRemove === "Clear All") {
     dispatch(setCategoryNames([]));
     dispatch(setSelectedSubCategory(""));
+    dispatch(setSelectedGender(""));
     dispatch(setSelectedBrand(""));
     setSearchParams(new URLSearchParams());
     return;
@@ -29,6 +31,7 @@ export const updateCategories = (
   // Определяем, какой тип категории был удален
   const isBrandCategory = searchParams.get("brand") === categoryToRemove;
   const isSubCategory = searchParams.get("category") === categoryToRemove;
+  const isGenderCategory = searchParams.get("gender") === categoryToRemove;
   const isSearchCategory = categoryToRemove.startsWith('Search: "');
 
   const newSearchParams = new URLSearchParams(searchParams);
@@ -44,6 +47,10 @@ export const updateCategories = (
     newSearchParams.delete("brand");
     setSearchParams(newSearchParams);
     dispatch(setSelectedBrand(""));
+  } else if (isGenderCategory) {
+    newSearchParams.delete("gender");
+    dispatch(setSelectedGender(""));
+    setSearchParams(newSearchParams);
   }
 
   if (updatedCategories.length === 1) {

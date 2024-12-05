@@ -8,14 +8,16 @@ import SearchedItemsList from "./SearchedItemsList/SearchedItemsList";
 import CategoryList from "./CategoryList/CategoryList";
 import { useEffect } from "react";
 import BrandsList from "./BrandsList/BrandsList";
+import GenderList from "./GenderList/GenderList";
 
 const SearchedContent = () => {
   const [searchParams] = useSearchParams();
 
   const searchQuery = searchParams.get("s") ?? "";
-  const categoryQuery = searchParams.get("category") ?? "";
+  const categoryQuery = searchParams.get("category") || "";
+  const brandQuery = searchParams.get("brand") || "";
   const page = Number(searchParams.get("page")) || 1;
-
+  const genderQuery = searchParams.get("gender") || "";
   const [fetchData, { data, isLoading, error }] = useLazySearchItemsQuery<{
     data: SearchResponse;
     error: any;
@@ -25,11 +27,13 @@ const SearchedContent = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     const searchParams: SearchParams = {
-      searchingValue: [searchQuery, categoryQuery].filter(Boolean).join(" "),
-      page,
+      searchingValue: [searchQuery].filter(Boolean).join(" "),
+      categoryQuery: [categoryQuery].filter(Boolean).join(" "),
+      brandQuery: [brandQuery].filter(Boolean).join(" "),
+      genderQuery: [genderQuery].filter(Boolean).join(" "),
     };
     fetchData(searchParams);
-  }, [searchQuery, categoryQuery, page, fetchData]);
+  }, [searchQuery, categoryQuery, page, fetchData, brandQuery, genderQuery]);
 
   if (error) {
     return (
@@ -44,6 +48,7 @@ const SearchedContent = () => {
       <div className="h-full w-[300px]">
         <CategoryList />
         <BrandsList />
+        <GenderList />
       </div>
       <div className="h-full w-full max-w-[927px] p-2">
         <div className="flex h-10 justify-between">

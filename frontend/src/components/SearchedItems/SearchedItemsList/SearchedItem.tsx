@@ -9,7 +9,7 @@ const SearchedItem: React.FC<SearchItem> = ({
   image,
   title,
   slug,
-  base_price,
+  avg_price,
 }) => {
   const onClickFavorite = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
@@ -33,7 +33,9 @@ const SearchedItem: React.FC<SearchItem> = ({
         <div className="px-4 py-0">
           <h4 className="mb-1">{title}</h4>
           <p className="text-sm text-gray-400">Lowest Ask</p>
-          <b className="f font-mono text-[23px]">€{base_price}</b>
+          <b className="f font-mono text-[23px]">
+            €{Math.round(avg_price) || 0}
+          </b>
         </div>
       </Link>
     </>
