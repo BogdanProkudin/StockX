@@ -12,7 +12,7 @@ interface Category {
 const categoryListItems: Category[] = [
   {
     categoryName: "CATEGORY",
-    subcategoryNames: ["Jackets", "BackPacks", "Shoes", "Hat", "Trousers"],
+    subcategoryNames: ["Jacket", "Streetwear", "Sneakers", "Hat", "Trousers"],
   },
 ];
 
