@@ -10,7 +10,7 @@ import SizePopUp from "../components/FullProduct/SizePopUp";
 const FullProduct = () => {
   const { slug } = useParams();
   const [product, setProduct] = useState<userCardProps | null>(null);
-  const [isPrice, setIsPrice] = useState(product?.base_price);
+  const [isPrice, setIsPrice] = useState<number | null>(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -60,12 +60,14 @@ const FullProduct = () => {
                   price={product.base_price}
                   size_system={product.size_system}
                   variants={product.variants}
+                  setIsPrice={setIsPrice}
                 />
               )}
               <PriceBlock
                 price={product.base_price}
                 max_price={product.max_price}
                 min_price={product.min_price}
+                isPrice={isPrice}
               />
             </div>
           </div>

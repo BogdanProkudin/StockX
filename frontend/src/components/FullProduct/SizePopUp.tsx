@@ -3,7 +3,6 @@ import React, { useState } from "react";
 interface SizePopUpType {
   price: number;
   size_system: string;
-
   variants: {
     gtin: string;
     price: number;
@@ -11,11 +10,13 @@ interface SizePopUpType {
     variant_id: string;
     variant_link: string;
   }[];
+  setIsPrice?: (value: number) => void;
 }
 const SizePopUp: React.FC<SizePopUpType> = ({
   price,
   size_system,
   variants,
+  setIsPrice,
 }) => {
   const sizeOrder = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
   const sizeSystem = size_system ? size_system : "US";
@@ -27,10 +28,12 @@ const SizePopUp: React.FC<SizePopUpType> = ({
   const onClickAllSizes = () => {
     setIsOpen(false);
     setIsValue("All");
+    if (setIsPrice) setIsPrice(price);
   };
-  const onClickSize = (value: string) => {
+  const onClickSize = (value: string, price: number) => {
     setIsOpen(false);
     setIsValue(`${sizeSystem + " " + value}`);
+    if (setIsPrice) setIsPrice(price);
   };
   variants.sort(
     (a, b) => sizeOrder.indexOf(a.size) - sizeOrder.indexOf(b.size),
@@ -77,7 +80,7 @@ const SizePopUp: React.FC<SizePopUpType> = ({
               {sortedVariants.map((obj, id) => (
                 <li className="max-h-[45px]" key={id}>
                   <button
-                    onClick={() => onClickSize(obj.size)}
+                    onClick={() => onClickSize(obj.size, obj.price)}
                     className="flex w-[136px] flex-col items-center justify-center gap-[1px] rounded-md border border-[#a4a4a4] py-[1px] text-sm"
                   >
                     {obj.size}
