@@ -6,11 +6,13 @@ interface PriceBlockProps {
   price: number;
   min_price: number;
   max_price: number;
+  isPrice: number | null;
 }
 const PriceBlock: React.FC<PriceBlockProps> = ({
   price,
   min_price,
   max_price,
+  isPrice,
 }) => {
   const totalPrice = Math.round(price);
   const lastSalePrice = Math.round(min_price);
@@ -36,7 +38,9 @@ const PriceBlock: React.FC<PriceBlockProps> = ({
         <div className="w-[98px]">
           <p className="text-md font-medium">
             Buy Now For{" "}
-            <span className="text-2xl font-bold">€{totalPrice}</span>
+            <span className="text-2xl font-bold">
+              €{isPrice ? isPrice : totalPrice}
+            </span>
           </p>
         </div>
         <div className="flex items-center gap-1">
