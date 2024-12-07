@@ -1,7 +1,7 @@
 import userModel from "../Modules/User.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-
+import { resDelayed } from "../utils/Delay.js";
 import nodemailer from "nodemailer";
 
 export const register = async (req, res) => {
@@ -9,10 +9,11 @@ export const register = async (req, res) => {
     const isUserExist = await userModel.findOne({
       email: req.body.email,
     });
+
     if (isUserExist) {
-      return res.status(404).json("Email is taken");
+      return resDelayed(res, 400, "Email is taken", 500);
     }
-    // нужно ли добавлять  проверку на то занят ли ваш юзер нейм или нет когда фамилия и имя может повторяться
+
     const JWT_PAS = process.env.JWT_PAS;
     const reqPass = req.body.password;
     const salt = await bcrypt.genSalt(10);
@@ -36,7 +37,9 @@ export const register = async (req, res) => {
 
     const { password, ...userData } = user._doc;
 
-    res.status(200).json({ message: "User registered successfully", token }); //отправка на фронт только токена потом по этому токену будем находить юзера в бд/ или по юзер айди
+    res.status(200).json({ message: "User registered successfully", token });
+
+    //отправка на фронт только токена потом по этому токену будем находить юзера в бд/ или по юзер айди
   } catch (error) {
     console.log("ERROR REGISTRATION USER", error);
 
@@ -52,16 +55,12 @@ export const login = async (req, res) => {
       email: req.body.email,
     });
     if (!user) {
-      return res.status(404).json({
-        message: "Email or password is wrong",
-      });
+      return resDelayed(res, 404, "Email or password is wrong", 1000);
     }
     const reqPass = req.body.password;
     const userPass = await bcrypt.compare(reqPass, user._doc.password);
     if (!userPass) {
-      return res.status(404).json({
-        message: "Email or password is wrong",
-      });
+      return resDelayed(res, 404, "Email or password is wrong", 500);
     }
 
     const token = jwt.sign(
@@ -76,9 +75,7 @@ export const login = async (req, res) => {
     const { password, ...userData } = user._doc;
     res.status(200).json({ message: "User login successfully", token });
   } catch (error) {
-    res.status(500).json({
-      message: "Login unavaible",
-    });
+    return resDelayed(res, 500, "Login unavaible", 500);
   }
 };
 export const auth = async (req, res) => {
@@ -105,13 +102,16 @@ export const forgotPassword = async (req, res) => {
   // Поиск пользователя по email
   const user = await userModel.findOne({ email });
 
-  if (!user) return res.status(404).send("Email not found");
+  if (!user) {
+    return resDelayed(res, 404, "Email not found", 2000);
+  }
   if (user.passwordResetAttempts > 3) {
-    return res
-      .status(404)
-      .send(
-        "You have exceeded your password reset request limit. Try again in 24 hours."
-      );
+    return resDelayed(
+      res,
+      404,
+      "You have exceeded your password reset request limit. Try again in 24 hours.",
+      1500
+    );
   }
   // Генерация токена (действителен 1 час)
   const resetToken = await jwt.sign({ id: user._id }, "secretreset", {
@@ -185,31 +185,86 @@ export const forgotPassword = async (req, res) => {
     if (err) {
       console.log("error", err);
 
-      return res.status(500).send("Error sending email");
+      return resDelayed(res, 500, "Error sending email", 1500);
     }
-    res.status(200).send("Password reset email sent");
+
+    return resDelayed(res, 200, "Password reset email sent", 1500);
   });
 };
 
 export const isTokenValid = async (req, res) => {
   const { resetPasswordToken } = req.body;
 
-  const decodedUrlToken = await decodeURIComponent(resetPasswordToken);
-  console.log("ZX", decodedUrlToken);
+  // Декодируем токен
+  const decodedUrlToken = decodeURIComponent(resetPasswordToken);
 
-  const verifiedToken = await jwt.decode(decodedUrlToken);
-  console.log("DECODED", verifiedToken);
+  try {
+    // Проверяем токен
+    const verifiedToken = jwt.verify(decodedUrlToken, "secretreset");
+    console.log("Verified Token:", verifiedToken);
 
-  const user = await userModel.findOne({ _id: verifiedToken.id });
-  console.log("USERr", user);
+    const user = await userModel.findById(verifiedToken.id);
+    if (!user) return res.status(404).json({ message: "User not found" });
 
-  const currentTime = Date.now();
-  const resetPasswordExpires = await user.resetPasswordExpires;
-  // Проверяем, истек ли срок действия токена
-  if (currentTime < resetPasswordExpires) {
-    console.log("Токен действителен");
-  } else {
-    console.log("Срок действия токена истек");
+    const currentTime = Date.now();
+
+    if (currentTime < user.resetPasswordExpires) {
+      console.log("Токен действителен");
+      return res.status(200).json({ message: "Token is valid" });
+    } else {
+      console.log("Срок действия токена истек");
+      return res.status(400).json({ message: "Token has expired" });
+    }
+  } catch (error) {
+    console.error("Token verification failed:", error.message);
+    return res.status(401).json({ message: "Invalid token" });
   }
 };
-export const resetPassword = () => {};
+
+export const resetPassword = async (req, res) => {
+  try {
+    const { newPassword, resetPasswordToken } = req.body;
+
+    const RESET_SECRET = "secretreset";
+
+    const verifiedToken = jwt.verify(resetPasswordToken, RESET_SECRET);
+
+    const user = await userModel.findById(verifiedToken.id);
+    if (!user) {
+      return resDelayed(res, 404, "User not found", 1500);
+    }
+
+    const currentTime = Date.now();
+    if (currentTime > user.newPasswordExpires || !user.newPasswordExpires) {
+      const isSamePassword = await bcrypt.compare(newPassword, user.password);
+      if (isSamePassword) {
+        return resDelayed(
+          res,
+          404,
+          "New password must be different from the old one",
+          1500
+        );
+      }
+
+      const hashPass = await bcrypt.hash(newPassword, 10);
+      await userModel.findByIdAndUpdate(user._id, {
+        password: hashPass,
+        newPasswordExpires: currentTime + 3600000,
+      });
+
+      return resDelayed(res, 200, "Password successfully updated", 1500);
+    } else {
+      return resDelayed(
+        res,
+        429,
+        "Password reset requests are limited to once per hour",
+        2000
+      );
+    }
+  } catch (err) {
+    console.error("ERROR RESETTING PASSWORD", err);
+    return resDelayed(res, 400, "Invalid or expired token", 1500);
+  }
+};
+
+// Helper function to send delayed response

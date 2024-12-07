@@ -1,42 +1,84 @@
 .dropdown_container {
-  max-width: 1120px;
+  max-width: 1000px;
   padding: 16px 0 32px 0;
-  height: 300px;
+  height: 100%;
   margin: 0px auto;
+  background-color: white;
+  border-top: 1px solid rgb(232, 232, 232);
 
   .dropdown_wrapper {
     display: grid;
-    gap: 10px;
+    gap: 20px;
+    height: 100%;
+
     grid-template-columns: repeat(5, 1fr);
     -webkit-box-pack: center;
     justify-content: center;
     list-style-type: none;
     &.brands_wrapper {
-      grid-template-columns: 15% repeat(auto-fit, minmax(20%, 27.5%));
+      display: grid;
+
+      gap: 30px;
+      grid-template-columns: repeat(3, 1fr);
+      -webkit-box-pack: center;
+      justify-content: center;
+      list-style-type: none;
     }
-    .dropdown_flex_column {
+    .dropdown_flex_column_wrapper {
       display: flex;
       text-align: start;
+
       flex-direction: column;
-      gap: 30px;
+
+      gap: 20px;
+      .title {
+        width: 100%;
+        max-width: max-content;
+
+        a {
+          color: black;
+
+          border-bottom: 0px solid black;
+          &:hover {
+            border-bottom: 1px solid black;
+          }
+        }
+      }
       .dropdown_sublink_main_wrapper {
-        // display: grid;
-        // gap: var(--chakra-space-3);
-        // grid-template-columns: repeat(5, 1fr);
-        // list-style-type: none;
-        // margin-bottom: var(--chakra-space-6);
-        // margin-inline: 0px;
-        // padding-inline: 0px;
-        // overflow: auto;
-        // padding: var(--chakra-space-1);
         display: grid;
+
         grid-template-columns: repeat(2, 1fr);
         list-style-type: none;
         margin-inline: 0px;
         padding-inline: 0px;
         overflow: auto;
+        .sublink {
+          margin: 5px 0;
+
+          a {
+            color: black;
+            border-bottom: 0px solid black;
+            &:hover {
+              border-bottom: 1px solid black;
+            }
+          }
+        }
         &.threecolumn {
           grid-template-columns: repeat(5, 1fr);
+
+          max-width: 200px;
+          margin-inline: 0px;
+          padding-inline: 0px;
+          .sublink {
+            max-width: 5px;
+            a {
+              color: black;
+              border-bottom: 0px solid black;
+              &:hover {
+                border-bottom: 1px solid black;
+              }
+            }
+          }
         }
       }
       .dropdown_sublink_wrapper {
@@ -46,8 +88,19 @@
         margin-inline: 0px;
         padding-inline: 0px;
         overflow: auto;
+
         .sublink {
-          max-width: 200px;
+          max-width: max-content;
+          width: 100%;
+
+          margin: 5px 0;
+          a {
+            color: black;
+            border-bottom: 0px solid black;
+            &:hover {
+              border-bottom: 1px solid black;
+            }
+          }
         }
       }
     }

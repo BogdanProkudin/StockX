@@ -8,15 +8,16 @@ import { SignUpInputProps } from "../@types/RegisterTypes";
 const SignUpInput: React.FC<SignUpInputProps> = ({ register, watch, name }) => {
   const inputValue = watch(name);
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
+  console.log("INPUT VALUE", inputValue);
 
   const placeholders =
     name === "firstName"
       ? "First Name"
       : name === "secondName"
-      ? "Last Name"
-      : name === "email"
-      ? "Email Address"
-      : "Password";
+        ? "Last Name"
+        : name === "email"
+          ? "Email Address"
+          : "Password";
   return (
     <div className={styles.signUP_input_container}>
       <input
@@ -39,7 +40,7 @@ const SignUpInput: React.FC<SignUpInputProps> = ({ register, watch, name }) => {
       )}
       <label
         className={`${styles.floating_label} ${
-          inputValue ? styles.active : ""
+          inputValue && inputValue.length > 0 ? styles.active : ""
         }`}
       >
         {placeholders}

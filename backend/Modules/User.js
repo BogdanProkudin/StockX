@@ -26,6 +26,9 @@ const UserSchema = new mongoose.Schema(
     passwordResetAttempts: {
       type: Number,
     },
+    newPasswordExpires: {
+      type: String,
+    },
   },
   {
     timestamps: true,

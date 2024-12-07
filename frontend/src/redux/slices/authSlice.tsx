@@ -1,105 +1,37 @@
 import {
   ActionReducerMapBuilder,
-  PayloadAction,
-  SerializedError,
-  createAsyncThunk,
   createSlice,
+  PayloadAction,
 } from "@reduxjs/toolkit";
-import { IUser } from "../../@types/userAuth";
+import { IUser, IUserAuthSlice } from "../../@types/userAuth";
+import { fetchRequest } from "../../@types/status";
 
-import axios from "../../axiosConfig/axios"; // пофиксил axios так что можно теперь использовать
-// Интерфейс для состояния статуса
-enum fetchRequest {
-  INITIAL = "",
-  LOADING = "loading",
-  SUCCESS = "success",
-  ERROR = "error",
-}
-
-// Интерфейс для состояния
-interface IUserAuthSlice {
-  userData: IUser;
-  validationErrors: any[];
-  registrationBackendErrors: string;
-  resetPass: boolean;
-  status: fetchRequest;
-  stateAuthSwitcher: string;
-  requestResetPasswordError: string | undefined;
-  // isEmailSent: boolean;
-}
+import {
+  registerUser,
+  loginUser,
+  requestResetPassword,
+  isResetPasswordTokenValid,
+  resetPassword,
+} from "../thunks/authThunks";
 
 const initialState: IUserAuthSlice = {
   userData: { email: "", password: "", firstName: "", secondName: "" },
   validationErrors: [],
-  registrationBackendErrors: "",
+  registrationBackendError: "",
+  registrationStatus: fetchRequest.INITIAL,
+  loginBackendError: "",
   resetPass: false,
-  status: fetchRequest.INITIAL,
+  loginStatus: fetchRequest.INITIAL,
+  resetPasswordStatus: fetchRequest.INITIAL,
   stateAuthSwitcher: "Sign Up",
+  tokenStatus: fetchRequest.INITIAL,
+  requestResetStatus: fetchRequest.INITIAL,
   requestResetPasswordError: "",
-  // isEmailSent: false,
+  resetPasswordError: [],
+  resetPasswordBackendError: "",
 };
 
-// Асинхронные экшены
-
-export const registerUser = createAsyncThunk<
-  IUser, // Возвращаемый тип в случае успеха
-  IUser, // Тип аргументов
-  { rejectValue: { message: string } } // Тип ошибки для rejectWithValue
->("auth/registerUser", async (userData, thunkAPI) => {
-  try {
-    const response = await axios.post("/signup", userData);
-    return response.data;
-  } catch (error: any) {
-    return thunkAPI.rejectWithValue({ message: error.response.data });
-  }
-});
-
-export const loginUser = createAsyncThunk<
-  IUser, // Возвращаемый тип в случае успеха
-  { email: string; password: string }, // Тип аргументов
-  { rejectValue: { message: string } } // Тип ошибки для rejectWithValue
->("auth/login", async (params, thunkAPI) => {
-  try {
-    const response = await axios.post("/login", params);
-    return response.data;
-  } catch (error: any) {
-    return thunkAPI.rejectWithValue({ message: error.response.data });
-  }
-});
-export const resetUserPassword = createAsyncThunk<
-  string, // Возвращаемый тип в случае успеха
-  { email: string }, // Тип аргументов
-  { rejectValue: { message: string } } // Тип ошибки для rejectWithValue
->("auth/resetUserPassword", async (params, thunkAPI) => {
-  try {
-    const response = await axios.post("/resetPassword", params);
-    return response.data;
-  } catch (error: any) {
-    return thunkAPI.rejectWithValue({ message: error.response.data });
-  }
-});
-export const authMe = createAsyncThunk("auth/me", async (_, thunkAPI) => {
-  try {
-    const response = await axios.get("/authMe");
-    return response.data;
-  } catch (error: any) {
-    return thunkAPI.rejectWithValue({ message: error.response.data });
-  }
-});
-export const isResetPasswordTokenValid = createAsyncThunk<
-  IUser, // Возвращаемый тип в случае успеха
-  { resetPasswordToken: string }, // Тип аргументов
-  { rejectValue: { message: string } } // Тип ошибки для rejectWithValue
->("auth/login", async (params, thunkAPI) => {
-  try {
-    const response = await axios.post("/tokenValidation", params);
-    return response.data;
-  } catch (error: any) {
-    return thunkAPI.rejectWithValue({ message: error.response.data });
-  }
-});
-// Slice
-
+// Создание слайса
 const userAuthSlice = createSlice({
   name: "userAuth",
   initialState,
@@ -107,20 +39,19 @@ const userAuthSlice = createSlice({
     setValidationErrors: (state, action: PayloadAction<any>) => {
       const { errors } = action.payload;
       const nameList = ["firstName", "secondName", "email", "password"];
-      if (errors) {
-        nameList.forEach((name) => {
-          if (errors[name]) {
-            delete errors[name].ref;
-            state.status = fetchRequest.ERROR;
-            state.validationErrors.push(errors[name].message); // юзаю иммер для мутирования состояния
-          }
-        });
-      }
+      nameList.forEach((name) => {
+        if (errors[name]) {
+          delete errors[name].ref;
+          state.validationErrors.push(errors[name].message);
+        }
+      });
     },
-
     setClearValidationErrors: (state) => {
       state.validationErrors = [];
-      state.registrationBackendErrors = "";
+    },
+    setClearBackendErrors: (state) => {
+      state.registrationBackendError = "";
+      state.loginBackendError = "";
     },
     setResetPass(state, action: PayloadAction<boolean>) {
       state.resetPass = action.payload;
@@ -139,85 +70,96 @@ const userAuthSlice = createSlice({
     setRequestResetPasswordError(state, action: PayloadAction<string>) {
       state.requestResetPasswordError = action.payload;
     },
+    setResetPassowrdError(state, action: PayloadAction<any>) {
+      const { errors } = action.payload;
+      const nameList = ["password", "confirmPassword"];
+      nameList.forEach((name) => {
+        if (errors[name]) {
+          delete errors[name].ref;
+          state.resetPasswordError.push(errors[name].message);
+        }
+      });
+    },
+    setClearResetPasswordError(state) {
+      state.resetPasswordError = [];
+    },
   },
   extraReducers: (builder: ActionReducerMapBuilder<IUserAuthSlice>) => {
     builder
+      // Регистрация
       .addCase(registerUser.pending, (state) => {
-        state.registrationBackendErrors = "";
-        state.status = fetchRequest.LOADING;
+        state.registrationBackendError = "";
+        state.registrationStatus = fetchRequest.LOADING;
       })
       .addCase(
         registerUser.fulfilled,
         (state, action: PayloadAction<IUser>) => {
           state.userData = action.payload;
-          state.validationErrors = [];
-          state.status = fetchRequest.SUCCESS;
-        }
+          state.registrationStatus = fetchRequest.SUCCESS;
+        },
       )
-      .addCase(
-        registerUser.rejected,
-        (
-          state,
-          action: PayloadAction<
-            { message: string } | undefined, // Полезная нагрузка для rejected
-            string, // Тип action
-            { arg: IUser; requestId: string }, // Доп. данные из asyncThunk
-            SerializedError // Сериализованная ошибка
-          >
-        ) => {
-          state.status = fetchRequest.ERROR;
-          state.registrationBackendErrors =
-            action.payload?.message || "Unknown registration error";
-        }
-      )
+      .addCase(registerUser.rejected, (state, action) => {
+        state.registrationBackendError =
+          action.payload?.message || "An unknown error occurred";
+        state.registrationStatus = fetchRequest.ERROR;
+      })
+
+      // Логин
       .addCase(loginUser.pending, (state) => {
-        state.registrationBackendErrors = "";
-        state.status = fetchRequest.LOADING;
+        state.loginBackendError = "";
+        state.loginStatus = fetchRequest.LOADING;
       })
       .addCase(loginUser.fulfilled, (state, action: PayloadAction<IUser>) => {
         state.userData = action.payload;
         state.validationErrors = [];
-        state.status = fetchRequest.SUCCESS;
+        state.loginStatus = fetchRequest.SUCCESS;
+        state.loginBackendError = "";
+      })
+      .addCase(loginUser.rejected, (state, action) => {
+        state.loginStatus = fetchRequest.ERROR;
+        state.loginBackendError = action.payload?.message || "";
+      })
+
+      // Восстановление пароля
+      .addCase(requestResetPassword.pending, (state) => {
+        console.log("loading");
+
+        state.requestResetPasswordError = undefined;
+        state.requestResetStatus = fetchRequest.LOADING;
       })
       .addCase(
-        loginUser.rejected,
-        (
-          state,
-          action: PayloadAction<
-            { message: string } | undefined, // Полезная нагрузка для rejected
-            string, // Тип action
-            { arg: { email: string; password: string }; requestId: string }, // Доп. данные из asyncThunk
-            SerializedError // Сериализованная ошибка
-          >
-        ) => {
-          state.status = fetchRequest.ERROR;
-          state.registrationBackendErrors =
-            action.payload?.message || "Unknown registration error";
-        }
-      )
-      .addCase(authMe.pending, (state) => {
-        state.registrationBackendErrors = "";
-      })
-      .addCase(authMe.fulfilled, (state, action: PayloadAction<IUser>) => {
-        state.userData = action.payload;
-        state.validationErrors = [];
-      })
-      .addCase(authMe.rejected, (state) => {
-        // state.status = fetchRequest.ERROR;
-      })
-      .addCase(resetUserPassword.pending, (state) => {
-        state.status = fetchRequest.LOADING;
-      })
-      .addCase(
-        resetUserPassword.fulfilled,
+        requestResetPassword.fulfilled,
         (state, action: PayloadAction<string | undefined>) => {
           state.requestResetPasswordError = undefined;
-          state.status = fetchRequest.SUCCESS;
-        }
+          state.requestResetStatus = fetchRequest.SUCCESS;
+        },
       )
-      .addCase(resetUserPassword.rejected, (state, action) => {
+      .addCase(requestResetPassword.rejected, (state, action) => {
+        state.requestResetStatus = fetchRequest.ERROR;
         state.requestResetPasswordError = action.payload?.message;
-        state.status = fetchRequest.ERROR;
+      })
+      .addCase(resetPassword.pending, (state) => {
+        state.resetPasswordBackendError = "";
+        state.resetPasswordStatus = fetchRequest.LOADING;
+      })
+      .addCase(resetPassword.fulfilled, (state) => {
+        state.resetPasswordStatus = fetchRequest.SUCCESS;
+        state.resetPasswordBackendError = "";
+      })
+      .addCase(resetPassword.rejected, (state, action) => {
+        state.resetPasswordStatus = fetchRequest.ERROR;
+        state.resetPasswordBackendError =
+          action.payload?.message || "An unknown error occurred";
+      })
+      // Проверка токена для сброса пароля
+      .addCase(isResetPasswordTokenValid.pending, (state) => {
+        state.tokenStatus = fetchRequest.LOADING;
+      })
+      .addCase(isResetPasswordTokenValid.fulfilled, (state) => {
+        state.tokenStatus = fetchRequest.SUCCESS;
+      })
+      .addCase(isResetPasswordTokenValid.rejected, (state, action) => {
+        state.tokenStatus = fetchRequest.ERROR;
       });
   },
 });
@@ -229,6 +171,10 @@ export const {
   setResetPass,
   setLogout,
   setAuthSwitcher,
+  setClearBackendErrors,
   setRequestResetPasswordError,
+  setResetPassowrdError,
+  setClearResetPasswordError,
 } = userAuthSlice.actions;
+
 export default userAuthSlice.reducer;

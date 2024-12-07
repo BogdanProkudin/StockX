@@ -10,6 +10,7 @@ import HeaderAuth from "../components/AuthUser/HeaderAuth";
 
 const Auth: React.FC = () => {
   const authMode = useAppSelector((state) => state.userAuth.stateAuthSwitcher);
+
   const resetPass = useAppSelector((state) => state.userAuth.resetPass);
   return (
     <div className={styles.auth_user_page_container}>

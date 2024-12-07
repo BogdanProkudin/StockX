@@ -1,4 +1,6 @@
-export const brandsData = [
+import { NavigationItem } from "../../@types/headerTypes";
+
+export const brandsData: NavigationItem[] = [
   {
     path: "",
     title: "All Brands",
@@ -73,7 +75,7 @@ export const brandsData = [
     ],
   },
 ];
-export const dealsData = [
+export const dealsData: NavigationItem[] = [
   {
     path: "",
     title: "Below Retail",
@@ -138,21 +140,655 @@ export const dealsData = [
     ],
   },
 ];
-
+const newData: NavigationItem[] = [
+  {
+    title: "Trending Brands",
+    path: "/trending-brands",
+    sub_link: [
+      { name: "ASICS", path: "/asics" },
+      { name: "UGG", path: "/ugg" },
+      { name: "Denim Tears", path: "/denim-tears" },
+      { name: "Hellstar", path: "/hellstar" },
+      { name: "Mihara Yasuhiro", path: "/mihara-yasuhiro" },
+      { name: "Onitsuka Tiger", path: "/onitsuka-tiger" },
+      { name: "Stanley", path: "/stanley" },
+    ],
+  },
+  {
+    title: "Featured New Products",
+    path: "/featured-new-products",
+    sub_link: [
+      { name: "Nike SB Dunk Low Verdy", path: "/nike-sb-dunk-low-verdy" },
+      {
+        name: "AJ4 A Ma Maniére Fossil Stone",
+        path: "/aj4-a-ma-maniere-fossil-stone",
+      },
+      {
+        name: "Travis Scott AJ1 Low Medium Olive",
+        path: "/travis-scott-aj1-low-medium-olive",
+      },
+      { name: "Nike Swoosh Pillow", path: "/nike-swoosh-pillow" },
+      { name: "Playstation Portal", path: "/playstation-portal" },
+      { name: "Supreme x Margiela", path: "/supreme-x-margiela" },
+      { name: "Swatch x Omega Snoopy", path: "/swatch-x-omega-snoopy" },
+    ],
+  },
+  {
+    title: "Releases",
+    path: "/releases",
+    sub_link: [
+      { name: "Upcoming Sneakers", path: "/upcoming-sneakers" },
+      { name: "Recent Sneakers", path: "/recent-sneakers" },
+      { name: "Recent Apparel", path: "/recent-apparel" },
+      { name: "Recent Accessories", path: "/recent-accessories" },
+      { name: "Recent Collectibles", path: "/recent-collectibles" },
+      { name: "View All Upcoming", path: "/view-all-upcoming" },
+    ],
+  },
+  {
+    title: "Xpress Ship Available",
+    path: "/xpress-ship-available",
+    sub_link: [
+      { name: "adidas", path: "/adidas" },
+      { name: "Air Jordan", path: "/air-jordan" },
+      { name: "Crocs", path: "/crocs" },
+      { name: "New Balance", path: "/new-balance" },
+      { name: "Nike", path: "/nike" },
+      { name: "UGG", path: "/ugg" },
+      { name: "Yeezy", path: "/yeezy" },
+    ],
+  },
+  {
+    title: "News & Highlights",
+    path: "/news-highlights",
+    sub_link: [
+      { name: "This is Love Campaign", path: "/this-is-love-campaign" },
+      { name: "Shareable Lists", path: "/shareable-lists" },
+      { name: "Xpress Shipping", path: "/xpress-shipping" },
+      { name: "Big Facts Report", path: "/big-facts-report" },
+      { name: "Picks For Her", path: "/picks-for-her" },
+      {
+        name: "Tell your friends - Give $10, get $10",
+        path: "/refer-a-friend",
+      },
+    ],
+  },
+];
+const menData: NavigationItem[] = [
+  {
+    title: "Sneakers",
+    path: "/sneakers",
+    sub_link: [
+      { name: "adidas", path: "/adidas" },
+      { name: "Air Jordan", path: "/air-jordan" },
+      { name: "ASICS", path: "/asics" },
+      { name: "Maison Mihara Yasuhiro", path: "/maison-mihara-yasuhiro" },
+      { name: "New Balance", path: "/new-balance" },
+      { name: "Nike", path: "/nike" },
+      { name: "Yeezy", path: "/yeezy" },
+    ],
+  },
+  {
+    title: "Shoes",
+    path: "/shoes",
+    sub_link: [
+      { name: "Birkenstock", path: "/birkenstock" },
+      { name: "Crocs", path: "/crocs" },
+      { name: "Dr. Martens", path: "/dr-martens" },
+      { name: "Gucci", path: "/gucci" },
+      { name: "Timberland", path: "/timberland" },
+      { name: "UGG", path: "/ugg" },
+    ],
+  },
+  {
+    title: "Apparel",
+    path: "/apparel",
+    sub_link: [
+      { name: "Anti Social Social Club", path: "/anti-social-social-club" },
+      { name: "Artist Merch", path: "/artist-merch" },
+      { name: "BAPE", path: "/bape" },
+      { name: "FOG Essentials", path: "/fog-essentials" },
+      { name: "Nike", path: "/nike" },
+      { name: "Sp5der", path: "/sp5der" },
+      { name: "Supreme", path: "/supreme" },
+    ],
+  },
+  {
+    title: "Accessories",
+    path: "/accessories",
+    sub_link: [
+      { name: "BAPE", path: "/bape" },
+      { name: "Casio G-Shock", path: "/casio-g-shock" },
+      { name: "Gucci", path: "/gucci" },
+      { name: "Goyard", path: "/goyard" },
+      { name: "Louis Vuitton", path: "/louis-vuitton" },
+      { name: "OFF-WHITE", path: "/off-white" },
+      { name: "Supreme", path: "/supreme" },
+    ],
+  },
+  {
+    title: "Shop by Category",
+    path: "/shop-by-category",
+    sub_link: [
+      { name: "T-Shirts", path: "/t-shirts" },
+      { name: "Belts", path: "/belts" },
+      { name: "Bottoms", path: "/bottoms" },
+      { name: "Jackets & Coats", path: "/jackets-and-coats" },
+      { name: "Sunglasses", path: "/sunglasses" },
+      { name: "Wallets", path: "/wallets" },
+      { name: "Watches", path: "/watches" },
+    ],
+  },
+];
+const womenData: NavigationItem[] = [
+  {
+    title: "Sneakers",
+    path: "/sneakers",
+    sub_link: [
+      { name: "adidas", path: "/adidas" },
+      { name: "Air Jordan", path: "/air-jordan" },
+      { name: "ASICS", path: "/asics" },
+      { name: "New Balance", path: "/new-balance" },
+      { name: "Nike", path: "/nike" },
+      { name: "Vans", path: "/vans" },
+      { name: "Yeezy", path: "/yeezy" },
+    ],
+  },
+  {
+    title: "Shoes",
+    path: "/shoes",
+    sub_link: [
+      { name: "Chanel", path: "/chanel" },
+      { name: "Christian Louboutin", path: "/christian-louboutin" },
+      { name: "Gucci", path: "/gucci" },
+      { name: "Hermes", path: "/hermes" },
+      { name: "Prada", path: "/prada" },
+      { name: "UGG", path: "/ugg" },
+    ],
+  },
+  {
+    title: "Apparel",
+    path: "/apparel",
+    sub_link: [
+      { name: "CDG Play", path: "/cdg-play" },
+      { name: "Jacquemus", path: "/jacquemus" },
+      { name: "Mugler", path: "/mugler" },
+      { name: "OFF-WHITE", path: "/off-white" },
+      { name: "Palm Angels", path: "/palm-angels" },
+      { name: "The North Face", path: "/the-north-face" },
+    ],
+  },
+  {
+    title: "Accessories",
+    path: "/accessories",
+    sub_link: [
+      { name: "Chanel", path: "/chanel" },
+      { name: "Dior", path: "/dior" },
+      { name: "Gucci", path: "/gucci" },
+      { name: "Louis Vuitton", path: "/louis-vuitton" },
+      { name: "Marc Jacobs", path: "/marc-jacobs" },
+      { name: "Prada", path: "/prada" },
+      { name: "Telfar", path: "/telfar" },
+    ],
+  },
+  {
+    title: "Shop by Category",
+    path: "/shop-by-category",
+    sub_link: [
+      { name: "Dresses", path: "/dresses" },
+      { name: "Handbags", path: "/handbags" },
+      { name: "Jackets & Coats", path: "/jackets-and-coats" },
+      { name: "Jewelry", path: "/jewelry" },
+      { name: "Sunglasses", path: "/sunglasses" },
+      { name: "Tops", path: "/tops" },
+      { name: "Tote Bags", path: "/tote-bags" },
+    ],
+  },
+];
+const kidsData: NavigationItem[] = [
+  {
+    title: "Grade School Sneakers",
+    path: "/grade-school-sneakers",
+    sub_link: [
+      { name: "adidas", path: "/grade-school-sneakers/adidas" },
+      { name: "Air Jordan", path: "/grade-school-sneakers/air-jordan" },
+      { name: "Converse", path: "/grade-school-sneakers/converse" },
+      { name: "New Balance", path: "/grade-school-sneakers/new-balance" },
+      { name: "Nike", path: "/grade-school-sneakers/nike" },
+      { name: "Puma", path: "/grade-school-sneakers/puma" },
+      { name: "Yeezy", path: "/grade-school-sneakers/yeezy" },
+    ],
+  },
+  {
+    title: "Preschool Sneakers",
+    path: "/preschool-sneakers",
+    sub_link: [
+      { name: "adidas", path: "/preschool-sneakers/adidas" },
+      { name: "Air Jordan", path: "/preschool-sneakers/air-jordan" },
+      { name: "Converse", path: "/preschool-sneakers/converse" },
+      { name: "Nike", path: "/preschool-sneakers/nike" },
+      { name: "Timberland", path: "/preschool-sneakers/timberland" },
+      { name: "UGG", path: "/preschool-sneakers/ugg" },
+      { name: "Yeezy", path: "/preschool-sneakers/yeezy" },
+    ],
+  },
+  {
+    title: "Toddler/Infant Sneakers",
+    path: "/toddler-infant-sneakers",
+    sub_link: [
+      { name: "adidas", path: "/toddler-infant-sneakers/adidas" },
+      { name: "Air Jordan", path: "/toddler-infant-sneakers/air-jordan" },
+      { name: "Converse", path: "/toddler-infant-sneakers/converse" },
+      { name: "New Balance", path: "/toddler-infant-sneakers/new-balance" },
+      { name: "Nike", path: "/toddler-infant-sneakers/nike" },
+      { name: "Puma", path: "/toddler-infant-sneakers/puma" },
+      { name: "Yeezy", path: "/toddler-infant-sneakers/yeezy" },
+    ],
+  },
+  {
+    title: "Apparel",
+    path: "/apparel",
+    sub_link: [
+      { name: "adidas", path: "/apparel/adidas" },
+      { name: "FOG Essentials", path: "/apparel/fog-essentials" },
+      { name: "Kith", path: "/apparel/kith" },
+      { name: "Moncler", path: "/apparel/moncler" },
+      { name: "Nike", path: "/apparel/nike" },
+      { name: "The North Face", path: "/apparel/the-north-face" },
+      { name: "Yeezy", path: "/apparel/yeezy" },
+      { name: "Palace x Gap", path: "/apparel/palace-gap" },
+    ],
+  },
+  {
+    title: "Viral Products",
+    path: "/viral-products",
+    sub_link: [
+      {
+        name: "adidas Campus 00s Grey Gum (Kids)",
+        path: "/viral-products/adidas-campus-00s-grey-gum-kids",
+      },
+      {
+        name: "AJ4 Military Blue (GS)",
+        path: "/viral-products/aj4-military-blue-gs",
+      },
+      {
+        name: "AJ11 Low Space Jam (GS)",
+        path: "/viral-products/aj11-low-space-jam-gs",
+      },
+      {
+        name: "FOG Essentials Kids Hoodie (SS22)",
+        path: "/viral-products/fog-essentials-kids-hoodie-ss22",
+      },
+      {
+        name: "Juice Wrld x Vlone Butterfly T-shirt",
+        path: "/viral-products/juice-wrld-vlone-butterfly-tshirt",
+      },
+      {
+        name: "Nike Tech Fleece Full-Zip Hoodie",
+        path: "/viral-products/Nike-Tech-Fleece-Full-Zip-Hoodie",
+      },
+      {
+        name: "UGG Tasman Slippers",
+        path: "/viral-products/UGG-tasman-slippers",
+      },
+    ],
+  },
+];
+const sneakersData: NavigationItem[] = [
+  {
+    title: "Popular Brands",
+    path: "/popular-brands",
+    sub_link: [
+      { name: "adidas", path: "/popular-brands/adidas" },
+      { name: "Air Jordan", path: "/popular-brands/air-jordan" },
+      { name: "ASICS", path: "/popular-brands/asics" },
+      { name: "Vans", path: "/popular-brands/vans" },
+      { name: "New Balance", path: "/popular-brands/new-balance" },
+      { name: "Nike", path: "/popular-brands/nike" },
+      { name: "Yeezy", path: "/popular-brands/yeezy" },
+    ],
+  },
+  {
+    title: "Top Models",
+    path: "/top-models",
+    sub_link: [
+      { name: "adidas Yeezy Slide", path: "/top-models/adidas-yeezy-slide" },
+      { name: "Air Jordan 4", path: "/top-models/air-jordan-4" },
+      { name: "Air Jordan 11", path: "/top-models/air-jordan-11" },
+      { name: "ASICS Gel-1130", path: "/top-models/asics-gel-1130" },
+      { name: "New Balance 9060", path: "/top-models/new-balance-9060" },
+      { name: "Nike Dunk", path: "/top-models/nike-dunk" },
+      { name: "adidas Samba", path: "/top-models/adidas-samba" },
+    ],
+  },
+  {
+    title: "Steals & Deals",
+    path: "/steals-deals",
+    sub_link: [
+      { name: "Under $100", path: "/steals-deals/under-100" },
+      { name: "Under $200", path: "/steals-deals/under-200" },
+      { name: "Under $300", path: "/steals-deals/under-300" },
+      { name: "Below Retail", path: "/steals-deals/below-retail" },
+      { name: "Upcoming Releases", path: "/steals-deals/upcoming-releases" },
+      { name: "Trending Deals", path: "/steals-deals/trending-deals" },
+      { name: "Xpress Ship", path: "/steals-deals/xpress-ship" },
+    ],
+  },
+  {
+    title: "More Brands",
+    path: "/more-brands",
+    sub_link: [
+      { name: "BAPE", path: "/more-brands/bape" },
+      { name: "Hoka One One", path: "/more-brands/hoka-one-one" },
+      { name: "On", path: "/more-brands/on" },
+      { name: "Puma", path: "/more-brands/puma" },
+      { name: "Salomon", path: "/more-brands/salomon" },
+      { name: "Under Armour", path: "/more-brands/under-armour" },
+      { name: "Converse", path: "/more-brands/converse" },
+    ],
+  },
+  {
+    title: "Luxury Brands",
+    path: "/luxury-brands",
+    sub_link: [
+      { name: "Alexander McQueen", path: "/luxury-brands/alexander-mcqueen" },
+      { name: "Balenciaga", path: "/luxury-brands/balenciaga" },
+      { name: "Golden Goose", path: "/luxury-brands/golden-goose" },
+      { name: "Gucci", path: "/luxury-brands/gucci" },
+      { name: "Maison Margiela", path: "/luxury-brands/maison-margiela" },
+      {
+        name: "Maison Mihara Yasuhiro",
+        path: "/luxury-brands/maison-mihara-yasuhiro",
+      },
+      { name: "OFF-WHITE", path: "/luxury-brands/off-white" },
+    ],
+  },
+];
+const shoesData: NavigationItem[] = [
+  {
+    title: "Top Brands",
+    path: "/top-brands",
+    sub_link: [
+      { name: "Birkenstock", path: "/top-brands/birkenstock" },
+      { name: "Clarks", path: "/top-brands/clarks" },
+      { name: "Crocs", path: "/top-brands/crocs" },
+      { name: "Dr. Martens", path: "/top-brands/dr-martens" },
+      { name: "Timberland", path: "/top-brands/timberland" },
+      { name: "UGG", path: "/top-brands/ugg" },
+    ],
+  },
+  {
+    title: "Steals & Deals",
+    path: "/steals-deals",
+    sub_link: [
+      { name: "Under $100", path: "/steals-deals/under-100" },
+      { name: "Under $200", path: "/steals-deals/under-200" },
+      { name: "Under $300", path: "/steals-deals/under-300" },
+      { name: "Below Retail", path: "/steals-deals/below-retail" },
+      { name: "Trending Deals", path: "/steals-deals/trending-deals" },
+    ],
+  },
+  {
+    title: "Discover More",
+    path: "/discover-more",
+    sub_link: [
+      {
+        name: "Crocs by Salehe Bembury",
+        path: "/discover-more/crocs-salehe-bembury",
+      },
+      { name: "Crocs x Barbie", path: "/discover-more/crocs-x-barbie" },
+      { name: "Gucci Slides", path: "/discover-more/gucci-slides" },
+      { name: "Timberland Boots", path: "/discover-more/timberland-boots" },
+      { name: "UGG Boots", path: "/discover-more/ugg-boots" },
+      { name: "UGG Platforms", path: "/discover-more/ugg-platforms" },
+      { name: "UGG Slippers", path: "/discover-more/ugg-slippers" },
+    ],
+  },
+  {
+    title: "Top Products",
+    path: "/top-products",
+    sub_link: [
+      { name: "Birkenstock Boston", path: "/top-products/birkenstock-boston" },
+      {
+        name: "Crocs Lightning McQueen",
+        path: "/top-products/crocs-lightning-mcqueen",
+      },
+      { name: "Crocs Batmobile", path: "/top-products/crocs-batmobile" },
+      { name: "UGG Tazz", path: "/top-products/ugg-tazz" },
+      { name: "UGG Lowmel", path: "/top-products/ugg-lowmel" },
+      { name: "Timberland 6” Boot", path: "/top-products/timberland-6-boot" },
+      { name: "UGG Tasman Slipper", path: "/top-products/ugg-tasman-slipper" },
+    ],
+  },
+  {
+    title: "Luxury Brands",
+    path: "/luxury-brands",
+    sub_link: [
+      { name: "Balenciaga", path: "/luxury-brands/balenciaga" },
+      { name: "Chanel", path: "/luxury-brands/chanel" },
+      { name: "Dior", path: "/luxury-brands/dior" },
+      { name: "Gucci", path: "/luxury-brands/gucci" },
+      { name: "Hermes", path: "/luxury-brands/hermes" },
+      { name: "Prada", path: "/luxury-brands/prada" },
+      { name: "Versace", path: "/luxury-brands/versace" },
+    ],
+  },
+];
+const apparelData: NavigationItem[] = [
+  {
+    title: "Popular Brands",
+    path: "/popular-brands",
+    sub_link: [
+      { name: "Artist Merch", path: "/popular-brands/artist-merch" },
+      { name: "FOG Essentials", path: "/popular-brands/fog-essentials" },
+      { name: "Kith", path: "/popular-brands/kith" },
+      { name: "Nike", path: "/popular-brands/nike" },
+      { name: "Sp5der", path: "/popular-brands/sp5der" },
+      { name: "Supreme", path: "/popular-brands/supreme" },
+      { name: "Travis Scott", path: "/popular-brands/travis-scott" },
+    ],
+  },
+  {
+    title: "Steals & Deals",
+    path: "/steals-deals",
+    sub_link: [
+      { name: "Under $100", path: "/steals-deals/under-100" },
+      { name: "Under $250", path: "/steals-deals/under-250" },
+      { name: "Under $500", path: "/steals-deals/under-500" },
+      { name: "Below Retail", path: "/steals-deals/below-retail" },
+      { name: "Trending Deals", path: "/steals-deals/trending-deals" },
+      { name: "New Releases", path: "/steals-deals/new-releases" },
+    ],
+  },
+  {
+    title: "Designer Brands",
+    path: "/designer-brands",
+    sub_link: [
+      { name: "Aime Leon Dore", path: "/designer-brands/aime-leon-dore" },
+      { name: "Amiri", path: "/designer-brands/amiri" },
+      { name: "Burberry", path: "/designer-brands/burberry" },
+      { name: "CDG Play", path: "/designer-brands/cdg-play" },
+      { name: "Chrome Hearts", path: "/designer-brands/chrome-hearts" },
+      { name: "Off-White", path: "/designer-brands/off-white" },
+      { name: "Palm Angels", path: "/designer-brands/palm-angels" },
+    ],
+  },
+  {
+    title: "Emerging Brands",
+    path: "/emerging-brands",
+    sub_link: [
+      { name: "Arc'Teryx", path: "/emerging-brands/arcteryx" },
+      { name: "Corteiz", path: "/emerging-brands/corteiz" },
+      { name: "Denim Tears", path: "/emerging-brands/denim-tears" },
+      { name: "Hellstar", path: "/emerging-brands/hellstar" },
+      { name: "Gallery Dept.", path: "/emerging-brands/gallery-dept" },
+      { name: "Stussy", path: "/emerging-brands/stussy" },
+      { name: "Trapstar", path: "/emerging-brands/trapstar" },
+    ],
+  },
+  {
+    title: "Shop by Category",
+    path: "/shop-by-category",
+    sub_link: [
+      {
+        name: "Hoodies & Sweatshirts",
+        path: "/shop-by-category/hoodies-sweatshirts",
+      },
+      { name: "Jackets & Coats", path: "/shop-by-category/jackets-coats" },
+      { name: "Pants", path: "/shop-by-category/pants" },
+      { name: "Shirts", path: "/shop-by-category/shirts" },
+      { name: "Shorts", path: "/shop-by-category/shorts" },
+      { name: "Sweatpants", path: "/shop-by-category/sweatpants" },
+      { name: "T-Shirts", path: "/shop-by-category/t-shirts" },
+    ],
+  },
+];
+const accessoriesData: NavigationItem[] = [
+  {
+    title: "Popular Brands",
+    path: "/popular-brands",
+    sub_link: [
+      { name: "BAPE", path: "/bape" },
+      { name: "Casio G-Shock", path: "/casio-gshock" },
+      { name: "Nike", path: "/nike" },
+      { name: "Off-White", path: "/off-white" },
+      { name: "Supreme", path: "/supreme" },
+      { name: "Swatch", path: "/swatch" },
+      { name: "Telfar", path: "/telfar" },
+    ],
+  },
+  {
+    title: "Luxury Brands",
+    path: "/luxury-brands",
+    sub_link: [
+      { name: "Chanel", path: "/chanel" },
+      { name: "Dior", path: "/dior" },
+      { name: "Goyard", path: "/goyard" },
+      { name: "Gucci", path: "/gucci" },
+      { name: "Louis Vuitton", path: "/louis-vuitton" },
+      { name: "Prada", path: "/prada" },
+      { name: "Saint Laurent", path: "/saint-laurent" },
+    ],
+  },
+  {
+    title: "Shop by Category",
+    path: "/shop-by-category",
+    sub_link: [
+      { name: "Backpacks", path: "/backpacks" },
+      { name: "Belts", path: "/belts" },
+      { name: "Card Cases", path: "/card-cases" },
+      { name: "Handbags", path: "/handbags" },
+      { name: "Headwear", path: "/headwear" },
+      { name: "Sunglasses", path: "/sunglasses" },
+      { name: "Watches", path: "/watches" },
+    ],
+  },
+  {
+    title: "Steals & Deals",
+    path: "/steals-deals",
+    sub_link: [
+      { name: "Under $500", path: "/under-500" },
+      { name: "Under $1,500", path: "/under-1500" },
+      { name: "Under $3,000", path: "/under-3000" },
+      { name: "Below Retail", path: "/below-retail" },
+      { name: "Trending Deals", path: "/trending-deals" },
+    ],
+  },
+  {
+    title: "Discover More",
+    path: "/discover-more",
+    sub_link: [
+      { name: "Bottega Veneta", path: "/bottega-veneta" },
+      { name: "Burberry", path: "/burberry" },
+      { name: "Chrome Hearts", path: "/chrome-hearts" },
+      { name: "Diesel", path: "/diesel" },
+      { name: "Jacquemus", path: "/jacquemus" },
+      { name: "Marc Jacobs", path: "/marc-jacobs" },
+      { name: "Stanley", path: "/stanley" },
+    ],
+  },
+];
+const moreCategoriesData: NavigationItem[] = [
+  {
+    title: "Collectibles",
+    path: "/collectibles",
+    sub_link: [
+      { name: "Action Figures", path: "/action-figures" },
+      { name: "Bearbrick", path: "/bearbrick" },
+      { name: "Funko", path: "/funko" },
+      { name: "Hot Wheels", path: "/hot-wheels" },
+      { name: "Pop Mart", path: "/pop-mart" },
+      { name: "LEGO", path: "/lego" },
+      { name: "Supreme", path: "/supreme" },
+    ],
+  },
+  {
+    title: "Artists",
+    path: "/artists",
+    sub_link: [
+      { name: "Daniel Arsham", path: "/daniel-arsham" },
+      { name: "Hebru Brantley", path: "/hebru-brantley" },
+      { name: "Joan Cornella", path: "/joan-cornella" },
+      { name: "KAWS", path: "/kaws" },
+      { name: "Takashi Murakami", path: "/takashi-murakami" },
+      { name: "Travis Scott", path: "/travis-scott" },
+      { name: "Virgil Abloh", path: "/virgil-abloh" },
+    ],
+  },
+  {
+    title: "Electronics",
+    path: "/electronics",
+    sub_link: [
+      { name: "Apple", path: "/apple" },
+      { name: "Beats", path: "/beats" },
+      { name: "Finalmouse", path: "/finalmouse" },
+      { name: "Nintendo", path: "/nintendo" },
+      { name: "Meta", path: "/meta" },
+      { name: "Playstation", path: "/playstation" },
+    ],
+  },
+  {
+    title: "Trading Cards",
+    path: "/trading-cards",
+    sub_link: [
+      { name: "Baseball", path: "/baseball-cards" },
+      { name: "Basketball", path: "/basketball-cards" },
+      { name: "Football", path: "/football-cards" },
+      { name: "One Piece", path: "/one-piece-cards" },
+      { name: "Pokemon", path: "/pokemon-cards" },
+      { name: "Soccer", path: "/soccer-cards" },
+    ],
+  },
+  {
+    title: "Viral Products",
+    path: "/viral-products",
+    sub_link: [
+      { name: "Apple Vision Pro", path: "/apple-vision-pro" },
+      { name: "Bearbrick Sealed Cases", path: "/bearbrick-sealed-cases" },
+      {
+        name: "Hot Wheels x Daniel Arsham Porsche 930A",
+        path: "/hot-wheels-daniel-arsham-porsche",
+      },
+      { name: "Meta Quest 3", path: "/meta-quest-3" },
+      { name: "Playstation Portal", path: "/playstation-portal" },
+      { name: "Pokemon x Van Gogh", path: "/pokemon-van-gogh" },
+    ],
+  },
+];
 export const arrHeaderMainLinks: {
   name: string;
   path: string;
-  content?: any;
+  content?: NavigationItem[];
 }[] = [
   { name: "Brands", path: "", content: brandsData },
   { name: "Deals", path: "", content: dealsData },
-  { name: "New", path: "", content: dealsData },
-  { name: "Men", path: "", content: dealsData },
-  { name: "Women", path: "", content: dealsData },
-  { name: "Kids", path: "", content: dealsData },
-  { name: "Sneakers", path: "", content: dealsData },
-  { name: "Shoes", path: "", content: dealsData },
-  { name: "Apparel", path: "", content: dealsData },
-  { name: "Accessories", path: "", content: dealsData },
-  { name: "More Categories", path: "", content: dealsData },
+  { name: "New", path: "", content: newData },
+  { name: "Men", path: "", content: menData },
+  { name: "Women", path: "", content: womenData },
+  { name: "Kids", path: "", content: kidsData },
+  { name: "Sneakers", path: "", content: sneakersData },
+  { name: "Shoes", path: "", content: shoesData },
+  { name: "Apparel", path: "", content: apparelData },
+  { name: "Accessories", path: "", content: accessoriesData },
+  { name: "More Categories", path: "", content: moreCategoriesData },
 ];

@@ -8,7 +8,6 @@ import LogInInput from "./LoginInput";
 import LogInButton from "./LogInButton";
 import { useAppDispatch, useAppSelector } from "../../../redux/hook";
 import {
-  loginUser,
   setClearValidationErrors,
   setValidationErrors,
 } from "../../../redux/slices/authSlice";
@@ -17,6 +16,7 @@ import {
   passwordLoginValidation,
 } from "./LoginValidation";
 import { useNavigate } from "react-router-dom";
+import { loginUser } from "../../../redux/thunks/authThunks";
 const validationSchema = Yup.object().shape({
   email: emailLoginValidation,
   password: passwordLoginValidation,

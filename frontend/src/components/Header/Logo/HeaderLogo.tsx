@@ -1,10 +1,22 @@
-import React from "react";
 import styles from "./styles.module.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../../../redux/hook";
+import {
+  setIsSearching,
+  setSearchValue,
+} from "../../../redux/slices/searchSlice";
 const HeaderLogo = () => {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const handleLogoClick = () => {
+    dispatch(setSearchValue(""));
+    dispatch(setIsSearching(false));
+    navigate("/");
+    window.scrollTo(0, 0);
+  };
   return (
     <div className={styles.header_navbar}>
-      <Link to={"/"}>
+      <Link onClick={handleLogoClick} to={"/"}>
         <svg
           id="stockx-logo"
           viewBox="0 0 331 66"

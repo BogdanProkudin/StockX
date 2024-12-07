@@ -20,8 +20,6 @@ const ResetInput = ({
           type={isShowPassword ? "text" : "password"}
           {...register(name, {
             required: "Please confirm your password",
-            validate: () =>
-              password === confirmPassword || "Passwords do not match",
           })}
         />
 
@@ -41,7 +39,7 @@ const ResetInput = ({
           className={`${styles.floating_label} ${
             (password && password.length > 0 && name === "password") ||
             (confirmPassword &&
-              confirmPassword.length > 1 &&
+              confirmPassword.length > 0 &&
               name === "confirmPassword")
               ? styles.active
               : ""

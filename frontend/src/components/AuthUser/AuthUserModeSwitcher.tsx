@@ -1,6 +1,10 @@
 import styles from "./styles.module.scss";
 import { useAppDispatch, useAppSelector } from "../../redux/hook";
-import { setAuthSwitcher } from "../../redux/slices/authSlice";
+import {
+  setAuthSwitcher,
+  setClearBackendErrors,
+  setClearValidationErrors,
+} from "../../redux/slices/authSlice";
 
 const AuthSwitcher: React.FC = () => {
   const authModes = ["Sign Up", "Log In"];
@@ -8,6 +12,8 @@ const AuthSwitcher: React.FC = () => {
   const onClickSwitchAuth = (authName: string) => {
     dispatch(setAuthSwitcher(authName));
     console.log(authName);
+    dispatch(setClearValidationErrors());
+    dispatch(setClearBackendErrors());
   };
   const authMode = useAppSelector((state) => state.userAuth.stateAuthSwitcher);
   return (

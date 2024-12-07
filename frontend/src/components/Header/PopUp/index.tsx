@@ -10,11 +10,14 @@ const index: React.FC<PopupProps> = ({ objectArr }) => {
   const onClickLogout = () => {
     localStorage.removeItem("token");
     dispatch(setLogout());
+    window.location.reload();
   };
   return (
     <ul className={styles.header_popUp_link_container}>
       {objectArr?.map((obj) => (
         <div key={obj.name} className={styles.header_popUP_link_wrapper}>
+          <span className={styles.header_popUP_img}>{obj.img}</span>
+
           <li
             onClick={obj.name === "Log Out" ? onClickLogout : () => {}}
             className={styles.header_popUP_link}

@@ -4,10 +4,22 @@ import styles from "./styles.module.scss";
 import { ResetInputs } from "../@types/ResetPasswordTypes";
 import ResetInput from "./ResetInput";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { passwordValidationSchema } from "../SignUp/SignUpValidation";
+
+import { useEffect } from "react";
+import { useAppDispatch } from "../../../redux/hook";
+import {
+  setClearResetPasswordError,
+  setResetPassowrdError,
+} from "../../../redux/slices/authSlice";
+import {
+  confirmPasswordValidationSchema,
+  resetPasswordValidationSchema,
+} from "./ResetPasswordValidation";
+import ResetButton from "./ResetButton";
+import { resetPassword } from "../../../redux/thunks/authThunks";
 const validationSchema = Yup.object().shape({
-  password: passwordValidationSchema,
-  confirmPassword: passwordValidationSchema,
+  password: resetPasswordValidationSchema,
+  confirmPassword: confirmPasswordValidationSchema,
 });
 const ResetForm = () => {
   const {
@@ -18,9 +30,25 @@ const ResetForm = () => {
   } = useForm<ResetInputs>({ resolver: yupResolver(validationSchema) });
 
   const onSubmit = (data: ResetInputs) => {
-    console.log(data);
+    const path = location.pathname;
+    const tokenFromUrl = path.split("/resetPassword/")[1];
+    dispatch(
+      resetPassword({
+        resetPasswordToken: tokenFromUrl,
+        newPassword: data.password,
+      }),
+    );
   };
-  console.log(errors);
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    if (errors) {
+      dispatch(setResetPassowrdError({ errors }));
+    }
+    return () => {
+      dispatch(setClearResetPasswordError());
+    };
+  }, [errors]);
+
   return (
     <form
       className={styles.reset_password_form_container}
@@ -38,7 +66,7 @@ const ResetForm = () => {
         watch={watch}
         placeholder="Confirm passowrd"
       />
-      <input type="submit" />
+      <ResetButton />
     </form>
   );
 };
