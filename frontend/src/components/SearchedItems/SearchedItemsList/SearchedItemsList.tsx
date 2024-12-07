@@ -22,7 +22,9 @@ const SearchedItemsList: React.FC<SearchedItemsListProps> = ({
 
   if (isLoading || !items) return <SearchedItemSkeleton />;
   if (!items.length)
-    return <div className="mt-4 text-center">No items found</div>;
+    return (
+      <div className="mt-4 text-center">No items found. Try another page</div>
+    );
 
   const sortedItems = sortItems(items, sortQuery);
 

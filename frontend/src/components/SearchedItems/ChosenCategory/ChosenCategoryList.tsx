@@ -35,6 +35,8 @@ const ChosenCategoryList: React.FC<ChosenCategoryListProps> = React.memo(
       }
 
       if (searchTerm) {
+        console.log("GET S");
+
         defaultCategories.push(`Search: "${searchTerm}"`);
       }
 

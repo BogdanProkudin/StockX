@@ -20,81 +20,63 @@ export const searchProducts = async (req, res) => {
     const { searchQuery } = req.params;
     const { category, brand, gender } = req.query;
 
-    console.log("Received params:", { searchQuery, category, brand, gender });
+    console.log("Received request:", { searchQuery, category, brand, gender });
 
-    let url = "https://api.sneakersapi.dev/api/v2/products";
-    const queryParams = [];
+    const baseUrl = "https://api.sneakersapi.dev/api/v2/products";
 
-    // Handle brand filter
+    // Собираем параметры в объект
+    const queryParams = {};
     if (brand) {
-      queryParams.push(`brand=${encodeURIComponent(brand)}`);
+      queryParams.brand = brand;
+    }
+    if (category) {
+      queryParams.search = category;
+    }
+    if (searchQuery && !brand) {
+      queryParams.search = `${searchQuery}${category ? ` ${category}` : ""}`;
     }
 
-    // Handle search query with category concatenation
-    let searchTerm = searchQuery;
-    if (!brand && searchQuery && searchQuery !== "all") {
-      if (category) {
-        // Concatenate category with search term
-        searchTerm = `${searchQuery} ${category}`;
-      }
-      queryParams.push(`search=${encodeURIComponent(searchTerm)}`);
-    } else if (category && !brand) {
-      // If only category exists without search query
-      queryParams.push(`search=${encodeURIComponent(category)}`);
-    }
+    // Генерируем строку параметров
+    const queryString = new URLSearchParams(queryParams).toString();
+    const apiUrl = `${baseUrl}?${queryString}`;
 
-    // Handle gender filter
-    if (gender) {
-      queryParams.push(`gender=${encodeURIComponent(gender)}`);
-    }
+    console.log("API Request URL:", apiUrl);
 
-    const finalUrl =
-      queryParams.length > 0 ? `${url}?${queryParams.join("&")}` : url;
-
-    console.log("Making request to:", finalUrl);
-    console.log("Search term used:", searchTerm);
-
-    function generateRequestId() {
-      return Math.floor(100000 + Math.random() * 900000).toString();
-    }
-
+    const generateRequestId = () =>
+      Math.floor(100000 + Math.random() * 900000).toString();
     const requestId = generateRequestId();
 
-    try {
-      const response = await axios.get(finalUrl, {
-        headers: { Authorization: "f-2895d084cba594772c79255a5fb658d0" },
-      });
+    // Выполняем запрос
+    const response = await axios.get(apiUrl, {
+      headers: { Authorization: "f-2895d084cba594772c79255a5fb658d0" },
+    });
 
-      // Ensure we have data to return
-      const responseData = response.data?.data || [];
+    const products = response.data?.data || [];
+    console.log(`API Response: ${products.length} items retrieved`);
 
-      console.log("Response received:", {
-        status: response.status,
-        dataLength: responseData.length,
-        res: response.data,
-        url: finalUrl,
-      });
+    // Фильтрация по gender
+    const filteredProducts = gender
+      ? products.filter(
+          (item) => item.gender.toLowerCase() === gender.toLowerCase()
+        )
+      : products;
 
-      return res.status(200).json({
-        data: responseData,
-        suggestionCountList: [responseData.length, 0, 0, 0],
-        requestId: requestId,
-      });
-    } catch (error) {
-      console.error(
-        "Error fetching data:",
-        error.response?.data || error.message,
-        "\nRequest URL:",
-        finalUrl
-      );
-      return res.status(500).json({
-        message: "Error fetching data",
-        error: error.message,
-      });
-    }
-  } catch (err) {
-    console.log("ERROR", err);
-    return res.status(404).json({ message: "ERROR" });
+    return res.status(200).json({
+      data: filteredProducts,
+      suggestionCountList: [filteredProducts.length, 0, 0, 0],
+      requestId,
+    });
+  } catch (error) {
+    console.error("Error during search:", {
+      message: error.message,
+      stack: error.stack,
+      response: error.response?.data,
+    });
+
+    return res.status(500).json({
+      message: "Failed to fetch products",
+      error: error.message,
+    });
   }
 };
 

@@ -50,7 +50,7 @@ const SearchedContent = () => {
         <BrandsList />
         <GenderList />
       </div>
-      <div className="h-full w-full max-w-[927px] p-2">
+      <div className="h-full min-h-[600px] w-full max-w-[927px] p-2">
         <div className="flex h-10 justify-between">
           <FilterBreadCrumb isLoading={isLoading} />
           <FilterSelect isLoading={isLoading} />
