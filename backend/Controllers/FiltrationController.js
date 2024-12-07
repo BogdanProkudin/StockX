@@ -24,7 +24,6 @@ export const searchProducts = async (req, res) => {
 
     const baseUrl = "https://api.sneakersapi.dev/api/v2/products";
 
-    // Собираем параметры в объект
     const queryParams = {};
     if (brand) {
       queryParams.brand = brand;
@@ -36,7 +35,6 @@ export const searchProducts = async (req, res) => {
       queryParams.search = `${searchQuery}${category ? ` ${category}` : ""}`;
     }
 
-    // Генерируем строку параметров
     const queryString = new URLSearchParams(queryParams).toString();
     const apiUrl = `${baseUrl}?${queryString}`;
 
@@ -46,7 +44,6 @@ export const searchProducts = async (req, res) => {
       Math.floor(100000 + Math.random() * 900000).toString();
     const requestId = generateRequestId();
 
-    // Выполняем запрос
     const response = await axios.get(apiUrl, {
       headers: { Authorization: "f-2895d084cba594772c79255a5fb658d0" },
     });
@@ -54,7 +51,6 @@ export const searchProducts = async (req, res) => {
     const products = response.data?.data || [];
     console.log(`API Response: ${products.length} items retrieved`);
 
-    // Фильтрация по gender
     const filteredProducts = gender
       ? products.filter(
           (item) => item.gender.toLowerCase() === gender.toLowerCase()
