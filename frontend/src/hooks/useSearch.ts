@@ -16,13 +16,12 @@ export const useSearch = () => {
 
   const handleSearch = React.useCallback(
     debounce(async ({ query, isSearching }) => {
-      console.log("z", isSearching, query);
-
       if (query.length > 0 && isSearching) {
         const result = await fetchItems({
           searchingValue: query,
           categoryQuery: undefined,
           brandQuery: undefined,
+          genderQuery: undefined,
         });
 
         if (result.isSuccess) {

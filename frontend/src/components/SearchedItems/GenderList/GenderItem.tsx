@@ -25,13 +25,6 @@ const GenderItem: React.FC<GenderItemProps> = React.memo(
       setIsShowDropDown(!isShowDropDown);
     }, [isShowDropDown, setIsShowDropDown]);
 
-    const handleGenderClick = useCallback(
-      (subName: string) => {
-        handleSelectSubGender(subName);
-      },
-      [handleSelectSubGender],
-    );
-
     return (
       <div className="flex h-full w-full flex-col border-b-2 border-t-2 border-E2E8F0">
         <button

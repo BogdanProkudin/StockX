@@ -32,7 +32,7 @@ export const updateCategories = (
   const isBrandCategory = searchParams.get("brand") === categoryToRemove;
   const isSubCategory = searchParams.get("category") === categoryToRemove;
   const isGenderCategory = searchParams.get("gender") === categoryToRemove;
-  const isSearchCategory = categoryToRemove.startsWith('Search: "');
+  const isSearchCategory = categoryToRemove.startsWith(`Search: "`);
 
   const newSearchParams = new URLSearchParams(searchParams);
 
@@ -49,8 +49,8 @@ export const updateCategories = (
     dispatch(setSelectedBrand(""));
   } else if (isGenderCategory) {
     newSearchParams.delete("gender");
-    dispatch(setSelectedGender(""));
     setSearchParams(newSearchParams);
+    dispatch(setSelectedGender(""));
   }
 
   if (updatedCategories.length === 1) {

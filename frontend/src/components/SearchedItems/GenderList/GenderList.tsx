@@ -13,7 +13,7 @@ interface Gender {
 const genderListItems: Gender[] = [
   {
     genderName: "GENDER",
-    subGenderNames: ["Men", "Women", "Unisex", "Child"],
+    subGenderNames: ["Male", "Female", "Unisex", "Child"],
   },
 ];
 
@@ -27,12 +27,12 @@ const GenderList = React.memo(() => {
     (selectedGender: string) => {
       dispatch(setSelectedGender(selectedGender));
 
-      const params = new URLSearchParams();
       setIsShowDropDown(false);
-      params.set("gender", selectedGender);
-      setSearchParams(params);
+      const newSearchParams = new URLSearchParams(searchParams);
+      newSearchParams.set("gender", selectedGender);
+      setSearchParams(newSearchParams);
     },
-    [dispatch, navigate],
+    [dispatch, searchParams, navigate],
   );
 
   return (

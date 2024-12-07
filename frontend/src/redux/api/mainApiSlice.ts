@@ -102,7 +102,7 @@ export const searchApi = createApi({
         if (searchingValue && searchingValue.length > 0) {
           url += `/${encodeURIComponent(searchingValue)}`;
         } else {
-          url += "/all";
+          url += "/supreme";
         }
 
         const queryParams = [];
