@@ -26,7 +26,6 @@ const GenderList = React.memo(() => {
   const handleSelectSubGender = useCallback(
     (selectedGender: string) => {
       dispatch(setSelectedGender(selectedGender));
-
       setIsShowDropDown(false);
       const newSearchParams = new URLSearchParams(searchParams);
       newSearchParams.set("gender", selectedGender);
