@@ -24,6 +24,9 @@ const categoryListItems: Category[] = [
       "Sportswear",
       "Hoodie",
     ],
+
+  
+
   },
 ];
 
