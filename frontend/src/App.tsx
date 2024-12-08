@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Auth from "./pages/Auth";
 import Home from "./pages/Home";
@@ -11,20 +11,15 @@ import { useAppSelector } from "./redux/hook";
 
 import "./scss/styles.scss";
 import FullProduct from "./pages/ProductPage";
-import SearchedContent from "./components/SearchedItems/SearchedContent";
+
 import FilterPage from "./pages/FilterPage";
 
 type ComponentType = React.FC;
 
 function App() {
-  const originalTitle = localStorage.getItem("title");
-
-  useEffect(() => {
-    console.log("local storage app:", originalTitle);
-  }, [originalTitle]);
   const userToken = useMemo(() => localStorage.getItem("token"), []);
   const isSearching = useAppSelector((state) => state.searchSlice.isSearching);
-  const searchValue = useAppSelector((state) => state.searchSlice.searchValue);
+
   const renderMainContent = (Component: ComponentType) =>
     isSearching ? (
       <div className="mt-6 flex items-center justify-center">
