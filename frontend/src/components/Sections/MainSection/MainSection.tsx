@@ -1,7 +1,7 @@
 import React from "react";
 import UserCard from "../../Cards/MainCard/MainCard";
 
-import { userCardProps } from "../../../@types/userCardTypes";
+import { productProps } from "../../../@types/userCardTypes";
 
 import TitleSkeleton from "../TitleSkeleton";
 
@@ -13,7 +13,7 @@ import { ArrowRight } from "lucide-react";
 
 interface UserSectionProps {
   mainTitle: string;
-  items: userCardProps[];
+  items: productProps[];
   description: string;
 }
 
@@ -60,7 +60,7 @@ const MainSection: React.FC<UserSectionProps> = ({
       <div className="flex justify-between">
         {mainTitle.length < 1
           ? cardSkeleton
-          : items?.map((obj: userCardProps, id: number) => (
+          : items?.map((obj: productProps, id: number) => (
               <UserCard key={id} {...obj} />
             ))}
       </div>

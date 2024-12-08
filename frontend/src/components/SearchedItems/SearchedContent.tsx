@@ -5,10 +5,11 @@ import ChosenCategoryList from "./ChosenCategory/ChosenCategoryList";
 import FilterBreadCrumb from "./BreadCramb/BreadCrumb";
 import FilterSelect from "./FilterSelect/FilterSelect";
 import SearchedItemsList from "./SearchedItemsList/SearchedItemsList";
-import CategoryList from "./CategoryList/CategoryList";
-import { useEffect } from "react";
-import BrandsList from "./BrandsList/BrandsList";
-import GenderList from "./GenderList/GenderList";
+import CategoryList from "./SideBar/CategoryList/CategoryList";
+import { useEffect, useMemo } from "react";
+import BrandsList from "./SideBar/BrandsList/BrandsList";
+import GenderList from "./SideBar/GenderList/GenderList";
+import TrendingButton from "./SideBar/Trending/TrendingButton";
 
 const SearchedContent = () => {
   const [searchParams] = useSearchParams();
@@ -18,22 +19,24 @@ const SearchedContent = () => {
   const brandQuery = searchParams.get("brand") || "";
   const page = Number(searchParams.get("page")) || 1;
   const genderQuery = searchParams.get("gender") || "";
-  const [fetchData, { data, isLoading, error }] = useLazySearchItemsQuery<{
-    data: SearchResponse;
-    error: any;
-    isLoading: boolean;
-  }>();
+
+  const [fetchData, { data, isLoading, error }] = useLazySearchItemsQuery();
+
+  // Мемоизируем параметры поиска
+  const searchParameters = useMemo(
+    () => ({
+      searchingValue: searchQuery,
+      categoryQuery: categoryQuery,
+      brandQuery: brandQuery,
+      genderQuery: genderQuery,
+    }),
+    [searchParams],
+  );
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    const searchParams: SearchParams = {
-      searchingValue: [searchQuery].filter(Boolean).join(" "),
-      categoryQuery: [categoryQuery].filter(Boolean).join(" "),
-      brandQuery: [brandQuery].filter(Boolean).join(" "),
-      genderQuery: [genderQuery].filter(Boolean).join(" "),
-    };
-    fetchData(searchParams);
-  }, [searchQuery, categoryQuery, page, fetchData, brandQuery, genderQuery]);
+    fetchData(searchParameters, true);
+  }, [searchParameters, fetchData]);
 
   if (error) {
     return (
@@ -45,12 +48,13 @@ const SearchedContent = () => {
 
   return (
     <div className="mx-auto mt-3 flex h-full w-full max-w-[1240px] items-start justify-between px-4">
-      <div className="h-full w-[300px]">
+      <div className="mt-2 h-full w-[300px]">
+        <TrendingButton />
         <CategoryList />
         <BrandsList />
         <GenderList />
       </div>
-      <div className="h-full min-h-[600px] w-full max-w-[927px] p-2">
+      <div className="h-full min-h-[500px] w-full max-w-[927px] p-2">
         <div className="flex h-10 justify-between">
           <FilterBreadCrumb isLoading={isLoading} />
           <FilterSelect isLoading={isLoading} />

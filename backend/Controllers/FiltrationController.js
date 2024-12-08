@@ -2,7 +2,11 @@ import { StockXAPI, StockXLocation } from "@vlourme/stockx-api";
 import { log } from "node:console";
 import { it } from "node:test";
 import axios from "axios";
-
+import {
+  buildQueryParams,
+  fetchProducts,
+  generateRequestId,
+} from "../utils/BuildSearchQueryParams.js";
 export const getSuggestionItemsCount = async (result) => {
   if (result.length >= 20) {
     return [10000, 7659, 1340, 569];
@@ -22,39 +26,18 @@ export const searchProducts = async (req, res) => {
 
     console.log("Received request:", { searchQuery, category, brand, gender });
 
-    const baseUrl = "https://api.sneakersapi.dev/api/v2/products";
-
-    // Собираем параметры в объект
-    const queryParams = {};
-    if (brand) {
-      queryParams.brand = brand;
-    }
-    if (category) {
-      queryParams.search = category;
-    }
-    if (searchQuery && !brand) {
-      queryParams.search = `${searchQuery}${category ? ` ${category}` : ""}`;
-    }
-
-    // Генерируем строку параметров
-    const queryString = new URLSearchParams(queryParams).toString();
-    const apiUrl = `${baseUrl}?${queryString}`;
+    const baseUrl = "https://api.sneakersapi.dev/api/v2/products?page=1";
+    const queryString = buildQueryParams({ brand, category, searchQuery });
+    const apiUrl = `${baseUrl}&${queryString}`;
 
     console.log("API Request URL:", apiUrl);
 
-    const generateRequestId = () =>
-      Math.floor(100000 + Math.random() * 900000).toString();
-    const requestId = generateRequestId();
-
-    // Выполняем запрос
-    const response = await axios.get(apiUrl, {
-      headers: { Authorization: "f-2895d084cba594772c79255a5fb658d0" },
-    });
-
-    const products = response.data?.data || [];
+    const response = await fetchProducts(apiUrl);
+    const products = Array.isArray(response.data?.data)
+      ? response.data.data
+      : [];
     console.log(`API Response: ${products.length} items retrieved`);
 
-    // Фильтрация по gender
     const filteredProducts = gender
       ? products.filter(
           (item) => item.gender.toLowerCase() === gender.toLowerCase()
@@ -64,19 +47,11 @@ export const searchProducts = async (req, res) => {
     return res.status(200).json({
       data: filteredProducts,
       suggestionCountList: [filteredProducts.length, 0, 0, 0],
-      requestId,
+      requestId: generateRequestId(),
     });
   } catch (error) {
-    console.error("Error during search:", {
-      message: error.message,
-      stack: error.stack,
-      response: error.response?.data,
-    });
-
-    return res.status(500).json({
-      message: "Failed to fetch products",
-      error: error.message,
-    });
+    console.error("Error during search:", error);
+    return res.status(500).json({ message: "Failed to fetch products" });
   }
 };
 

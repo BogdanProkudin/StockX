@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction, useCallback } from "react";
-import { useAppSelector } from "../../../redux/hook";
+import { useAppSelector } from "../../../../redux/hook";
 
 interface CategoryItemProps {
   categoryName: string;
@@ -33,7 +33,7 @@ const CategoryItem: React.FC<CategoryItemProps> = React.memo(
     );
 
     return (
-      <div className="flex h-full w-full flex-col border-b-2 border-t-2 border-E2E8F0">
+      <div className="flex h-full w-full flex-col border-b-2 border-t-2 border-E2E8F0 pb-1 pt-1">
         <button
           onClick={toggleDropdown}
           className="flex cursor-pointer items-center justify-between p-4"

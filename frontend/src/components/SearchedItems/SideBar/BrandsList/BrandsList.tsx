@@ -4,9 +4,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   setSelectedBrand,
   setSelectedSubCategory,
-} from "../../../redux/slices/searchSlice";
+} from "../../../../redux/slices/searchSlice";
 import { useSearchParams } from "react-router-dom";
-import { useAppDispatch } from "../../../redux/hook";
+import { useAppDispatch } from "../../../../redux/hook";
 
 interface IBrandItem {
   brandName: string;

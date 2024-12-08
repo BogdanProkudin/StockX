@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { SearchResponse } from "../../types/searchTypes";
 
 // Создаем API-сервис
 export const userApi = createApi({
@@ -17,7 +18,83 @@ export const { useUserSectionFetchQuery } = userApi;
 export const mainApi = createApi({
   reducerPath: "mainApi",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3003" }),
+  tagTypes: ["SearchResults"],
   endpoints: (builder) => ({
+    searchItems: builder.query({
+      query: ({
+        searchingValue,
+        categoryQuery,
+        brandQuery,
+        genderQuery,
+      }: {
+        searchingValue: string;
+        categoryQuery: string | undefined;
+        brandQuery: string | undefined;
+        genderQuery: string | undefined;
+      }) => {
+        let url = "/searchProducts";
+
+        if (searchingValue && searchingValue.length > 0) {
+          url += `/${encodeURIComponent(searchingValue)}`;
+        } else {
+          url += "/supreme";
+        }
+
+        const queryParams = new URLSearchParams();
+
+        if (categoryQuery) {
+          queryParams.set("category", categoryQuery);
+        }
+        if (brandQuery) {
+          queryParams.set("brand", brandQuery);
+        }
+        if (genderQuery) {
+          queryParams.set("gender", genderQuery);
+        }
+
+        const queryString = queryParams.toString();
+        const finalUrl = queryString ? `${url}?${queryString}` : url;
+
+        return {
+          url: finalUrl,
+          method: "GET",
+        };
+      },
+      transformResponse: (response: any) => {
+        return {
+          data: response.data,
+          total: response.data.length,
+          requestId: response.requestId,
+          suggestionCountList: response.suggestionCountList,
+        };
+      },
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.data.map(({ slug }: any) => ({
+                type: "SearchResults" as const,
+                id: slug,
+              })),
+              { type: "SearchResults", id: "LIST" },
+            ]
+          : [{ type: "SearchResults", id: "LIST" }],
+      keepUnusedDataFor: 300,
+      serializeQueryArgs: ({ queryArgs }) => {
+        return JSON.stringify({
+          search: queryArgs.searchingValue || "supreme",
+          category: queryArgs.categoryQuery,
+          brand: queryArgs.brandQuery,
+          gender: queryArgs.genderQuery,
+        });
+      },
+      merge: (currentCache, newItems) => {
+        return newItems;
+      },
+      forceRefetch: ({ currentArg, previousArg, endpointState }) => {
+        if (!previousArg || !endpointState?.data) return true;
+        return JSON.stringify(currentArg) !== JSON.stringify(previousArg);
+      },
+    }),
     mainSectionFetch: builder.query({
       query: ({ sectionName }: { sectionName: string }) =>
         `/getCollectionSection/${sectionName}`,
@@ -25,8 +102,10 @@ export const mainApi = createApi({
     }),
   }),
 });
+
 export const { useMainSectionFetchQuery, useLazyMainSectionFetchQuery } =
   mainApi;
+
 export const mainImageApi = createApi({
   reducerPath: "mainImageApi",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3003" }),
@@ -38,8 +117,10 @@ export const mainImageApi = createApi({
     }),
   }),
 });
+
 export const { useImageSectionFetchQuery, useLazyImageSectionFetchQuery } =
   mainImageApi;
+
 export const mainCardApi = createApi({
   reducerPath: "mainCardApi",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3003" }),
@@ -51,8 +132,10 @@ export const mainCardApi = createApi({
     }),
   }),
 });
+
 export const { useCardSectionFetchQuery, useLazyCardSectionFetchQuery } =
   mainCardApi;
+
 export const instagramApi = createApi({
   reducerPath: "instagramApi",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3003" }),
@@ -63,6 +146,7 @@ export const instagramApi = createApi({
     }),
   }),
 });
+
 export const {
   useInstagramSectionFetchQuery,
   useLazyInstagramSectionFetchQuery,
@@ -81,6 +165,7 @@ export const sliderApi = createApi({
 });
 
 export const { useSliderFetchQuery, useLazySliderFetchQuery } = sliderApi;
+
 export const searchApi = createApi({
   reducerPath: "searchApi",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3003" }),
