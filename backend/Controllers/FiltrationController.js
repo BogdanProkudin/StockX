@@ -26,9 +26,9 @@ export const searchProducts = async (req, res) => {
 
     console.log("Received request:", { searchQuery, category, brand, gender });
 
-    const baseUrl = "https://api.sneakersapi.dev/api/v2/products";
+    const baseUrl = "https://api.sneakersapi.dev/api/v2/products?page=1";
     const queryString = buildQueryParams({ brand, category, searchQuery });
-    const apiUrl = `${baseUrl}?${queryString}`;
+    const apiUrl = `${baseUrl}&${queryString}`;
 
     console.log("API Request URL:", apiUrl);
 

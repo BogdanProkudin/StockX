@@ -1,24 +1,24 @@
 import React, { useCallback } from "react";
-import { useAppSelector } from "../../../redux/hook";
+import { useAppSelector } from "../../../../redux/hook";
 
-interface GenderItemProps {
+interface BrandItemProps {
+  brandName: string;
+  subBrandNames: string[];
   isShowDropDown: boolean;
-  setIsShowDropDown: (value: boolean) => void;
-  subGenderNames: string[];
-  handleSelectSubGender: (subName: string) => void;
-  genderName: string;
+  setIsShowDropDown: React.Dispatch<React.SetStateAction<boolean>>;
+  handleSelectBrand: (selectedBrand: string) => void;
 }
 
-const GenderItem: React.FC<GenderItemProps> = React.memo(
+const BrandItem: React.FC<BrandItemProps> = React.memo(
   ({
-    isShowDropDown,
+    brandName,
     setIsShowDropDown,
-    subGenderNames,
-    handleSelectSubGender,
-    genderName,
+    isShowDropDown,
+    subBrandNames,
+    handleSelectBrand,
   }) => {
-    const selectedGender = useAppSelector(
-      (state) => state.searchSlice.selectedGender,
+    const selectedSubBrand = useAppSelector(
+      (state) => state.searchSlice.selectedBrand,
     );
 
     const toggleDropdown = useCallback(() => {
@@ -26,7 +26,7 @@ const GenderItem: React.FC<GenderItemProps> = React.memo(
     }, [isShowDropDown, setIsShowDropDown]);
 
     return (
-      <div className="flex h-full w-full flex-col border-b-2 border-t-2 border-E2E8F0">
+      <div className="flex h-full w-full flex-col border-b-2 border-t-2 border-E2E8F0 pb-1 pt-1">
         <button
           onClick={toggleDropdown}
           className="flex cursor-pointer items-center justify-between p-4"
@@ -34,9 +34,9 @@ const GenderItem: React.FC<GenderItemProps> = React.memo(
           aria-controls="subcategory-list"
         >
           <p className="select-none pb-0 text-base font-semibold text-blackTextColor">
-            {genderName}
+            {brandName}
           </p>
-          {selectedGender.length > 1 && <span>{selectedGender}</span>}
+          {selectedSubBrand.length > 1 && <span>{selectedSubBrand}</span>}
           <svg
             viewBox="0 0 50 50"
             focusable="false"
@@ -59,15 +59,15 @@ const GenderItem: React.FC<GenderItemProps> = React.memo(
           }`}
           role="list"
         >
-          {subGenderNames.map((subName) => (
+          {subBrandNames.map((subName) => (
             <div key={subName} className="group flex items-center">
               <div className="relative flex items-center">
                 <input
                   type="checkbox"
                   id={`checkbox-${subName}`}
                   className="peer h-5 w-5 cursor-pointer appearance-none rounded border border-gray-300 bg-white transition-colors checked:border-black checked:bg-black focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
-                  checked={selectedGender.includes(subName)}
-                  onChange={() => handleSelectSubGender(subName)}
+                  checked={selectedSubBrand.includes(subName)}
+                  onChange={() => handleSelectBrand(subName)}
                 />
                 <svg
                   className="pointer-events-none absolute left-0 h-5 w-5 text-white opacity-0 peer-checked:opacity-100"
@@ -97,6 +97,6 @@ const GenderItem: React.FC<GenderItemProps> = React.memo(
   },
 );
 
-GenderItem.displayName = "GenderItem";
+BrandItem.displayName = "BrandItem";
 
-export default GenderItem;
+export default BrandItem;
