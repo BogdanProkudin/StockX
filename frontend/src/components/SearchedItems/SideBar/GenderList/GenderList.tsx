@@ -1,9 +1,9 @@
 import React, { useCallback, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
-import { setSelectedGender } from "../../../redux/slices/searchSlice";
+import { setSelectedGender } from "../../../../redux/slices/searchSlice";
 import GenderItem from "./GenderItem";
-import { useAppDispatch } from "../../../redux/hook";
+import { useAppDispatch } from "../../../../redux/hook";
 
 interface Gender {
   genderName: string;

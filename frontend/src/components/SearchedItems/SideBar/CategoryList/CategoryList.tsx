@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { useAppDispatch } from "../../../redux/hook";
-import { setSelectedSubCategory } from "../../../redux/slices/searchSlice";
+import { useAppDispatch } from "../../../../redux/hook";
+import { setSelectedSubCategory } from "../../../../redux/slices/searchSlice";
 import CategoryItem from "./CategoryItem";
 
 interface Category {
@@ -24,9 +24,6 @@ const categoryListItems: Category[] = [
       "Sportswear",
       "Hoodie",
     ],
-
-  
-
   },
 ];
 

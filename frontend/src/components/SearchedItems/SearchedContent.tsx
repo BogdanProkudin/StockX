@@ -5,10 +5,11 @@ import ChosenCategoryList from "./ChosenCategory/ChosenCategoryList";
 import FilterBreadCrumb from "./BreadCramb/BreadCrumb";
 import FilterSelect from "./FilterSelect/FilterSelect";
 import SearchedItemsList from "./SearchedItemsList/SearchedItemsList";
-import CategoryList from "./CategoryList/CategoryList";
+import CategoryList from "./SideBar/CategoryList/CategoryList";
 import { useEffect, useMemo } from "react";
-import BrandsList from "./BrandsList/BrandsList";
-import GenderList from "./GenderList/GenderList";
+import BrandsList from "./SideBar/BrandsList/BrandsList";
+import GenderList from "./SideBar/GenderList/GenderList";
+import TrendingButton from "./SideBar/Trending/TrendingButton";
 
 const SearchedContent = () => {
   const [searchParams] = useSearchParams();
@@ -29,7 +30,7 @@ const SearchedContent = () => {
       brandQuery: brandQuery,
       genderQuery: genderQuery,
     }),
-    [searchQuery, categoryQuery, brandQuery, genderQuery],
+    [searchParams],
   );
 
   useEffect(() => {
@@ -47,7 +48,8 @@ const SearchedContent = () => {
 
   return (
     <div className="mx-auto mt-3 flex h-full w-full max-w-[1240px] items-start justify-between px-4">
-      <div className="h-full w-[300px]">
+      <div className="mt-2 h-full w-[300px]">
+        <TrendingButton />
         <CategoryList />
         <BrandsList />
         <GenderList />
