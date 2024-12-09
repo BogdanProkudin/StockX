@@ -88,7 +88,7 @@ const Modal: React.FC<Imodal> = ({ closeModal, modalSlide }) => {
 
                     <div className="flex flex-wrap justify-between">
                       {obj.data.map((obj, id) => (
-                        <Link to={`/${obj.id}`} key={id}>
+                        <Link to={`/${obj.slug}`} key={id}>
                           <div className="relative mb-10 h-[212px] w-[200px]">
                             <button
                               onClick={onClickFavorite}
@@ -104,7 +104,7 @@ const Modal: React.FC<Imodal> = ({ closeModal, modalSlide }) => {
                             <h4 className="mb-1">{obj.title}</h4>
                             <p className="text-sm text-gray-400">Lowest Ask</p>
                             <b className="f font-mono text-[23px]">
-                              €{obj.avg_price}
+                              €{Math.round(obj.avg_price)}
                             </b>
                           </div>
                         </Link>

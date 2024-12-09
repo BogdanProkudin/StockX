@@ -134,57 +134,65 @@ export const getInstagramSection = async (req, res) => {
       jordan4Data,
       ounisotkaData,
       newBalanceData,
-      // lobsterDunkData,
-      // nikeLd,
-      // jordan1Retro,
-      // onitsukaTiger,
-      // nikeVapor,
-      // nikeAirMax,
-      // jordan5First,
-      // jordan5Second,
-      // nikeV2K,
-      // prada,
-      // nikeSocks,
-      // newBalanceT500,
-      // jordan1Travis,
-      // nikeNocta,
-      // nikeNoctaSecond,
+      lobsterDunkData,
+      nikeLd,
+      jordan1Retro,
+      onitsukaTiger,
+      nikeVapor,
+      nikeAirMax,
+      jordan5First,
+      jordan5Second,
+      nikeV2K,
+      prada,
+      nikeSocks,
+      newBalanceT500,
+      jordan1Travis,
+      nikeNocta,
+      nikeNoctaSecond,
     ] = await Promise.all([
       fetchSearchProducts(
-        "ASICS Novalis Gel-Teremoa Kiko Kostadinov Novalis Java Pewter Purple"
+        "ASICS Novalis Gel-Teremoa Kiko Kostadinov Novalis Java Pewter Purple",
+        1
       ),
-      fetchSearchProducts("Jordan 4 Retro Military Blue (2024)"),
-      fetchSearchProducts("Onitsuka Tiger Mexico 66 Kill Bill"),
-      fetchSearchProducts("New Balance 860v2 Aime Leon Dore Blue"),
-      // fetchSearchProducts("Nike SB Dunk Low Concepts Purple Lobster"),
-      // fetchSearchProducts("Nike LD-1000 SP Stussy Action Green"),
-      // fetchSearchProducts("Jordan 1 Retro Low OG Black Toe (2023)"),
-      // fetchSearchProducts("Onitsuka Tiger Mexico 66 Kill Bill"),
-      // fetchSearchProducts(
-      //   "Nike Vapor Street Off-White Polarized Blue (Women's)"
-      // ),
-      // fetchSearchProducts(
-      //   "Nike Air Max 1 '86 OG Big Bubble Air Max Day (2024)"
-      // ),
-      // fetchSearchProducts("Jordan 5 Retro A Ma Maniére Dusk"),
-      // fetchSearchProducts("Jordan 5 Retro Off-White Sail"),
-      // fetchSearchProducts(
-      //   "Nike V2K Run Summit White Metallic Silver (Women's)"
-      // ),
-      // fetchSearchProducts(
-      //   "Prada Monolith 55mm Pointy Loafer Black Brushed Leather"
-      // ),
-      // fetchSearchProducts(
-      //   "Nike Everyday Plus Cushioned Crew Socks (6 Pairs) White"
-      // ),
-      // fetchSearchProducts("New Balance T500 Aime Leon Dore White Black"),
-      // fetchSearchProducts(
-      //   "Jordan 1 Retro Low OG SP Travis Scott Canary (Women's)"
-      // ),
-      // fetchSearchProducts("Nike NOCTA Glide Drake Bright Crimson"),
-      // fetchSearchProducts(
-      //   "Nike x NOCTA L'Art DRX Long Sleeve Jersey Multicolor"
-      // ),
+      fetchSearchProducts("Jordan 4 Retro Military Blue (2024)", 1),
+      fetchSearchProducts("Onitsuka Tiger Mexico 66 Kill Bill", 1),
+      fetchSearchProducts("New Balance 860v2 Aime Leon Dore Blue", 1),
+      fetchSearchProducts("Nike SB Dunk Low Concepts Purple Lobster", 1),
+      fetchSearchProducts("Nike LD-1000 SP Stussy Action Green", 1),
+      fetchSearchProducts("Jordan 1 Retro Low OG Black Toe (2023)", 1),
+      fetchSearchProducts("Onitsuka Tiger Mexico 66 Kill Bill", 1),
+      fetchSearchProducts(
+        "Nike Vapor Street Off-White Polarized Blue (Women's)",
+        1
+      ),
+      fetchSearchProducts(
+        "Nike Air Max 1 '86 OG Big Bubble Air Max Day (2024)",
+        1
+      ),
+      fetchSearchProducts("Jordan 5 Retro A Ma Maniére Dusk", 1),
+      fetchSearchProducts("Jordan 5 Retro Off-White Sail", 1),
+      fetchSearchProducts(
+        "Nike V2K Run Summit White Metallic Silver (Women's)",
+        1
+      ),
+      fetchSearchProducts(
+        "Prada Monolith 55mm Pointy Loafer Black Brushed Leather",
+        1
+      ),
+      fetchSearchProducts(
+        "Nike Everyday Plus Cushioned Crew Socks (6 Pairs) White",
+        1
+      ),
+      fetchSearchProducts("New Balance T500 Aime Leon Dore White Black", 1),
+      fetchSearchProducts(
+        "Jordan 1 Retro Low OG SP Travis Scott Canary (Women's)",
+        1
+      ),
+      fetchSearchProducts("Nike NOCTA Glide Drake Bright Crimson", 1),
+      fetchSearchProducts(
+        "Nike x NOCTA L'Art DRX Long Sleeve Jersey Multicolor",
+        1
+      ),
     ]);
 
     const data = [
@@ -219,116 +227,89 @@ export const getInstagramSection = async (req, res) => {
         ],
       },
 
-      // {
-      //   image: `${baseUrl}purpledunk.webp`,
-      //   data: [...lobsterDunkData],
-      // },
-      // {
-      //   image: `${baseUrl}nikeLd.webp`,
-      //   data: [
-      //     nikeLd.data.find(
-      //       (el) => el.title === "Nike LD-1000 SP Stussy Action Green"
-      //     ),
-      //   ],
-      // },
-      // {
-      //   image: `${baseUrl}jordan1old.webp`,
-      //   data: [...jordan1Retro],
-      // },
-      // {
-      //   image: `${baseUrl}ounisotka2.webp`,
-      //   data: [
-      //     onitsukaTiger.data.find(
-      //       (el) => el.title === "Onitsuka Tiger Mexico 66 Kill Bill"
-      //     ),
-      //   ],
-      // },
-      // {
-      //   image: `${baseUrl}nikeVapor.webp`,
-      //   data: [
-      //     nikeVapor.data.find(
-      //       (el) =>
-      //         el.title ===
-      //         "Nike Vapor Street Off-White Polarized Blue (Women's)"
-      //     ),
-      //   ],
-      // },
-      // {
-      //   image: `${baseUrl}nikeAirMax.webp`,
-      //   data: [
-      //     nikeAirMax.data.find(
-      //       (el) =>
-      //         el.title === "Nike Air Max 1 '86 OG Big Bubble Air Max Day (2024)"
-      //     ),
-      //   ],
-      // },
-      // {
-      //   image: `${baseUrl}jordan5.webp`,
-      //   data: [
-      //     ...jordan5First.data.filter(
-      //       (el) => el.title === "Jordan 5 Retro A Ma Maniére Dusk"
-      //     ),
-      //     ...jordan5Second.data.filter(
-      //       (el) => el.title === "Jordan 5 Retro Off-White Sail"
-      //     ),
-      //   ],
-      // },
-      // {
-      //   image: `${baseUrl}nikev2k.webp`,
-      //   data: [
-      //     nikeV2K.data.find(
-      //       (el) =>
-      //         el.title === "Nike V2K Run Summit White Metallic Silver (Women's)"
-      //     ),
-      //   ],
-      // },
-      // {
-      //   image: `${baseUrl}prada.webp`,
-      //   data: [
-      //     ...prada.data.filter(
-      //       (el) =>
-      //         el.title ===
-      //         "Prada Monolith 55mm Pointy Loafer Black Brushed Leather"
-      //     ),
-      //     ...nikeSocks.data.filter(
-      //       (el) =>
-      //         el.title ===
-      //         "Nike Everyday Plus Cushioned Crew Socks (6 Pairs) White"
-      //     ),
-      //   ],
-      // },
+      {
+        image: `${baseUrl}purpledunk.webp`,
+        data: [...lobsterDunkData.data],
+      },
+      {
+        image: `${baseUrl}nikeLd.webp`,
+        data: [
+          nikeLd.data.find(
+            (el) => el.title === "Nike LD-1000 SP Stussy Action Green"
+          ),
+        ],
+      },
+      {
+        image: `${baseUrl}jordan1old.webp`,
+        data: [...jordan1Retro.data],
+      },
+      {
+        image: `${baseUrl}ounisotka2.webp`,
+        data: [
+          onitsukaTiger.data.find(
+            (el) => el.title === "Onitsuka Tiger Mexico 66 Kill Bill"
+          ),
+        ],
+      },
+      {
+        image: `${baseUrl}nikeVapor.webp`,
+        data: [
+          nikeVapor.data.find(
+            (el) =>
+              el.title ===
+              "Nike Vapor Street Off-White Polarized Blue (Women's)"
+          ),
+        ],
+      },
+      {
+        image: `${baseUrl}nikeAirMax.webp`,
+        data: [
+          nikeAirMax.data.find(
+            (el) =>
+              el.title === "Nike Air Max 1 '86 OG Big Bubble Air Max Day (2024)"
+          ),
+        ],
+      },
+      {
+        image: `${baseUrl}jordan5.webp`,
+        data: [...jordan5First.data, ...jordan5Second.data],
+      },
+      {
+        image: `${baseUrl}nikev2k.webp`,
+        data: [
+          nikeV2K.data.find(
+            (el) =>
+              el.title === "Nike V2K Run Summit White Metallic Silver (Women's)"
+          ),
+        ],
+      },
+      {
+        image: `${baseUrl}prada.webp`,
+        data: [...prada.data, ...nikeSocks.data],
+      },
 
-      // {
-      //   image: `${baseUrl}newbalance500.webp`,
-      //   data: [
-      //     newBalanceT500.data.find(
-      //       (el) => el.title === "New Balance T500 Aime Leon Dore White Black"
-      //     ),
-      //   ],
-      // },
-      // {
-      //   image: `${baseUrl}travis1.webp`,
-      //   data: [
-      //     jordan1Travis.data.find(
-      //       (el) =>
-      //         el.title ===
-      //         "Jordan 1 Retro Low OG SP Travis Scott Canary (Women's)"
-      //     ),
-      //   ],
-      // },
-      // {
-      //   image: `${baseUrl}nikenokta.webp`,
-      //   data: [
-      //     ...nikeNocta.data.filter(
-      //       (el) => el.title === "Nike NOCTA Glide Drake Bright Crimson"
-      //     ),
-      //     ...nikeNoctaSecond.data.filter(
-      //       (el) =>
-      //         el.title ===
-      //         "Nike x NOCTA L'Art DRX Long Sleeve Jersey Multicolor"
-      //     ),
-      //   ],
-      // },
+      {
+        image: `${baseUrl}newbalance500.webp`,
+        data: [
+          newBalanceT500.data.find(
+            (el) => el.title === "New Balance T500 Aime Leon Dore White Black"
+          ),
+        ],
+      },
+      {
+        image: `${baseUrl}travis1.webp`,
+        data: [
+          jordan1Travis.data.find(
+            (el) =>
+              el.title ===
+              "Air Jordan 1 Retro Low OG SP Travis Scott Canary (Women's)"
+          ),
+        ],
+      },
+      {
+        image: `${baseUrl}nikenokta.webp`,
+        data: [...nikeNocta.data, ...nikeNoctaSecond.data],
+      },
     ];
 
     res.json(data);

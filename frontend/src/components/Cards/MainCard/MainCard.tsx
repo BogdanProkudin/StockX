@@ -31,7 +31,9 @@ const UserCard: React.FC<productProps> = ({
         alt=""
       />
       <div className="px-4 py-0">
-        <h4 className="mb-1">{title}</h4>
+        <h4 className="mb-1 max-h-[96px] overflow-hidden text-ellipsis">
+          {title}
+        </h4>
         <p className="text-sm text-gray-400">Lowest Ask</p>
         <b className="f font-mono text-[23px]">€{price}</b>
         <p className="w-4/5 bg-gray-100 p-1 text-xs">min price: €{min_price}</p>
