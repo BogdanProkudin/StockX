@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { userCardProps } from "../../@types/userCardTypes";
+import { productProps } from "../../@types/userCardTypes";
 
 interface IitemsProps {
   title: string;
-  data: userCardProps[];
+  data: productProps[];
   description: string;
 }
 export interface IimageProps {
@@ -28,7 +28,7 @@ interface IHomeItems {
   bottCard: { sectionName: string; data: IimageProps[] };
   topSlider: { sectionName: string; data: IimageProps[] };
   bottSlider: { sectionName: string; data: IimageProps[] };
-  instagramSectionItems: { data: userCardProps[]; image: "" }[];
+  instagramSectionItems: { data: productProps[]; image: "" }[];
 }
 
 const initialState: IHomeItems = {

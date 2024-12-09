@@ -2,26 +2,27 @@ import { useEffect, useState } from "react";
 import BreadCrumbs from "../components/BreadCrumbs/BreadCrumbs";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { userCardProps } from "../@types/userCardTypes";
+import { productProps } from "../@types/userCardTypes";
 import { Rocket } from "lucide-react";
 import PriceBlock from "../components/FullProduct/PriceBlock";
 import SizePopUp from "../components/FullProduct/SizePopUp";
 
 const FullProduct = () => {
   const { slug } = useParams();
-  const [product, setProduct] = useState<userCardProps | null>(null);
+  const [product, setProduct] = useState<productProps | null>(null);
   const [isPrice, setIsPrice] = useState<number | null>(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
     async function fetchFullProduct() {
-      const res = await axios.get(
-        `https://api.sneakersapi.dev/search?query=${slug}`,
-      );
-      const data = res.data.hits[0];
+      console.log(slug);
+      const apiUrl = `https://api.sneakersapi.dev/api/v2/products?urlKey=${slug}`;
+      const { data } = await axios.get(apiUrl, {
+        headers: { Authorization: "f-2895d084cba594772c79255a5fb658d0" },
+      });
 
       setProduct(data);
-      console.log(data);
+      console.log("Data:", data);
     }
     fetchFullProduct();
   }, []);

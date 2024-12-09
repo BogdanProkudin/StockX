@@ -1,25 +1,23 @@
-import { StockXAPI, StockXLocation } from "@vlourme/stockx-api";
-import { query } from "express";
 import axios from "axios";
+import { fetchBrandProducts, fetchSearchProducts } from "../api/GetSearch.js";
 export const getUserSection = async (req, res) => {
   try {
-    const api = new StockXAPI(StockXLocation.US);
     const [recentlyViewed, recommendedItems] = await Promise.all([
-      api.searchProducts("Travis", 1),
-      api.searchProducts("Jordan", 1),
+      fetchBrandProducts("Travis Scott", 1),
+      fetchBrandProducts("Jordan", 1),
     ]);
 
     const data = {
       recentlyViewed: {
         title: "Recently viewed",
         description: "You recently viewed these products.",
-        data: recentlyViewed.hits.slice(0, 6),
+        data: recentlyViewed.data.slice(0, 6),
       },
       recommendedItems: {
         title: "Recommended For You",
         description:
           "These products are inspired by your previous browsing history.",
-        data: recommendedItems.hits.slice(0, 6),
+        data: recommendedItems.data.slice(0, 6),
       },
     };
 
@@ -31,7 +29,6 @@ export const getUserSection = async (req, res) => {
 };
 export const getCollectionSection = async (req, res) => {
   try {
-    const api = new StockXAPI(StockXLocation.US);
     const section = req.params.section;
 
     const [
@@ -44,60 +41,60 @@ export const getCollectionSection = async (req, res) => {
       rickowens,
       controllers,
     ] = await Promise.all([
-      api.searchProducts("Adidas", 1),
-      api.searchProducts("Nike", 1),
-      api.searchProducts("Balenciaga", 1),
-      api.searchProducts("Accessories", 1),
-      api.searchProducts("Supreme", 1),
-      api.searchProducts("Timberland", 1),
-      api.searchProducts("Rick Owens", 1),
-      api.searchProducts("Controllers", 1),
+      fetchBrandProducts("Nike", 1),
+      fetchBrandProducts("Nike", 1),
+      fetchBrandProducts("Balenciaga", 1),
+      fetchSearchProducts("Accessories", 1),
+      fetchBrandProducts("Supreme", 1),
+      fetchBrandProducts("Timberland", 1),
+      fetchBrandProducts("Rick Owens", 1),
+      fetchSearchProducts("Controller Wireless", 1),
     ]);
 
     const data = {
       adidas: {
         title: "Addidas Collection",
         description: "Top styles making waves this season",
-        data: adidas.hits.slice(0, 6),
+        data: adidas.data.slice(0, 6),
       },
       nike: {
         title: "Nike Collection",
         description: "Standout designs for every collection",
-        data: nike.hits.slice(0, 6),
+        data: nike.data.slice(0, 6),
       },
       balenciaga: {
         title: "Balenciaga Collection",
         description: "Accessories to complete any look",
-        data: balenciaga.hits.slice(0, 6),
+        data: balenciaga.data.slice(0, 6),
       },
       accessories: {
         title: "Featured Accessories",
         description:
           "'Featured' products are a curated collection of our best selling items",
-        data: accessories.hits.slice(0, 6),
+        data: accessories.data.slice(0, 6),
       },
       supreme: {
         title: "Supreme Collection",
         description:
           "Supreme Collection features a curated selection of iconic streetwear essentials, blending bold style with unparalleled quality",
-        data: supreme.hits.slice(0, 6),
+        data: supreme.data.slice(0, 6),
       },
       timberland: {
         title: "Timberland Collection",
         description:
           "Timberland Collection presents a carefully curated range of rugged essentials, merging outdoor durability with urban style and unmatched craftsmanship",
-        data: timberland.hits.slice(0, 6),
+        data: timberland.data.slice(0, 6),
       },
       rickowens: {
         title: "Rick Owens Collection",
         description:
           "Rick Owens x Collection offers a distinctive blend of avant-garde design and street sophistication, combining cutting-edge fashion with unrivaled quality.",
-        data: rickowens.hits.slice(0, 6),
+        data: rickowens.data.slice(0, 6),
       },
       controllers: {
         title: "Controllers Collection",
         description: "Controllers for every taste from ordinary to very rare",
-        data: controllers.hits.slice(0, 6),
+        data: controllers.data.slice(0, 6),
       },
     };
 
@@ -132,16 +129,6 @@ export const getInstagramSection = async (req, res) => {
       "host"
     )}/uploads/instagramSection/`;
 
-    async function GetData(title) {
-      const url = `https://api.sneakersapi.dev/search?query=${title}`;
-      try {
-        const response = await axios.get(url);
-        return response.data.hits;
-      } catch (error) {
-        console.error("Ошибка при получении данных:", error);
-        return null;
-      }
-    }
     const [
       asicsData,
       jordan4Data,
@@ -163,34 +150,56 @@ export const getInstagramSection = async (req, res) => {
       nikeNocta,
       nikeNoctaSecond,
     ] = await Promise.all([
-      GetData(
-        "ASICS Novalis Gel-Teremoa Kiko Kostadinov Novalis Java Pewter Purple"
+      fetchSearchProducts(
+        "ASICS Novalis Gel-Teremoa Kiko Kostadinov Novalis Java Pewter Purple",
+        1
       ),
-      GetData("Jordan 4 Retro Military Blue"),
-      GetData("Onitsuka Tiger Mexico 66 Kill Bill"),
-      GetData("New Balance 860v2 Aime Leon Dore Blue"),
-      GetData("Nike SB Dunk Low Concepts Purple Lobster"),
-      GetData("Nike LD-1000 SP Stussy Action Green"),
-      GetData("Jordan 1 Retro Low OG Black Toe (2023)"),
-      GetData("Onitsuka Tiger Mexico 66 Kill Bill"),
-      GetData("Nike Vapor Street Off-White Polarized Blue (Women's)"),
-      GetData("Nike Air Max 1 '86 OG Big Bubble Air Max Day (2024)"),
-      GetData("Jordan 5 Retro A Ma Maniére Dusk"),
-      GetData("Jordan 5 Retro Off-White Sail"),
-      GetData("Nike V2K Run Summit White Metallic Silver (Women's)"),
-      GetData("Prada Monolith 55mm Pointy Loafer Black Brushed Leather"),
-      GetData("Nike Everyday Plus Cushioned Crew Socks (6 Pairs) White"),
-      GetData("New Balance T500 Aime Leon Dore White Black"),
-      GetData("Jordan 1 Retro Low OG SP Travis Scott Canary (Women's)"),
-      GetData("Nike NOCTA Glide Drake Bright Crimson"),
-      GetData("Nike x NOCTA L'Art DRX Long Sleeve Jersey Multicolor"),
+      fetchSearchProducts("Jordan 4 Retro Military Blue (2024)", 1),
+      fetchSearchProducts("Onitsuka Tiger Mexico 66 Kill Bill", 1),
+      fetchSearchProducts("New Balance 860v2 Aime Leon Dore Blue", 1),
+      fetchSearchProducts("Nike SB Dunk Low Concepts Purple Lobster", 1),
+      fetchSearchProducts("Nike LD-1000 SP Stussy Action Green", 1),
+      fetchSearchProducts("Jordan 1 Retro Low OG Black Toe (2023)", 1),
+      fetchSearchProducts("Onitsuka Tiger Mexico 66 Kill Bill", 1),
+      fetchSearchProducts(
+        "Nike Vapor Street Off-White Polarized Blue (Women's)",
+        1
+      ),
+      fetchSearchProducts(
+        "Nike Air Max 1 '86 OG Big Bubble Air Max Day (2024)",
+        1
+      ),
+      fetchSearchProducts("Jordan 5 Retro A Ma Maniére Dusk", 1),
+      fetchSearchProducts("Jordan 5 Retro Off-White Sail", 1),
+      fetchSearchProducts(
+        "Nike V2K Run Summit White Metallic Silver (Women's)",
+        1
+      ),
+      fetchSearchProducts(
+        "Prada Monolith 55mm Pointy Loafer Black Brushed Leather",
+        1
+      ),
+      fetchSearchProducts(
+        "Nike Everyday Plus Cushioned Crew Socks (6 Pairs) White",
+        1
+      ),
+      fetchSearchProducts("New Balance T500 Aime Leon Dore White Black", 1),
+      fetchSearchProducts(
+        "Jordan 1 Retro Low OG SP Travis Scott Canary (Women's)",
+        1
+      ),
+      fetchSearchProducts("Nike NOCTA Glide Drake Bright Crimson", 1),
+      fetchSearchProducts(
+        "Nike x NOCTA L'Art DRX Long Sleeve Jersey Multicolor",
+        1
+      ),
     ]);
 
     const data = [
       {
         image: `${baseUrl}asics.webp`,
         data: [
-          asicsData.find(
+          asicsData.data.find(
             (el) =>
               el.title ===
               "ASICS Novalis Gel-Teremoa Kiko Kostadinov Novalis Java Pewter Purple"
@@ -199,16 +208,12 @@ export const getInstagramSection = async (req, res) => {
       },
       {
         image: `${baseUrl}jordan4.webp`,
-        data: [
-          ...jordan4Data.filter((el) =>
-            /^Jordan 4 Retro Military Blue \(2024.*\)$/.test(el.title)
-          ),
-        ],
+        data: [...jordan4Data.data],
       },
       {
         image: `${baseUrl}ounisotka.webp`,
         data: [
-          ounisotkaData.find(
+          ounisotkaData.data.find(
             (el) => el.title === "Onitsuka Tiger Mexico 66 Kill Bill"
           ),
         ],
@@ -216,39 +221,32 @@ export const getInstagramSection = async (req, res) => {
       {
         image: `${baseUrl}newbalance.webp`,
         data: [
-          newBalanceData.find(
+          newBalanceData.data.find(
             (el) => el.title === "New Balance 860v2 Aime Leon Dore Blue"
           ),
         ],
       },
+
       {
         image: `${baseUrl}purpledunk.webp`,
-        data: [
-          ...lobsterDunkData.filter((el) =>
-            /Nike SB Dunk Low Concepts Purple Lobster/i.test(el.title)
-          ),
-        ],
+        data: [...lobsterDunkData.data],
       },
       {
         image: `${baseUrl}nikeLd.webp`,
         data: [
-          nikeLd.find(
+          nikeLd.data.find(
             (el) => el.title === "Nike LD-1000 SP Stussy Action Green"
           ),
         ],
       },
       {
         image: `${baseUrl}jordan1old.webp`,
-        data: [
-          ...jordan1Retro.filter((el) =>
-            /^Jordan 1 Retro Low OG Black Toe \(2023.*\)$/.test(el.title)
-          ),
-        ],
+        data: [...jordan1Retro.data],
       },
       {
         image: `${baseUrl}ounisotka2.webp`,
         data: [
-          onitsukaTiger.find(
+          onitsukaTiger.data.find(
             (el) => el.title === "Onitsuka Tiger Mexico 66 Kill Bill"
           ),
         ],
@@ -256,7 +254,7 @@ export const getInstagramSection = async (req, res) => {
       {
         image: `${baseUrl}nikeVapor.webp`,
         data: [
-          nikeVapor.find(
+          nikeVapor.data.find(
             (el) =>
               el.title ===
               "Nike Vapor Street Off-White Polarized Blue (Women's)"
@@ -266,7 +264,7 @@ export const getInstagramSection = async (req, res) => {
       {
         image: `${baseUrl}nikeAirMax.webp`,
         data: [
-          nikeAirMax.find(
+          nikeAirMax.data.find(
             (el) =>
               el.title === "Nike Air Max 1 '86 OG Big Bubble Air Max Day (2024)"
           ),
@@ -274,19 +272,12 @@ export const getInstagramSection = async (req, res) => {
       },
       {
         image: `${baseUrl}jordan5.webp`,
-        data: [
-          ...jordan5First.filter(
-            (el) => el.title === "Jordan 5 Retro A Ma Maniére Dusk"
-          ),
-          ...jordan5Second.filter(
-            (el) => el.title === "Jordan 5 Retro Off-White Sail"
-          ),
-        ],
+        data: [...jordan5First.data, ...jordan5Second.data],
       },
       {
         image: `${baseUrl}nikev2k.webp`,
         data: [
-          nikeV2K.find(
+          nikeV2K.data.find(
             (el) =>
               el.title === "Nike V2K Run Summit White Metallic Silver (Women's)"
           ),
@@ -294,24 +285,13 @@ export const getInstagramSection = async (req, res) => {
       },
       {
         image: `${baseUrl}prada.webp`,
-        data: [
-          ...prada.filter(
-            (el) =>
-              el.title ===
-              "Prada Monolith 55mm Pointy Loafer Black Brushed Leather"
-          ),
-          ...nikeSocks.filter(
-            (el) =>
-              el.title ===
-              "Nike Everyday Plus Cushioned Crew Socks (6 Pairs) White"
-          ),
-        ],
+        data: [...prada.data, ...nikeSocks.data],
       },
 
       {
         image: `${baseUrl}newbalance500.webp`,
         data: [
-          newBalanceT500.find(
+          newBalanceT500.data.find(
             (el) => el.title === "New Balance T500 Aime Leon Dore White Black"
           ),
         ],
@@ -319,25 +299,16 @@ export const getInstagramSection = async (req, res) => {
       {
         image: `${baseUrl}travis1.webp`,
         data: [
-          jordan1Travis.find(
+          jordan1Travis.data.find(
             (el) =>
               el.title ===
-              "Jordan 1 Retro Low OG SP Travis Scott Canary (Women's)"
+              "Air Jordan 1 Retro Low OG SP Travis Scott Canary (Women's)"
           ),
         ],
       },
       {
         image: `${baseUrl}nikenokta.webp`,
-        data: [
-          ...nikeNocta.filter(
-            (el) => el.title === "Nike NOCTA Glide Drake Bright Crimson"
-          ),
-          ...nikeNoctaSecond.filter(
-            (el) =>
-              el.title ===
-              "Nike x NOCTA L'Art DRX Long Sleeve Jersey Multicolor"
-          ),
-        ],
+        data: [...nikeNocta.data, ...nikeNoctaSecond.data],
       },
     ];
 
