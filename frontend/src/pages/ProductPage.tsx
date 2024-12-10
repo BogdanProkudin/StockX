@@ -2,27 +2,29 @@ import { useEffect, useState } from "react";
 import BreadCrumbs from "../components/BreadCrumbs/BreadCrumbs";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { userCardProps } from "../@types/userCardTypes";
+import { oneProductProps } from "../@types/userCardTypes";
 import { Rocket } from "lucide-react";
 import PriceBlock from "../components/FullProduct/PriceBlock";
 import SizePopUp from "../components/FullProduct/SizePopUp";
 
 const FullProduct = () => {
   const { slug } = useParams();
-  const [product, setProduct] = useState<userCardProps | null>(null);
+  const [product, setProduct] = useState<oneProductProps | null>(null);
   const [isPrice, setIsPrice] = useState<number | null>(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
     async function fetchFullProduct() {
-      const res = await axios.get(
-        `https://api.sneakersapi.dev/search?query=${slug}`,
-      );
-      const data = res.data.hits[0];
+      console.log(slug);
+      const apiUrl = `https://api.sneakersapi.dev/api/v2/products?url_key=adidas-yeezy-slide-slate-grey`;
+      const { data } = await axios.get(apiUrl, {
+        headers: { Authorization: "f-2895d084cba594772c79255a5fb658d0" },
+      });
 
-      setProduct(data);
-      console.log(data);
+      setProduct(data.data[0]);
+      console.log("Data:", data);
     }
+
     fetchFullProduct();
   }, []);
   return (
@@ -30,7 +32,6 @@ const FullProduct = () => {
       {product && (
         <>
           <BreadCrumbs
-            label={product.labels}
             brand={product.brand}
             title={product.title}
             slug={product.slug}
@@ -57,14 +58,14 @@ const FullProduct = () => {
               </div>
               {product.variants.find((el) => el.size.length > 1) && (
                 <SizePopUp
-                  price={product.base_price}
+                  price={product.avg_price}
                   size_system={product.size_system}
                   variants={product.variants}
                   setIsPrice={setIsPrice}
                 />
               )}
               <PriceBlock
-                price={product.base_price}
+                price={product.avg_price}
                 max_price={product.max_price}
                 min_price={product.min_price}
                 isPrice={isPrice}

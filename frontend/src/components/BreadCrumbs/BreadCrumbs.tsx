@@ -3,29 +3,29 @@ import React from "react";
 import { Link } from "react-router-dom";
 interface BreadCrumbsProps {
   brand: string;
-  label: string[];
+  // label: string[];
   title: string;
   slug: string;
 }
 const BreadCrumbs: React.FC<BreadCrumbsProps> = ({
-  label,
+  // label,
   brand,
   title,
   slug,
 }) => {
-  const type = label[0]
-    .split(" ")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
+  // const type = label[0]
+  //   .split(" ")
+  //   .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+  //   .join(" ");
   const breadCrumbArr = [
     {
       link: "/",
       name: "Home",
     },
-    {
-      link: `/search?s=${type}`,
-      name: type,
-    },
+    // {
+    //   link: `/search?s=${type}`,
+    //   name: type,
+    // },
     {
       link: `/search?brand=${brand}`,
       name: brand,

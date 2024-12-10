@@ -2,13 +2,12 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import React, { useState } from "react";
 interface SizePopUpType {
   price: number;
-  size_system: string;
+  size_system?: string;
   variants: {
-    gtin: string;
+    id: string;
     price: number;
+    product_id: string;
     size: string;
-    variant_id: string;
-    variant_link: string;
   }[];
   setIsPrice?: (value: number) => void;
 }
