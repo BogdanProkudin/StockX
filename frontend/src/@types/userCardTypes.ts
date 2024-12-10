@@ -59,3 +59,36 @@ export interface productProps {
   link: string;
   trending: boolean;
 }
+export interface oneProductProps {
+  avg_price: number;
+  blurhash: string;
+  brand: string;
+  category: string;
+  color: string;
+  currency: string;
+  description: string;
+  gender: string;
+  id: string;
+  image: string;
+  link: string;
+  max_price: number;
+  min_price: number;
+  release_date: string;
+  retail_currency: string;
+  retail_price: number;
+  short_description: string;
+  sku: string;
+  slug: string;
+  title: string;
+  trending: boolean;
+  weekly_aov: number;
+  weekly_gmv: number;
+  weekly_orders: number;
+  weekly_rank: number;
+  variants: {
+    id: string;
+    price: number;
+    product_id: string;
+    size: string;
+  }[];
+}
