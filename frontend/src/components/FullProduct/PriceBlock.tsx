@@ -2,20 +2,24 @@ import React from "react";
 import { GenerateSoldItem } from "../../utils/updateSoldItems";
 
 import model from "../../assets/images/soldModel.gif";
+import PriceSkeleton from "./Skeletons/PriceSkeleton";
+import LastPriceSkeleton from "./Skeletons/LastPriceSkeleton";
 interface PriceBlockProps {
-  price: number;
-  min_price: number;
-  max_price: number;
+  price: number | undefined;
+  min_price: number | undefined;
+  max_price: number | undefined;
   isPrice: number | null;
+  loading: boolean;
 }
 const PriceBlock: React.FC<PriceBlockProps> = ({
   price,
   min_price,
   max_price,
   isPrice,
+  loading,
 }) => {
-  const totalPrice = Math.round(price);
-  const lastSalePrice = Math.round(min_price);
+  const totalPrice = Math.round(price ?? 0);
+  const lastSalePrice = Math.round(min_price ?? 0);
   let lastSale: number = lastSalePrice;
   if (lastSalePrice === totalPrice) {
     if (totalPrice < 100) {
@@ -29,8 +33,11 @@ const PriceBlock: React.FC<PriceBlockProps> = ({
       lastSale = lastSale + random;
     }
   }
-  const maxPrice = Math.round(max_price);
-  const randomItems = GenerateSoldItem(totalPrice, maxPrice);
+  const maxPrice = Math.round(max_price ?? 0);
+  let randomItems;
+  if (totalPrice && maxPrice !== 0) {
+    randomItems = GenerateSoldItem(totalPrice, maxPrice);
+  }
 
   return (
     <div className="rounded-xl border border-[#a4a4a4] p-4">
@@ -38,15 +45,20 @@ const PriceBlock: React.FC<PriceBlockProps> = ({
         <div className="w-[98px]">
           <p className="text-md font-medium">
             Buy Now For{" "}
-            <span className="text-2xl font-bold">
-              €{isPrice ? isPrice : totalPrice}
-            </span>
+            {loading ? (
+              <PriceSkeleton />
+            ) : (
+              <span className="text-2xl font-bold">
+                €{isPrice ? isPrice : totalPrice}
+              </span>
+            )}
           </p>
         </div>
         <div className="flex items-center gap-1">
           <img className="w-10" src={model} alt="sold model" />
-          <p className="font-semibold">
-            <span>{randomItems}</span> Sold in Last 3 Days!
+          <p className="flex gap-2 font-semibold">
+            <span>{loading ? <LastPriceSkeleton /> : randomItems}</span> Sold in
+            Last 3 Days!
           </p>
         </div>
       </div>
@@ -59,7 +71,9 @@ const PriceBlock: React.FC<PriceBlockProps> = ({
         </button>
       </div>
       <div className="mt-5 flex items-center justify-between border-t pb-1 pt-3">
-        <span className="font-semibold">Last Sale: €{lastSale}</span>
+        <span className="flex font-semibold">
+          Last Sale: €{loading ? <LastPriceSkeleton /> : lastSale}
+        </span>
         <span className="cursor-pointer border-b-2 border-[#006340] font-bold text-[#006340]">
           View Market Data
         </span>

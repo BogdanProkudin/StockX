@@ -1,16 +1,19 @@
 import { CirclePlus, Heart, Share } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
+
 interface BreadCrumbsProps {
   brand: string;
   // label: string[];
   title: string;
+
   slug: string;
 }
 const BreadCrumbs: React.FC<BreadCrumbsProps> = ({
   // label,
   brand,
   title,
+
   slug,
 }) => {
   // const type = label[0]
@@ -51,6 +54,7 @@ const BreadCrumbs: React.FC<BreadCrumbsProps> = ({
       </span>
     </React.Fragment>
   ));
+
   return (
     <div className="flex items-center justify-between py-6">
       <div className="text-[13px]">{breadcrumbs}</div>
