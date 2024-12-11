@@ -1,31 +1,34 @@
 import { CirclePlus, Heart, Share } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
+
 interface BreadCrumbsProps {
   brand: string;
-  label: string[];
+  // label: string[];
   title: string;
+
   slug: string;
 }
 const BreadCrumbs: React.FC<BreadCrumbsProps> = ({
-  label,
+  // label,
   brand,
   title,
+
   slug,
 }) => {
-  const type = label[0]
-    .split(" ")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
+  // const type = label[0]
+  //   .split(" ")
+  //   .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+  //   .join(" ");
   const breadCrumbArr = [
     {
       link: "/",
       name: "Home",
     },
-    {
-      link: `/search?s=${type}`,
-      name: type,
-    },
+    // {
+    //   link: `/search?s=${type}`,
+    //   name: type,
+    // },
     {
       link: `/search?brand=${brand}`,
       name: brand,
@@ -51,6 +54,7 @@ const BreadCrumbs: React.FC<BreadCrumbsProps> = ({
       </span>
     </React.Fragment>
   ));
+
   return (
     <div className="flex items-center justify-between py-6">
       <div className="text-[13px]">{breadcrumbs}</div>

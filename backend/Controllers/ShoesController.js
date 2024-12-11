@@ -41,7 +41,7 @@ export const getCollectionSection = async (req, res) => {
       rickowens,
       controllers,
     ] = await Promise.all([
-      fetchBrandProducts("Nike", 1),
+      fetchBrandProducts("adidas", 1),
       fetchBrandProducts("Nike", 1),
       fetchBrandProducts("Balenciaga", 1),
       fetchSearchProducts("Accessories", 1),

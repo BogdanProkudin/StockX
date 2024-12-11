@@ -14,12 +14,12 @@ const UserCard: React.FC<productProps> = ({
   const onClickFavorite = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
   };
-  const formattedUrl = slug.slice(0, -6);
+  // const formattedUrl = slug.slice(0, -6);
   const price = Math.round(avg_price);
 
   return (
     <Link
-      to={`/${formattedUrl}`}
+      to={`/${slug}`}
       className="relative flex h-[250px] w-[190px] cursor-pointer flex-col items-center"
     >
       <button onClick={onClickFavorite} className="absolute right-5">

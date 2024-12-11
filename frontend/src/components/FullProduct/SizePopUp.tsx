@@ -2,13 +2,12 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import React, { useState } from "react";
 interface SizePopUpType {
   price: number;
-  size_system: string;
+  size_system?: string;
   variants: {
-    gtin: string;
+    id: string;
     price: number;
+    product_id: string;
     size: string;
-    variant_id: string;
-    variant_link: string;
   }[];
   setIsPrice?: (value: number) => void;
 }
@@ -20,6 +19,7 @@ const SizePopUp: React.FC<SizePopUpType> = ({
 }) => {
   const sizeOrder = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
   const sizeSystem = size_system ? size_system : "US";
+  const mainPrice = Math.round(price);
   const [isOpen, setIsOpen] = useState(false);
   const [isValue, setIsValue] = useState("All");
   const onClickPopUp = () => {
@@ -28,7 +28,7 @@ const SizePopUp: React.FC<SizePopUpType> = ({
   const onClickAllSizes = () => {
     setIsOpen(false);
     setIsValue("All");
-    if (setIsPrice) setIsPrice(price);
+    if (setIsPrice) setIsPrice(mainPrice);
   };
   const onClickSize = (value: string, price: number) => {
     setIsOpen(false);
@@ -74,7 +74,7 @@ const SizePopUp: React.FC<SizePopUpType> = ({
               className="mt-3 flex w-full flex-col items-center justify-center gap-[1px] rounded-lg border-2 border-[#006340] bg-[#f4f3f1] py-1 text-sm font-semibold"
             >
               All
-              <span className="font-bold text-[#006340]">€{price}</span>
+              <span className="font-bold text-[#006340]">€{mainPrice}</span>
             </button>
             <ul className={`mt-3 grid grid-cols-3 gap-3`}>
               {sortedVariants.map((obj, id) => (
