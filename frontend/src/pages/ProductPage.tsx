@@ -59,61 +59,58 @@ const FullProduct = () => {
         </>
       )}
 
-      <>
-        <div className="flex gap-2">
-          <div className="w-[636px]">
-            <h1 className="text-3xl font-bold">
-              {isLoading ? <TitleSkeleton /> : product?.brand}
-            </h1>
-            <h3 className="text-sm opacity-70">
-              {isLoading ? <SubTitleSkeleton /> : product?.title}
-            </h3>
-            <div className="flex justify-center">
-              {isLoading ? (
-                <img
-                  src={imageNotFound}
-                  className="mt-2 h-[404px] w-[506px]"
-                  alt=""
-                />
-              ) : (
-                <img
-                  className="mt-2 h-[404px] w-[506px]"
-                  src={product?.image}
-                  alt={product?.title}
-                />
-              )}
-            </div>
-          </div>
-          <div className="flex w-[480px] flex-col gap-2">
-            <div className="flex items-center gap-2">
-              <Rocket size={16} />
-              <p className="text-sm">
-                <span className="font-bold">Xpress Ship </span>
-                3-day shipping available in select sizes
-              </p>
-            </div>
+      <div className="border-{#a4a4a4} mb-10 flex gap-2 border-b pb-5">
+        <div className="w-[636px]">
+          <h1 className="text-3xl font-bold">
+            {isLoading ? <TitleSkeleton /> : product?.brand}
+          </h1>
+          <h3 className="text-sm opacity-70">
+            {isLoading ? <SubTitleSkeleton /> : product?.title}
+          </h3>
+          <div className="flex justify-center">
             {isLoading ? (
-              <SizeSkeleton />
+              <img
+                src={imageNotFound}
+                className="mt-2 h-[404px] w-[506px]"
+                alt=""
+              />
             ) : (
-              product?.variants.find((el) => el.size.length > 1) && (
-                <SizePopUp
-                  price={product.avg_price}
-                  size_system={product.size_system}
-                  variants={product.variants}
-                  setIsPrice={setIsPrice}
-                />
-              )
+              <img
+                className="mt-2 h-[404px] w-[506px]"
+                src={product?.image}
+                alt={product?.title}
+              />
             )}
-            <PriceBlock
-              price={product?.avg_price}
-              max_price={product?.max_price}
-              min_price={product?.min_price}
-              isPrice={isPrice}
-              loading={isLoading}
-            />
           </div>
         </div>
-      </>
+        <div className="flex w-[480px] flex-col gap-2">
+          <div className="flex items-center gap-2">
+            <Rocket size={16} />
+            <p className="text-sm">
+              <span className="font-bold">Xpress Ship </span>
+              3-day shipping available in select sizes
+            </p>
+          </div>
+          {isLoading ? (
+            <SizeSkeleton />
+          ) : (
+            product?.variants.find((el) => el.size.length > 1) && (
+              <SizePopUp
+                price={product.avg_price}
+                variants={product.variants}
+                setIsPrice={setIsPrice}
+              />
+            )
+          )}
+          <PriceBlock
+            price={product?.avg_price}
+            max_price={product?.max_price}
+            min_price={product?.min_price}
+            isPrice={isPrice}
+            loading={isLoading}
+          />
+        </div>
+      </div>
     </div>
   );
 };
