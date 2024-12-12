@@ -2,7 +2,7 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import React, { useState } from "react";
 interface SizePopUpType {
   price: number;
-  size_system?: string;
+
   variants: {
     id: string;
     price: number;
@@ -13,12 +13,12 @@ interface SizePopUpType {
 }
 const SizePopUp: React.FC<SizePopUpType> = ({
   price,
-  size_system,
+
   variants,
   setIsPrice,
 }) => {
   const sizeOrder = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
-  const sizeSystem = size_system ? size_system : "US";
+  const sizeSystem = "US";
   const mainPrice = Math.round(price);
   const [isOpen, setIsOpen] = useState(false);
   const [isValue, setIsValue] = useState("All");
