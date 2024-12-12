@@ -19,7 +19,7 @@ const TrendingButton: React.FC<TrendingButtonProps> = ({ onChange }) => {
         className="user-select-none relative top-1 block w-[55px] cursor-pointer"
       >
         <div
-          className={`relative inline-block h-[35px] w-[55px] rounded-[25px] bg-[#f0f0f0] p-[2px] transition-all duration-150 ${isChecked ? "bg-[#34bfa3]" : ""}`}
+          className={`relative inline-block h-[35px] w-[55px] rounded-[25px] bg-[#f0f0f0] p-[2px] transition-all duration-150 ${isChecked ? "bg-green-600" : ""}`}
         >
           <div
             className={`absolute top-[5px] h-[25px] w-[25px] rounded-[50%] bg-white transition-all duration-1000 ${
