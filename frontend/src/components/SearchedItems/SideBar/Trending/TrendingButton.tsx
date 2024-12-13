@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../../../redux/hook";
+import { setCategoryNames } from "../../../../redux/slices/searchSlice";
 
 interface TrendingButtonProps {
   onChange?: (isChecked: boolean) => void;
@@ -6,11 +9,31 @@ interface TrendingButtonProps {
 
 const TrendingButton: React.FC<TrendingButtonProps> = ({ onChange }) => {
   const [isChecked, setIsChecked] = useState(false);
-
+  const dispatch = useAppDispatch();
+  const categoryNames = useAppSelector(
+    (state) => state.searchSlice.categoryNames,
+  );
+  const [searchParams, setSearchParams] = useSearchParams();
   const handleChange = () => {
     setIsChecked(!isChecked);
+    if (!isChecked) {
+      const newSearchParams = new URLSearchParams(searchParams);
+      newSearchParams.set("trending", "Trending");
+      setSearchParams(newSearchParams);
+    } else {
+      const newSearchParams = new URLSearchParams(searchParams);
+      newSearchParams.delete("trending");
+      setSearchParams(newSearchParams);
+    }
     console.log("change");
   };
+  useEffect(() => {
+    if (searchParams.get("trending") === "Trending") {
+      setIsChecked(true);
+    } else {
+      setIsChecked(false);
+    }
+  }, []);
 
   return (
     <div className="flex h-full w-full items-center border-b-2 border-t-2 border-E2E8F0 p-2">
