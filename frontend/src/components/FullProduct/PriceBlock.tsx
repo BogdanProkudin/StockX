@@ -74,7 +74,7 @@ const PriceBlock: React.FC<PriceBlockProps> = ({
         <span className="flex font-semibold">
           Last Sale: €{loading ? <LastPriceSkeleton /> : lastSale}
         </span>
-        <span className="cursor-pointer border-b-2 border-[#006340] font-bold text-[#006340]">
+        <span className="cursor-pointer border-b-2 border-[#006340] text-sm font-bold text-[#006340]">
           View Market Data
         </span>
       </div>
