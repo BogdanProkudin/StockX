@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import BreadCrumbs from "../components/BreadCrumbs/BreadCrumbs";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { imageNotFound } from "../assets/images/imageNotFound";
 import { FullProductProps } from "../@types/userCardTypes";
@@ -11,9 +11,11 @@ import Skeleton from "../components/BreadCrumbs/Skeleton";
 import SubTitleSkeleton from "../components/FullProduct/Skeletons/SubTitleSkeleton";
 import TitleSkeleton from "../components/FullProduct/Skeletons/TitleSkeleton";
 import SizeSkeleton from "../components/FullProduct/Skeletons/SizeSkeleton";
+import InfoBlock from "../components/FullProduct/InfoBlock";
 
 const FullProduct = () => {
   const { slug } = useParams();
+  const navigate = useNavigate();
   const [product, setProduct] = useState<FullProductProps | null>(null);
   const [isPrice, setIsPrice] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -39,10 +41,11 @@ const FullProduct = () => {
 
     fetchFullProduct();
   }, []);
-
-  if (error) {
-    return <div>Error</div>;
-  }
+  useEffect(() => {
+    if (error) {
+      navigate("/not-found");
+    }
+  }, [error, navigate]);
   return (
     <div className="w-[1120px]">
       {isLoading ? (
@@ -109,6 +112,7 @@ const FullProduct = () => {
             isPrice={isPrice}
             loading={isLoading}
           />
+          <InfoBlock />
         </div>
       </div>
     </div>
