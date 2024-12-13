@@ -28,9 +28,16 @@ const ChosenCategoryList: React.FC<ChosenCategoryListProps> = React.memo(
       const categoryTerm = searchParams.get("category");
       const brandTerm = searchParams.get("brand");
       const genderTerm = searchParams.get("gender");
+      const trendingTerm = searchParams.get("trending");
       const defaultCategories = [];
 
-      if (searchTerm || categoryTerm || brandTerm || genderTerm) {
+      if (
+        searchTerm ||
+        categoryTerm ||
+        brandTerm ||
+        genderTerm ||
+        trendingTerm
+      ) {
         defaultCategories.push("Clear All");
       }
 
@@ -51,6 +58,9 @@ const ChosenCategoryList: React.FC<ChosenCategoryListProps> = React.memo(
       if (genderTerm) {
         dispatch(setSelectedGender(genderTerm));
         defaultCategories.push(genderTerm);
+      }
+      if (trendingTerm) {
+        defaultCategories.push(trendingTerm);
       }
 
       dispatch(setCategoryNames(defaultCategories));
