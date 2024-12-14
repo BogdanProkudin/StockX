@@ -6,6 +6,7 @@ import PriceSkeleton from "./Skeletons/PriceSkeleton";
 import LastPriceSkeleton from "./Skeletons/LastPriceSkeleton";
 interface PriceBlockProps {
   price: number | undefined;
+
   min_price: number | undefined;
   max_price: number | undefined;
   isPrice: number | null;
@@ -16,6 +17,7 @@ const PriceBlock: React.FC<PriceBlockProps> = ({
   min_price,
   max_price,
   isPrice,
+
   loading,
 }) => {
   const totalPrice = Math.round(price ?? 0);

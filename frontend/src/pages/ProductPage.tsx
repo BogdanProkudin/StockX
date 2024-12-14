@@ -12,6 +12,8 @@ import SubTitleSkeleton from "../components/FullProduct/Skeletons/SubTitleSkelet
 import TitleSkeleton from "../components/FullProduct/Skeletons/TitleSkeleton";
 import SizeSkeleton from "../components/FullProduct/Skeletons/SizeSkeleton";
 import InfoBlock from "../components/FullProduct/InfoBlock";
+import SellBlock from "../components/FullProduct/SellBlock";
+import InfoBlockSkeleton from "../components/FullProduct/Skeletons/InfoBlockSkeleton";
 
 const FullProduct = () => {
   const { slug } = useParams();
@@ -19,6 +21,8 @@ const FullProduct = () => {
   const [product, setProduct] = useState<FullProductProps | null>(null);
   const [isPrice, setIsPrice] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [sellVisible, setSellVisible] = useState(false);
+  const [sellPrice, setSellPrice] = useState(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -31,6 +35,7 @@ const FullProduct = () => {
           headers: { Authorization: "f-2895d084cba594772c79255a5fb658d0" },
         });
         setProduct(data.data);
+        console.log(data.data);
       } catch (error) {
         console.error(error);
         setError("Info failed try again");
@@ -46,6 +51,7 @@ const FullProduct = () => {
       navigate("/not-found");
     }
   }, [error, navigate]);
+
   return (
     <div className="w-[1120px]">
       {isLoading ? (
@@ -105,14 +111,28 @@ const FullProduct = () => {
               />
             )
           )}
-          <PriceBlock
-            price={product?.avg_price}
-            max_price={product?.max_price}
-            min_price={product?.min_price}
-            isPrice={isPrice}
-            loading={isLoading}
-          />
-          <InfoBlock />
+          {sellVisible ? (
+            <SellBlock sellPrice={sellPrice} />
+          ) : (
+            <PriceBlock
+              price={product?.avg_price}
+              max_price={product?.max_price}
+              min_price={product?.min_price}
+              isPrice={isPrice}
+              loading={isLoading}
+            />
+          )}
+
+          {product ? (
+            <InfoBlock
+              sellVisible={sellVisible}
+              price={product.avg_price}
+              setSellVisible={setSellVisible}
+              setSellPrice={setSellPrice}
+            />
+          ) : (
+            <InfoBlockSkeleton />
+          )}
         </div>
       </div>
     </div>
