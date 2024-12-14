@@ -14,10 +14,12 @@ import SizeSkeleton from "../components/FullProduct/Skeletons/SizeSkeleton";
 import InfoBlock from "../components/FullProduct/InfoBlock";
 import SellBlock from "../components/FullProduct/SellBlock";
 import InfoBlockSkeleton from "../components/FullProduct/Skeletons/InfoBlockSkeleton";
+import RelatedProducts from "../components/FullProduct/RelatedProducts";
 
 const FullProduct = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
+
   const [product, setProduct] = useState<FullProductProps | null>(null);
   const [isPrice, setIsPrice] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -62,6 +64,7 @@ const FullProduct = () => {
             <BreadCrumbs
               brand={product.brand}
               title={product.title}
+              category={product.variants[0].metadata.category}
               slug={product.slug}
             />
           )}
@@ -135,6 +138,7 @@ const FullProduct = () => {
           )}
         </div>
       </div>
+      {product && <RelatedProducts brand={product.brand} />}
     </div>
   );
 };
