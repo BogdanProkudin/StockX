@@ -1,5 +1,6 @@
 import { ChevronDown, ChevronUp } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 interface SizePopUpType {
   price: number;
 
@@ -17,6 +18,8 @@ const SizePopUp: React.FC<SizePopUpType> = ({
   variants,
   setIsPrice,
 }) => {
+  const [searchParams, setSearhParams] = useSearchParams();
+  const sizeQuery = searchParams.get("size");
   const sizeOrder = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
   const sizeSystem = "US";
   const mainPrice = Math.round(price);
@@ -44,6 +47,23 @@ const SizePopUp: React.FC<SizePopUpType> = ({
           Number(big.size.split("Y")[0]) - Number(small.size.split("Y")[0]),
       )
     : variants.sort((big, small) => Number(big.size) - Number(small.size));
+
+  useEffect(() => {
+    const sizeQueryValue = isValue.split(" ")[1];
+    setSearhParams(isValue === "All" ? {} : { size: sizeQueryValue });
+  }, [isValue]);
+  useEffect(() => {
+    if (sizeQuery) {
+      setIsValue(`${sizeSystem + " " + sizeQuery}`);
+      const priceByQuery = sortedVariants.find((el) =>
+        el.size.includes(sizeQuery),
+      )?.price;
+
+      if (setIsPrice && priceByQuery) setIsPrice(priceByQuery);
+    } else {
+      if (setIsPrice) setIsPrice(mainPrice);
+    }
+  }, []);
 
   return (
     <div className="relative">
