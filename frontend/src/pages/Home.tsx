@@ -108,7 +108,7 @@ const Home: React.FC = () => {
         />
       </div>
 
-      <div className="mb-28" ref={refAccessories}>
+      <div ref={refAccessories}>
         <MainSection
           mainTitle={accessories.title}
           items={accessories.data}
@@ -157,7 +157,7 @@ const Home: React.FC = () => {
           title={browseImageItems.title}
         />
       </div>
-      <div className="mb-32" ref={refControllers}>
+      <div ref={refControllers}>
         <MainSection
           mainTitle={controllersItems.title}
           items={controllersItems.data}
