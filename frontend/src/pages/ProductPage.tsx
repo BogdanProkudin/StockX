@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import BreadCrumbs from "../components/BreadCrumbs/BreadCrumbs";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { imageNotFound } from "../assets/images/imageNotFound";
 import { FullProductProps } from "../@types/userCardTypes";
@@ -15,11 +15,12 @@ import InfoBlock from "../components/FullProduct/InfoBlock";
 import SellBlock from "../components/FullProduct/SellBlock";
 import InfoBlockSkeleton from "../components/FullProduct/Skeletons/InfoBlockSkeleton";
 import RelatedProducts from "../components/FullProduct/RelatedProducts";
+import DescriptionBlock from "../components/FullProduct/DescriptionBlock";
 
 const FullProduct = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
-
+  const location = useLocation();
   const [product, setProduct] = useState<FullProductProps | null>(null);
   const [isPrice, setIsPrice] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -47,7 +48,7 @@ const FullProduct = () => {
     };
 
     fetchFullProduct();
-  }, []);
+  }, [location.pathname]);
   useEffect(() => {
     if (error) {
       navigate("/not-found");
@@ -71,7 +72,7 @@ const FullProduct = () => {
         </>
       )}
 
-      <div className="border-{#a4a4a4} mb-10 flex gap-2 border-b pb-5">
+      <div className="border-{#a4a4a4} mb-4 flex gap-2 border-b pb-5">
         <div className="w-[636px]">
           <h1 className="text-3xl font-bold">
             {isLoading ? <TitleSkeleton /> : product?.brand}
@@ -88,7 +89,7 @@ const FullProduct = () => {
               />
             ) : (
               <img
-                className="mt-2 h-[404px] w-[506px]"
+                className="mt-2 h-[404px] w-[486px]"
                 src={product?.image}
                 alt={product?.title}
               />
@@ -139,6 +140,7 @@ const FullProduct = () => {
         </div>
       </div>
       {product && <RelatedProducts brand={product.brand} />}
+      {product && <DescriptionBlock />}
     </div>
   );
 };

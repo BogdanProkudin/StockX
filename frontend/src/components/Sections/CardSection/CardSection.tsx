@@ -7,7 +7,7 @@ interface iCardProps {
 }
 const CardSection: React.FC<iCardProps> = ({ data }) => {
   return (
-    <div className="mb-10 mt-28 flex gap-5">
+    <div className="mb-10 mt-5 flex gap-5">
       {data.length < 1 ? (
         <CardSkeleton />
       ) : (
