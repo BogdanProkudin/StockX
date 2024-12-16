@@ -1,7 +1,7 @@
-import { userCardProps } from "./userCardTypes";
+import { productProps } from "./userCardTypes";
 
 export interface IRecentlyViewedItems {
-  data: userCardProps[];
+  data: productProps[];
   title: string;
   description: string;
 }

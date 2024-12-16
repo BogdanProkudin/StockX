@@ -37,7 +37,7 @@ export const mainApi = createApi({
         if (searchingValue && searchingValue.length > 0) {
           url += `/${encodeURIComponent(searchingValue)}`;
         } else {
-          url += "/supreme";
+          url += "/";
         }
 
         const queryParams = new URLSearchParams();
@@ -176,18 +176,20 @@ export const searchApi = createApi({
         categoryQuery,
         brandQuery,
         genderQuery,
+        trendingQuery,
       }: {
         searchingValue: string;
         categoryQuery: string | undefined;
         brandQuery: string | undefined;
         genderQuery: string | undefined;
+        trendingQuery: string | undefined;
       }) => {
         let url = "/searchProducts";
 
         if (searchingValue && searchingValue.length > 0) {
           url += `/${encodeURIComponent(searchingValue)}`;
         } else {
-          url += "/supreme";
+          url += "/all";
         }
 
         const queryParams = [];
@@ -202,7 +204,9 @@ export const searchApi = createApi({
         if (genderQuery) {
           queryParams.push(`gender=${encodeURIComponent(genderQuery)}`);
         }
-
+        if (trendingQuery) {
+          queryParams.push(`trending=${encodeURIComponent(trendingQuery)}`);
+        }
         if (queryParams.length > 0) {
           url += `?${queryParams.join("&")}`;
         }

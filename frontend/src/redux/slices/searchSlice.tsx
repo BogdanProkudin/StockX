@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { userCardProps } from "../../@types/userCardTypes";
+
 interface ISearchSlice {
-  foundedItems: userCardProps[];
+  foundedItems: productProps[];
   isLoading: boolean;
   isSearching: boolean;
   searchValue: string;
@@ -10,6 +10,7 @@ interface ISearchSlice {
   selectedSubCategory: string;
   selectedBrand: string;
   selectedGender: string;
+  selectedColor: string;
 }
 const initialState: ISearchSlice = {
   foundedItems: [],
@@ -21,6 +22,7 @@ const initialState: ISearchSlice = {
   selectedSubCategory: "",
   selectedBrand: "",
   selectedGender: "",
+  selectedColor: "",
 };
 const searchSlice = createSlice({
   name: "searchSlice",
@@ -53,6 +55,9 @@ const searchSlice = createSlice({
     setSelectedGender: (state, action: PayloadAction<string>) => {
       state.selectedGender = action.payload;
     },
+    setSelectedColor: (state, action: PayloadAction<string>) => {
+      state.selectedColor = action.payload;
+    },
     // Дополнительные редьюсеры для работы с состоянием, если нужны
   },
 });
@@ -66,6 +71,7 @@ export const {
   setSelectedSubCategory,
   setSelectedGender,
   setSelectedBrand,
+  setSelectedColor,
 } = searchSlice.actions;
 // Экспортируем редьюсер
 export default searchSlice.reducer;

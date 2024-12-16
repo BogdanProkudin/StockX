@@ -10,6 +10,8 @@ import { useEffect, useMemo } from "react";
 import BrandsList from "./SideBar/BrandsList/BrandsList";
 import GenderList from "./SideBar/GenderList/GenderList";
 import TrendingButton from "./SideBar/Trending/TrendingButton";
+import ColorItem from "./SideBar/ColorList/ColorItem";
+import ColorList from "./SideBar/ColorList/ColorList";
 
 const SearchedContent = () => {
   const [searchParams] = useSearchParams();
@@ -19,7 +21,7 @@ const SearchedContent = () => {
   const brandQuery = searchParams.get("brand") || "";
   const page = Number(searchParams.get("page")) || 1;
   const genderQuery = searchParams.get("gender") || "";
-
+  const trendingQuery = searchParams.get("trending") || "";
   const [fetchData, { data, isLoading, error }] = useLazySearchItemsQuery();
 
   // Мемоизируем параметры поиска
@@ -29,6 +31,7 @@ const SearchedContent = () => {
       categoryQuery: categoryQuery,
       brandQuery: brandQuery,
       genderQuery: genderQuery,
+      trendingQuery: trendingQuery,
     }),
     [searchParams],
   );
@@ -53,6 +56,7 @@ const SearchedContent = () => {
         <CategoryList />
         <BrandsList />
         <GenderList />
+        <ColorList />
       </div>
       <div className="h-full min-h-[500px] w-full max-w-[927px] p-2">
         <div className="flex h-10 justify-between">
