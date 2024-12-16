@@ -51,11 +51,11 @@ const FullProduct = () => {
 
     fetchFullProduct();
   }, [location.pathname]);
-  useEffect(() => {
-    if (error) {
-      navigate("/not-found");
-    }
-  }, [error, navigate]);
+  // useEffect(() => {
+  //   if (error) {
+  //     navigate("/not-found");
+  //   }
+  // }, [error, navigate]);
 
   return (
     <div className="w-[1120px]">
