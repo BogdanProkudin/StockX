@@ -11,13 +11,17 @@ import ProductCard from "../Cards/MainCard/MainCard";
 
 interface RelatedProductsProps {
   brand: string;
+  title: string;
 }
 
-const RelatedProducts: React.FC<RelatedProductsProps> = ({ brand }) => {
+const RelatedProducts: React.FC<RelatedProductsProps> = ({ brand, title }) => {
   const [product, setProduct] = useState<FullProductProps[] | null>(null);
 
   const [currentSlide, setCurrentSlide] = useState(0);
   const totalSlides = product ? product.length - 1 : 20;
+
+  const searchTitle = title.split(" ").slice(0, 3).join(" ");
+  console.log(searchTitle);
 
   const handleSlideChange = (swiper: SwiperType) => {
     setCurrentSlide(swiper.realIndex);
@@ -25,7 +29,7 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({ brand }) => {
   useEffect(() => {
     const fetchBrandProducts = async () => {
       try {
-        const apiUrl = `https://api.sneakersapi.dev/api/v2/products?search=${brand}`;
+        const apiUrl = `https://api.sneakersapi.dev/api/v2/products?brand=${brand}&search=${searchTitle}`;
         const { data } = await axios.get(apiUrl, {
           headers: { Authorization: "f-2895d084cba594772c79255a5fb658d0" },
         });
@@ -40,7 +44,7 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({ brand }) => {
   console.log(currentSlide === 0);
 
   return (
-    <div className="border-{#a4a4a4} mb-10 border-b">
+    <div className="border-{#a4a4a4} mb-5 border-b">
       <h1 className="mb-4 text-xl font-bold">Related Products</h1>
       <div className="relative flex">
         <div

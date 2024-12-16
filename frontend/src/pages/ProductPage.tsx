@@ -33,6 +33,7 @@ const FullProduct = () => {
       try {
         setIsLoading(true);
         setError(null);
+        document.body.style.overflow = "hidden";
         const apiUrl = `https://api.sneakersapi.dev/api/v2/products/${slug}`;
         const { data } = await axios.get(apiUrl, {
           headers: { Authorization: "f-2895d084cba594772c79255a5fb658d0" },
@@ -43,6 +44,7 @@ const FullProduct = () => {
         console.error(error);
         setError("Info failed try again");
       } finally {
+        document.body.style.overflow = "auto";
         setIsLoading(false);
       }
     };
@@ -139,8 +141,18 @@ const FullProduct = () => {
           )}
         </div>
       </div>
-      {product && <RelatedProducts brand={product.brand} />}
-      {product && <DescriptionBlock />}
+      {product && (
+        <RelatedProducts title={product.title} brand={product.brand} />
+      )}
+      {product && (
+        <DescriptionBlock
+          description={product.description}
+          gender={product.gender}
+          color={product.color}
+          sku={product.sku}
+          date={product.release_dates}
+        />
+      )}
     </div>
   );
 };
