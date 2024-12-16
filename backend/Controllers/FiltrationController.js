@@ -22,12 +22,23 @@ export const getSuggestionItemsCount = async (result) => {
 export const searchProducts = async (req, res) => {
   try {
     const { searchQuery } = req.params;
-    const { category, brand, gender } = req.query;
+    const { category, brand, gender, trending } = req.query;
 
-    console.log("Received request:", { searchQuery, category, brand, gender });
+    console.log("Received request:", {
+      searchQuery,
+      category,
+      brand,
+      gender,
+      trending,
+    });
 
     const baseUrl = "https://api.sneakersapi.dev/api/v2/products?page=1";
-    const queryString = buildQueryParams({ brand, category, searchQuery });
+    const queryString = buildQueryParams({
+      brand,
+      category,
+      searchQuery,
+      trending,
+    });
     const apiUrl = `${baseUrl}&${queryString}`;
 
     console.log("API Request URL:", apiUrl);
