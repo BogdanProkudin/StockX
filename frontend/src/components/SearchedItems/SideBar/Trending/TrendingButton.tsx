@@ -33,7 +33,7 @@ const TrendingButton: React.FC<TrendingButtonProps> = ({ onChange }) => {
     } else {
       setIsChecked(false);
     }
-  }, []);
+  }, [searchParams]);
 
   return (
     <div className="flex h-full w-full items-center border-b-2 border-t-2 border-E2E8F0 p-2">

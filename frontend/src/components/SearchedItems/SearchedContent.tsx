@@ -22,6 +22,7 @@ const SearchedContent = () => {
   const page = Number(searchParams.get("page")) || 1;
   const genderQuery = searchParams.get("gender") || "";
   const trendingQuery = searchParams.get("trending") || "";
+  const colorQuery = searchParams.get("color") || "";
   const [fetchData, { data, isLoading, error }] = useLazySearchItemsQuery();
 
   // Мемоизируем параметры поиска
@@ -32,6 +33,7 @@ const SearchedContent = () => {
       brandQuery: brandQuery,
       genderQuery: genderQuery,
       trendingQuery: trendingQuery,
+      colorQuery: colorQuery,
     }),
     [searchParams],
   );

@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../../redux/hook";
 import {
   setCategoryNames,
   setSelectedBrand,
+  setSelectedColor,
   setSelectedGender,
   setSelectedSubCategory,
 } from "../../../redux/slices/searchSlice";
@@ -29,6 +30,7 @@ const ChosenCategoryList: React.FC<ChosenCategoryListProps> = React.memo(
       const brandTerm = searchParams.get("brand");
       const genderTerm = searchParams.get("gender");
       const trendingTerm = searchParams.get("trending");
+      const colorTerm = searchParams.get("color");
       const defaultCategories = [];
 
       if (
@@ -36,7 +38,8 @@ const ChosenCategoryList: React.FC<ChosenCategoryListProps> = React.memo(
         categoryTerm ||
         brandTerm ||
         genderTerm ||
-        trendingTerm
+        trendingTerm ||
+        colorTerm
       ) {
         defaultCategories.push("Clear All");
       }
@@ -59,6 +62,10 @@ const ChosenCategoryList: React.FC<ChosenCategoryListProps> = React.memo(
       }
       if (trendingTerm) {
         defaultCategories.push(trendingTerm);
+      }
+      if (colorTerm) {
+        dispatch(setSelectedColor(colorTerm));
+        defaultCategories.push(colorTerm);
       }
 
       dispatch(setCategoryNames(defaultCategories));

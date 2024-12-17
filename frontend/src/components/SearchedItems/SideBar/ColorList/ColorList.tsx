@@ -8,7 +8,21 @@ import { useAppDispatch } from "../../../../redux/hook";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 const ColorList = () => {
-  const colors = ["#000000", "#ffffff", "#ff0000", "#00ff00", "#0000ff"];
+  const subColors = [
+    "Black",
+    "White",
+    "Blue",
+    "Pink",
+    "Red",
+    "Brown",
+    "Grey",
+    "Yellow",
+    "Purple",
+    "Orange",
+    "Green",
+    "Beige",
+  ];
+
   const [isShowDropDown, setIsShowDropDown] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -24,14 +38,14 @@ const ColorList = () => {
     [dispatch, searchParams, navigate],
   );
   return (
-    <div>
+    <>
       <ColorItem
         setIsShowDropDown={setIsShowDropDown}
         isShowDropDown={isShowDropDown}
         handleSelectSubColor={handleSelectSubColor}
-        color={""}
+        subColors={subColors}
       />
-    </div>
+    </>
   );
 };
 
