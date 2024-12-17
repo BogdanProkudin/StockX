@@ -10,6 +10,7 @@ import {
   setIsSearching,
   setSearchValue,
   setSelectedBrand,
+  setSelectedColor,
   setSelectedGender,
   setSelectedSubCategory,
 } from "../../../redux/slices/searchSlice";
@@ -29,6 +30,7 @@ const HeaderInput: React.FC = () => {
       dispatch(setSelectedBrand(""));
       dispatch(setSelectedSubCategory(""));
       dispatch(setSelectedGender(""));
+      dispatch(setSelectedColor(""));
       handleSearch({ query: "", isSearching: false });
       dispatch(setCategoryNames(["Clear All", `Search: "${searchValue}"`]));
     }

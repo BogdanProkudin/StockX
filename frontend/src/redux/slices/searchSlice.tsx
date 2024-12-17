@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { productProps } from "../../@types/userCardTypes";
 
 interface ISearchSlice {
   foundedItems: productProps[];

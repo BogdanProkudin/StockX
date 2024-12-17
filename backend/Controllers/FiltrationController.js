@@ -22,7 +22,7 @@ export const getSuggestionItemsCount = async (result) => {
 export const searchProducts = async (req, res) => {
   try {
     const { searchQuery } = req.params;
-    const { category, brand, gender, trending } = req.query;
+    const { category, brand, gender, trending, color } = req.query;
 
     console.log("Received request:", {
       searchQuery,
@@ -52,6 +52,10 @@ export const searchProducts = async (req, res) => {
     const filteredProducts = gender
       ? products.filter(
           (item) => item.gender.toLowerCase() === gender.toLowerCase()
+        )
+      : color
+      ? products.filter((item) =>
+          item.color.toLowerCase().includes(color.toLowerCase())
         )
       : products;
 

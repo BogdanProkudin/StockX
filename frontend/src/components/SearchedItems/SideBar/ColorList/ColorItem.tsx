@@ -1,15 +1,14 @@
 import { useCallback } from "react";
 import { useAppSelector } from "../../../../redux/hook";
-import { stat } from "fs";
 
 interface ColorItemProps {
-  color: string;
   handleSelectSubColor: (selectedColor: string) => void;
   setIsShowDropDown: React.Dispatch<React.SetStateAction<boolean>>;
   isShowDropDown: boolean;
+  subColors: string[];
 }
 const ColorItem: React.FC<ColorItemProps> = ({
-  color,
+  subColors,
   handleSelectSubColor,
   setIsShowDropDown,
   isShowDropDown,
@@ -32,7 +31,15 @@ const ColorItem: React.FC<ColorItemProps> = ({
         <p className="select-none pb-0 text-base font-semibold text-blackTextColor">
           {"COLOR"}
         </p>
-        {selectedColor.length > 1 && <span>{selectedColor}</span>}
+        {selectedColor.length > 1 && (
+          <div className="flex items-center gap-2">
+            <span>{selectedColor}</span>
+            <div
+              style={{ backgroundColor: selectedColor }}
+              className="h-5 w-5 rounded-full border-2"
+            ></div>
+          </div>
+        )}
         <svg
           viewBox="0 0 50 50"
           focusable="false"
@@ -50,11 +57,24 @@ const ColorItem: React.FC<ColorItemProps> = ({
 
       <div
         id="subcategory-list"
-        className={`flex flex-col gap-3 overflow-y-auto pl-4 transition-all duration-300 ease-in-out ${
+        className={`flex flex-col gap-3 overflow-hidden overflow-y-auto pl-4 transition-all duration-300 ease-in-out ${
           isShowDropDown ? "max-h-64 pb-3" : "max-h-0"
         }`}
         role="list"
-      ></div>
+      >
+        <div className="grid grid-cols-4 gap-3 overflow-hidden">
+          {subColors.map((color) => (
+            <div className="flex cursor-pointer flex-col items-center gap-2 overflow-hidden">
+              <div
+                style={{ backgroundColor: color }}
+                className="h-10 w-10 rounded-full border-2"
+                onClick={() => handleSelectSubColor(color)}
+              ></div>
+              <span>{color}</span>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };

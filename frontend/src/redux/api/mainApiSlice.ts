@@ -177,12 +177,14 @@ export const searchApi = createApi({
         brandQuery,
         genderQuery,
         trendingQuery,
+        colorQuery,
       }: {
         searchingValue: string;
         categoryQuery: string | undefined;
         brandQuery: string | undefined;
         genderQuery: string | undefined;
         trendingQuery: string | undefined;
+        colorQuery: string | undefined;
       }) => {
         let url = "/searchProducts";
 
@@ -206,6 +208,9 @@ export const searchApi = createApi({
         }
         if (trendingQuery) {
           queryParams.push(`trending=${encodeURIComponent(trendingQuery)}`);
+        }
+        if (colorQuery) {
+          queryParams.push(`color=${encodeURIComponent(colorQuery)}`);
         }
         if (queryParams.length > 0) {
           url += `?${queryParams.join("&")}`;
