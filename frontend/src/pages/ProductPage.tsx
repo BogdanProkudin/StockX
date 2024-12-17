@@ -16,6 +16,8 @@ import SellBlock from "../components/FullProduct/SellBlock";
 import InfoBlockSkeleton from "../components/FullProduct/Skeletons/InfoBlockSkeleton";
 import RelatedProducts from "../components/FullProduct/RelatedProducts";
 import DescriptionBlock from "../components/FullProduct/DescriptionBlock";
+import ReviewBlock from "../components/FullProduct/ReviewBlock";
+import MonthHistoricalBlock from "../components/FullProduct/MonthHistoricalBlock";
 
 const FullProduct = () => {
   const { slug } = useParams();
@@ -26,7 +28,10 @@ const FullProduct = () => {
   const [error, setError] = useState<string | null>(null);
   const [sellVisible, setSellVisible] = useState(false);
   const [sellPrice, setSellPrice] = useState(0);
+  const [soldItems, setSoldItems] = useState(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  console.log(slug);
+
   useEffect(() => {
     window.scrollTo(0, 0);
     const fetchFullProduct = async () => {
@@ -51,11 +56,12 @@ const FullProduct = () => {
 
     fetchFullProduct();
   }, [location.pathname]);
-  // useEffect(() => {
-  //   if (error) {
-  //     navigate("/not-found");
-  //   }
-  // }, [error, navigate]);
+
+  useEffect(() => {
+    if (error) {
+      navigate("/not-found");
+    }
+  }, [error, navigate]);
 
   return (
     <div className="w-[1120px]">
@@ -126,6 +132,7 @@ const FullProduct = () => {
               min_price={product?.min_price}
               isPrice={isPrice}
               loading={isLoading}
+              setSoldItems={setSoldItems}
             />
           )}
 
@@ -151,6 +158,15 @@ const FullProduct = () => {
           color={product.color}
           sku={product.sku}
           date={product.release_dates}
+        />
+      )}
+      {product && <ReviewBlock />}
+      {product && (
+        <MonthHistoricalBlock
+          averagePrice={product.avg_price}
+          max={product.max_price}
+          min={product.min_price}
+          soldItems={soldItems}
         />
       )}
     </div>

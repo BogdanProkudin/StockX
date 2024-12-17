@@ -11,13 +11,14 @@ interface PriceBlockProps {
   max_price: number | undefined;
   isPrice: number | null;
   loading: boolean;
+  setSoldItems: (value: number) => void;
 }
 const PriceBlock: React.FC<PriceBlockProps> = ({
   price,
   min_price,
   max_price,
   isPrice,
-
+  setSoldItems,
   loading,
 }) => {
   const totalPrice = Math.round(price ?? 0);
@@ -39,6 +40,7 @@ const PriceBlock: React.FC<PriceBlockProps> = ({
   let randomItems;
   if (totalPrice && maxPrice !== 0) {
     randomItems = GenerateSoldItem(totalPrice, maxPrice);
+    setSoldItems(randomItems);
   }
 
   return (
@@ -74,7 +76,7 @@ const PriceBlock: React.FC<PriceBlockProps> = ({
       </div>
       <div className="mt-5 flex items-center justify-between border-t pb-1 pt-3">
         <span className="flex font-semibold">
-          Last Sale: €{loading ? <LastPriceSkeleton /> : lastSale}
+          Last Sale: {loading ? <LastPriceSkeleton /> : "€" + lastSale}
         </span>
         <span className="cursor-pointer border-b-2 border-[#006340] text-sm font-bold text-[#006340]">
           View Market Data
