@@ -4,6 +4,7 @@ import { GenerateSoldItem } from "../../utils/updateSoldItems";
 import model from "../../assets/images/soldModel.gif";
 import PriceSkeleton from "./Skeletons/PriceSkeleton";
 import LastPriceSkeleton from "./Skeletons/LastPriceSkeleton";
+
 interface PriceBlockProps {
   price: number | undefined;
 

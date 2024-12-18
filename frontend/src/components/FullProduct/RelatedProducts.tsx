@@ -21,7 +21,6 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({ brand, title }) => {
   const totalSlides = product ? product.length - 1 : 20;
 
   const searchTitle = title.split(" ").slice(0, 3).join(" ");
-  console.log(searchTitle);
 
   const handleSlideChange = (swiper: SwiperType) => {
     setCurrentSlide(swiper.realIndex);
@@ -41,7 +40,6 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({ brand, title }) => {
 
     fetchBrandProducts();
   }, []);
-  console.log(currentSlide === 0);
 
   return (
     <div className="border-{#a4a4a4} mb-5 border-b">

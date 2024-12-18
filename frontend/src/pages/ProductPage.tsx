@@ -59,7 +59,7 @@ const FullProduct = () => {
 
   useEffect(() => {
     if (error) {
-      navigate("/not-found");
+      navigate("/not-found", { replace: true });
     }
   }, [error, navigate]);
 
