@@ -42,12 +42,11 @@ const DescriptionBlock: React.FC<DescriptionBlockProps> = ({
   const onClickFullText = () => {
     setFullText(!fullText);
   };
+
   return (
     <div className="border-{#a4a4a4} mb-5 border-b">
       <h1 className="mb-4 text-xl font-bold">Product Details</h1>
-      <ul
-        className={`duration-600 relative flex justify-between transition-[max-height] ease-in-out ${fullText ? "max-h-[1000px] overflow-visible" : "max-h-[110px] overflow-hidden"} `}
-      >
+      <ul className={`relative flex justify-between`}>
         <div className="w-[350px]">
           {desArr.map((obj, id) => (
             <li className="mb-2 flex items-center justify-between" key={id}>
@@ -59,9 +58,12 @@ const DescriptionBlock: React.FC<DescriptionBlockProps> = ({
         <div className="max-w-[700px]">
           <span className="text-base font-bold">Product Description:</span>
           <div
-            className={`mt-1 ${fullText ? "text-black" : "text-[#5f5f5f]"}`}
+            className={`mt-1 transition-[max-height] duration-[400ms] ease-in-out ${fullText ? "max-h-[500px] text-black" : "max-h-[110px] overflow-hidden text-[#5f5f5f]"}`}
             dangerouslySetInnerHTML={{ __html: description }}
           />
+          {!fullText && (
+            <div className="absolute inset-x-0 bottom-0 h-[150px] bg-gradient-to-t from-white to-transparent"></div>
+          )}
         </div>
       </ul>
       <div className="mb-2 mt-5 flex w-full justify-center">
