@@ -11,6 +11,7 @@ import { useSearchParams } from "react-router-dom";
 import ChosenCategoryItem from "./ChosenCaregoryItem";
 import clsx from "clsx";
 import ChosenCategorySkeleton from "./ChosenCategoryItemSkeleton";
+import { color } from "framer-motion";
 
 interface ChosenCategoryListProps {
   isLoading: boolean;
@@ -23,7 +24,9 @@ const ChosenCategoryList: React.FC<ChosenCategoryListProps> = React.memo(
     );
     const [searchParams] = useSearchParams();
     const dispatch = useAppDispatch();
-
+    const selectedColor = useAppSelector(
+      (state) => state.searchSlice.selectedColor,
+    );
     useEffect(() => {
       const searchTerm = searchParams.get("s");
       const categoryTerm = searchParams.get("category");
@@ -65,6 +68,7 @@ const ChosenCategoryList: React.FC<ChosenCategoryListProps> = React.memo(
       }
       if (colorTerm) {
         dispatch(setSelectedColor(colorTerm));
+
         defaultCategories.push(colorTerm);
       }
 
@@ -92,6 +96,7 @@ const ChosenCategoryList: React.FC<ChosenCategoryListProps> = React.memo(
               ))
           : categoryNames.map((category) => (
               <ChosenCategoryItem
+                selectedColor={selectedColor}
                 key={`category-${category}`}
                 categoryName={category}
               />

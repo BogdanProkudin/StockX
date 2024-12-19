@@ -177,11 +177,13 @@ export const searchApi = createApi({
         brandQuery,
         genderQuery,
         trendingQuery,
+        page,
         colorQuery,
       }: {
         searchingValue: string;
         categoryQuery: string | undefined;
         brandQuery: string | undefined;
+        page: number | undefined;
         genderQuery: string | undefined;
         trendingQuery: string | undefined;
         colorQuery: string | undefined;
@@ -199,7 +201,9 @@ export const searchApi = createApi({
         if (categoryQuery) {
           queryParams.push(`category=${encodeURIComponent(categoryQuery)}`);
         }
-
+        if (page) {
+          queryParams.push(`page=${encodeURIComponent(page)}`);
+        }
         if (brandQuery) {
           queryParams.push(`brand=${encodeURIComponent(brandQuery)}`);
         }

@@ -22,7 +22,7 @@ export const getSuggestionItemsCount = async (result) => {
 export const searchProducts = async (req, res) => {
   try {
     const { searchQuery } = req.params;
-    const { category, brand, gender, trending, color } = req.query;
+    const { category, brand, gender, trending, color, page } = req.query;
 
     console.log("Received request:", {
       searchQuery,
@@ -32,7 +32,7 @@ export const searchProducts = async (req, res) => {
       trending,
     });
 
-    const baseUrl = "https://api.sneakersapi.dev/api/v2/products?page=1";
+    const baseUrl = `https://api.sneakersapi.dev/api/v2/products?page=${page}`;
     const queryString = buildQueryParams({
       brand,
       category,
