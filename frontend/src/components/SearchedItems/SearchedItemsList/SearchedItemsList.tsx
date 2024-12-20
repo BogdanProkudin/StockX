@@ -27,15 +27,10 @@ const SearchedItemsList: React.FC<SearchedItemsListProps> = ({
     return (
       <div className="mt-4 text-center">No items found. Try another page</div>
     );
-  const handlePageClick = (event: { selected: number }) => {
-    const newOffset = (event.selected * 1) % items.length;
+  const handlePageClick = (selectedPage: number) => {
     const newSearchParams = new URLSearchParams(searchParams);
-    newSearchParams.set("page", event.selected.toString());
+    newSearchParams.set("page", selectedPage.toString());
     setSearchParams(newSearchParams);
-
-    console.log(
-      `User requested page number ${event.selected}, which is offset ${newOffset}`,
-    );
   };
   const sortedItems = sortItems(items, sortQuery);
 
