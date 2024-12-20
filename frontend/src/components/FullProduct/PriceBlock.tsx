@@ -38,7 +38,7 @@ const PriceBlock: React.FC<PriceBlockProps> = ({
     }
   }
   const maxPrice = Math.round(max_price ?? 0);
-  let randomItems;
+  let randomItems: number = 0;
   if (totalPrice && maxPrice !== 0) {
     randomItems = GenerateSoldItem(totalPrice, maxPrice);
     setSoldItems(randomItems);
