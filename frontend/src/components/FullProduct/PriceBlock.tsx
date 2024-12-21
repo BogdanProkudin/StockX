@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { GenerateSoldItem } from "../../utils/updateSoldItems";
 
 import model from "../../assets/images/soldModel.gif";
 import PriceSkeleton from "./Skeletons/PriceSkeleton";
 import LastPriceSkeleton from "./Skeletons/LastPriceSkeleton";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 interface PriceBlockProps {
   price: number | undefined;
@@ -22,9 +23,18 @@ const PriceBlock: React.FC<PriceBlockProps> = ({
   setSoldItems,
   loading,
 }) => {
+  const [isBuy, setIsBuy] = useState(false);
+  const navigate = useNavigate();
+  const onClickBuy = () => {
+    setIsBuy(true);
+  };
+
   const totalPrice = Math.round(price ?? 0);
   const lastSalePrice = Math.round(min_price ?? 0);
   let lastSale: number = lastSalePrice;
+  let randomItems: number = 0;
+  const maxPrice = Math.round(max_price ?? 0);
+
   if (lastSalePrice === totalPrice) {
     if (totalPrice < 100) {
       const random = Math.floor(Math.random() * 30);
@@ -37,12 +47,11 @@ const PriceBlock: React.FC<PriceBlockProps> = ({
       lastSale = lastSale + random;
     }
   }
-  const maxPrice = Math.round(max_price ?? 0);
-  let randomItems: number = 0;
-  if (totalPrice && maxPrice !== 0) {
-    randomItems = GenerateSoldItem(totalPrice, maxPrice);
-    setSoldItems(randomItems);
-  }
+
+  // if (totalPrice && maxPrice !== 0) {
+  //   randomItems = GenerateSoldItem(totalPrice, maxPrice);
+  //   setSoldItems(randomItems);
+  // }
 
   return (
     <div className="rounded-xl border border-[#a4a4a4] p-4">
@@ -71,7 +80,10 @@ const PriceBlock: React.FC<PriceBlockProps> = ({
         <button className="w-[212px] rounded-full border border-black px-8 py-[10px] font-bold transition-all duration-300 ease-in-out hover:bg-black hover:text-white">
           Place Bid
         </button>
-        <button className="w-[212px] rounded-full border bg-[#006340] px-8 py-[10px] font-bold text-white transition-all duration-300 ease-in-out hover:opacity-80">
+        <button
+          onClick={onClickBuy}
+          className="w-[212px] rounded-full border bg-[#006340] px-8 py-[10px] font-bold text-white transition-all duration-300 ease-in-out hover:opacity-80"
+        >
           Buy Now
         </button>
       </div>
