@@ -23,7 +23,7 @@ const BreadCrumbs: React.FC<BreadCrumbsProps> = ({
       name: "Home",
     },
     {
-      link: `/search?s=${type}`,
+      link: `/search?category=${type}`,
       name: type,
     },
     {

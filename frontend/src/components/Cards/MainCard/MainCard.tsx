@@ -4,6 +4,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { Link } from "react-router-dom";
 
 interface ProductCardProps {
+  id?: string;
   image: string;
   slug: string;
   title: string;
@@ -11,6 +12,7 @@ interface ProductCardProps {
   min_price: number;
 }
 const ProductCard: React.FC<ProductCardProps> = ({
+  id,
   image,
   slug,
   title,
@@ -25,7 +27,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
   return (
     <Link
-      to={`/${slug}`}
+      to={`/${id}`}
       className="relative flex h-full w-[190px] cursor-pointer flex-col items-center"
     >
       <button onClick={onClickFavorite} className="absolute right-5">
