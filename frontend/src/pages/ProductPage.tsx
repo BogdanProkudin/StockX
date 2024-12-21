@@ -134,6 +134,7 @@ const FullProduct = () => {
             <SellBlock sellPrice={sellPrice} />
           ) : (
             <PriceBlock
+              id={product?.id}
               price={product?.avg_price}
               max_price={product?.max_price}
               min_price={product?.min_price}

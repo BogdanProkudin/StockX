@@ -14,6 +14,7 @@ import FullProduct from "./pages/ProductPage";
 
 import FilterPage from "./pages/FilterPage";
 import NotFound from "./pages/NotFound";
+import Cart from "./pages/Cart";
 
 type ComponentType = React.FC;
 
@@ -39,7 +40,7 @@ function App() {
         <Route path="not-found" element={<NotFound />} />
         <Route path="*" element={<NotFound />} />
       </Route>
-
+      <Route path="/buy/:id" element={<Cart />} />
       <Route
         path="/auth"
         element={userToken ? <Navigate to="/profile" /> : <Auth />}

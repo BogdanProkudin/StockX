@@ -19,7 +19,6 @@ export const useFetchBrandSection = (section: string) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    console.log("SECTIONNAME", section, "DATA", data);
     if (data) {
       if (data.title === "Addidas Collection") {
         dispatch(setAddidasItems(data));

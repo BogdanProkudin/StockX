@@ -11,7 +11,6 @@ export const useFetchInstagramSection = (section: string) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    console.log("SECTIONNAME", section, "DATA", data);
     if (data) {
       dispatch(setInstagramItems(data));
     }

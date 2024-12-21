@@ -7,8 +7,8 @@ import LastPriceSkeleton from "./Skeletons/LastPriceSkeleton";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 interface PriceBlockProps {
+  id: string | undefined;
   price: number | undefined;
-
   min_price: number | undefined;
   max_price: number | undefined;
   isPrice: number | null;
@@ -17,22 +17,21 @@ interface PriceBlockProps {
 }
 const PriceBlock: React.FC<PriceBlockProps> = ({
   price,
+  id,
   min_price,
   max_price,
   isPrice,
   setSoldItems,
   loading,
 }) => {
-  const [isBuy, setIsBuy] = useState(false);
+  const [randomItems, setRandomItems] = useState(0);
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const onClickBuy = () => {
-    setIsBuy(true);
-  };
-
+  const sizeQuery = searchParams.get("size");
   const totalPrice = Math.round(price ?? 0);
   const lastSalePrice = Math.round(min_price ?? 0);
   let lastSale: number = lastSalePrice;
-  let randomItems: number = 0;
+
   const maxPrice = Math.round(max_price ?? 0);
 
   if (lastSalePrice === totalPrice) {
@@ -48,11 +47,17 @@ const PriceBlock: React.FC<PriceBlockProps> = ({
     }
   }
 
-  // if (totalPrice && maxPrice !== 0) {
-  //   randomItems = GenerateSoldItem(totalPrice, maxPrice);
-  //   setSoldItems(randomItems);
-  // }
+  useEffect(() => {
+    if (totalPrice && maxPrice !== 0) {
+      const soldItems = GenerateSoldItem(totalPrice, maxPrice);
+      setRandomItems(soldItems);
+      setSoldItems(soldItems);
+    }
+  }, [totalPrice, maxPrice]);
 
+  const onClickBuy = () => {
+    navigate(`/buy/${id}?size=${sizeQuery}&isBuy=true`);
+  };
   return (
     <div className="rounded-xl border border-[#a4a4a4] p-4">
       <div className="flex items-center justify-between">
