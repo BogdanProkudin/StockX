@@ -73,6 +73,7 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({ brand, title }) => {
           {product?.map((obj, id) => (
             <SwiperSlide className="mb-4 flex justify-center" key={id}>
               <ProductCard
+                id={obj.id}
                 image={obj.image}
                 slug={obj.slug}
                 title={obj.title}
