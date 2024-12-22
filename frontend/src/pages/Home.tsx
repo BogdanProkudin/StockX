@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import UserSection from "../components/Sections/UserSection/UserSection";
 import MainSection from "../components/Sections/MainSection/MainSection";
@@ -37,7 +37,9 @@ const Home: React.FC = () => {
     bottSlider,
   } = useAppSelector((state) => state.homeItems);
   const { recommendedItems, recentlyViewed, userError } = useFetchUserSection();
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const { ref: refTopSlider } = useFetchSliderSection("topSlider");
   const { ref: refBottSlider } = useFetchSliderSection("bottSlider");
   const { ref: refAdiddas } = useFetchBrandSection("addidas");

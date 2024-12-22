@@ -39,6 +39,7 @@
     "react-select": "^5.8.3",
     "saas": "^1.0.0",
     "swiper": "^11.1.14",
+    "usehooks-ts": "^3.1.0",
     "yup": "^1.4.0"
   },
   "devDependencies": {

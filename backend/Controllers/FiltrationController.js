@@ -73,17 +73,19 @@ export const searchProducts = async (req, res) => {
 export const loadMoreItems = async (req, res) => {
   try {
     const { sectionName, page } = req.params;
-    const url = `https://api.sneakersapi.dev/search?query=${sectionName}&page=${page}`;
-    axios
-      .get(url)
-      .then((response) => {
-        return res.status(200).json({
-          data: response.data.hits,
-        });
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
+    const url = `https://api.sneakersapi.dev/api/v2/products?search=${sectionName}&page=${page}`;
+    console.log("URK", url);
+
+    const response = await fetchProducts(url);
+    const products = Array.isArray(response.data?.data)
+      ? response.data.data
+      : [];
+    console.log(`API Response: ${products.length} items retrieved`);
+    return res.status(200).json({
+      data: products,
+
+      requestId: generateRequestId(),
+    });
   } catch (err) {
     console.log("ERROR WHILE GETTING MORE ITEMS", err);
     return res.status(404).json({ message: "Server Error" });

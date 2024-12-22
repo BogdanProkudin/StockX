@@ -18,7 +18,7 @@ const SearchedItem: React.FC<SearchItem> = ({
   return (
     <>
       <Link
-        to={`/${slug}`}
+        to={`/${title}`}
         className="relative flex h-full w-[200px] cursor-pointer flex-col items-center"
       >
         <button onClick={onClickFavorite} className="absolute right-5">

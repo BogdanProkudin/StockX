@@ -20,7 +20,7 @@ import ReviewBlock from "../components/FullProduct/ReviewBlock";
 import MonthHistoricalBlock from "../components/FullProduct/MonthHistoricalBlock";
 
 const FullProduct = () => {
-  const { id } = useParams();
+  const { title } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
   const [product, setProduct] = useState<FullProductProps | null>(null);
@@ -31,7 +31,6 @@ const FullProduct = () => {
   const [sellPrice, setSellPrice] = useState(0);
   const [soldItems, setSoldItems] = useState(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  console.log(id);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -40,18 +39,12 @@ const FullProduct = () => {
         setIsLoading(true);
         setError(null);
         document.body.style.overflow = "hidden";
-        const apiUrl = `https://api.sneakersapi.dev/api/v2/products/${id}`;
+        const apiUrl = `https://api.sneakersapi.dev/api/v2/products?search=${title}`;
         const { data } = await axios.get(apiUrl, {
           headers: { Authorization: "f-2895d084cba594772c79255a5fb658d0" },
         });
-        setProduct(data.data);
-        const titleProduct = data.data.title;
-        const getCategory = `https://api.sneakersapi.dev/api/v2/products?search=${titleProduct}`;
-        const categoryRes = await axios.get(getCategory, {
-          headers: { Authorization: "f-2895d084cba594772c79255a5fb658d0" },
-        });
-
-        setCategory(categoryRes.data.data[0].category);
+        setProduct(data.data[0]);
+        setCategory(data.data[0].category);
       } catch (error) {
         console.error(error);
         setError("Info failed try again");

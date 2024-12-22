@@ -27,7 +27,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
   return (
     <Link
-      to={`/${id}`}
+      to={`/${title}`}
       className="relative flex h-full w-[190px] cursor-pointer flex-col items-center"
     >
       <button onClick={onClickFavorite} className="absolute right-5">
