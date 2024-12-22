@@ -34,18 +34,20 @@ const PriceBlock: React.FC<PriceBlockProps> = ({
 
   const maxPrice = Math.round(max_price ?? 0);
 
-  if (lastSalePrice === totalPrice) {
-    if (totalPrice < 100) {
-      const random = Math.floor(Math.random() * 30);
-      lastSale = lastSale + random;
-    } else if (totalPrice < 500) {
-      const random = Math.floor(Math.random() * 300);
-      lastSale = lastSale + random;
-    } else {
-      const random = Math.floor(Math.random() * 600);
-      lastSale = lastSale + random;
+  useEffect(() => {
+    if (lastSalePrice === totalPrice) {
+      if (totalPrice < 100) {
+        const random = Math.floor(Math.random() * 30);
+        lastSale = lastSale + random;
+      } else if (totalPrice < 500) {
+        const random = Math.floor(Math.random() * 300);
+        lastSale = lastSale + random;
+      } else {
+        const random = Math.floor(Math.random() * 600);
+        lastSale = lastSale + random;
+      }
     }
-  }
+  }, []);
 
   useEffect(() => {
     if (totalPrice && maxPrice !== 0) {

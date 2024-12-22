@@ -26,7 +26,7 @@ const SearchedItem: React.FC<SearchedItemProps> = ({
     dispatch(setIsSearching(false));
   };
   return (
-    <Link onClick={handleClick} to={`/${formattedUrl}`}>
+    <Link onClick={handleClick} to={`/${name}`}>
       <div className="flex w-full cursor-pointer items-center border-b-2 border-b-lightGray transition-all duration-100 hover:border-r-8 hover:border-r-green-900">
         <img className="m-5 h-28 w-32" src={image} />
         <div className="flex flex-col">
