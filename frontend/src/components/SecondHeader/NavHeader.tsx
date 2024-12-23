@@ -3,12 +3,13 @@ import styles from "./styles.module.scss";
 import { Link } from "react-router-dom";
 import { arrHeaderMainLinks } from "../../assets/SecondHeader/HeaderDropDownLinks";
 import Dropdown from "./Dropdown/Dropdown";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const NavigationHeader = () => {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
   const [isMenuHovered, setIsMenuHovered] = useState(false);
-
+  const isLargeScreen = useMediaQuery("(min-width: 770px)");
   const [activeLinkName, setActiveLinkName] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [dropdownAnimatingLink, setDropdownAnimatingLink] = useState("");
@@ -74,26 +75,30 @@ const NavigationHeader = () => {
                 className={styles.navheader_links}
               >
                 <Link to={obj.path}>{obj.name}</Link>
-                <div
-                  className={`${styles.header_navigation_item_line} ${
-                    activeLinkName === obj.name ? styles.active : ""
-                  }`}
-                ></div>
+                {isLargeScreen && (
+                  <div
+                    className={`${styles.header_navigation_item_line} ${
+                      activeLinkName === obj.name ? styles.active : ""
+                    }`}
+                  ></div>
+                )}
               </li>
-              {isDropdownVisible && dropdownAnimatingLink === obj.name && (
-                <li
-                  onMouseEnter={handleDropdownMouseEnter}
-                  onMouseLeave={handleDropdownMouseLeave}
-                  className={`${styles.sub_navigation} ${
-                    isDropdownVisible ? styles.active : ""
-                  }`}
-                >
-                  <Dropdown
-                    subLinkName={dropdownAnimatingLink}
-                    content={obj.content}
-                  />
-                </li>
-              )}
+              {isLargeScreen &&
+                isDropdownVisible &&
+                dropdownAnimatingLink === obj.name && (
+                  <li
+                    onMouseEnter={handleDropdownMouseEnter}
+                    onMouseLeave={handleDropdownMouseLeave}
+                    className={`${styles.sub_navigation} ${
+                      isDropdownVisible ? styles.active : ""
+                    }`}
+                  >
+                    <Dropdown
+                      subLinkName={dropdownAnimatingLink}
+                      content={obj.content}
+                    />
+                  </li>
+                )}
             </React.Fragment>
           ))}
         </ul>

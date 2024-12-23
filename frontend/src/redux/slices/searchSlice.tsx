@@ -1,7 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { userCardProps } from "../../@types/userCardTypes";
+import { productProps } from "../../@types/userCardTypes";
+import { set } from "react-hook-form";
+
 interface ISearchSlice {
-  foundedItems: userCardProps[];
+  foundedItems: productProps[];
   isLoading: boolean;
   isSearching: boolean;
   searchValue: string;
@@ -10,6 +12,11 @@ interface ISearchSlice {
   selectedSubCategory: string;
   selectedBrand: string;
   selectedGender: string;
+  selectedColor: string;
+  selectedFilter: {
+    label: string;
+    value: string;
+  };
 }
 const initialState: ISearchSlice = {
   foundedItems: [],
@@ -21,6 +28,11 @@ const initialState: ISearchSlice = {
   selectedSubCategory: "",
   selectedBrand: "",
   selectedGender: "",
+  selectedColor: "",
+  selectedFilter: {
+    label: "",
+    value: "",
+  },
 };
 const searchSlice = createSlice({
   name: "searchSlice",
@@ -53,7 +65,15 @@ const searchSlice = createSlice({
     setSelectedGender: (state, action: PayloadAction<string>) => {
       state.selectedGender = action.payload;
     },
-    // Дополнительные редьюсеры для работы с состоянием, если нужны
+    setSelectedColor: (state, action: PayloadAction<string>) => {
+      state.selectedColor = action.payload;
+    },
+    setSelectedFilter: (
+      state,
+      action: PayloadAction<{ label: string; value: string }>,
+    ) => {
+      state.selectedFilter = action.payload;
+    },
   },
 });
 export const {
@@ -66,6 +86,8 @@ export const {
   setSelectedSubCategory,
   setSelectedGender,
   setSelectedBrand,
+  setSelectedColor,
+  setSelectedFilter,
 } = searchSlice.actions;
 // Экспортируем редьюсер
 export default searchSlice.reducer;

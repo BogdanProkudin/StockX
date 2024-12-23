@@ -1,8 +1,9 @@
 import { ChevronDown, ChevronUp } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 interface SizePopUpType {
   price: number;
-  size_system?: string;
+
   variants: {
     id: string;
     price: number;
@@ -13,12 +14,16 @@ interface SizePopUpType {
 }
 const SizePopUp: React.FC<SizePopUpType> = ({
   price,
-  size_system,
+
   variants,
   setIsPrice,
 }) => {
+  const [searchParams, setSearhParams] = useSearchParams();
+  const sizeQuery = searchParams.get("size");
   const sizeOrder = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
-  const sizeSystem = size_system ? size_system : "US";
+  const sizeSystem = "US";
+  const mainPrice = Math.round(price);
+  const [sortedVariants, setSortedVariants] = useState<any>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isValue, setIsValue] = useState("All");
   const onClickPopUp = () => {
@@ -27,22 +32,52 @@ const SizePopUp: React.FC<SizePopUpType> = ({
   const onClickAllSizes = () => {
     setIsOpen(false);
     setIsValue("All");
-    if (setIsPrice) setIsPrice(price);
+    if (setIsPrice) setIsPrice(mainPrice);
   };
   const onClickSize = (value: string, price: number) => {
     setIsOpen(false);
     setIsValue(`${sizeSystem + " " + value}`);
     if (setIsPrice) setIsPrice(price);
   };
-  variants.sort(
-    (a, b) => sizeOrder.indexOf(a.size) - sizeOrder.indexOf(b.size),
-  );
-  const sortedVariants = variants.find((el) => el.size.includes("Y"))
-    ? variants.sort(
-        (big, small) =>
-          Number(big.size.split("Y")[0]) - Number(small.size.split("Y")[0]),
-      )
-    : variants.sort((big, small) => Number(big.size) - Number(small.size));
+
+  useEffect(() => {
+    variants.sort(
+      (a, b) => sizeOrder.indexOf(a.size) - sizeOrder.indexOf(b.size),
+    );
+    const sortedVariants = variants.find((el) => el.size.includes("Y"))
+      ? variants.sort(
+          (big, small) =>
+            Number(big.size.split("Y")[0]) - Number(small.size.split("Y")[0]),
+        )
+      : variants.sort((big, small) => Number(big.size) - Number(small.size));
+    setSortedVariants(sortedVariants);
+  }, []);
+
+  useEffect(() => {
+    const sizeQueryValue = isValue.split(" ")[1];
+    if (isValue !== "All") {
+      const updatedsearchParams = new URLSearchParams(searchParams);
+      updatedsearchParams.set("size", sizeQueryValue);
+      setSearhParams(updatedsearchParams, { replace: true });
+    }
+    if (isValue === "All" && searchParams.get("size")) {
+      const updatedsearchParams = new URLSearchParams(searchParams);
+      updatedsearchParams.delete("size");
+      setSearhParams(updatedsearchParams, { replace: true });
+    }
+  }, [isValue]);
+  useEffect(() => {
+    if (sizeQuery) {
+      setIsValue(`${sizeSystem + " " + sizeQuery}`);
+      const priceByQuery = sortedVariants.find((el: any) =>
+        el.size.includes(sizeQuery),
+      )?.price;
+
+      if (setIsPrice && priceByQuery) setIsPrice(priceByQuery);
+    } else {
+      if (setIsPrice) setIsPrice(mainPrice);
+    }
+  }, []);
 
   return (
     <div className="relative">
@@ -73,10 +108,10 @@ const SizePopUp: React.FC<SizePopUpType> = ({
               className="mt-3 flex w-full flex-col items-center justify-center gap-[1px] rounded-lg border-2 border-[#006340] bg-[#f4f3f1] py-1 text-sm font-semibold"
             >
               All
-              <span className="font-bold text-[#006340]">€{price}</span>
+              <span className="font-bold text-[#006340]">€{mainPrice}</span>
             </button>
             <ul className={`mt-3 grid grid-cols-3 gap-3`}>
-              {sortedVariants.map((obj, id) => (
+              {sortedVariants.map((obj: any, id: number) => (
                 <li className="max-h-[45px]" key={id}>
                   <button
                     onClick={() => onClickSize(obj.size, obj.price)}

@@ -6,14 +6,16 @@ import CloseIcon from "@mui/icons-material/Close";
 interface ChosenCategoryItemProps {
   categoryName: string;
   isClearAll?: boolean;
+  selectedColor: string | undefined;
 }
 
 const ChosenCategoryItem: React.FC<ChosenCategoryItemProps> = React.memo(
-  ({ categoryName, isClearAll }) => {
+  ({ categoryName, isClearAll, selectedColor }) => {
     const categoryNames = useAppSelector(
       (state) => state.searchSlice.categoryNames,
     );
     const [searchParams, setSearchParams] = useSearchParams();
+
     const dispatch = useAppDispatch();
 
     const handleClick = useCallback(() => {
@@ -34,6 +36,12 @@ const ChosenCategoryItem: React.FC<ChosenCategoryItemProps> = React.memo(
           isClearAll ? "Clear all filters" : `Remove ${categoryName} filter`
         }
       >
+        {selectedColor === categoryName && (
+          <div
+            className="mr-1 mt-[0.8px] h-3 w-3 rounded-full"
+            style={{ backgroundColor: selectedColor }}
+          />
+        )}
         <span className="text-center text-sm text-blackTextColor">
           {categoryName}
         </span>

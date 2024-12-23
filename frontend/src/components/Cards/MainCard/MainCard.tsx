@@ -1,10 +1,18 @@
 import React from "react";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
-import { productProps } from "../../../@types/userCardTypes";
 import { Link } from "react-router-dom";
 
-const UserCard: React.FC<productProps> = ({
+interface ProductCardProps {
+  id?: string;
+  image: string;
+  slug: string;
+  title: string;
+  avg_price: number;
+  min_price: number;
+}
+const ProductCard: React.FC<ProductCardProps> = ({
+  id,
   image,
   slug,
   title,
@@ -14,13 +22,13 @@ const UserCard: React.FC<productProps> = ({
   const onClickFavorite = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
   };
-  const formattedUrl = slug.slice(0, -6);
+  // const formattedUrl = slug.slice(0, -6);
   const price = Math.round(avg_price);
 
   return (
     <Link
-      to={`/${formattedUrl}`}
-      className="relative flex h-[250px] w-[190px] cursor-pointer flex-col items-center"
+      to={`/${title}`}
+      className="relative flex h-full w-[190px] cursor-pointer flex-col items-center"
     >
       <button onClick={onClickFavorite} className="absolute right-5">
         <FavoriteBorderIcon />
@@ -42,4 +50,4 @@ const UserCard: React.FC<productProps> = ({
   );
 };
 
-export default UserCard;
+export default ProductCard;

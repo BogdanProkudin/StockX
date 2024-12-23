@@ -4,6 +4,8 @@ import Control from "./FilterControl";
 import Option from "./FilterOptions";
 import { useSearchParams } from "react-router-dom";
 import FilterSkeleton from "./FilterSkeleton";
+import { useAppDispatch, useAppSelector } from "../../../redux/hook";
+import { setSelectedFilter } from "../../../redux/slices/searchSlice";
 
 const customStyles: StylesConfig<
   FilterOption,
@@ -58,19 +60,20 @@ export interface FilterOption {
 
 const FilterSelect = ({ isLoading }: { isLoading: boolean }) => {
   const [searchParams, setSearchParams] = useSearchParams();
-
-  const [selectedFilter, setSelectedFilter] = useState<FilterOption>({
-    label: "",
-    value: "1",
-  });
+  const dispatch = useAppDispatch();
+  const selectedFilter = useAppSelector(
+    (state) => state.searchSlice.selectedFilter,
+  );
 
   useEffect(() => {
     if (!isLoading) {
       const sortQuery = searchParams.get("sort");
-      setSelectedFilter({
-        label: sortQuery ? sortQuery : "Featured",
-        value: "1",
-      });
+      dispatch(
+        setSelectedFilter({
+          label: sortQuery ? sortQuery : "Featured",
+          value: "1",
+        }),
+      );
     }
   }, [isLoading]);
 
@@ -79,12 +82,12 @@ const FilterSelect = ({ isLoading }: { isLoading: boolean }) => {
       searchParams.set("sort", newValue.value);
       setSearchParams(searchParams);
 
-      setSelectedFilter(newValue);
+      dispatch(setSelectedFilter(newValue));
     }
   };
 
   const sortOptions = [
-    { value: "default", label: "Featured" },
+    { value: "featured", label: "Featured" },
     { value: "priceAsc", label: "Price: Low to High" },
     { value: "priceDesc", label: "Price: High to Low" },
     { value: "releaseDate", label: "Release Date" },

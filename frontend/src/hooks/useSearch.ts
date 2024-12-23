@@ -22,6 +22,9 @@ export const useSearch = () => {
           categoryQuery: undefined,
           brandQuery: undefined,
           genderQuery: undefined,
+          page: 1,
+          trendingQuery: undefined,
+          colorQuery: undefined,
         });
 
         if (result.isSuccess) {

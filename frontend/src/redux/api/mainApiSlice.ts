@@ -37,7 +37,7 @@ export const mainApi = createApi({
         if (searchingValue && searchingValue.length > 0) {
           url += `/${encodeURIComponent(searchingValue)}`;
         } else {
-          url += "/supreme";
+          url += "/";
         }
 
         const queryParams = new URLSearchParams();
@@ -176,18 +176,24 @@ export const searchApi = createApi({
         categoryQuery,
         brandQuery,
         genderQuery,
+        trendingQuery,
+        page,
+        colorQuery,
       }: {
         searchingValue: string;
         categoryQuery: string | undefined;
         brandQuery: string | undefined;
+        page: number | undefined;
         genderQuery: string | undefined;
+        trendingQuery: string | undefined;
+        colorQuery: string | undefined;
       }) => {
         let url = "/searchProducts";
 
         if (searchingValue && searchingValue.length > 0) {
           url += `/${encodeURIComponent(searchingValue)}`;
         } else {
-          url += "/supreme";
+          url += "/all";
         }
 
         const queryParams = [];
@@ -195,14 +201,21 @@ export const searchApi = createApi({
         if (categoryQuery) {
           queryParams.push(`category=${encodeURIComponent(categoryQuery)}`);
         }
-
+        if (page) {
+          queryParams.push(`page=${encodeURIComponent(page)}`);
+        }
         if (brandQuery) {
           queryParams.push(`brand=${encodeURIComponent(brandQuery)}`);
         }
         if (genderQuery) {
           queryParams.push(`gender=${encodeURIComponent(genderQuery)}`);
         }
-
+        if (trendingQuery) {
+          queryParams.push(`trending=${encodeURIComponent(trendingQuery)}`);
+        }
+        if (colorQuery) {
+          queryParams.push(`color=${encodeURIComponent(colorQuery)}`);
+        }
         if (queryParams.length > 0) {
           url += `?${queryParams.join("&")}`;
         }

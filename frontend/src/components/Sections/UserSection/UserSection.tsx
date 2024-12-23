@@ -1,5 +1,5 @@
 import React from "react";
-import UserCard from "../../Cards/MainCard/MainCard";
+import ProductCard from "../../Cards/MainCard/MainCard";
 
 import { productProps } from "../../../@types/userCardTypes";
 
@@ -22,7 +22,7 @@ const UserSection: React.FC<UserSectionProps> = ({
     return <Skeleton key={i} />;
   });
   return (
-    <div className="mb-20">
+    <div className="mb-5">
       <div className="relative my-3 flex items-center gap-3">
         {mainTitle.length < 1 ? (
           <TitleSkeleton />
@@ -44,7 +44,7 @@ const UserSection: React.FC<UserSectionProps> = ({
         {mainTitle.length < 1
           ? cardSkeleton
           : items.map((obj: productProps, id: number) => (
-              <UserCard key={id} {...obj} />
+              <ProductCard key={id} {...obj} />
             ))}
       </div>
     </div>

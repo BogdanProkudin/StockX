@@ -6,7 +6,7 @@ import styles from "./styles.module.scss";
 import { matchPath, Outlet, useLocation } from "react-router-dom";
 import Footer from "../components/Footer/Footer";
 import { useAppSelector } from "../redux/hook";
-import { log } from "console";
+
 const HeaderLayout = () => {
   const location = useLocation();
   const isProductPage = matchPath("/:title", location.pathname);
@@ -21,10 +21,10 @@ const HeaderLayout = () => {
       {/* <button className={styles.btnTheme}>
         <WbSunnyIcon />
       </button> */}
-      <div className={`container ${isProductPage ? "productPage" : ""}`}>
+      {/* <div className={`container ${isProductPage ? "productPage" : ""}`}>
         <Outlet />
       </div>
-      {!isSearching && <Footer />}
+      {!isSearching && <Footer />} */}
     </>
   );
 };

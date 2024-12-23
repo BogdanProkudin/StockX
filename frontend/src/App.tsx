@@ -13,6 +13,8 @@ import "./scss/styles.scss";
 import FullProduct from "./pages/ProductPage";
 
 import FilterPage from "./pages/FilterPage";
+import NotFound from "./pages/NotFound";
+import Cart from "./pages/Cart";
 
 type ComponentType = React.FC;
 
@@ -33,10 +35,12 @@ function App() {
     <Routes>
       <Route path="/" element={<HeaderLayout />}>
         <Route path="" element={renderMainContent(Home)} />
-        <Route path=":slug" element={renderMainContent(FullProduct)} />
+        <Route path=":title" element={renderMainContent(FullProduct)} />
         <Route path="search" element={renderMainContent(FilterPage)} />
+        <Route path="not-found" element={<NotFound />} />
+        <Route path="*" element={<NotFound />} />
       </Route>
-
+      <Route path="/buy/:id" element={<Cart />} />
       <Route
         path="/auth"
         element={userToken ? <Navigate to="/profile" /> : <Auth />}

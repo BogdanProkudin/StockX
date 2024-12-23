@@ -15,11 +15,10 @@ const SearchedItem: React.FC<SearchItem> = ({
     e.stopPropagation();
   };
 
-  const formattedUrl = slug.slice(0, -6);
   return (
     <>
       <Link
-        to={`/${formattedUrl}`}
+        to={`/${title}`}
         className="relative flex h-full w-[200px] cursor-pointer flex-col items-center"
       >
         <button onClick={onClickFavorite} className="absolute right-5">

@@ -28,15 +28,12 @@ export function GenerateSoldItem(totalPrice: number, maxPrice: number) {
     const randomSeed = Math.floor(checkPrice * currentSeed);
     return Math.abs(randomSeed % 10001);
   };
-  const currentSeed = useMemo(() => {
-    const THREE_DAYS_IN_MS = 3 * 24 * 60 * 60 * 1000;
-    // const THREE_DAYS_IN_MS = 3 * 10000;
-    return Math.floor(Date.now() / THREE_DAYS_IN_MS);
-  }, []);
+  const THREE_DAYS_IN_MS = 3 * 24 * 60 * 60 * 1000;
+  const currentSeed = Math.floor(Date.now() / THREE_DAYS_IN_MS);
 
-  const randomNumber = useMemo(
-    () => generateUniqueNumber(totalPrice, currentSeed),
-    [],
-  );
+  // const THREE_DAYS_IN_MS = 3 * 10000;
+
+  const randomNumber = generateUniqueNumber(totalPrice, currentSeed);
+
   return randomNumber;
 }

@@ -46,7 +46,7 @@ const InstagramSection = () => {
   };
 
   return (
-    <div className="mb-20">
+    <div className="mb-5">
       <h1 className="text-xl font-bold">
         {instagramSectionItems.length < 2 ? (
           <TitleSkeleton />

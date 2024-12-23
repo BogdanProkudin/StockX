@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../../redux/hook";
 import {
   setCategoryNames,
   setSelectedBrand,
+  setSelectedColor,
   setSelectedGender,
   setSelectedSubCategory,
 } from "../../../redux/slices/searchSlice";
@@ -10,6 +11,7 @@ import { useSearchParams } from "react-router-dom";
 import ChosenCategoryItem from "./ChosenCaregoryItem";
 import clsx from "clsx";
 import ChosenCategorySkeleton from "./ChosenCategoryItemSkeleton";
+import { color } from "framer-motion";
 
 interface ChosenCategoryListProps {
   isLoading: boolean;
@@ -22,21 +24,30 @@ const ChosenCategoryList: React.FC<ChosenCategoryListProps> = React.memo(
     );
     const [searchParams] = useSearchParams();
     const dispatch = useAppDispatch();
-
+    const selectedColor = useAppSelector(
+      (state) => state.searchSlice.selectedColor,
+    );
     useEffect(() => {
       const searchTerm = searchParams.get("s");
       const categoryTerm = searchParams.get("category");
       const brandTerm = searchParams.get("brand");
       const genderTerm = searchParams.get("gender");
+      const trendingTerm = searchParams.get("trending");
+      const colorTerm = searchParams.get("color");
       const defaultCategories = [];
 
-      if (searchTerm || categoryTerm || brandTerm || genderTerm) {
+      if (
+        searchTerm ||
+        categoryTerm ||
+        brandTerm ||
+        genderTerm ||
+        trendingTerm ||
+        colorTerm
+      ) {
         defaultCategories.push("Clear All");
       }
 
       if (searchTerm) {
-        console.log("GET S");
-
         defaultCategories.push(`Search: "${searchTerm}"`);
       }
 
@@ -51,6 +62,14 @@ const ChosenCategoryList: React.FC<ChosenCategoryListProps> = React.memo(
       if (genderTerm) {
         dispatch(setSelectedGender(genderTerm));
         defaultCategories.push(genderTerm);
+      }
+      if (trendingTerm) {
+        defaultCategories.push(trendingTerm);
+      }
+      if (colorTerm) {
+        dispatch(setSelectedColor(colorTerm));
+
+        defaultCategories.push(colorTerm);
       }
 
       dispatch(setCategoryNames(defaultCategories));
@@ -77,6 +96,7 @@ const ChosenCategoryList: React.FC<ChosenCategoryListProps> = React.memo(
               ))
           : categoryNames.map((category) => (
               <ChosenCategoryItem
+                selectedColor={selectedColor}
                 key={`category-${category}`}
                 categoryName={category}
               />
