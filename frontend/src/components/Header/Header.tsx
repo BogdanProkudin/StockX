@@ -2,52 +2,64 @@ import React, { useEffect } from "react";
 import styles from "./styles.module.scss";
 import HeaderLogo from "./Logo/HeaderLogo";
 import HeaderNavigation from "./Navigation/HeaderNavigation";
-
 import HeaderInput from "./Search/HeaderInput";
 import HeaderAuth from "./AuthBtns/HeaderAuth";
-
 import HeaderUser from "./UserBtns/HeaderUser";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import HeaderSmallScreenInput from "./Search/HeaderSmallScreenInput";
+import SmallScreenSidebar from "./Sidebar/SmallScreenSidebar";
 
 const Header: React.FC = () => {
   const userToken = localStorage.getItem("token");
   const isLargeScreen = useMediaQuery("(min-width: 770px)");
   const [isShowSmallScreenInput, setIsShowSmallScreenInput] =
     React.useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
+
   useEffect(() => {
     if (isLargeScreen) {
       setIsShowSmallScreenInput(false);
+      setIsSidebarOpen(false);
     }
   }, [isLargeScreen]);
+
+  useEffect(() => {
+    if (isSidebarOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+  }, [isSidebarOpen]);
+
   return (
     <header className={styles.header}>
       <div className={styles.header_container}>
         <div
           style={{
-            justifyContent: isShowSmallScreenInput
-              ? " normal"
-              : "space-between",
+            justifyContent: isShowSmallScreenInput ? "normal" : "space-between",
           }}
-          className={`${styles.header_wrapper} ${
-            userToken ? styles.active : ""
-          }`}
+          className={`${styles.header_wrapper} ${userToken ? styles.active : ""}`}
         >
-          <svg viewBox="0 0 50 50" focusable="false" className="h-7 w-7">
+          <svg
+            viewBox="0 0 50 50"
+            focusable="false"
+            className="h-7 w-7 cursor-pointer"
+            onClick={() => setIsSidebarOpen(true)}
+          >
             <g>
               <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
+                fillRule="evenodd"
+                clipRule="evenodd"
                 d="M7 16.25V14H43V16.25H7Z"
               ></path>
               <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
+                fillRule="evenodd"
+                clipRule="evenodd"
                 d="M43 26.5H7V24.25H43V26.5Z"
               ></path>
               <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
+                fillRule="evenodd"
+                clipRule="evenodd"
                 d="M43 36.75H7V34.5H43V36.75Z"
               ></path>
             </g>
@@ -57,13 +69,12 @@ const Header: React.FC = () => {
           )}
           {!isShowSmallScreenInput && <HeaderLogo />}
           {isLargeScreen ? <HeaderInput /> : null}
-
           {isLargeScreen ? <HeaderNavigation /> : null}
           {isLargeScreen && userToken ? <HeaderUser /> : null}
           {isLargeScreen && !userToken ? <HeaderAuth /> : null}
           <svg
             onClick={() => setIsShowSmallScreenInput(!isShowSmallScreenInput)}
-            className="h-7 w-7"
+            className="h-7 w-7 cursor-pointer"
             viewBox="0 0 50 50"
             focusable="false"
           >
@@ -74,6 +85,10 @@ const Header: React.FC = () => {
           </svg>
         </div>
       </div>
+      <SmallScreenSidebar
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
+      />
     </header>
   );
 };

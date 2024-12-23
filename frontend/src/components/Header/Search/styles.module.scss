@@ -34,7 +34,7 @@
 }
 .header_small_screen_input_container {
   position: relative;
-  width: -webkit-fill-available;
+  width: 100%;
   .search {
     position: absolute;
     background: inherit;
@@ -44,7 +44,7 @@
   }
 }
 .header_small_screen_input {
-  width: -webkit-fill-available;
+  width: 100%;
 
   height: 42px;
   border: 1px solid #e0e0e0;

@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { productProps } from "../../@types/userCardTypes";
+import { set } from "react-hook-form";
 
 interface ISearchSlice {
   foundedItems: productProps[];
@@ -12,6 +13,10 @@ interface ISearchSlice {
   selectedBrand: string;
   selectedGender: string;
   selectedColor: string;
+  selectedFilter: {
+    label: string;
+    value: string;
+  };
 }
 const initialState: ISearchSlice = {
   foundedItems: [],
@@ -24,6 +29,10 @@ const initialState: ISearchSlice = {
   selectedBrand: "",
   selectedGender: "",
   selectedColor: "",
+  selectedFilter: {
+    label: "",
+    value: "",
+  },
 };
 const searchSlice = createSlice({
   name: "searchSlice",
@@ -59,7 +68,12 @@ const searchSlice = createSlice({
     setSelectedColor: (state, action: PayloadAction<string>) => {
       state.selectedColor = action.payload;
     },
-    // Дополнительные редьюсеры для работы с состоянием, если нужны
+    setSelectedFilter: (
+      state,
+      action: PayloadAction<{ label: string; value: string }>,
+    ) => {
+      state.selectedFilter = action.payload;
+    },
   },
 });
 export const {
@@ -73,6 +87,7 @@ export const {
   setSelectedGender,
   setSelectedBrand,
   setSelectedColor,
+  setSelectedFilter,
 } = searchSlice.actions;
 // Экспортируем редьюсер
 export default searchSlice.reducer;
