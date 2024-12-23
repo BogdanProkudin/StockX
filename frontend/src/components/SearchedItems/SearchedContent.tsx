@@ -55,7 +55,7 @@ const SearchedContent = () => {
 
   return (
     <div className="mx-auto mt-3 flex h-full w-full max-w-[1240px] items-start justify-between px-4">
-      <div className="mt-2 h-full w-[300px]">
+      {/* <div className="mt-2 h-full w-[300px]">
         <TrendingButton />
         <CategoryList />
         <BrandsList />
@@ -83,7 +83,7 @@ const SearchedContent = () => {
             totalPages={data?.totalPages || 1}
           />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

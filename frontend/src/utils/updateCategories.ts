@@ -5,6 +5,7 @@ import {
   setCategoryNames,
   setSelectedBrand,
   setSelectedColor,
+  setSelectedFilter,
   setSelectedGender,
   setSelectedSubCategory,
 } from "../redux/slices/searchSlice";
@@ -20,6 +21,7 @@ export const updateCategories = (
     dispatch(setCategoryNames([]));
     dispatch(setSelectedSubCategory(""));
     dispatch(setSelectedGender(""));
+    dispatch(setSelectedFilter({ label: "Featured", value: "1" }));
     dispatch(setSelectedBrand(""));
     dispatch(setSelectedColor(""));
     setSearchParams(new URLSearchParams());

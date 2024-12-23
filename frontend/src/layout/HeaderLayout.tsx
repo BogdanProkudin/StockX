@@ -21,10 +21,10 @@ const HeaderLayout = () => {
       {/* <button className={styles.btnTheme}>
         <WbSunnyIcon />
       </button> */}
-      <div className={`container ${isProductPage ? "productPage" : ""}`}>
+      {/* <div className={`container ${isProductPage ? "productPage" : ""}`}>
         <Outlet />
       </div>
-      {!isSearching && <Footer />}
+      {!isSearching && <Footer />} */}
     </>
   );
 };
