@@ -3,6 +3,11 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      screens: {
+        largeScreen: { max: "1300px" },
+        mediumLargeScreen: { max: "1140px" },
+        mediumScreen: { max: "920px" },
+      },
       fontFamily: {
         montserrat: ["Montserrat", "sans-serif"],
         oswald: ["Oswald", "sans-serif"],

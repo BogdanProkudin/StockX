@@ -24,7 +24,7 @@ const HeaderLayout = () => {
       <div className={`container ${isProductPage ? "productPage" : ""}`}>
         <Outlet />
       </div>
-      {!isSearching && <Footer />}
+      {/* {!isSearching && <Footer />} */}
     </>
   );
 };
