@@ -36,7 +36,7 @@ const SearchedItemsList: React.FC<SearchedItemsListProps> = ({
 
   return (
     <>
-      <div className="mt-5 grid w-full grid-cols-1 items-start gap-6 sm:grid-cols-2 md:grid-cols-4">
+      <div className="mediumScreen:grid-cols-2 mediumLargeScreen:grid-cols-3 mt-5 grid w-full grid-cols-4 items-start gap-6">
         {sortedItems.map((item) => (
           <SearchedItem key={item.id} {...item} />
         ))}

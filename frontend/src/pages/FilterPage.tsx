@@ -2,7 +2,7 @@ import SearchedContent from "../components/SearchedItems/SearchedContent";
 
 const FilterPage = () => {
   return (
-    <div className="min-w-[1240px]">
+    <div className="largeScreen:w-full w-[1200px]">
       <SearchedContent />
     </div>
   );
