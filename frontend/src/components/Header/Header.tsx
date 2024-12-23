@@ -43,7 +43,7 @@ const Header: React.FC = () => {
           <svg
             viewBox="0 0 50 50"
             focusable="false"
-            className="h-7 w-7 cursor-pointer"
+            className="h-7 min-h-7 w-7 min-w-7 cursor-pointer"
             onClick={() => setIsSidebarOpen(true)}
           >
             <g>
@@ -74,7 +74,7 @@ const Header: React.FC = () => {
           {isLargeScreen && !userToken ? <HeaderAuth /> : null}
           <svg
             onClick={() => setIsShowSmallScreenInput(!isShowSmallScreenInput)}
-            className="h-7 w-7 cursor-pointer"
+            className="h-7 min-h-7 w-7 min-w-7 cursor-pointer"
             viewBox="0 0 50 50"
             focusable="false"
           >
