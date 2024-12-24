@@ -1,9 +1,12 @@
-import React, { useCallback, useState } from "react";
+import React, { Dispatch, SetStateAction, useCallback, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useAppDispatch } from "../../../../redux/hook";
 import { setSelectedSubCategory } from "../../../../redux/slices/searchSlice";
 import CategoryItem from "./CategoryItem";
-
+interface CategoryListProps {
+  activeFilter: string;
+  setActiveFilter: Dispatch<SetStateAction<string>>;
+}
 interface Category {
   categoryName: string;
   subcategoryNames: string[];
@@ -24,16 +27,18 @@ const categoryListItems: Category[] = [
   },
 ];
 
-const CategoryList: React.FC = () => {
+const CategoryList: React.FC<CategoryListProps> = ({
+  activeFilter,
+  setActiveFilter,
+}) => {
   const dispatch = useAppDispatch();
-  const [isShowDropDown, setIsShowDropDown] = useState(false);
+
   const [searchParams, setSearchParams] = useSearchParams();
 
   const handleSelectSubCategory = useCallback(
     (selectedSubCategoryName: string) => {
       dispatch(setSelectedSubCategory(selectedSubCategoryName));
-      setIsShowDropDown(false);
-
+      setActiveFilter("");
       const newSearchParams = new URLSearchParams(searchParams);
       newSearchParams.set("category", selectedSubCategoryName);
       setSearchParams(newSearchParams);
@@ -47,8 +52,8 @@ const CategoryList: React.FC = () => {
         <CategoryItem
           key={category.categoryName}
           handleSelectSubCategory={handleSelectSubCategory}
-          isShowDropDown={isShowDropDown}
-          setIsShowDropDown={setIsShowDropDown}
+          activeFilter={activeFilter}
+          setActiveFilter={setActiveFilter}
           categoryName={category.categoryName}
           subcategoryNames={category.subcategoryNames}
         />

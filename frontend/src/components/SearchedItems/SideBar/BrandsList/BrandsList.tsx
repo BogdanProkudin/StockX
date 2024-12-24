@@ -30,13 +30,13 @@ const BrandsListItems: IBrandItem[] = [
     ],
   },
 ];
-const BrandsList = React.memo(() => {
+const BrandsList = React.memo(({ activeFilter, setActiveFilter }: any) => {
   const dispatch = useAppDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
   const handleSelectBrand = useCallback(
     (selectedBrandName: string) => {
       dispatch(setSelectedBrand(selectedBrandName));
-      setIsShowDropDown(false);
+      setActiveFilter("");
 
       const newSearchParams = new URLSearchParams(searchParams);
       newSearchParams.set("brand", selectedBrandName);
@@ -44,16 +44,16 @@ const BrandsList = React.memo(() => {
     },
     [dispatch, searchParams, setSearchParams],
   );
-  const [isShowDropDown, setIsShowDropDown] = useState(false);
+
   return (
     <div>
-      {BrandsListItems.map((category) => (
+      {BrandsListItems.map((category, index) => (
         <BrandItem
           brandName={category.brandName}
-          key={category.brandName}
+          key={index}
           subBrandNames={category.subBrandNames}
-          isShowDropDown={isShowDropDown}
-          setIsShowDropDown={setIsShowDropDown}
+          activeFilter={activeFilter}
+          setActiveFilter={setActiveFilter}
           handleSelectBrand={handleSelectBrand}
         />
       ))}

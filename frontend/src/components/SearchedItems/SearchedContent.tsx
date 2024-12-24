@@ -6,17 +6,16 @@ import FilterBreadCrumb from "./BreadCramb/BreadCrumb";
 import FilterSelect from "./FilterSelect/FilterSelect";
 import SearchedItemsList from "./SearchedItemsList/SearchedItemsList";
 import CategoryList from "./SideBar/CategoryList/CategoryList";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import BrandsList from "./SideBar/BrandsList/BrandsList";
 import GenderList from "./SideBar/GenderList/GenderList";
 import TrendingButton from "./SideBar/Trending/TrendingButton";
-import ColorItem from "./SideBar/ColorList/ColorItem";
 import ColorList from "./SideBar/ColorList/ColorList";
 import { useMediaQuery } from "@mui/material";
 
 const SearchedContent = () => {
   const [searchParams] = useSearchParams();
-
+  const [activeFilter, setActiveFilter] = useState("");
   const searchQuery = searchParams.get("s") ?? "";
   const categoryQuery = searchParams.get("category") || "";
   const brandQuery = searchParams.get("brand") || "";
@@ -59,10 +58,22 @@ const SearchedContent = () => {
       {isLargeScreen && (
         <div className="mt-2 h-full w-[300px]">
           <TrendingButton />
-          <CategoryList />
-          <BrandsList />
-          <GenderList />
-          <ColorList />
+          <CategoryList
+            activeFilter={activeFilter}
+            setActiveFilter={setActiveFilter}
+          />
+          <BrandsList
+            activeFilter={activeFilter}
+            setActiveFilter={setActiveFilter}
+          />
+          <GenderList
+            activeFilter={activeFilter}
+            setActiveFilter={setActiveFilter}
+          />
+          <ColorList
+            activeFilter={activeFilter}
+            setActiveFilter={setActiveFilter}
+          />
         </div>
       )}
       <div className="h-full min-h-[500px] w-full max-w-[927px] p-2">

@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, Dispatch, SetStateAction } from "react";
 import {
   setSelectedColor,
   setSelectedGender,
@@ -7,7 +7,13 @@ import ColorItem from "./ColorItem";
 import { useAppDispatch } from "../../../../redux/hook";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
-const ColorList = () => {
+const ColorList = ({
+  activeFilter,
+  setActiveFilter,
+}: {
+  activeFilter: string;
+  setActiveFilter: Dispatch<SetStateAction<string>>;
+}) => {
   const subColors = [
     "Black",
     "White",
@@ -23,14 +29,13 @@ const ColorList = () => {
     "Beige",
   ];
 
-  const [isShowDropDown, setIsShowDropDown] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const handleSelectSubColor = useCallback(
     (selectedColor: string) => {
       dispatch(setSelectedColor(selectedColor));
-      setIsShowDropDown(false);
+      setActiveFilter("");
       const newSearchParams = new URLSearchParams(searchParams);
       newSearchParams.set("color", selectedColor);
       setSearchParams(newSearchParams);
@@ -40,8 +45,8 @@ const ColorList = () => {
   return (
     <>
       <ColorItem
-        setIsShowDropDown={setIsShowDropDown}
-        isShowDropDown={isShowDropDown}
+        activeFilter={activeFilter}
+        setActiveFilter={setActiveFilter}
         handleSelectSubColor={handleSelectSubColor}
         subColors={subColors}
       />
