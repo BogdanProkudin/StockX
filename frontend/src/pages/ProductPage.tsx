@@ -44,6 +44,8 @@ const FullProduct = () => {
           headers: { Authorization: "f-2895d084cba594772c79255a5fb658d0" },
         });
         setProduct(data.data[0]);
+        console.log(data.data[0]);
+
         setCategory(data.data[0].category);
       } catch (error) {
         console.error(error);
