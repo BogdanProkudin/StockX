@@ -72,6 +72,7 @@ const FilterSelect: React.FC<FilterSelectProps> = ({ isLoading }) => {
     (state) => state.searchSlice.selectedFilter,
   );
   const [isOpen, setIsOpen] = useState(false);
+  const [activeFilter, setActiveFilter] = useState("");
   const dispatch = useAppDispatch();
   const isLargeScreen = useMediaQuery("(min-width: 770px)");
 
@@ -175,19 +176,31 @@ const FilterSelect: React.FC<FilterSelectProps> = ({ isLoading }) => {
           </button>
         </div>
 
+        <div className={styles.sheetChosenCategories}></div>
         <div className={styles.sheetContent}>
           <div className={styles.filterSection}>
             <TrendingButton />
-            <CategoryList />
-            <BrandsList />
-            <GenderList />
-            <ColorList />
+            <CategoryList
+              activeFilter={activeFilter}
+              setActiveFilter={setActiveFilter}
+            />
+            <BrandsList
+              activeFilter={activeFilter}
+              setActiveFilter={setActiveFilter}
+            />
+            <GenderList
+              activeFilter={activeFilter}
+              setActiveFilter={setActiveFilter}
+            />
+            <ColorList
+              activeFilter={activeFilter}
+              setActiveFilter={setActiveFilter}
+            />
           </div>
+          <button className={styles.applyButton} onClick={handleClose}>
+            Apply Filters
+          </button>
         </div>
-
-        <button className={styles.applyButton} onClick={handleClose}>
-          Apply Filters
-        </button>
       </div>
     </>
   );

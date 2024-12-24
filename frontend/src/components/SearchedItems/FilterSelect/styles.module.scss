@@ -21,7 +21,7 @@
   bottom: -100%;
   left: 0;
   width: 100%;
-  height: 91vh;
+  height: 95vh;
   background-color: white;
   transition: transform 0.3s ease;
   z-index: 999;
@@ -35,6 +35,7 @@
 }
 
 .sheetHeader {
+  z-index: 999;
   position: sticky;
   top: 0;
   display: flex;
@@ -63,10 +64,17 @@
 }
 
 .sheetContent {
-  padding: 20px;
+  overflow-y: auto;
+  max-height: 32rem;
+  // padding: 20px;
 }
-
+.sheetChosenCategories {
+  background-color: red;
+  width: 100%;
+  height: 73px;
+}
 .filterSection {
+  overflow-y: auto;
   margin-bottom: 24px;
 
   h3 {

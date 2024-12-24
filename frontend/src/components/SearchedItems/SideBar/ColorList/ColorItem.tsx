@@ -1,31 +1,32 @@
-import { useCallback } from "react";
+import { Dispatch, SetStateAction, useCallback } from "react";
 import { useAppSelector } from "../../../../redux/hook";
 
 interface ColorItemProps {
   handleSelectSubColor: (selectedColor: string) => void;
-  setIsShowDropDown: React.Dispatch<React.SetStateAction<boolean>>;
-  isShowDropDown: boolean;
+  activeFilter: string;
+  setActiveFilter: Dispatch<SetStateAction<string>>;
+
   subColors: string[];
 }
 const ColorItem: React.FC<ColorItemProps> = ({
   subColors,
   handleSelectSubColor,
-  setIsShowDropDown,
-  isShowDropDown,
+  activeFilter,
+  setActiveFilter,
 }) => {
   const selectedColor = useAppSelector(
     (state) => state.searchSlice.selectedColor,
   );
   const toggleDropdown = useCallback(() => {
-    setIsShowDropDown(!isShowDropDown);
-  }, [isShowDropDown, setIsShowDropDown]);
+    setActiveFilter("COLOR" === activeFilter ? "" : "COLOR");
+  }, [activeFilter]);
 
   return (
     <div className="flex h-full w-full flex-col border-b-2 border-t-2 border-E2E8F0 pb-1 pt-1">
       <button
         onClick={toggleDropdown}
-        className="flex w-72 cursor-pointer items-center justify-between p-4"
-        aria-expanded={isShowDropDown}
+        className="flex min-w-72 cursor-pointer items-center justify-between p-4"
+        aria-expanded={activeFilter === "COLOR"}
         aria-controls="subcategory-list"
       >
         <p className="select-none pb-0 text-base font-semibold text-blackTextColor">
@@ -45,7 +46,7 @@ const ColorItem: React.FC<ColorItemProps> = ({
           focusable="false"
           aria-hidden="true"
           className={`h-[1rem] w-[1rem] transform pb-0 transition-transform duration-300 ${
-            isShowDropDown ? "rotate-0" : "rotate-180"
+            activeFilter === "COLOR" ? "rotate-0" : "rotate-180"
           }`}
         >
           <path
@@ -58,7 +59,7 @@ const ColorItem: React.FC<ColorItemProps> = ({
       <div
         id="subcategory-list"
         className={`flex flex-col gap-3 overflow-hidden overflow-y-auto pl-4 transition-all duration-300 ease-in-out ${
-          isShowDropDown ? "max-h-64 pb-3" : "max-h-0"
+          activeFilter === "COLOR" ? "max-h-64 pb-3" : "max-h-0"
         }`}
         role="list"
       >

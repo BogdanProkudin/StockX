@@ -1,19 +1,19 @@
-import React, { useCallback } from "react";
+import React, { Dispatch, SetStateAction, useCallback } from "react";
 import { useAppSelector } from "../../../../redux/hook";
 
 interface BrandItemProps {
   brandName: string;
   subBrandNames: string[];
-  isShowDropDown: boolean;
-  setIsShowDropDown: React.Dispatch<React.SetStateAction<boolean>>;
+  activeFilter: string;
+  setActiveFilter: Dispatch<SetStateAction<string>>;
   handleSelectBrand: (selectedBrand: string) => void;
 }
 
 const BrandItem: React.FC<BrandItemProps> = React.memo(
   ({
     brandName,
-    setIsShowDropDown,
-    isShowDropDown,
+    activeFilter,
+    setActiveFilter,
     subBrandNames,
     handleSelectBrand,
   }) => {
@@ -22,15 +22,15 @@ const BrandItem: React.FC<BrandItemProps> = React.memo(
     );
 
     const toggleDropdown = useCallback(() => {
-      setIsShowDropDown(!isShowDropDown);
-    }, [isShowDropDown, setIsShowDropDown]);
+      setActiveFilter(brandName === activeFilter ? "" : brandName);
+    }, [activeFilter, setActiveFilter]);
 
     return (
       <div className="flex h-full w-full flex-col border-b-2 border-t-2 border-E2E8F0 pb-1 pt-1">
         <button
           onClick={toggleDropdown}
           className="flex cursor-pointer items-center justify-between p-4"
-          aria-expanded={isShowDropDown}
+          aria-expanded={activeFilter === brandName}
           aria-controls="subcategory-list"
         >
           <p className="select-none pb-0 text-base font-semibold text-blackTextColor">
@@ -42,7 +42,7 @@ const BrandItem: React.FC<BrandItemProps> = React.memo(
             focusable="false"
             aria-hidden="true"
             className={`h-[1rem] w-[1rem] transform pb-0 transition-transform duration-300 ${
-              isShowDropDown ? "rotate-0" : "rotate-180"
+              activeFilter === brandName ? "rotate-0" : "rotate-180"
             }`}
           >
             <path
@@ -55,12 +55,12 @@ const BrandItem: React.FC<BrandItemProps> = React.memo(
         <div
           id="subcategory-list"
           className={`flex flex-col gap-3 overflow-y-auto pl-4 transition-all duration-300 ease-in-out ${
-            isShowDropDown ? "max-h-64 pb-3" : "max-h-0"
+            activeFilter === brandName ? "max-h-64 pb-3" : "max-h-0"
           }`}
           role="list"
         >
-          {subBrandNames.map((subName) => (
-            <div key={subName} className="group flex items-center">
+          {subBrandNames.map((subName, index) => (
+            <div key={index} className="group flex items-center">
               <div className="relative flex items-center">
                 <input
                   type="checkbox"

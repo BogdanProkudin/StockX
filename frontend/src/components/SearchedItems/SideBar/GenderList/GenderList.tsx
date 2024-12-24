@@ -17,38 +17,45 @@ const genderListItems: Gender[] = [
   },
 ];
 
-const GenderList = React.memo(() => {
-  const [isShowDropDown, setIsShowDropDown] = useState(false);
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams();
+const GenderList = React.memo(
+  ({
+    activeFilter,
+    setActiveFilter,
+  }: {
+    activeFilter: string;
+    setActiveFilter: React.Dispatch<React.SetStateAction<string>>;
+  }) => {
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+    const [searchParams, setSearchParams] = useSearchParams();
 
-  const handleSelectSubGender = useCallback(
-    (selectedGender: string) => {
-      dispatch(setSelectedGender(selectedGender));
-      setIsShowDropDown(false);
-      const newSearchParams = new URLSearchParams(searchParams);
-      newSearchParams.set("gender", selectedGender);
-      setSearchParams(newSearchParams);
-    },
-    [dispatch, searchParams, navigate],
-  );
+    const handleSelectSubGender = useCallback(
+      (selectedGender: string) => {
+        dispatch(setSelectedGender(selectedGender));
+        setActiveFilter("");
+        const newSearchParams = new URLSearchParams(searchParams);
+        newSearchParams.set("gender", selectedGender);
+        setSearchParams(newSearchParams);
+      },
+      [dispatch, searchParams, navigate],
+    );
 
-  return (
-    <>
-      {genderListItems.map(({ genderName, subGenderNames }) => (
-        <GenderItem
-          key={genderName}
-          genderName={genderName}
-          subGenderNames={subGenderNames}
-          isShowDropDown={isShowDropDown}
-          setIsShowDropDown={setIsShowDropDown}
-          handleSelectSubGender={handleSelectSubGender}
-        />
-      ))}
-    </>
-  );
-});
+    return (
+      <>
+        {genderListItems.map(({ genderName, subGenderNames }) => (
+          <GenderItem
+            key={genderName}
+            genderName={genderName}
+            subGenderNames={subGenderNames}
+            activeFilter={activeFilter}
+            setActiveFilter={setActiveFilter}
+            handleSelectSubGender={handleSelectSubGender}
+          />
+        ))}
+      </>
+    );
+  },
+);
 
 GenderList.displayName = "GenderList";
 

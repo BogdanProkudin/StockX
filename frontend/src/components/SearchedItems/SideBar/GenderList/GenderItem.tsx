@@ -1,9 +1,11 @@
-import React, { useCallback } from "react";
+import React, { Dispatch, SetStateAction, useCallback } from "react";
 import { useAppSelector } from "../../../../redux/hook";
+import { set } from "react-hook-form";
 
 interface GenderItemProps {
-  isShowDropDown: boolean;
-  setIsShowDropDown: (value: boolean) => void;
+  activeFilter: string;
+  setActiveFilter: Dispatch<SetStateAction<string>>;
+
   subGenderNames: string[];
   handleSelectSubGender: (subName: string) => void;
   genderName: string;
@@ -11,8 +13,8 @@ interface GenderItemProps {
 
 const GenderItem: React.FC<GenderItemProps> = React.memo(
   ({
-    isShowDropDown,
-    setIsShowDropDown,
+    activeFilter,
+    setActiveFilter,
     subGenderNames,
     handleSelectSubGender,
     genderName,
@@ -22,15 +24,15 @@ const GenderItem: React.FC<GenderItemProps> = React.memo(
     );
 
     const toggleDropdown = useCallback(() => {
-      setIsShowDropDown(!isShowDropDown);
-    }, [isShowDropDown, setIsShowDropDown]);
+      setActiveFilter(genderName === activeFilter ? "" : genderName);
+    }, [setActiveFilter, activeFilter]);
 
     return (
       <div className="flex h-full w-full flex-col border-b-2 border-t-2 border-E2E8F0 pb-1 pt-1">
         <button
           onClick={toggleDropdown}
-          className="flex w-72 cursor-pointer items-center justify-between p-4"
-          aria-expanded={isShowDropDown}
+          className="flex cursor-pointer items-center justify-between p-4"
+          aria-expanded={activeFilter === genderName}
           aria-controls="subcategory-list"
         >
           <p className="select-none pb-0 text-base font-semibold text-blackTextColor">
@@ -42,7 +44,7 @@ const GenderItem: React.FC<GenderItemProps> = React.memo(
             focusable="false"
             aria-hidden="true"
             className={`h-[1rem] w-[1rem] transform pb-0 transition-transform duration-300 ${
-              isShowDropDown ? "rotate-0" : "rotate-180"
+              activeFilter === genderName ? "rotate-0" : "rotate-180"
             }`}
           >
             <path
@@ -55,7 +57,7 @@ const GenderItem: React.FC<GenderItemProps> = React.memo(
         <div
           id="subcategory-list"
           className={`flex flex-col gap-3 overflow-y-auto pl-4 transition-all duration-300 ease-in-out ${
-            isShowDropDown ? "max-h-64 pb-3" : "max-h-0"
+            activeFilter === genderName ? "max-h-64 pb-3" : "max-h-0"
           }`}
           role="list"
         >
