@@ -1,15 +1,17 @@
 import { ChevronDown, ChevronUp } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+
+type variants = {
+  id: string;
+  price: number;
+  product_id: string;
+  size: string;
+};
 interface SizePopUpType {
   price: number;
 
-  variants: {
-    id: string;
-    price: number;
-    product_id: string;
-    size: string;
-  }[];
+  variants: variants[];
   setIsPrice?: (value: number) => void;
 }
 const SizePopUp: React.FC<SizePopUpType> = ({
@@ -23,7 +25,7 @@ const SizePopUp: React.FC<SizePopUpType> = ({
   const sizeOrder = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
   const sizeSystem = "US";
   const mainPrice = Math.round(price);
-  const [sortedVariants, setSortedVariants] = useState<any>([]);
+  const [sortedVariants, setSortedVariants] = useState<variants[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isValue, setIsValue] = useState("All");
   const onClickPopUp = () => {
@@ -69,7 +71,7 @@ const SizePopUp: React.FC<SizePopUpType> = ({
   useEffect(() => {
     if (sizeQuery) {
       setIsValue(`${sizeSystem + " " + sizeQuery}`);
-      const priceByQuery = sortedVariants.find((el: any) =>
+      const priceByQuery = sortedVariants.find((el: variants) =>
         el.size.includes(sizeQuery),
       )?.price;
 
@@ -111,7 +113,7 @@ const SizePopUp: React.FC<SizePopUpType> = ({
               <span className="font-bold text-[#006340]">€{mainPrice}</span>
             </button>
             <ul className={`mt-3 grid grid-cols-3 gap-3`}>
-              {sortedVariants.map((obj: any, id: number) => (
+              {sortedVariants.map((obj: variants, id: number) => (
                 <li className="max-h-[45px]" key={id}>
                   <button
                     onClick={() => onClickSize(obj.size, obj.price)}

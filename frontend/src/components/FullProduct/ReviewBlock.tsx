@@ -1,4 +1,3 @@
-import React from "react";
 import Review from "../../assets/images/Surfacing_Reviews_Landing_Page_on_PDPSurfacing_Reviews_Landing_Page_on_PDP-refresh-1.webp";
 const ReviewBlock = () => {
   return (
