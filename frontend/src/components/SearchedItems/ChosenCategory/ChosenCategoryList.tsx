@@ -82,25 +82,29 @@ const ChosenCategoryList: React.FC<ChosenCategoryListProps> = React.memo(
     return (
       <div
         className={clsx("transition-all duration-200", {
-          "flex h-10 w-full flex-wrap items-center gap-1": true,
+          "flex h-10 w-full items-center gap-1": true,
         })}
       >
-        {isLoading
-          ? Array(2)
-              .fill(null)
-              .map((_, index) => (
-                <ChosenCategorySkeleton
-                  key={`skeleton-${index}`}
-                  categoryName={index === 0 ? "Clear All" : ""}
-                />
+        <div
+          className={clsx("flex items-center gap-2 whitespace-nowrap", {
+            "animate-pulse": isLoading,
+          })}
+        >
+          {isLoading
+            ? Array.from({ length: 3 }).map((_, index) => (
+                <div
+                  key={index}
+                  className="h-7 w-24 animate-pulse rounded-full bg-gray-200"
+                ></div>
               ))
-          : categoryNames.map((category) => (
-              <ChosenCategoryItem
-                selectedColor={selectedColor}
-                key={`category-${category}`}
-                categoryName={category}
-              />
-            ))}
+            : categoryNames.map((categoryName, index) => (
+                <ChosenCategoryItem
+                  key={index}
+                  categoryName={categoryName}
+                  selectedColor={selectedColor}
+                />
+              ))}
+        </div>
       </div>
     );
   },
