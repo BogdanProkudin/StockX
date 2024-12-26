@@ -76,7 +76,7 @@ const SearchedContent = () => {
           />
         </div>
       )}
-      <div className="h-full min-h-[500px] w-full max-w-[927px] p-2">
+      <div className="h-full min-h-[500px] w-full max-w-[927px]">
         <div className="flex h-10 justify-between">
           {isLargeScreen && <FilterBreadCrumb isLoading={isLoading} />}
           <FilterSelect isLoading={isLoading} />

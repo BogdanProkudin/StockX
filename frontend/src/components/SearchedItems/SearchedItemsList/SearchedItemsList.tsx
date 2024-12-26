@@ -23,15 +23,26 @@ const SearchedItemsList: React.FC<SearchedItemsListProps> = ({
   const sortQuery = searchParams.get("sort");
   const currentPage = Number(searchParams.get("page")) || 1;
   if (isLoading || !items) return <SearchedItemSkeleton />;
-  if (!items.length)
-    return (
-      <div className="mt-4 text-center">No items found. Try another page</div>
-    );
   const handlePageClick = (selectedPage: number) => {
     const newSearchParams = new URLSearchParams(searchParams);
     newSearchParams.set("page", selectedPage.toString());
     setSearchParams(newSearchParams);
   };
+  if (!items.length)
+    return (
+      <div className="mediumSmallScreen:h-[30rem] flex h-[26rem] flex-col items-center justify-between">
+        <div className="mt-[9rem] text-center">
+          No items found. Try another page or try changing or clearing your
+          filters.
+        </div>
+        <Pagination
+          pageCount={25}
+          currentPage={currentPage}
+          onPageChange={handlePageClick}
+        />
+      </div>
+    );
+
   const sortedItems = sortItems(items, sortQuery);
 
   return (

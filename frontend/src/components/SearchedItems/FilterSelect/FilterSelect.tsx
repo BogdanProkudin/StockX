@@ -13,6 +13,7 @@ import Control from "./FilterControl";
 import Option from "./FilterOptions";
 import FilterSkeleton from "./FilterSkeleton";
 import { useSearchParams } from "react-router-dom";
+import ChosenCategoryList from "../ChosenCategory/ChosenCategoryList";
 
 interface FilterSelectProps {
   isLoading: boolean;
@@ -71,6 +72,9 @@ const FilterSelect: React.FC<FilterSelectProps> = ({ isLoading }) => {
   const selectedFilter = useAppSelector(
     (state) => state.searchSlice.selectedFilter,
   );
+  const categoryNames = useAppSelector(
+    (state) => state.searchSlice.categoryNames,
+  );
   const [isOpen, setIsOpen] = useState(false);
   const [activeFilter, setActiveFilter] = useState("");
   const dispatch = useAppDispatch();
@@ -115,6 +119,7 @@ const FilterSelect: React.FC<FilterSelectProps> = ({ isLoading }) => {
       { value: "availability", label: "Availability" },
       { value: "alphabetical", label: "Alphabetical" },
     ];
+    console.log(categoryNames);
 
     return (
       <Select<FilterOption, false>
@@ -176,7 +181,16 @@ const FilterSelect: React.FC<FilterSelectProps> = ({ isLoading }) => {
           </button>
         </div>
 
-        <div className={styles.sheetChosenCategories}></div>
+        <div
+          style={{
+            display:
+              categoryNames.length > 0 && !isLargeScreen ? "flex" : "none",
+          }}
+          className={styles.sheetChosenCategories}
+        >
+          <ChosenCategoryList isLoading={false} />
+        </div>
+
         <div className={styles.sheetContent}>
           <div className={styles.filterSection}>
             <TrendingButton />
