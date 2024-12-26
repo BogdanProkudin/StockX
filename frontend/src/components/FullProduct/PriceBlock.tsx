@@ -8,6 +8,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 
 interface PriceBlockProps {
   id: string | undefined;
+  title: string | undefined;
   price: number | undefined;
   min_price: number | undefined;
   max_price: number | undefined;
@@ -17,7 +18,7 @@ interface PriceBlockProps {
 }
 const PriceBlock: React.FC<PriceBlockProps> = ({
   price,
-  id,
+  title,
   min_price,
   max_price,
   isPrice,
@@ -58,7 +59,9 @@ const PriceBlock: React.FC<PriceBlockProps> = ({
   }, [totalPrice, maxPrice]);
 
   const onClickBuy = () => {
-    navigate(`/buy/${id}?size=${sizeQuery}&isBuy=true`);
+    navigate(
+      `/buy/${title}?${sizeQuery !== null ? "size=" + sizeQuery + `&` : ""}isBuy=true`,
+    );
   };
   return (
     <div className="rounded-xl border border-[#a4a4a4] p-4">
