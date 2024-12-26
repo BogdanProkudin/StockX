@@ -35,7 +35,7 @@ const Pagination = ({
   const navButtonStyle = "min-w-[40px]";
 
   return (
-    <div className="mediumScreen:mb-4 flex items-center gap-2">
+    <div className="mediumScreen:mb-4 mb-4 flex items-center gap-2">
       <NavigateNextIcon
         style={{ transform: "rotate(180deg)" }}
         onClick={() => handlePageChange(currentPage - 1)}
