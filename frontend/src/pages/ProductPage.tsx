@@ -130,6 +130,7 @@ const FullProduct = () => {
           ) : (
             <PriceBlock
               id={product?.id}
+              title={product?.title}
               price={product?.avg_price}
               max_price={product?.max_price}
               min_price={product?.min_price}
