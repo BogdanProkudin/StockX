@@ -45,7 +45,10 @@ function App() {
         path="/auth"
         element={userToken ? <Navigate to="/profile" /> : <Auth />}
       />
-      <Route path="/profile" element={<Profile />} />
+      <Route path="/settings/profile" element={<Profile />} />
+      <Route path="/settings/notifications" element={<Profile />} />
+      <Route path="/settings" element={<Profile />} />
+      <Route path="settings/liked" element={<Profile />} />
       <Route path="/resetPassword/:token" element={<ResetPage />} />
     </Routes>
   );

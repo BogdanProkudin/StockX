@@ -60,7 +60,7 @@ const Home: React.FC = () => {
 
   return (
     <div className="mt-6">
-      <div ref={refTopSlider}>
+      <div className="p-4" ref={refTopSlider}>
         <TopSlider data={topSlider.data} />
       </div>
       <UserSection
@@ -109,7 +109,6 @@ const Home: React.FC = () => {
           title={holidayImageItems.title}
         />
       </div>
-
       <div ref={refAccessories}>
         <MainSection
           mainTitle={accessories.title}
@@ -166,10 +165,23 @@ const Home: React.FC = () => {
           description={controllersItems.description}
         />
       </div>
-
       {userError && <div className="text-red-500">Error loading user data</div>}
     </div>
   );
 };
 
 export default Home;
+{
+  /*
+
+
+
+
+
+
+
+
+
+
+ */
+}

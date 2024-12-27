@@ -83,22 +83,20 @@ const NavigationHeader = () => {
                   ></div>
                 )}
               </li>
-              {isLargeScreen &&
-                isDropdownVisible &&
-                dropdownAnimatingLink === obj.name && (
-                  <li
-                    onMouseEnter={handleDropdownMouseEnter}
-                    onMouseLeave={handleDropdownMouseLeave}
-                    className={`${styles.sub_navigation} ${
-                      isDropdownVisible ? styles.active : ""
-                    }`}
-                  >
-                    <Dropdown
-                      subLinkName={dropdownAnimatingLink}
-                      content={obj.content}
-                    />
-                  </li>
-                )}
+              {isLargeScreen && dropdownAnimatingLink === obj.name && (
+                <li
+                  onMouseEnter={handleDropdownMouseEnter}
+                  onMouseLeave={handleDropdownMouseLeave}
+                  className={`${styles.sub_navigation} ${
+                    isDropdownVisible ? styles.active : ""
+                  }`}
+                >
+                  <Dropdown
+                    subLinkName={dropdownAnimatingLink}
+                    content={obj.content}
+                  />
+                </li>
+              )}
             </React.Fragment>
           ))}
         </ul>

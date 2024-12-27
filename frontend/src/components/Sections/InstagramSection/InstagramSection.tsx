@@ -10,6 +10,7 @@ import TitleSkeleton from "../TitleSkeleton";
 import Modal from "./Modal";
 import Skeleton from "./Skeleton";
 import { productProps } from "../../../@types/userCardTypes";
+import { useMediaQuery } from "@mui/material";
 
 const InstagramSection = () => {
   const instagramSectionItems = useAppSelector(
@@ -19,7 +20,7 @@ const InstagramSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [modalSlide, setModaliSlide] = useState(0);
   const [isModal, setIsModal] = useState(false);
-
+  const isLargeScreen = useMediaQuery("(max-width: 1300px)");
   const [selectedItem, setSelectedItem] = useState<{
     image: string;
     data: productProps[];
@@ -66,25 +67,18 @@ const InstagramSection = () => {
           <Skeleton />
         ) : (
           <>
-            <div
-              className={`${styles.customSwiperButtonNext} ${
-                currentSlide + 3 === totalSlides ? "hidden" : ""
-              }`}
-            >
-              🡲
-            </div>
-
-            <div
-              className={`${styles.customSwiperButtonPrev} ${
-                currentSlide === 0 ? "hidden" : ""
-              }`}
-            >
-              🡰
-            </div>
+            {!isLargeScreen && (
+              <div className={styles.customSwiperButtonNext}>🡲</div>
+            )}
+            {!isLargeScreen && (
+              <div className={styles.customSwiperButtonPrev}>🡰</div>
+            )}
             <Swiper
               spaceBetween={10}
               slidesPerView={4.1}
               slidesPerGroup={4}
+              scrollbar={{ draggable: true, dragSize: 1 }}
+              loop={true}
               modules={[Navigation]}
               navigation={{
                 nextEl: `.${styles.customSwiperButtonNext}`,
@@ -93,7 +87,7 @@ const InstagramSection = () => {
               onSlideChange={handleSlideChange}
             >
               {instagramSectionItems.map((obj, id) => (
-                <SwiperSlide key={id}>
+                <SwiperSlide className="flex: min-w-[292px]" key={id}>
                   <div
                     onClick={() => openModal(obj, id)}
                     className="group relative h-[292px] w-[292px] cursor-pointer overflow-hidden rounded-2xl transition-all duration-100 hover:bg-black"
