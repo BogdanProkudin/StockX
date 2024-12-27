@@ -2,7 +2,7 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
-type variants = {
+export type variants = {
   id: string;
   price: number;
   product_id: string;
