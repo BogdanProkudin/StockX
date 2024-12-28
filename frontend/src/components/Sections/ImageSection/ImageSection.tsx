@@ -16,7 +16,7 @@ const ImageSection: React.FC<ImageSectionProps> = ({ cardAssets, title }) => {
         {cardAssets.length < 2 ? <TitleSkeleton /> : title}
       </h1>
 
-      <div className="flex justify-between">
+      <div className="flex justify-between gap-3 overflow-x-auto">
         {cardAssets.length < 2 ? (
           skeleton
         ) : (

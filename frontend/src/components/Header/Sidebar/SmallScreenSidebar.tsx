@@ -1,23 +1,24 @@
-import React from 'react';
-import styles from './styles.module.scss';
-import { Link } from 'react-router-dom';
-import { arrHeaderMainLinks } from '../../../assets/SecondHeader/HeaderDropDownLinks';
-import HeaderAuth from '../AuthBtns/HeaderAuth';
-import HeaderUser from '../UserBtns/HeaderUser';
+import React from "react";
+import styles from "./styles.module.scss";
+import { Link } from "react-router-dom";
+import { arrHeaderMainLinks } from "../../../assets/SecondHeader/HeaderDropDownLinks";
+import HeaderAuth from "../AuthBtns/HeaderAuth";
+import HeaderUser from "../UserBtns/HeaderUser";
 
 interface SmallScreenSidebarProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const SmallScreenSidebar: React.FC<SmallScreenSidebarProps> = ({ isOpen, onClose }) => {
+const SmallScreenSidebar: React.FC<SmallScreenSidebarProps> = ({
+  isOpen,
+  onClose,
+}) => {
   const userToken = localStorage.getItem("token");
 
   return (
     <>
-      <div 
-        className={`${styles.sidebar} ${isOpen ? styles.active : ''}`}
-      >
+      <div className={`${styles.sidebar} ${isOpen ? styles.active : ""}`}>
         <div className={styles.sidebarHeader}>
           <button onClick={onClose} className={styles.closeButton}>
             <svg viewBox="0 0 24 24" className="h-8 w-8">
