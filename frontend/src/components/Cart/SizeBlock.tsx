@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { variants } from "../FullProduct/SizePopUp";
+import { useSearchParams } from "react-router-dom";
 
 interface SizeBlockProps {
   variants: variants[] | undefined;
 }
 const SizeBlock: React.FC<SizeBlockProps> = ({ variants }) => {
   const sizeOrder = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
+  const [searchParams, setSearchParams] = useSearchParams();
   const [sortedVariants, setSortedVariants] = useState<variants[] | undefined>(
     [],
   );
@@ -21,10 +23,16 @@ const SizeBlock: React.FC<SizeBlockProps> = ({ variants }) => {
       : variants?.sort((big, small) => Number(big.size) - Number(small.size));
     setSortedVariants(sortedVariants);
   }, []);
+  const onClickSize = (value: string) => {
+    const updatedsearchParams = new URLSearchParams(searchParams);
+    updatedsearchParams.set("size", value);
+    setSearchParams(updatedsearchParams, { replace: true });
+  };
   return (
     <div className="mt-5 grid grid-cols-3 gap-7">
       {sortedVariants?.map((obj, id) => (
         <button
+          onClick={() => onClickSize(obj.size)}
           className="flex flex-col items-center rounded-lg border border-[#a4a4a4] bg-white p-3 transition-all duration-300 ease-in-out hover:border-[#006340]"
           key={id}
         >
