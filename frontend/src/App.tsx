@@ -40,7 +40,7 @@ function App() {
         <Route path="not-found" element={<NotFound />} />
         <Route path="*" element={<NotFound />} />
       </Route>
-      <Route path="/buy/:id" element={<Cart />} />
+      <Route path="/buy/:title" element={<Cart />} />
       <Route
         path="/auth"
         element={userToken ? <Navigate to="/profile" /> : <Auth />}
