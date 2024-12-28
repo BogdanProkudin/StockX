@@ -8,6 +8,7 @@ export default {
         mediumLargeScreen: { max: "1140px" },
         mediumScreen: { max: "920px" },
         mediumSmallScreen: { max: "768px" },
+        smallScreen: { max: "600px" },
       },
       fontFamily: {
         montserrat: ["Montserrat", "sans-serif"],
