@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 
-import { Link, useNavigate, useParams } from "react-router-dom";
+import {
+  Link,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import { FullProductProps } from "../@types/userCardTypes";
 import axios from "axios";
 import SizeBlock from "../components/Cart/SizeBlock";
@@ -8,9 +13,13 @@ import ProductPreview from "../components/Cart/ProductPreview";
 import HeaderCart from "../components/Cart/HeaderCart";
 import Loader from "../components/Cart/Loader";
 import SizeGrid from "../components/Cart/SizeGrid";
+import { ArrowRight, Car } from "lucide-react";
+import EditSize from "../components/Cart/EditSize";
+import PriceBlock from "../components/Cart/PriceBlock";
 
 const Cart = () => {
   const { title } = useParams();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [product, setProduct] = useState<FullProductProps | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -45,6 +54,9 @@ const Cart = () => {
       navigate("/not-found", { replace: true });
     }
   }, [error, navigate]);
+  const sizeQuery = searchParams.get("size");
+  const sizeOrder = ["US", "UK", "CM", "KR", "EU"];
+
   return (
     <div>
       <HeaderCart />
@@ -56,17 +68,50 @@ const Cart = () => {
 
           <div className="flex h-full w-[570px] flex-col bg-[#f4f3f1] pt-8">
             <div className="flex-1 px-7">
-              <h1 className="mb-2 text-2xl font-bold">Select Size</h1>
-              <SizeGrid />
-              <SizeBlock variants={product?.variants} />
+              {sizeQuery ? (
+                <div className="flex flex-col gap-5">
+                  <h1 className="mb-3 text-center text-lg font-bold">
+                    Buy Now
+                  </h1>
+                  <EditSize gender={product?.gender} sizeOrder={sizeOrder[0]} />
+                  <PriceBlock price={product?.avg_price} />
+                  <button className="flex items-center justify-between rounded-xl bg-white px-5 py-5">
+                    <div>
+                      <h4 className="w-[110px] font-semibold">Make An Offer</h4>
+                      <span>
+                        Get it for less if a seller accepts your price
+                      </span>
+                    </div>
+                    <span className="rounded-full border border-black p-1">
+                      <ArrowRight size={20} />
+                    </span>
+                  </button>
+                  <div className="flex items-center gap-5 rounded-xl bg-white px-5 py-5">
+                    <Car />
+                    <span>Standard Shipping</span>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <h1 className="mb-2 text-2xl font-bold">Select Size</h1>
+                  <SizeGrid sizeOrder={sizeOrder} />
+                  <SizeBlock variants={product?.variants} />
+                </>
+              )}
             </div>
-            <div className="border-l border-t border-l-[#cfcfcf] border-t-[#cfcfcf] bg-white px-7 py-5">
-              <button className="rounded-2xl border border-black px-5 py-2 font-bold text-black transition-all duration-300 ease-in-out hover:bg-black hover:text-white">
-                <Link className="flex items-center gap-3" to={`/${title}`}>
-                  Cancel
-                </Link>
-              </button>
-            </div>
+            {sizeQuery ? (
+              <div className="border-l border-t border-l-[#cfcfcf] border-t-[#cfcfcf] bg-white px-7 py-5">
+                <span>Subtotal</span>
+              </div>
+            ) : (
+              <div className="border-l border-t border-l-[#cfcfcf] border-t-[#cfcfcf] bg-white px-7 py-5">
+                <button className="rounded-2xl border border-black px-5 py-2 font-bold text-black transition-all duration-300 ease-in-out hover:bg-black hover:text-white">
+                  <Link className="flex items-center gap-3" to={`/${title}`}>
+                    Cancel
+                  </Link>
+                </button>
+              </div>
+            )}
           </div>
         </div>
       )}

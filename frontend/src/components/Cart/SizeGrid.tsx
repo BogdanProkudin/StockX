@@ -1,7 +1,9 @@
 import React from "react";
 
-const SizeGrid = () => {
-  const sizeOrder = ["US", "UK", "CM", "KR", "EU"];
+interface SizeGridProps {
+  sizeOrder: string[];
+}
+const SizeGrid: React.FC<SizeGridProps> = ({ sizeOrder }) => {
   return (
     <div className="my-2 flex items-center gap-3">
       {sizeOrder.map((el, id) => (
