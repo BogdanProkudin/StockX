@@ -7,8 +7,8 @@ interface ProductPreviewProps {
 }
 const ProductPreview: React.FC<ProductPreviewProps> = ({ image, title }) => {
   return (
-    <div className="ml-8 mt-8 h-[495px] w-[800px]">
-      <button className="rounded-2xl border border-black px-5 py-2 font-bold text-black transition-all duration-300 ease-in-out hover:bg-black hover:text-white">
+    <div className="relative ml-8 mt-8 flex h-[495px] w-full flex-col items-center">
+      <button className="absolute left-0 rounded-2xl border border-black px-5 py-2 font-bold text-black transition-all duration-300 ease-in-out hover:bg-black hover:text-white">
         <Link className="flex items-center gap-3" to={`/${title}`}>
           <ArrowLeft size={18} />
           Back

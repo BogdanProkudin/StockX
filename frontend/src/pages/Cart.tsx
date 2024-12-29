@@ -16,6 +16,7 @@ import SizeGrid from "../components/Cart/SizeGrid";
 import { ArrowRight, Car } from "lucide-react";
 import EditSize from "../components/Cart/EditSize";
 import PriceBlock from "../components/Cart/PriceBlock";
+import TotalPrice from "../components/Cart/TotalPrice";
 
 const Cart = () => {
   const { title } = useParams();
@@ -56,7 +57,7 @@ const Cart = () => {
   }, [error, navigate]);
   const sizeQuery = searchParams.get("size");
   const sizeOrder = ["US", "UK", "CM", "KR", "EU"];
-
+  const price = Math.round(Number(product?.avg_price));
   return (
     <div>
       <HeaderCart />
@@ -66,7 +67,7 @@ const Cart = () => {
         <div className="flex h-[87vh] justify-between">
           <ProductPreview image={product?.image} title={product?.title} />
 
-          <div className="flex h-full w-[570px] flex-col bg-[#f4f3f1] pt-8">
+          <div className="flex h-full min-w-[600px] flex-col bg-[#f4f3f1] pt-8">
             <div className="flex-1 px-7">
               {sizeQuery ? (
                 <div className="flex flex-col gap-5">
@@ -74,7 +75,7 @@ const Cart = () => {
                     Buy Now
                   </h1>
                   <EditSize gender={product?.gender} sizeOrder={sizeOrder[0]} />
-                  <PriceBlock price={product?.avg_price} />
+                  <PriceBlock price={price} />
                   <button className="flex items-center justify-between rounded-xl bg-white px-5 py-5">
                     <div>
                       <h4 className="w-[110px] font-semibold">Make An Offer</h4>
@@ -100,9 +101,7 @@ const Cart = () => {
               )}
             </div>
             {sizeQuery ? (
-              <div className="border-l border-t border-l-[#cfcfcf] border-t-[#cfcfcf] bg-white px-7 py-5">
-                <span>Subtotal</span>
-              </div>
+              <TotalPrice price={price} />
             ) : (
               <div className="border-l border-t border-l-[#cfcfcf] border-t-[#cfcfcf] bg-white px-7 py-5">
                 <button className="rounded-2xl border border-black px-5 py-2 font-bold text-black transition-all duration-300 ease-in-out hover:bg-black hover:text-white">
