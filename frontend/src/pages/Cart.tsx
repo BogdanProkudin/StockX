@@ -17,6 +17,7 @@ import { ArrowRight, Car } from "lucide-react";
 import EditSize from "../components/Cart/EditSize";
 import PriceBlock from "../components/Cart/PriceBlock";
 import TotalPrice from "../components/Cart/TotalPrice";
+import MakeOffer from "../components/Cart/MakeOffer";
 
 const Cart = () => {
   const { title } = useParams();
@@ -25,6 +26,7 @@ const Cart = () => {
   const [product, setProduct] = useState<FullProductProps | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isMakeOffer, setIsMakeOffer] = useState(false);
   useEffect(() => {
     window.scrollTo(0, 0);
     const fetchFullProduct = async () => {
@@ -58,6 +60,9 @@ const Cart = () => {
   const sizeQuery = searchParams.get("size");
   const sizeOrder = ["US", "UK", "CM", "KR", "EU"];
   const price = Math.round(Number(product?.avg_price));
+  const onClickMakeOffer = () => {
+    setIsMakeOffer(true);
+  };
   return (
     <div>
       <HeaderCart />
@@ -72,25 +77,36 @@ const Cart = () => {
               {sizeQuery ? (
                 <div className="flex flex-col gap-5">
                   <h1 className="mb-3 text-center text-lg font-bold">
-                    Buy Now
+                    {isMakeOffer ? "Make An Offer" : "Buy Now"}
                   </h1>
                   <EditSize gender={product?.gender} sizeOrder={sizeOrder[0]} />
-                  <PriceBlock price={price} />
-                  <button className="flex items-center justify-between rounded-xl bg-white px-5 py-5">
-                    <div>
-                      <h4 className="w-[110px] font-semibold">Make An Offer</h4>
-                      <span>
-                        Get it for less if a seller accepts your price
+                  {!isMakeOffer && <PriceBlock price={price} />}
+
+                  {!isMakeOffer && (
+                    <button
+                      onClick={onClickMakeOffer}
+                      className="flex items-center justify-between rounded-xl bg-white px-5 py-5"
+                    >
+                      <div>
+                        <h4 className="w-[110px] font-semibold">
+                          Make An Offer
+                        </h4>
+                        <span>
+                          Get it for less if a seller accepts your price
+                        </span>
+                      </div>
+                      <span className="rounded-full border border-black p-1">
+                        <ArrowRight size={20} />
                       </span>
+                    </button>
+                  )}
+                  {!isMakeOffer && (
+                    <div className="flex items-center gap-5 rounded-xl bg-white px-5 py-5">
+                      <Car />
+                      <span>Standard Shipping</span>
                     </div>
-                    <span className="rounded-full border border-black p-1">
-                      <ArrowRight size={20} />
-                    </span>
-                  </button>
-                  <div className="flex items-center gap-5 rounded-xl bg-white px-5 py-5">
-                    <Car />
-                    <span>Standard Shipping</span>
-                  </div>
+                  )}
+                  {isMakeOffer && <MakeOffer price={price} />}
                 </div>
               ) : (
                 <>
