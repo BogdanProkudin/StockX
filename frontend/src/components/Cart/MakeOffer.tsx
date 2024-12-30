@@ -7,6 +7,8 @@ const MakeOffer: React.FC<MakeOfferProps> = ({ price }) => {
   const goodBid = Number(price) * 0.8;
   const betterBid = Number(price) * 0.9;
 
+  console.log(betterBid);
+
   const priceOptionArr = [
     { priceVariant: goodBid, subTital: "Good Bid" },
     { priceVariant: betterBid, subTital: "Better Bid" },
