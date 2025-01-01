@@ -39,7 +39,7 @@ const Cart = () => {
         document.body.style.overflow = "hidden";
         const apiUrl = `https://api.sneakersapi.dev/api/v2/products?search=${title}`;
         const { data } = await axios.get(apiUrl, {
-          headers: { Authorization: "f-2895d084cba594772c79255a5fb658d0" },
+          headers: { Authorization: import.meta.env.VITE_API_KEY },
         });
         setProduct(data.data[0]);
         dispatch(setCartPrice(Math.round(Number(data.data[0].avg_price))));

@@ -30,7 +30,7 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({ brand, title }) => {
       try {
         const apiUrl = `https://api.sneakersapi.dev/api/v2/products?brand=${brand}&search=${searchTitle}`;
         const { data } = await axios.get(apiUrl, {
-          headers: { Authorization: "f-2895d084cba594772c79255a5fb658d0" },
+          headers: { Authorization: import.meta.env.VITE_API_KEY },
         });
         setProduct(data.data);
       } catch (error) {
