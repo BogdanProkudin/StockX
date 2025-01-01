@@ -18,8 +18,11 @@ import EditSize from "../components/Cart/EditSize";
 import PriceBlock from "../components/Cart/PriceBlock";
 import TotalPrice from "../components/Cart/TotalPrice";
 import MakeOffer from "../components/Cart/MakeOffer";
+import { useAppDispatch } from "../redux/hook";
+import { setCartPrice } from "../redux/slices/cartSlice";
 
 const Cart = () => {
+  const dispatch = useAppDispatch();
   const { title } = useParams();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -39,6 +42,7 @@ const Cart = () => {
           headers: { Authorization: "f-2895d084cba594772c79255a5fb658d0" },
         });
         setProduct(data.data[0]);
+        dispatch(setCartPrice(Math.round(Number(data.data[0].avg_price))));
         console.log(data.data[0]);
       } catch (error) {
         console.error(error);
@@ -59,7 +63,7 @@ const Cart = () => {
   }, [error, navigate]);
   const sizeQuery = searchParams.get("size");
   const sizeOrder = ["US", "UK", "CM", "KR", "EU"];
-  const price = Math.round(Number(product?.avg_price));
+
   const onClickMakeOffer = () => {
     setIsMakeOffer(true);
   };
@@ -75,12 +79,12 @@ const Cart = () => {
           <div className="flex h-full min-w-[600px] flex-col bg-[#f4f3f1] pt-8">
             <div className="flex-1 px-7">
               {sizeQuery ? (
-                <div className="flex flex-col gap-5">
+                <div className="flex h-[450px] flex-col gap-5">
                   <h1 className="mb-3 text-center text-lg font-bold">
                     {isMakeOffer ? "Make An Offer" : "Buy Now"}
                   </h1>
                   <EditSize gender={product?.gender} sizeOrder={sizeOrder[0]} />
-                  {!isMakeOffer && <PriceBlock price={price} />}
+                  {!isMakeOffer && <PriceBlock variants={product?.variants} />}
 
                   {!isMakeOffer && (
                     <button
@@ -100,13 +104,17 @@ const Cart = () => {
                       </span>
                     </button>
                   )}
-                  {!isMakeOffer && (
-                    <div className="flex items-center gap-5 rounded-xl bg-white px-5 py-5">
+                  {isMakeOffer && <MakeOffer variants={product?.variants} />}
+
+                  <div className="flex justify-between rounded-xl bg-white px-5 py-5">
+                    <div className="flex items-center gap-5">
                       <Car />
                       <span>Standard Shipping</span>
                     </div>
-                  )}
-                  {isMakeOffer && <MakeOffer price={price} />}
+                    <span className="cursor-pointer text-sm font-bold text-[#006340]">
+                      Add
+                    </span>
+                  </div>
                 </div>
               ) : (
                 <>
@@ -117,7 +125,7 @@ const Cart = () => {
               )}
             </div>
             {sizeQuery ? (
-              <TotalPrice price={price} />
+              <TotalPrice />
             ) : (
               <div className="border-l border-t border-l-[#cfcfcf] border-t-[#cfcfcf] bg-white px-7 py-5">
                 <button className="rounded-2xl border border-black px-5 py-2 font-bold text-black transition-all duration-300 ease-in-out hover:bg-black hover:text-white">
