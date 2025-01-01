@@ -1,11 +1,9 @@
 import { ChevronDown, ChevronUp } from "lucide-react";
 import React, { useState } from "react";
+import { useAppSelector } from "../../redux/hook";
 
-interface TotalPriceProps {
-  price: number | undefined;
-}
-
-const TotalPrice: React.FC<TotalPriceProps> = ({ price }) => {
+const TotalPrice: React.FC = () => {
+  const price = useAppSelector((state) => state.cartSlice.price);
   const priceArr = [
     {
       name: "Item Price",
@@ -34,17 +32,17 @@ const TotalPrice: React.FC<TotalPriceProps> = ({ price }) => {
     <div
       onClick={onClickFullTotalPrice}
       className={`relative cursor-pointer border-l border-t border-l-[#cfcfcf] border-t-[#cfcfcf] bg-white px-7 py-5 ${
-        isTotalPrice ? "min-h-[350px]" : "flex items-center justify-between"
+        isTotalPrice ? "" : "flex items-center justify-between"
       }`}
       style={{
-        transform: isTotalPrice ? "translateY(-55%)" : "translateY(0)",
+        transform: isTotalPrice ? "translateY(-57%)" : "translateY(0)",
       }}
     >
       <div>
         <h4 className="flex items-center gap-2 text-lg">
           Subtotal:
           <span className="text-base font-bold text-[#006340]">
-            €{subTotal}
+            €{subTotal.toFixed(2)}
           </span>
           {isTotalPrice ? <ChevronUp /> : <ChevronDown />}
         </h4>

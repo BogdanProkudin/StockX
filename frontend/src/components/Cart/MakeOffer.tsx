@@ -1,29 +1,42 @@
 import { Euro } from "lucide-react";
 import React, { useState } from "react";
-
-interface MakeOfferProps {
-  price: number | undefined;
+import { useAppDispatch } from "../../redux/hook";
+import { setCartPrice } from "../../redux/slices/cartSlice";
+import { variants } from "../FullProduct/SizePopUp";
+import { useSearchParams } from "react-router-dom";
+interface MakeOfferBlockProps {
+  variants: variants[] | undefined;
 }
-const MakeOffer: React.FC<MakeOfferProps> = ({ price }) => {
-  const [isActive, setIsActive] = useState(1);
-  const [value, setValue] = useState("");
+const MakeOffer: React.FC<MakeOfferBlockProps> = ({ variants }) => {
+  const dispatch = useAppDispatch();
+  const [searchParams] = useSearchParams();
+  const sizeQuery = searchParams.get("size");
+  const price = variants?.find((el) => el.size === sizeQuery)?.price;
+
   const goodBid = Number(price) * 0.8;
   const betterBid = Number(price) * 0.9;
 
   const priceOptionArr = [
-    { priceVariant: goodBid, subTital: "Good Bid" },
-    { priceVariant: betterBid, subTital: "Better Bid" },
+    { priceVariant: goodBid.toFixed(2), subTital: "Good Bid" },
+    { priceVariant: betterBid.toFixed(2), subTital: "Better Bid" },
     {
       priceVariant: price,
       subTital: "Buy Now",
     },
   ];
+  const initialVariant = String(priceOptionArr[1].priceVariant);
+  const [isActive, setIsActive] = useState(1);
+  const [value, setValue] = useState(initialVariant);
+  const onClickVariant = (id: number) => {
+    setIsActive(id);
+    const variant = String(priceOptionArr[id].priceVariant);
+    setValue(variant);
+    dispatch(setCartPrice(Number(variant)));
+  };
   const onChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    console.log("value", priceOptionArr[isActive].priceVariant);
 
-    const variant = String(priceOptionArr[isActive].priceVariant);
-    setValue(value === "" ? variant : value);
+    setValue(value);
   };
   return (
     <div className="rounded-xl bg-white px-5 py-5">
@@ -31,7 +44,7 @@ const MakeOffer: React.FC<MakeOfferProps> = ({ price }) => {
       <div className="mb-5 flex items-center justify-between">
         {priceOptionArr.map((obj, id) => (
           <button
-            onClick={() => setIsActive(id)}
+            onClick={() => onClickVariant(id)}
             className={`mt-2 flex w-[155px] flex-col items-center rounded-lg border px-3 py-2 text-sm font-semibold transition-all duration-300 ease-in-out hover:border-[#006340] hover:bg-[#e5e5e5] ${
               isActive === id
                 ? "cursor-default border-[#006340] bg-[#e5e5e5]"
