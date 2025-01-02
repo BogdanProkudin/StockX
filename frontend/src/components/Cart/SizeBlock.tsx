@@ -29,17 +29,21 @@ const SizeBlock: React.FC<SizeBlockProps> = ({ variants }) => {
     setSearchParams(updatedsearchParams, { replace: true });
   };
   return (
-    <div className="mt-5 grid grid-cols-3 gap-7">
-      {sortedVariants?.map((obj, id) => (
-        <button
-          onClick={() => onClickSize(obj.size)}
-          className="flex flex-col items-center rounded-lg border border-[#a4a4a4] bg-white p-3 transition-all duration-300 ease-in-out hover:border-[#006340]"
-          key={id}
-        >
-          <span>{obj.size}</span>
-          <span className="text-sm font-bold text-[#006340]">€{obj.price}</span>
-        </button>
-      ))}
+    <div className="mt-5">
+      <div className="scroll grid h-[420px] grid-cols-3 gap-7 overflow-y-scroll pr-4">
+        {sortedVariants?.map((obj, id) => (
+          <button
+            onClick={() => onClickSize(obj.size)}
+            className="flex flex-col items-center rounded-lg border border-[#a4a4a4] bg-white p-3 transition-all duration-300 ease-in-out hover:border-[#006340]"
+            key={id}
+          >
+            <span>{obj.size}</span>
+            <span className="text-sm font-bold text-[#006340]">
+              €{obj.price}
+            </span>
+          </button>
+        ))}
+      </div>
     </div>
   );
 };
