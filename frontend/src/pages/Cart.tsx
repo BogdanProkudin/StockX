@@ -75,10 +75,10 @@ const Cart: React.FC = () => {
       {isLoading ? (
         <Loader />
       ) : (
-        <div className="flex h-[87vh] justify-between">
+        <div className="flex h-full min-h-[87vh] justify-between">
           <ProductPreview image={product?.image} title={product?.title} />
 
-          <div className="flex h-full min-w-[600px] flex-col bg-[#f4f3f1] pt-8">
+          <div className="flex h-full min-h-[87vh] min-w-[600px] flex-col bg-[#f4f3f1] pt-8">
             {shipping ? (
               <div className="px-7">
                 <ShipForm />

@@ -19,13 +19,11 @@ const HeaderLayout = () => {
         <Header />
         {isLargeScreen && <NavHeader />}
       </div>
-      {/* <button className={styles.btnTheme}>
-        <WbSunnyIcon />
-      </button> */}
+
       <div className={`container ${isProductPage ? "productPage" : ""}`}>
         <Outlet />
       </div>
-      {/* {!isSearching && <Footer />} */}
+      {!isSearching && <Footer />}
     </>
   );
 };
