@@ -15,6 +15,7 @@ import FullProduct from "./pages/ProductPage";
 import FilterPage from "./pages/FilterPage";
 import NotFound from "./pages/NotFound";
 import Cart from "./pages/Cart";
+import ProfileLayout from "./layout/ProfileLayout";
 
 type ComponentType = React.FC;
 
@@ -40,15 +41,17 @@ function App() {
         <Route path="not-found" element={<NotFound />} />
         <Route path="*" element={<NotFound />} />
       </Route>
+      <Route path="/settings" element={<ProfileLayout />}>
+        <Route path="profile" element={<Profile />} />
+        {/* <Route path="notifications" element={<Notifications />} />
+        <Route path="liked" element={<Liked />} /> */}
+      </Route>
       <Route path="/buy/:title" element={<Cart />} />
       <Route
         path="/auth"
         element={userToken ? <Navigate to="/profile" /> : <Auth />}
       />
-      <Route path="/settings/profile" element={<Profile />} />
-      <Route path="/settings/notifications" element={<Profile />} />
-      <Route path="/settings" element={<Profile />} />
-      <Route path="settings/liked" element={<Profile />} />
+
       <Route path="/resetPassword/:token" element={<ResetPage />} />
     </Routes>
   );

@@ -54,17 +54,49 @@ export const profileArr: {
   img: any;
   name: string;
   path: string;
+  description: string;
 }[] = [
   {
-    img: <UserRound size={18} />,
+    img: <UserRound size={26} />,
     name: "Profile",
     path: "",
+    description: "Shipping,Email,Password,Shoe Size",
   },
-  { img: <ScanBarcode size={18} />, name: "Buying", path: "" },
-  { img: <HandCoins size={18} />, name: "Selling", path: "" },
-  { img: <Heart size={18} />, name: "Favorites", path: "" },
-  { img: <GalleryVerticalEnd size={18} />, name: "Portfolio", path: "" },
-  { img: <Wallet size={18} />, name: "Wallet", path: "" },
-  { img: <Settings size={18} />, name: "Settings", path: "" },
-  { img: <LogOut size={18} />, name: "Log Out", path: "" },
+  {
+    img: <ScanBarcode size={26} />,
+    name: "Buying",
+    path: "",
+    description: "Active Bids, In-Progress, Completed Orders",
+  },
+  {
+    img: <HandCoins size={26} />,
+    name: "Selling",
+    path: "",
+    description: "Active Asks, Sales, Seller Profile",
+  },
+  {
+    img: <Heart size={26} />,
+    name: "Favorites",
+    path: "",
+    description: "Items and lists you've saved",
+  },
+  {
+    img: <GalleryVerticalEnd size={26} />,
+    name: "Portfolio",
+    path: "",
+    description: "See the value of your items",
+  },
+  {
+    img: <Wallet size={26} />,
+    name: "Wallet",
+    path: "",
+    description: "See the value of your items",
+  },
+  {
+    img: <Settings size={26} />,
+    name: "Settings",
+    path: "",
+    description: "Security and Notifications",
+  },
+  { img: <LogOut size={26} />, name: "Log Out", path: "", description: "" },
 ];
