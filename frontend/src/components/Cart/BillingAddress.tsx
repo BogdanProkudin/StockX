@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 
 import CountryPopUp from "./CountryPopUp";
 
-interface ShipFormProps {
-  setShipping: () => void;
+interface BillingAddressProps {
+  setBills: () => void;
 }
-const ShipForm: React.FC<ShipFormProps> = ({ setShipping }) => {
-  const shipArr = [
+const BillingAddress: React.FC<BillingAddressProps> = ({ setBills }) => {
+  const billArr = [
     {
       labelName: "First Name",
       placeholderName: "Jane",
@@ -61,9 +61,9 @@ const ShipForm: React.FC<ShipFormProps> = ({ setShipping }) => {
       type: "number",
     },
   ];
-  const [shipForm, setShipForm] = useState<{ [key: string]: string }[]>([]);
+  const [billForm, setbillForm] = useState<{ [key: string]: string }[]>([]);
   const [formData, setFormData] = useState<{ [key: string]: string }>(
-    shipArr.reduce((acc, field) => ({ ...acc, [field.key]: "" }), {}),
+    billArr.reduce((acc, field) => ({ ...acc, [field.key]: "" }), {}),
   );
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const handleInputChange = (key: string, value: string) => {
@@ -86,58 +86,57 @@ const ShipForm: React.FC<ShipFormProps> = ({ setShipping }) => {
       console.log(" errors:", newErrors);
     } else {
       setErrors({ key: "" });
-      const formDataShip = localStorage.getItem("formDataShip");
-      if (!formDataShip) {
+      const formDataBills = localStorage.getItem("BillingAddress");
+      if (!formDataBills) {
         const formDataArr = [];
-
         formDataArr.push(formData);
         localStorage.setItem("formDataShip", JSON.stringify(formDataArr));
       } else {
         const formDataArr = [];
-        formDataArr.push(JSON.parse(formDataShip));
+        formDataArr.push(JSON.parse(formDataBills));
         formDataArr.push(formData);
-        localStorage.setItem("formDataShip", JSON.stringify(formDataArr));
+        localStorage.setItem("BillingAddress", JSON.stringify(formDataArr));
       }
       console.log("success", formData);
-      setShipping();
+      setBills();
     }
   };
   useEffect(() => {
-    const savedData = localStorage.getItem("formDataShip");
+    const savedData = localStorage.getItem("BillingAddress");
     if (savedData) {
       const parsedData = JSON.parse(savedData);
-      setShipForm(parsedData);
-      console.log(shipForm);
+      setbillForm(parsedData);
+      console.log(billForm);
     }
   }, []);
-
   const onClickDelete = (id: number) => {
-    const updatedShipForm = shipForm.filter((_, index) => index !== id);
-    setShipForm(updatedShipForm);
-    console.log(updatedShipForm);
-    if (updatedShipForm.length === 0) {
+    const updatedBillForm = billForm.filter((_, index) => index !== id);
+    setbillForm(updatedBillForm);
+    if (updatedBillForm.length === 0) {
       localStorage.removeItem("formDataShip");
     } else {
-      localStorage.setItem("formDataShip", JSON.stringify(updatedShipForm));
+      localStorage.setItem("formDataShip", JSON.stringify(updatedBillForm));
     }
   };
   const onUseDefaultForm = (id: number) => {
-    const updatedShipForm = shipForm.find((_, index) => index == id);
-
-    setFormData(updatedShipForm as { [key: string]: string });
+    const updatedBillForm = billForm.find((_, index) => index == id);
+    console.log(updatedBillForm);
+    setFormData(updatedBillForm as { [key: string]: string });
   };
 
   return (
     <div>
-      <h1 className="mb-3 text-2xl font-bold">Shipping</h1>
-      <p className="mb-3 text-[#777777]">Enter your shipping details below.</p>
-      {shipForm.length > 0 && (
+      <h1 className="mb-3 text-2xl font-bold">Billing Address</h1>
+      <p className="mb-3 text-[#777777]">
+        Please enter the address associated with this card
+      </p>
+      {billForm.length > 0 && (
         <>
           <h1>Default Ship Form</h1>
           <div
-            className={`${shipForm.length > 1 ? "scroll max-h-[80px] overflow-y-auto pr-2" : ""}`}
+            className={`${billForm.length > 1 ? "scroll max-h-[80px] overflow-y-auto pr-2" : ""}`}
           >
-            {shipForm.map((obj, id) => (
+            {billForm.map((obj, id) => (
               <div
                 key={id}
                 className="mb-2 flex w-full justify-between rounded-lg border border-[#cfcfcf] bg-white px-4 py-3"
@@ -169,7 +168,7 @@ const ShipForm: React.FC<ShipFormProps> = ({ setShipping }) => {
       )}
 
       <form onSubmit={handleSubmit}>
-        {shipArr.map((obj, id) => (
+        {billArr.map((obj, id) => (
           <div className="mb-1 flex flex-col gap-1" key={id}>
             <label htmlFor="">{obj.labelName}</label>
             {obj.labelName === "Country" ? (
@@ -198,7 +197,9 @@ const ShipForm: React.FC<ShipFormProps> = ({ setShipping }) => {
           </div>
         ))}
         <p className="text-[#777777]">
-          This will be saved as your default shipping address.
+          If you are a VAT registered business in the EU save your address then
+          visit your settings page to enter your VAT ID. This will enroll you in
+          StockX’s VAT program. Read our EU VAT FAQ
         </p>
         <button
           className="mb-5 mt-3 rounded-full bg-[#006340] px-3 py-2 text-white transition-all duration-300 ease-in-out hover:bg-[#008000]"
@@ -211,4 +212,4 @@ const ShipForm: React.FC<ShipFormProps> = ({ setShipping }) => {
   );
 };
 
-export default ShipForm;
+export default BillingAddress;
