@@ -41,11 +41,63 @@ function App() {
         <Route path="not-found" element={<NotFound />} />
         <Route path="*" element={<NotFound />} />
       </Route>
-      <Route path="/settings" element={<ProfileLayout />}>
-        <Route path="profile" element={<Profile />} />
-        {/* <Route path="notifications" element={<Notifications />} />
-        <Route path="liked" element={<Liked />} /> */}
-      </Route>
+      <Route
+        path="/profile"
+        element={
+          <ProfileLayout>
+            <Profile />
+          </ProfileLayout>
+        }
+      />
+      <Route
+        path="/selling"
+        element={
+          <ProfileLayout>
+            <Profile />
+          </ProfileLayout>
+        }
+      />
+      <Route
+        path="/favorites"
+        element={
+          <ProfileLayout>
+            <Profile />
+          </ProfileLayout>
+        }
+      />
+      <Route
+        path="/buying"
+        element={
+          <ProfileLayout>
+            <Profile />
+          </ProfileLayout>
+        }
+      />
+      <Route
+        path="/portfolio"
+        element={
+          <ProfileLayout>
+            <Profile />
+          </ProfileLayout>
+        }
+      />
+      <Route
+        path="/wallet"
+        element={
+          <ProfileLayout>
+            <Profile />
+          </ProfileLayout>
+        }
+      />
+      <Route
+        path="/settings"
+        element={
+          <ProfileLayout>
+            <Profile />
+          </ProfileLayout>
+        }
+      />
+
       <Route path="/buy/:title" element={<Cart />} />
       <Route
         path="/auth"
