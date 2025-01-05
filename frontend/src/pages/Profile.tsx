@@ -1,9 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import ProfileSideBar from "../components/Profile/ProfileSideBar/ProfileSideBar";
 import ProfileDetails from "../components/Profile/ProfileDetails/ProfileDetails";
 import { useLocation } from "react-router-dom";
 import ProfileSelling from "../components/Profile/ProfileSelling/ProfileSelling";
-import { useGetUserDataQuery } from "../redux/api/mainApiSlice";
 
 const Profile = () => {
   const [activeTab, setActiveTab] = React.useState("");

@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import Auth from "./pages/Auth";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
@@ -16,6 +16,7 @@ import FilterPage from "./pages/FilterPage";
 import NotFound from "./pages/NotFound";
 import Cart from "./pages/Cart";
 import ProfileLayout from "./layout/ProfileLayout";
+import ProductPageLayout from "./layout/ProductPageLayout";
 
 type ComponentType = React.FC;
 
@@ -36,11 +37,15 @@ function App() {
     <Routes>
       <Route path="/" element={<HeaderLayout />}>
         <Route path="" element={renderMainContent(Home)} />
-        <Route path=":title" element={renderMainContent(FullProduct)} />
+
         <Route path="search" element={renderMainContent(FilterPage)} />
         <Route path="not-found" element={<NotFound />} />
         <Route path="*" element={<NotFound />} />
       </Route>
+      <Route path=":title" element={<ProductPageLayout />}>
+        <Route index element={<FullProduct />} />
+      </Route>
+      ;
       <Route
         path="/profile"
         element={
@@ -97,7 +102,6 @@ function App() {
           </ProfileLayout>
         }
       />
-
       <Route path="/buy/:title" element={<Cart />} />
       <Route
         path="/auth"
@@ -107,7 +111,14 @@ function App() {
           </ProfileLayout>
         }
       />
-
+      <Route
+        path="/settings/profile"
+        element={
+          <ProfileLayout>
+            <div>CHANGE PROFILE</div>
+          </ProfileLayout>
+        }
+      />
       <Route path="/resetPassword/:token" element={<ResetPage />} />
     </Routes>
   );
