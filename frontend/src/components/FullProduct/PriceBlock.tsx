@@ -63,6 +63,11 @@ const PriceBlock: React.FC<PriceBlockProps> = ({
       `/buy/${title}?${sizeQuery !== null ? "size=" + sizeQuery + `&` : ""}isBuy=true`,
     );
   };
+  const onClickBid = () => {
+    navigate(
+      `/buy/${title}?${sizeQuery !== null ? "size=" + sizeQuery + `&` : ""}isBid=true`,
+    );
+  };
   return (
     <div className="rounded-xl border border-[#a4a4a4] p-4">
       <div className="flex items-center justify-between">
@@ -87,7 +92,10 @@ const PriceBlock: React.FC<PriceBlockProps> = ({
         </div>
       </div>
       <div className="mt-2 flex items-center gap-2">
-        <button className="w-[212px] rounded-full border border-black px-8 py-[10px] font-bold transition-all duration-300 ease-in-out hover:bg-black hover:text-white">
+        <button
+          onClick={onClickBid}
+          className="w-[212px] rounded-full border border-black px-8 py-[10px] font-bold transition-all duration-300 ease-in-out hover:bg-black hover:text-white"
+        >
           Place Bid
         </button>
         <button
