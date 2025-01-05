@@ -17,17 +17,25 @@ const ProfileLayout = ({ children }: ProfileLayoutProps) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { data, isError, isLoading } = useGetUserDataQuery({});
-  console.log(isError, "iserror", data);
+
 
   useEffect(() => {
-    if (isError) {
-      navigate("/auth");
-    } else {
-      navigate("/profile");
-      dispatch(setUserData(data));
-    }
-  }, [data, isError]);
+    console.log("изменились данные");
 
+    if (isError) {
+      navigate("/auth", { replace: true });
+    } else if (
+      window.location.pathname === "/auth" ||
+      window.location.pathname === "/Auth" ||
+      (window.location.pathname === "/resetPassword/:token" && data)
+    ) {
+      navigate("/profile", { replace: true });
+      dispatch(setUserData(data));
+    } else {
+      return;
+
+
+  
   return (
     <>
       <div className={styles.headerBar}>

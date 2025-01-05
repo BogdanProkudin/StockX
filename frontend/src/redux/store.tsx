@@ -12,11 +12,13 @@ import { userApi } from "./api/mainApiSlice";
 import homeItems from "./slices/homeItemsSlice";
 import searchSlice from "./slices/searchSlice";
 import cartSlice from "./slices/cartSlice";
+import profileSlice from "./slices/profileSlice";
 export const store = configureStore({
   reducer: {
     userAuth: userAuth,
     searchSlice: searchSlice,
     homeItems: homeItems,
+    profileSlice: profileSlice,
     cartSlice,
     [userApi.reducerPath]: userApi.reducer,
     [mainApi.reducerPath]: mainApi.reducer,
