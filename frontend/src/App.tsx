@@ -101,7 +101,11 @@ function App() {
       <Route path="/buy/:title" element={<Cart />} />
       <Route
         path="/auth"
-        element={userToken ? <Navigate to="/profile" /> : <Auth />}
+        element={
+          <ProfileLayout>
+            <Auth />
+          </ProfileLayout>
+        }
       />
 
       <Route path="/resetPassword/:token" element={<ResetPage />} />

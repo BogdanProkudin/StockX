@@ -9,7 +9,7 @@ import {
   FiltrationController,
 } from "./Controllers/index.js";
 import { ErrorValidation } from "./utils/ErrorValidation.js";
-import CheckAuth from "./utils/CheckAuth.js";
+import authMiddleware from "./utils/CheckAuth.js";
 import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -35,10 +35,12 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 //User
 app.post("/signup", UserController.register);
 app.post("/login", UserController.login);
-app.get("/authMe", CheckAuth, UserController.auth);
+app.get("/authMe", authMiddleware, UserController.auth);
+app.get("/getUserData", authMiddleware, UserController.getUserData);
 app.post("/requestResetPassword", UserController.forgotPassword);
 app.post("/tokenValidation", UserController.isTokenValid);
 app.post("/resetPassword", UserController.resetPassword);
+
 //ItemsLogic
 app.get("/getUserSection", ShoesController.getUserSection);
 app.get("/getCollectionSection/:section", ShoesController.getCollectionSection);

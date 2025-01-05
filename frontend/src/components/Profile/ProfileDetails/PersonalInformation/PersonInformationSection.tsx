@@ -1,11 +1,16 @@
 const PersonalInformationSection = () => {
-  const sectionNames = ["Name", "Shoe Size", "Email Address", "Username"];
+  const sectionNames = [
+    { title: "Name" },
+    { title: "Shoe Size" },
+    { title: "Email Address" },
+    { title: "Username" },
+  ];
   return (
-    <div className="flex h-[200px] w-full max-w-[1050px] flex-wrap justify-between bg-red-400">
+    <div className="mt-5 flex h-[200px] w-full max-w-[955px] flex-wrap justify-between">
       {sectionNames.map((item, id) => (
         <div key={id} className="flex w-60 flex-col">
-          <span>{item}</span>
-          <span>{item}</span>
+          <span className="text-lg font-bold text-[#242424]">{item.title}</span>
+          <span>{"prokudinbogdan@gmail.com"}</span>
         </div>
       ))}
     </div>
