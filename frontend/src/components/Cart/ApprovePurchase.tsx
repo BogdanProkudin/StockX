@@ -40,7 +40,16 @@ const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({ title, size }) => {
       value: "€" + totalPrice,
     },
   ];
+
+  const paymentMethod = localStorage.getItem("formDataPayment");
+  const billingAddress = localStorage.getItem("BillingAddress");
   const onClickApprove = () => {
+    if (!paymentMethod) {
+      setIsPayment(true);
+    }
+    if (!billingAddress) {
+      setIsBillingAddress(true);
+    }
     navigate("/");
   };
   const onClickEditBills = () => {
@@ -49,6 +58,7 @@ const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({ title, size }) => {
   const onClickPayment = () => {
     setIsPayment(true);
   };
+
   return (
     <div className="px-7">
       {isBillingAddress ? (
