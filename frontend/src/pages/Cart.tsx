@@ -88,7 +88,11 @@ const Cart: React.FC = () => {
 
           <div className="flex h-full min-h-[87vh] min-w-[600px] flex-col bg-[#f4f3f1] pt-8">
             {isConfirm ? (
-              <ApprovePurchase title={product?.title} size={sizeQuery} />
+              <ApprovePurchase
+                title={product?.title}
+                size={sizeQuery}
+                img={product?.image}
+              />
             ) : (
               <>
                 {shipping ? (

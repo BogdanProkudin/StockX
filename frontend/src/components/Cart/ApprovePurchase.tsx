@@ -1,18 +1,30 @@
-import React, { useState } from "react";
-import { useAppSelector } from "../../redux/hook";
+import React, { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../redux/hook";
 import { useNavigate } from "react-router-dom";
 import BillingAddress from "./BillingAddress";
 import PaymentMethod from "./PaymentMethod";
+import { LoaderCircle } from "lucide-react";
+import { setIsPurchased } from "../../redux/slices/cartSlice";
+import axios from "../../axiosConfig/axios";
 
 interface ApprovePurchaseProps {
   title: string | undefined;
   size: string | null;
+  img: string | undefined;
 }
-const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({ title, size }) => {
+const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({
+  title,
+  size,
+  img,
+}) => {
+  const dispatch = useAppDispatch();
   const price = useAppSelector((state) => state.cartSlice.price);
   const navigate = useNavigate();
+
   const [isBillingAddress, setIsBillingAddress] = useState(false);
   const [isPayment, setIsPayment] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isApprove, setIsApprove] = useState(false);
   const totalPrice = price + 23.12 + 15.95;
   const itemInfo = [
     {
@@ -43,6 +55,8 @@ const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({ title, size }) => {
 
   const paymentMethod = localStorage.getItem("formDataPayment");
   const billingAddress = localStorage.getItem("BillingAddress");
+  const token = localStorage.getItem("token");
+
   const onClickApprove = () => {
     if (!paymentMethod) {
       setIsPayment(true);
@@ -50,7 +64,22 @@ const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({ title, size }) => {
     if (!billingAddress) {
       setIsBillingAddress(true);
     }
-    navigate("/");
+    if (billingAddress && paymentMethod) {
+      setIsApprove(true);
+      setIsLoading(true);
+
+      setTimeout(() => {
+        navigate("/");
+        dispatch(setIsPurchased(true));
+
+        setIsLoading(false);
+        setIsApprove(false);
+
+        setTimeout(() => {
+          dispatch(setIsPurchased(false));
+        }, 6000);
+      }, 4100);
+    }
   };
   const onClickEditBills = () => {
     setIsBillingAddress(true);
@@ -59,6 +88,35 @@ const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({ title, size }) => {
     setIsPayment(true);
   };
 
+  // useEffect(() => {
+  //   const sendProductData = async () => {
+  //     setIsLoading(true);
+  //     try {
+  //       if (!isLoading) {
+  //         return;
+  //       }
+
+  //       const productData = {
+  //         title: title,
+  //         size: size,
+  //         price: price,
+  //         img: img,
+  //       };
+
+  //       const { data } = await axios.post("/purchasedProducts", {
+  //         productData,
+  //         token,
+  //       });
+
+  //       setIsLoading(false);
+  //       console.log("Product data successfully sent:", data);
+  //     } catch (error) {
+  //       console.error("Error sending product data:", error);
+  //     }
+  //   };
+
+  //   sendProductData();
+  // }, [isApprove]);
   return (
     <div className="px-7">
       {isBillingAddress ? (
@@ -105,7 +163,11 @@ const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({ title, size }) => {
               onClick={onClickApprove}
               className="rounded-full bg-[#006340] px-8 py-2 text-white"
             >
-              Approve
+              {isLoading ? (
+                <LoaderCircle className="animate-spin" />
+              ) : (
+                "Approve"
+              )}
             </button>
           </div>
         </>

@@ -2,9 +2,21 @@ import React, { useEffect, useState } from "react";
 
 import CountryPopUp from "./CountryPopUp";
 
+export type formData = {
+  firstName: string;
+  lastName: string;
+  country: string;
+  address: string;
+  address2: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  phoneNumber: string;
+};
 interface ShipFormProps {
   setShipping: () => void;
 }
+
 const ShipForm: React.FC<ShipFormProps> = ({ setShipping }) => {
   const shipArr = [
     {
@@ -86,17 +98,17 @@ const ShipForm: React.FC<ShipFormProps> = ({ setShipping }) => {
       console.log(" errors:", newErrors);
     } else {
       setErrors({ key: "" });
-      const formDataShip = localStorage.getItem("formDataShip");
-      if (!formDataShip) {
-        const formDataArr = [];
 
-        formDataArr.push(formData);
-        localStorage.setItem("formDataShip", JSON.stringify(formDataArr));
-      } else {
-        const formDataArr = [];
-        formDataArr.push(JSON.parse(formDataShip));
-        formDataArr.push(formData);
-        localStorage.setItem("formDataShip", JSON.stringify(formDataArr));
+      const data = localStorage.getItem("formDataShip");
+      const storedAddresses: formData[] = data ? JSON.parse(data) : [];
+
+      const isDuplicate = storedAddresses.some(
+        (address) => JSON.stringify(address) === JSON.stringify(formData),
+      );
+
+      if (!isDuplicate) {
+        const updatedAddresses = [...storedAddresses, formData];
+        localStorage.setItem("formDataShip", JSON.stringify(updatedAddresses));
       }
       console.log("success", formData);
       setShipping();

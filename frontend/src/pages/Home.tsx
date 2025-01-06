@@ -16,6 +16,7 @@ import CardSection from "../components/Sections/CardSection/CardSection";
 import { useFetchImageSection } from "../hooks/useFetchImageSection";
 import { useFetchCardSection } from "../hooks/useFetchCardSection";
 import { useFetchSliderSection } from "../hooks/useFetchSlider";
+import IsPurchased from "../components/Cart/Purchased/IsPurchased";
 
 const Home: React.FC = () => {
   const {
@@ -36,6 +37,7 @@ const Home: React.FC = () => {
     topSlider,
     bottSlider,
   } = useAppSelector((state) => state.homeItems);
+
   const { recommendedItems, recentlyViewed, userError } = useFetchUserSection();
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -60,6 +62,7 @@ const Home: React.FC = () => {
 
   return (
     <div className="mt-6">
+      {<IsPurchased />}
       <div className="p-4" ref={refTopSlider}>
         <TopSlider data={topSlider.data} />
       </div>
