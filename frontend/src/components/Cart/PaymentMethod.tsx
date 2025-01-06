@@ -120,6 +120,7 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({ setPayment }) => {
       }
 
       console.log("Form submitted successfully!");
+      setPayment();
     } else {
       console.log("Please fill all fields correctly.");
     }

@@ -7,6 +7,7 @@ import {
   UserController,
   ShoesController,
   FiltrationController,
+  PurchasedController,
 } from "./Controllers/index.js";
 import { ErrorValidation } from "./utils/ErrorValidation.js";
 import CheckAuth from "./utils/CheckAuth.js";
@@ -39,6 +40,8 @@ app.get("/authMe", CheckAuth, UserController.auth);
 app.post("/requestResetPassword", UserController.forgotPassword);
 app.post("/tokenValidation", UserController.isTokenValid);
 app.post("/resetPassword", UserController.resetPassword);
+//User purchase
+app.post("/purchasedProducts", PurchasedController.purchasedProducts);
 //ItemsLogic
 app.get("/getUserSection", ShoesController.getUserSection);
 app.get("/getCollectionSection/:section", ShoesController.getCollectionSection);

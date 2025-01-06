@@ -30,7 +30,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       to={`/${title}`}
       className="relative flex h-full w-[190px] min-w-[190px] cursor-pointer flex-col items-center"
     >
-      <button onClick={onClickFavorite} className="absolute right-5">
+      <button onClick={onClickFavorite} className="z-15 absolute right-5">
         <FavoriteBorderIcon />
       </button>
       <img

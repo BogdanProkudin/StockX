@@ -14,6 +14,8 @@ export type ShipForm = {
 interface ICartSlice {
   price: number;
   shipForm: ShipForm[];
+
+  isPurchased: boolean;
 }
 
 const initialState: ICartSlice = {
@@ -31,6 +33,7 @@ const initialState: ICartSlice = {
       phoneNumber: 0,
     },
   ],
+  isPurchased: false,
 };
 
 const cartSlice = createSlice({
@@ -43,8 +46,11 @@ const cartSlice = createSlice({
     setFormShip: (state, action: PayloadAction<ShipForm[]>) => {
       state.shipForm = action.payload;
     },
+    setIsPurchased: (state, action: PayloadAction<boolean>) => {
+      state.isPurchased = action.payload;
+    },
   },
 });
 
-export const { setCartPrice, setFormShip } = cartSlice.actions;
+export const { setCartPrice, setFormShip, setIsPurchased } = cartSlice.actions;
 export default cartSlice.reducer;
