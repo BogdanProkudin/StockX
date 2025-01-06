@@ -111,6 +111,7 @@ function App() {
             <Auth />
           </ProfileLayout>
         }
+
       />
       <Route
         path="/settings/profile"
@@ -119,6 +120,7 @@ function App() {
             <EditProfleForm />
           </ProfileLayout>
         }
+
       />
       <Route path="/resetPassword/:token" element={<ResetPage />} />
     </Routes>

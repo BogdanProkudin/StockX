@@ -23,8 +23,11 @@ export const register = async (req, res) => {
       password: hashPass,
       firstName: req.body.firstName,
       secondName: req.body.secondName,
+
       userName: "SkibidiUser" + Math.floor(Math.random() * 1000),
       shoeSize: "Not Set",
+
+
     });
     const user = await doc.save();
     const token = jwt.sign(

@@ -18,6 +18,7 @@ const ProfileLayout = ({ children }: ProfileLayoutProps) => {
   const dispatch = useAppDispatch();
   const { data, isError, isLoading } = useGetUserDataQuery({});
 
+
   useEffect(() => {
     console.log("изменились данные");
 
@@ -33,9 +34,9 @@ const ProfileLayout = ({ children }: ProfileLayoutProps) => {
     } else if (data) {
       dispatch(setUserData(data));
       return;
-    }
-  }, [data, isError]);
 
+
+  
   return (
     <>
       <div className={styles.headerBar}>

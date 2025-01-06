@@ -90,7 +90,7 @@ const BillingAddress: React.FC<BillingAddressProps> = ({ setBills }) => {
       if (!formDataBills) {
         const formDataArr = [];
         formDataArr.push(formData);
-        localStorage.setItem("formDataShip", JSON.stringify(formDataArr));
+        localStorage.setItem("BillingAddress", JSON.stringify(formDataArr));
       } else {
         const formDataArr = [];
         formDataArr.push(JSON.parse(formDataBills));
@@ -113,9 +113,9 @@ const BillingAddress: React.FC<BillingAddressProps> = ({ setBills }) => {
     const updatedBillForm = billForm.filter((_, index) => index !== id);
     setbillForm(updatedBillForm);
     if (updatedBillForm.length === 0) {
-      localStorage.removeItem("formDataShip");
+      localStorage.removeItem("BillingAddress");
     } else {
-      localStorage.setItem("formDataShip", JSON.stringify(updatedBillForm));
+      localStorage.setItem("BillingAddress", JSON.stringify(updatedBillForm));
     }
   };
   const onUseDefaultForm = (id: number) => {
