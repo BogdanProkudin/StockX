@@ -12,6 +12,8 @@ const initialState: IProfileSlice = {
     password: "",
     firstName: "",
     secondName: "",
+    userName: "",
+    shoeSize: "",
   },
 };
 

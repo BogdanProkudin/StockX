@@ -5,6 +5,7 @@ const PersonalInformationSection = () => {
   if (!userData) {
     return null;
   }
+
   const sectionNames = [
     { title: "Name", value: `${userData.firstName} ${userData.secondName}` },
     { title: "Shoe Size" },

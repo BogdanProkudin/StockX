@@ -17,6 +17,7 @@ import NotFound from "./pages/NotFound";
 import Cart from "./pages/Cart";
 import ProfileLayout from "./layout/ProfileLayout";
 import ProductPageLayout from "./layout/ProductPageLayout";
+import EditProfleForm from "./components/Profile/ProfileDetails/PersonalInformation/EditProfileForm/EditProfleForm";
 
 type ComponentType = React.FC;
 
@@ -116,7 +117,7 @@ function App() {
         path="/settings/profile"
         element={
           <ProfileLayout>
-            <div>CHANGE PROFILE</div>
+            <EditProfleForm />
           </ProfileLayout>
         }
 
