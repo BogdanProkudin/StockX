@@ -23,6 +23,11 @@ export const register = async (req, res) => {
       password: hashPass,
       firstName: req.body.firstName,
       secondName: req.body.secondName,
+
+      userName: "SkibidiUser" + Math.floor(Math.random() * 1000),
+      shoeSize: "Not Set",
+
+
     });
     const user = await doc.save();
     const token = jwt.sign(
@@ -267,4 +272,23 @@ export const resetPassword = async (req, res) => {
   }
 };
 
-// Helper function to send delayed response
+export const getUserData = async (req, res) => {
+  try {
+    const user = await userModel.findById(req.userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const {
+      password,
+      newPasswordExpires,
+      passwordResetAttempts,
+      resetPasswordExpires,
+      resetPasswordToken,
+      ...userData
+    } = user._doc;
+    res.json({ ...userData });
+  } catch (error) {
+    return res.status(500).json({ message: "Something went wrong" });
+  }
+};

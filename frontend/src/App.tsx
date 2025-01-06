@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import Auth from "./pages/Auth";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
@@ -15,6 +15,9 @@ import FullProduct from "./pages/ProductPage";
 import FilterPage from "./pages/FilterPage";
 import NotFound from "./pages/NotFound";
 import Cart from "./pages/Cart";
+import ProfileLayout from "./layout/ProfileLayout";
+import ProductPageLayout from "./layout/ProductPageLayout";
+import EditProfleForm from "./components/Profile/ProfileDetails/PersonalInformation/EditProfileForm/EditProfleForm";
 
 type ComponentType = React.FC;
 
@@ -35,20 +38,90 @@ function App() {
     <Routes>
       <Route path="/" element={<HeaderLayout />}>
         <Route path="" element={renderMainContent(Home)} />
-        <Route path=":title" element={renderMainContent(FullProduct)} />
+
         <Route path="search" element={renderMainContent(FilterPage)} />
         <Route path="not-found" element={<NotFound />} />
         <Route path="*" element={<NotFound />} />
       </Route>
+      <Route path=":title" element={<ProductPageLayout />}>
+        <Route index element={<FullProduct />} />
+      </Route>
+      ;
+      <Route
+        path="/profile"
+        element={
+          <ProfileLayout>
+            <Profile />
+          </ProfileLayout>
+        }
+      />
+      <Route
+        path="/selling"
+        element={
+          <ProfileLayout>
+            <Profile />
+          </ProfileLayout>
+        }
+      />
+      <Route
+        path="/favorites"
+        element={
+          <ProfileLayout>
+            <Profile />
+          </ProfileLayout>
+        }
+      />
+      <Route
+        path="/buying"
+        element={
+          <ProfileLayout>
+            <Profile />
+          </ProfileLayout>
+        }
+      />
+      <Route
+        path="/portfolio"
+        element={
+          <ProfileLayout>
+            <Profile />
+          </ProfileLayout>
+        }
+      />
+      <Route
+        path="/wallet"
+        element={
+          <ProfileLayout>
+            <Profile />
+          </ProfileLayout>
+        }
+      />
+      <Route
+        path="/settings"
+        element={
+          <ProfileLayout>
+            <Profile />
+          </ProfileLayout>
+        }
+      />
       <Route path="/buy/:title" element={<Cart />} />
       <Route
         path="/auth"
-        element={userToken ? <Navigate to="/profile" /> : <Auth />}
+        element={
+          <ProfileLayout>
+            <Auth />
+          </ProfileLayout>
+        }
+
       />
-      <Route path="/settings/profile" element={<Profile />} />
-      <Route path="/settings/notifications" element={<Profile />} />
-      <Route path="/settings" element={<Profile />} />
-      <Route path="settings/liked" element={<Profile />} />
+      <Route
+        path="/settings/profile"
+        element={
+          <ProfileLayout>
+            <EditProfleForm />
+          </ProfileLayout>
+        }
+
+      />
       <Route path="/resetPassword/:token" element={<ResetPage />} />
     </Routes>
   );
