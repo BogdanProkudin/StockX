@@ -10,7 +10,7 @@ import axios from "../../axiosConfig/axios";
 interface ApprovePurchaseProps {
   title: string | undefined;
   size: string | null;
-  img: string | null;
+  img: string | undefined;
 }
 const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({
   title,

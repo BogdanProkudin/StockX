@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import CountryPopUp from "./CountryPopUp";
+import { formData } from "./ShipForm";
 
 interface BillingAddressProps {
   setBills: () => void;
@@ -86,16 +87,20 @@ const BillingAddress: React.FC<BillingAddressProps> = ({ setBills }) => {
       console.log(" errors:", newErrors);
     } else {
       setErrors({ key: "" });
-      const formDataBills = localStorage.getItem("BillingAddress");
-      if (!formDataBills) {
-        const formDataArr = [];
-        formDataArr.push(formData);
-        localStorage.setItem("BillingAddress", JSON.stringify(formDataArr));
-      } else {
-        const formDataArr = [];
-        formDataArr.push(JSON.parse(formDataBills));
-        formDataArr.push(formData);
-        localStorage.setItem("BillingAddress", JSON.stringify(formDataArr));
+
+      const data = localStorage.getItem("BillingAddress");
+      const storedAddresses: formData[] = data ? JSON.parse(data) : [];
+
+      const isDuplicate = storedAddresses.some(
+        (address) => JSON.stringify(address) === JSON.stringify(formData),
+      );
+
+      if (!isDuplicate) {
+        const updatedAddresses = [...storedAddresses, formData];
+        localStorage.setItem(
+          "BillingAddress",
+          JSON.stringify(updatedAddresses),
+        );
       }
       console.log("success", formData);
       setBills();
