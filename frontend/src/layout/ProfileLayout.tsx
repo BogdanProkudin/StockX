@@ -30,7 +30,8 @@ const ProfileLayout = ({ children }: ProfileLayoutProps) => {
     ) {
       navigate("/profile", { replace: true });
       dispatch(setUserData(data));
-    } else {
+    } else if (data) {
+      dispatch(setUserData(data));
       return;
     }
   }, [data, isError]);
