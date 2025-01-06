@@ -38,6 +38,7 @@ app.post("/signup", UserController.register);
 app.post("/login", UserController.login);
 app.get("/authMe", authMiddleware, UserController.auth);
 app.get("/getUserData", authMiddleware, UserController.getUserData);
+app.post("/editUserData", authMiddleware, UserController.EditUserData);
 app.post("/requestResetPassword", UserController.forgotPassword);
 app.post("/tokenValidation", UserController.isTokenValid);
 app.post("/resetPassword", UserController.resetPassword);

@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { resDelayed } from "../utils/Delay.js";
 import nodemailer from "nodemailer";
-
+import getUpdatedFields from "../utils/getUpdatedData.js";
 export const register = async (req, res) => {
   try {
     const isUserExist = await userModel.findOne({
@@ -26,8 +26,6 @@ export const register = async (req, res) => {
 
       userName: "SkibidiUser" + Math.floor(Math.random() * 1000),
       shoeSize: "Not Set",
-
-
     });
     const user = await doc.save();
     const token = jwt.sign(
@@ -289,6 +287,48 @@ export const getUserData = async (req, res) => {
     } = user._doc;
     res.json({ ...userData });
   } catch (error) {
+    return res.status(500).json({ message: "Something went wrong" });
+  }
+};
+export const EditUserData = async (req, res) => {
+  try {
+    const updatedFields = req.body;
+    const userId = req.userId;
+    if (!updatedFields) {
+      return res.status(400).json({ message: "No data to update" });
+    }
+    const user = await userModel.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const currentUserData = {
+      firstName: user.firstName,
+      secondName: user.secondName,
+      email: user.email,
+      userName: user.userName,
+      shoeSize: user.shoeSize,
+    };
+    const updatedUserData = getUpdatedFields(currentUserData, updatedFields);
+    console.log("user found", updatedUserData);
+    const updatedUser = await userModel.findByIdAndUpdate(
+      userId,
+      updatedUserData,
+      { new: true }
+    );
+    const {
+      password,
+      newPasswordExpires,
+      passwordResetAttempts,
+      resetPasswordExpires,
+      resetPasswordToken,
+      isPruchased,
+      ...userData
+    } = updatedUser._doc;
+    console.log(userData);
+
+    res.json({ message: "User data updated successfully", userData });
+  } catch (error) {
+    console.error("error", error);
     return res.status(500).json({ message: "Something went wrong" });
   }
 };
