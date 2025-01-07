@@ -33,13 +33,12 @@ const UserSchema = new mongoose.Schema(
     isPurchased: {
       type: Array,
       default: [],
-
+    },
     shoeSize: {
       type: String,
     },
     userName: {
       type: String,
-
     },
   },
   {
