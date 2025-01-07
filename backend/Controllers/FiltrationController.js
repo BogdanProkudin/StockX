@@ -24,14 +24,6 @@ export const searchProducts = async (req, res) => {
     const { searchQuery } = req.params;
     const { category, brand, gender, trending, color, page } = req.query;
 
-    console.log("Received request:", {
-      searchQuery,
-      category,
-      brand,
-      gender,
-      trending,
-    });
-
     const baseUrl = `https://api.sneakersapi.dev/api/v2/products?page=${page}`;
     const queryString = buildQueryParams({
       brand,
@@ -41,13 +33,10 @@ export const searchProducts = async (req, res) => {
     });
     const apiUrl = `${baseUrl}&${queryString}`;
 
-    console.log("API Request URL:", apiUrl);
-
     const response = await fetchProducts(apiUrl);
     const products = Array.isArray(response.data?.data)
       ? response.data.data
       : [];
-    console.log(`API Response: ${products.length} items retrieved`);
 
     const filteredProducts = gender
       ? products.filter(
@@ -74,13 +63,12 @@ export const loadMoreItems = async (req, res) => {
   try {
     const { sectionName, page } = req.params;
     const url = `https://api.sneakersapi.dev/api/v2/products?search=${sectionName}&page=${page}`;
-    console.log("URK", url);
 
     const response = await fetchProducts(url);
     const products = Array.isArray(response.data?.data)
       ? response.data.data
       : [];
-    console.log(`API Response: ${products.length} items retrieved`);
+
     return res.status(200).json({
       data: products,
 

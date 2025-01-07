@@ -66,19 +66,23 @@ const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({
     }
     if (billingAddress && paymentMethod) {
       setIsApprove(true);
-      setIsLoading(true);
+      console.log("isApprove?", isApprove);
 
-      setTimeout(() => {
-        navigate("/");
-        dispatch(setIsPurchased(true));
+      console.log("clicked");
 
-        setIsLoading(false);
-        setIsApprove(false);
+      // setIsLoading(true);
 
-        setTimeout(() => {
-          dispatch(setIsPurchased(false));
-        }, 6000);
-      }, 4100);
+      // setTimeout(() => {
+      //   navigate("/");
+      //   dispatch(setIsPurchased(true));
+
+      //   setIsLoading(false);
+      //   setIsApprove(false);
+
+      //   setTimeout(() => {
+      //     dispatch(setIsPurchased(false));
+      //   }, 6000);
+      // }, 4100);
     }
   };
   const onClickEditBills = () => {
@@ -88,35 +92,36 @@ const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({
     setIsPayment(true);
   };
 
-  // useEffect(() => {
-  //   const sendProductData = async () => {
-  //     setIsLoading(true);
-  //     try {
-  //       if (!isLoading) {
-  //         return;
-  //       }
+  useEffect(() => {
+    const sendProductData = async () => {
+      setIsLoading(true);
+      try {
+        const productData = {
+          title: title,
+          size: size,
+          price: price,
+          img: img,
+        };
 
-  //       const productData = {
-  //         title: title,
-  //         size: size,
-  //         price: price,
-  //         img: img,
-  //       };
+        console.log("data", productData);
 
-  //       const { data } = await axios.post("/purchasedProducts", {
-  //         productData,
-  //         token,
-  //       });
+        const { data } = await axios.post("/purchasedProducts", {
+          productData,
+          token,
+        });
 
-  //       setIsLoading(false);
-  //       console.log("Product data successfully sent:", data);
-  //     } catch (error) {
-  //       console.error("Error sending product data:", error);
-  //     }
-  //   };
+        console.log("Product data successfully sent:", data);
+      } catch (error) {
+        console.error("Error sending product data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  //   sendProductData();
-  // }, [isApprove]);
+    if (isApprove) {
+      sendProductData();
+    }
+  }, [isApprove]);
   return (
     <div className="px-7">
       {isBillingAddress ? (
