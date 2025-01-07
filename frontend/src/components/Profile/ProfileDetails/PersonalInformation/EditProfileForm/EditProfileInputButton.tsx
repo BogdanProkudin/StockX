@@ -1,27 +1,15 @@
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../../../../../redux/hook";
+import { EditUserData } from "../../../../../redux/thunks/profileThunks";
 
-const EditProfileInputButton = ({
-  firstNameValue,
-  buttonName,
-  lastNameValue,
-}: {
-  firstNameValue?: string;
-  buttonName: string;
-  lastNameValue?: string;
-}) => {
+const EditProfileInputButton = ({ buttonName }: { buttonName: string }) => {
   const navigate = useNavigate();
-  const handleButtonClick = () => {
-    if (buttonName === "Submit") {
-      console.log(firstNameValue, lastNameValue);
-    } else {
-      navigate("/profile");
-    }
-  };
+  const token = localStorage.getItem("token");
+  const dispatch = useAppDispatch();
+
   return (
     <button
-      onClick={handleButtonClick}
-      form="editProfileForm"
-      type="submit"
+      type={buttonName === "Cancel" ? "button" : "submit"}
       className="btn btn-primary"
     >
       {buttonName}
