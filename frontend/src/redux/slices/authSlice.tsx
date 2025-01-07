@@ -15,7 +15,14 @@ import {
 } from "../thunks/authThunks";
 
 const initialState: IUserAuthSlice = {
-  userData: { email: "", password: "", firstName: "", secondName: "" },
+  userData: {
+    email: "",
+    password: "",
+    firstName: "",
+    secondName: "",
+    userName: "",
+    shoeSize: "",
+  },
   validationErrors: [],
   registrationBackendError: "",
   registrationStatus: fetchRequest.INITIAL,
@@ -62,6 +69,8 @@ const userAuthSlice = createSlice({
         password: "",
         firstName: "",
         secondName: "",
+        userName: "",
+        shoeSize: "",
       };
     },
     setAuthSwitcher(state, action: PayloadAction<string>) {
