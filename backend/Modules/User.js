@@ -29,9 +29,11 @@ const UserSchema = new mongoose.Schema({
     type: String,
   },
 
-  isPurchased: {
-    type: Array,
-    default: [],
+
+    isPurchased: {
+      type: Array,
+      default: [],
+    },
 
     shoeSize: {
       type: String,
