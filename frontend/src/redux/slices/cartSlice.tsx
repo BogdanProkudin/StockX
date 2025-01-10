@@ -1,4 +1,6 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import axios from "../../axiosConfig/axios";
+import { fetchRequest } from "../../@types/status";
 
 export type ShipForm = {
   firstName: string;
@@ -16,6 +18,8 @@ interface ICartSlice {
   shipForm: ShipForm[];
 
   isPurchased: boolean;
+  purchasedProducts: any[];
+  purchasedStatus: fetchRequest;
 }
 
 const initialState: ICartSlice = {
@@ -34,7 +38,21 @@ const initialState: ICartSlice = {
     },
   ],
   isPurchased: false,
+  purchasedProducts: [],
+  purchasedStatus: fetchRequest.INITIAL,
 };
+
+export const getPurchasedProducts = createAsyncThunk(
+  "cart/getPurchasedProducts",
+  async () => {
+    const { data } = await axios.post("/getPurchasedProducts", {
+      token: localStorage.getItem("token"),
+    });
+    console.log("items from data:", data);
+
+    return data;
+  },
+);
 
 const cartSlice = createSlice({
   name: "cart",
@@ -49,6 +67,22 @@ const cartSlice = createSlice({
     setIsPurchased: (state, action: PayloadAction<boolean>) => {
       state.isPurchased = action.payload;
     },
+  },
+  extraReducers: (builder) => {
+    builder
+
+      .addCase(getPurchasedProducts.pending, (state) => {
+        state.purchasedStatus = fetchRequest.LOADING;
+        state.purchasedProducts = [];
+      })
+      .addCase(getPurchasedProducts.fulfilled, (state, action) => {
+        state.purchasedStatus = fetchRequest.SUCCESS;
+        state.purchasedProducts = action.payload;
+      })
+      .addCase(getPurchasedProducts.rejected, (state) => {
+        state.purchasedStatus = fetchRequest.ERROR;
+        state.purchasedProducts = [];
+      });
   },
 });
 
