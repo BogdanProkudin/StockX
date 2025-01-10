@@ -1,5 +1,6 @@
 import axios from "axios";
 import { fetchBrandProducts, fetchSearchProducts } from "../api/GetSearch.js";
+import { setCache } from "../redis.js";
 export const getUserSection = async (req, res) => {
   try {
     const [recentlyViewed, recommendedItems] = await Promise.all([
@@ -460,6 +461,30 @@ export const getSliderInfo = async (req, res) => {
     }
   } catch (error) {
     console.error("Errors while getting slider info", error);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+export const getProduct = async (req, res) => {
+  try {
+    const { slug } = req.params;
+    const cacheKey = req.originalUrl;
+
+    const response = await axios.get(
+      `https://api.sneakersapi.dev/api/v2/products/${slug}`,
+      { headers: { Authorization: process.env.AUTH_KEY } }
+    );
+    const product = response.data;
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+    console.log("cacheKey2", cacheKey);
+
+    setCache(cacheKey, JSON.stringify(product));
+
+    res.status(200).json(product);
+  } catch (error) {
+    console.error("Errors while getting product", error);
     res.status(500).json({ message: "Server Error" });
   }
 };

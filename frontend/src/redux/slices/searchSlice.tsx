@@ -13,6 +13,7 @@ interface ISearchSlice {
   selectedBrand: string;
   selectedGender: string;
   selectedColor: string;
+  redirectFromMainPage: boolean;
   selectedFilter: {
     label: string;
     value: string;
@@ -29,6 +30,7 @@ const initialState: ISearchSlice = {
   selectedBrand: "",
   selectedGender: "",
   selectedColor: "",
+  redirectFromMainPage: false,
   selectedFilter: {
     label: "",
     value: "",
@@ -68,6 +70,9 @@ const searchSlice = createSlice({
     setSelectedColor: (state, action: PayloadAction<string>) => {
       state.selectedColor = action.payload;
     },
+    setRedirectFromMainPage: (state, action: PayloadAction<boolean>) => {
+      state.redirectFromMainPage = action.payload;
+    },
     setSelectedFilter: (
       state,
       action: PayloadAction<{ label: string; value: string }>,
@@ -87,6 +92,7 @@ export const {
   setSelectedGender,
   setSelectedBrand,
   setSelectedColor,
+  setRedirectFromMainPage,
   setSelectedFilter,
 } = searchSlice.actions;
 // Экспортируем редьюсер

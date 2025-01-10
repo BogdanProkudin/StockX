@@ -1,6 +1,7 @@
 import { StockXAPI, StockXLocation } from "@vlourme/stockx-api";
 import { log } from "node:console";
 import { it } from "node:test";
+import { setCache } from "../redis.js";
 import axios from "axios";
 import {
   buildQueryParams,
@@ -23,7 +24,11 @@ export const searchProducts = async (req, res) => {
   try {
     const { searchQuery } = req.params;
     const { category, brand, gender, trending, color, page } = req.query;
+    console.log("searchPoint");
 
+    // Проверка наличия данных в Redis
+
+    // Основная логика
     const baseUrl = `https://api.sneakersapi.dev/api/v2/products?page=${page}`;
     const queryString = buildQueryParams({
       brand,
@@ -48,11 +53,13 @@ export const searchProducts = async (req, res) => {
         )
       : products;
 
-    return res.status(200).json({
+    const result = {
       data: filteredProducts,
       suggestionCountList: [filteredProducts.length, 0, 0, 0],
       requestId: generateRequestId(),
-    });
+    };
+
+    return res.status(200).json(result);
   } catch (error) {
     console.error("Error during search:", error);
     return res.status(500).json({ message: "Failed to fetch products" });

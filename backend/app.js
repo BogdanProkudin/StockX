@@ -12,6 +12,8 @@ import {
 import { ErrorValidation } from "./utils/ErrorValidation.js";
 import authMiddleware from "./utils/CheckAuth.js";
 import { fileURLToPath } from "url";
+import Redis from "ioredis";
+import { redisMiddleware } from "./redis.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -20,6 +22,7 @@ const app = express();
 app.use(cors());
 const port = process.env.PORT;
 const DB_Connect = process.env.DATA_BASE_CONNECT;
+
 console.log(DB_Connect);
 
 mongoose
@@ -54,8 +57,12 @@ app.get("/getImageSection/:section", ShoesController.getImageSection);
 app.get("/getCardSection/:section", ShoesController.getCardSection);
 app.get("/getSliderInfo/:section", ShoesController.getSliderInfo);
 //FiltrationLogic
-app.get("/searchProducts/:searchQuery", FiltrationController.searchProducts);
-
+app.get(
+  "/searchProducts/:searchQuery",
+  redisMiddleware,
+  FiltrationController.searchProducts
+);
+app.get("/getProduct/:slug", redisMiddleware, ShoesController.getProduct);
 app.get(
   "/loadMoreItems/:sectionName/:page",
   FiltrationController.loadMoreItems

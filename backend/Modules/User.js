@@ -29,20 +29,17 @@ const UserSchema = new mongoose.Schema({
     type: String,
   },
 
-
-    isPurchased: {
-      type: Array,
-      default: [],
-    },
-
-    shoeSize: {
-      type: String,
-    },
-    userName: {
-      type: String,
-    },
+  isPurchased: {
+    type: Array,
+    default: [],
   },
 
+  shoeSize: {
+    type: String,
+  },
+  userName: {
+    type: String,
+  },
   timestamps: {
     type: Boolean,
   },

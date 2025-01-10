@@ -1,7 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const NotFound = () => {
+const NotFound = ({ error }: any) => {
+  console.log("not found", error);
+
   return (
     <div className="flex h-[80vh] flex-col items-center justify-center">
       <div className="flex flex-col gap-3">

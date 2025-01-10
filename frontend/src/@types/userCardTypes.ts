@@ -138,3 +138,8 @@ export interface FullProductProps {
     title: string;
   }[];
 }
+
+export interface OutletProductPageProps {
+  product: FullProductProps;
+  isLoading: boolean;
+}
