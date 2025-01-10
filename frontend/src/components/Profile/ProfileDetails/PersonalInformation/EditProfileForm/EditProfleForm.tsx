@@ -6,6 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { Inputs } from "../../../../AuthUser/@types/RegisterTypes";
+import deepEqual from "fast-deep-equal";
 import {
   emailValidationSchema,
   passwordValidationSchema,
@@ -15,6 +16,7 @@ import {
 import { EditUserData } from "../../../../../redux/thunks/profileThunks";
 import { useNavigate } from "react-router-dom";
 import { ProfileFormType } from "../../../../AuthUser/@types/ProfileFormTyoes";
+
 const validationSchema = Yup.object().shape({
   email: emailValidationSchema,
 
@@ -61,6 +63,12 @@ const EditProfleForm = () => {
       userName: "test",
       shoeSize: "",
     };
+    console.log(updatedData, userData);
+
+    if (deepEqual(userData, updatedData)) {
+      navigate("/profile");
+      return;
+    }
     // console.log(firstNameValue, lastNameValue, emailValue);
     const response = await dispatch(
       EditUserData({ token, userData: updatedData }),
@@ -74,7 +82,7 @@ const EditProfleForm = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex w-full justify-center bg-[#EDEDED] pt-10"
+      className="flex h-full w-full justify-center bg-[#EDEDED] pt-10"
     >
       {!isLoading && (
         <div className="w-[500px]">
@@ -99,8 +107,10 @@ const EditProfleForm = () => {
               errors={errors}
             />
           </div>
-          <EditProfileInputButton buttonName="Submit" />
-          <EditProfileInputButton buttonName="Cancel" />
+          <div className="mt-3 flex flex-row justify-between gap-5">
+            <EditProfileInputButton buttonName="Cancel" />
+            <EditProfileInputButton buttonName="Submit" />
+          </div>
         </div>
       )}
     </form>
