@@ -45,6 +45,7 @@ app.post("/resetPassword", UserController.resetPassword);
 
 //User purchase
 app.post("/purchasedProducts", PurchasedController.purchasedProducts);
+app.post("/getPurchasedProducts", PurchasedController.getPurchasedProducts);
 
 //ItemsLogic
 app.get("/getUserSection", ShoesController.getUserSection);

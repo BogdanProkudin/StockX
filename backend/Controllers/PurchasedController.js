@@ -38,12 +38,16 @@ export const getPurchasedProducts = async (req, res) => {
     if (!token) {
       return res.status(400).json({ message: "Token is required" });
     }
+    console.log("token for purchased items", token);
+
     try {
       const verified = jwt.verify(token, process.env.JWT_PAS);
       const user = await userModel.findById(verified._id);
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
+      console.log("bought items", user.isPurchased);
+
       res.status(200).json(user.isPurchased);
     } catch (error) {
       console.error("Error verifying jwt", err.message);

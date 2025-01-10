@@ -1,8 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import TopNavigation from "./TopNavigation";
 import { Search } from "lucide-react";
+import { useAppDispatch, useAppSelector } from "../../../redux/hook";
+import { getPurchasedProducts } from "../../../redux/slices/cartSlice";
 
 const ProfileBuying = () => {
+  const dispatch = useAppDispatch();
+  const { purchasedProducts } = useAppSelector((state) => state.cartSlice);
+  console.log("purchased items", purchasedProducts);
+
+  useEffect(() => {
+    dispatch(getPurchasedProducts());
+  }, []);
   return (
     <div className="profileContainer">
       <TopNavigation />
@@ -14,6 +23,11 @@ const ProfileBuying = () => {
         />
         <Search size={20} className="absolute left-2 top-4" />
       </div>
+      {/* <div>
+        {purchasedProducts.map((el) => (
+          <p>{el}</p>
+        ))}
+      </div> */}
     </div>
   );
 };
