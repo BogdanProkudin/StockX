@@ -6,20 +6,24 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { Inputs } from "../../../../AuthUser/@types/RegisterTypes";
+import deepEqual from "fast-deep-equal";
 import {
   emailValidationSchema,
   passwordValidationSchema,
   firstNameValidationSchema,
   secondNameValidationSchema,
+  userNameValidationSchema,
 } from "../../../../AuthUser/SignUp/SignUpValidation";
 import { EditUserData } from "../../../../../redux/thunks/profileThunks";
 import { useNavigate } from "react-router-dom";
 import { ProfileFormType } from "../../../../AuthUser/@types/ProfileFormTyoes";
+
 const validationSchema = Yup.object().shape({
   email: emailValidationSchema,
 
   firstName: firstNameValidationSchema,
   secondName: secondNameValidationSchema,
+  userName: userNameValidationSchema,
 });
 const EditProfleForm = () => {
   const {
@@ -41,6 +45,7 @@ const EditProfleForm = () => {
     if (userData) {
       setIsLoading(false);
       setValue("firstName", userData.firstName);
+      setValue("userName", userData.userName);
       setValue("secondName", userData.secondName);
       setValue("email", userData.email);
     }
@@ -54,14 +59,21 @@ const EditProfleForm = () => {
     const firstNameValue = data.firstName;
     const lastNameValue = data.secondName;
     const emailValue = data.email;
+    const userNameValue = data.userName ? data.userName : "SneakerHead1234";
     const updatedData = {
       firstName: firstNameValue,
       secondName: lastNameValue,
       email: emailValue,
-      userName: "test",
+      userName: userNameValue,
       shoeSize: "",
     };
-    // console.log(firstNameValue, lastNameValue, emailValue);
+    console.log(updatedData, userData);
+
+    if (deepEqual(userData, updatedData)) {
+      navigate("/profile");
+      return;
+    }
+
     const response = await dispatch(
       EditUserData({ token, userData: updatedData }),
     );
@@ -74,7 +86,7 @@ const EditProfleForm = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex w-full justify-center bg-[#EDEDED] pt-10"
+      className="flex h-full w-full justify-center bg-[#EDEDED] pt-10"
     >
       {!isLoading && (
         <div className="w-[500px]">
@@ -98,9 +110,16 @@ const EditProfleForm = () => {
               inputName="email"
               errors={errors}
             />
+            <EditProfileInput
+              register={register}
+              inputName="userName"
+              errors={errors}
+            />
           </div>
-          <EditProfileInputButton buttonName="Submit" />
-          <EditProfileInputButton buttonName="Cancel" />
+          <div className="mt-3 flex flex-row justify-between gap-5">
+            <EditProfileInputButton buttonName="Cancel" />
+            <EditProfileInputButton buttonName="Submit" />
+          </div>
         </div>
       )}
     </form>

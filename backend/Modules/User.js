@@ -42,10 +42,9 @@ const UserSchema = new mongoose.Schema(
       type: String,
     },
   },
+
   {
-    timestamps: {
-      type: Boolean,
-    },
+    timestamps: true,
   }
 );
 
