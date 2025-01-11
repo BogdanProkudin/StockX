@@ -45,7 +45,7 @@ function App() {
 
         {/* <Route path=":title" element={<FullProduct />} /> */}
       </Route>
-      <Route path=":slug" element={<ProductPageLayout />}>
+      <Route path=":title" element={<ProductPageLayout />}>
         <Route index element={<FullProduct />} />
       </Route>
 

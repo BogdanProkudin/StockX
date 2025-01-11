@@ -66,23 +66,6 @@ const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({
     }
     if (billingAddress && paymentMethod) {
       setIsApprove(true);
-      console.log("isApprove?", isApprove);
-
-      console.log("clicked");
-
-      // setIsLoading(true);
-
-      // setTimeout(() => {
-      //   navigate("/");
-      //   dispatch(setIsPurchased(true));
-
-      //   setIsLoading(false);
-      //   setIsApprove(false);
-
-      //   setTimeout(() => {
-      //     dispatch(setIsPurchased(false));
-      //   }, 6000);
-      // }, 4100);
     }
   };
   const onClickEditBills = () => {
@@ -110,11 +93,19 @@ const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({
           token,
         });
 
-        console.log("Product data successfully sent:", data);
+        if (data.message == "Product purchased successfully") {
+          navigate("/");
+          dispatch(setIsPurchased(true));
+
+          setTimeout(() => {
+            dispatch(setIsPurchased(false));
+          }, 6000);
+        }
       } catch (error) {
         console.error("Error sending product data:", error);
       } finally {
         setIsLoading(false);
+        setIsApprove(false);
       }
     };
 

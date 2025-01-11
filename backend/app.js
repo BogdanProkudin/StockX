@@ -48,6 +48,7 @@ app.post("/resetPassword", UserController.resetPassword);
 
 //User purchase
 app.post("/purchasedProducts", PurchasedController.purchasedProducts);
+app.post("/getPurchasedProducts", PurchasedController.getPurchasedProducts);
 
 //ItemsLogic
 app.get("/getUserSection", ShoesController.getUserSection);
@@ -62,7 +63,7 @@ app.get(
   redisMiddleware,
   FiltrationController.searchProducts
 );
-app.get("/getProduct/:slug", redisMiddleware, ShoesController.getProduct);
+app.get("/getProduct/:title", redisMiddleware, ShoesController.getProduct);
 app.get(
   "/loadMoreItems/:sectionName/:page",
   FiltrationController.loadMoreItems

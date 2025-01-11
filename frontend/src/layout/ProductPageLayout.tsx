@@ -11,7 +11,7 @@ import { useAppSelector } from "../redux/hook";
 
 const ProductPageLayout = () => {
   const isLargeScreen = useMediaQuery("(min-width: 770px)");
-  const { slug } = useParams();
+  const { title } = useParams();
   const [product, setProduct] = useState(null);
 
   const [isLoading, setIsLoading] = useState(true);
@@ -20,19 +20,20 @@ const ProductPageLayout = () => {
     (state) => state.searchSlice.redirectFromMainPage,
   );
   useEffect(() => {
-    const fetchProduct = async () => {
+    const onProductClickFetch = async () => {
       try {
+        window.scrollTo(0, 0);
         const cachedData = sessionStorage.getItem(window.location.pathname);
 
         if (cachedData) {
-          const parsedCachedData = await JSON.parse(cachedData).data;
+          const parsedCachedData = await JSON.parse(cachedData).data[0];
           setProduct(parsedCachedData);
           return;
         }
         setIsLoading(true);
         setError(null);
 
-        const apiUrl = `http://localhost:3003/getProduct/${slug}`;
+        const apiUrl = `http://localhost:3003/getProduct/${title}`;
         const { data } = await axios.get(apiUrl, {
           headers: { Authorization: import.meta.env.VITE_API_KEY },
         });
@@ -42,10 +43,11 @@ const ProductPageLayout = () => {
             window.location.pathname,
             JSON.stringify(data),
           );
-          setProduct(data.data);
+          setProduct(data.data[0]);
           return;
         }
         const parsedData = JSON.parse(data).data;
+        console.log(parsedData, "daga");
 
         if (parsedData.length === 0 || data.length === 0) {
           throw new Error("Product not found");
@@ -63,23 +65,23 @@ const ProductPageLayout = () => {
     };
 
     {
-      isRedirectFromHome && fetchProduct();
+      isRedirectFromHome && onProductClickFetch();
     }
-  }, [slug, isRedirectFromHome]);
+  }, [title, isRedirectFromHome]);
   useEffect(() => {
-    const fetchProduct = async () => {
+    const onReloadPageFetch = async () => {
       try {
         const cachedData = sessionStorage.getItem(window.location.pathname);
 
         if (cachedData) {
-          const parsedCachedData = await JSON.parse(cachedData).data;
+          const parsedCachedData = await JSON.parse(cachedData).data[0];
           setProduct(parsedCachedData);
           return;
         }
         setIsLoading(true);
         setError(null);
 
-        const apiUrl = `http://localhost:3003/getProduct/${slug}`;
+        const apiUrl = `http://localhost:3003/getProduct/${title}`;
         const { data } = await axios.get(apiUrl, {
           headers: { Authorization: import.meta.env.VITE_API_KEY },
         });
@@ -110,10 +112,9 @@ const ProductPageLayout = () => {
     };
 
     {
-      !isRedirectFromHome && fetchProduct();
+      !isRedirectFromHome && onReloadPageFetch();
     }
-  }, [slug, isRedirectFromHome]);
-  console.log("isRedirectFromHome", isRedirectFromHome);
+  }, [title, isRedirectFromHome]);
 
   if (error) {
     console.log("error", error);

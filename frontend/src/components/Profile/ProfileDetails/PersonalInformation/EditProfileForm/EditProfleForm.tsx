@@ -12,6 +12,7 @@ import {
   passwordValidationSchema,
   firstNameValidationSchema,
   secondNameValidationSchema,
+  userNameValidationSchema,
 } from "../../../../AuthUser/SignUp/SignUpValidation";
 import { EditUserData } from "../../../../../redux/thunks/profileThunks";
 import { useNavigate } from "react-router-dom";
@@ -22,6 +23,7 @@ const validationSchema = Yup.object().shape({
 
   firstName: firstNameValidationSchema,
   secondName: secondNameValidationSchema,
+  userName: userNameValidationSchema,
 });
 const EditProfleForm = () => {
   const {
@@ -43,6 +45,7 @@ const EditProfleForm = () => {
     if (userData) {
       setIsLoading(false);
       setValue("firstName", userData.firstName);
+      setValue("userName", userData.userName);
       setValue("secondName", userData.secondName);
       setValue("email", userData.email);
     }
@@ -56,11 +59,12 @@ const EditProfleForm = () => {
     const firstNameValue = data.firstName;
     const lastNameValue = data.secondName;
     const emailValue = data.email;
+    const userNameValue = data.userName ? data.userName : "SneakerHead1234";
     const updatedData = {
       firstName: firstNameValue,
       secondName: lastNameValue,
       email: emailValue,
-      userName: "test",
+      userName: userNameValue,
       shoeSize: "",
     };
     console.log(updatedData, userData);
@@ -69,7 +73,7 @@ const EditProfleForm = () => {
       navigate("/profile");
       return;
     }
-    // console.log(firstNameValue, lastNameValue, emailValue);
+
     const response = await dispatch(
       EditUserData({ token, userData: updatedData }),
     );
@@ -104,6 +108,11 @@ const EditProfleForm = () => {
             <EditProfileInput
               register={register}
               inputName="email"
+              errors={errors}
+            />
+            <EditProfileInput
+              register={register}
+              inputName="userName"
               errors={errors}
             />
           </div>

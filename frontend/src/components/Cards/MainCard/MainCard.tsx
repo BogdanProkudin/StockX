@@ -31,7 +31,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
   const handleClick = async () => {
     dispatch(setRedirectFromMainPage(true));
-    navigate(`/${slug}`);
+    navigate(`/${title}`);
     console.log("click");
 
     // dispatch(setIsSearching(false));

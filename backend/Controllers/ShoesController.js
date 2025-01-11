@@ -466,11 +466,11 @@ export const getSliderInfo = async (req, res) => {
 };
 export const getProduct = async (req, res) => {
   try {
-    const { slug } = req.params;
+    const { title } = req.params;
     const cacheKey = req.originalUrl;
 
     const response = await axios.get(
-      `https://api.sneakersapi.dev/api/v2/products/${slug}`,
+      `https://api.sneakersapi.dev/api/v2/products?search=${title}`,
       { headers: { Authorization: process.env.AUTH_KEY } }
     );
     const product = response.data;
