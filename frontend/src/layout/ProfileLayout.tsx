@@ -24,7 +24,7 @@ const ProfileLayout = ({ children }: ProfileLayoutProps) => {
     if (isError) {
       navigate("/auth", { replace: true });
     } else if (
-      window.location.pathname === "/auth" ||
+      (!isLoading && window.location.pathname === "/auth") ||
       window.location.pathname === "/Auth" ||
       (window.location.pathname === "/resetPassword/:token" && data)
     ) {
