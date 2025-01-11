@@ -13,12 +13,18 @@ export type ShipForm = {
   postalCode: number;
   phoneNumber: number;
 };
+type purchasedProducts = {
+  title: string;
+  size: string;
+  price: number;
+  img: string;
+};
 interface ICartSlice {
   price: number;
   shipForm: ShipForm[];
 
   isPurchased: boolean;
-  purchasedProducts: any[];
+  purchasedProducts: purchasedProducts[];
   purchasedStatus: fetchRequest;
 }
 
@@ -75,10 +81,13 @@ const cartSlice = createSlice({
         state.purchasedStatus = fetchRequest.LOADING;
         state.purchasedProducts = [];
       })
-      .addCase(getPurchasedProducts.fulfilled, (state, action) => {
-        state.purchasedStatus = fetchRequest.SUCCESS;
-        state.purchasedProducts = action.payload;
-      })
+      .addCase(
+        getPurchasedProducts.fulfilled,
+        (state, action: PayloadAction<purchasedProducts[]>) => {
+          state.purchasedStatus = fetchRequest.SUCCESS;
+          state.purchasedProducts = action.payload;
+        },
+      )
       .addCase(getPurchasedProducts.rejected, (state) => {
         state.purchasedStatus = fetchRequest.ERROR;
         state.purchasedProducts = [];
