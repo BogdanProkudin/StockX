@@ -31,6 +31,9 @@
 //     variant_id: string;
 //     variant_link: string;
 //   }[];
+
+import { IUser } from "./userAuth";
+
 // }
 export interface productProps {
   id: string;
@@ -142,4 +145,9 @@ export interface FullProductProps {
 export interface OutletProductPageProps {
   product: FullProductProps;
   isLoading: boolean;
+}
+export interface OutletPrivateRouteProps {
+  isLoading: boolean;
+  isError: boolean;
+  data: IUser | undefined;
 }
