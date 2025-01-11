@@ -283,6 +283,11 @@ export const getUserData = async (req, res) => {
       passwordResetAttempts,
       resetPasswordExpires,
       resetPasswordToken,
+      createdAt,
+      updatedAt,
+      isPurchased,
+      _id,
+      __v,
       ...userData
     } = user._doc;
     res.json({ ...userData });
@@ -321,7 +326,12 @@ export const EditUserData = async (req, res) => {
       passwordResetAttempts,
       resetPasswordExpires,
       resetPasswordToken,
-      isPruchased,
+      isPurchased,
+      createdAt,
+      updatedAt,
+
+      _id,
+      __v,
       ...userData
     } = updatedUser._doc;
     console.log(userData);

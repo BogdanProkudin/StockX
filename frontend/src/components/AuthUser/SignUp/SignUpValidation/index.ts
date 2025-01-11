@@ -38,3 +38,9 @@ export const secondNameValidationSchema = Yup.string()
   .min(2, "Second Name must be at least 2 characters")
   .matches(/^[A-Za-z]+$/, "Second Name cannot contain symbols and numbers")
   .required("Second Name is required");
+export const userNameValidationSchema = Yup.string()
+  .matches(
+    /^[a-zA-Z0-9_]+$/,
+    "Username can only contain letters, numbers, and underscores",
+  )
+  .notRequired();

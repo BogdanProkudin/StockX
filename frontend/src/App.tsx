@@ -52,7 +52,11 @@ function App() {
         <Route path="search" element={renderMainContent(FilterPage)} />
         <Route path="not-found" element={<NotFound />} />
         <Route path="*" element={<NotFound />} />
-        <Route path=":title" element={<FullProduct />} />
+
+        {/* <Route path=":title" element={<FullProduct />} /> */}
+      </Route>
+      <Route path=":title" element={<ProductPageLayout />}>
+        <Route index element={<FullProduct />} />
       </Route>
 
       <Route path="/" element={<ProfileLayout />}>

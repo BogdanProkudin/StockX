@@ -32,7 +32,10 @@ export const { useUserSectionFetchQuery, useGetUserDataQuery } = userApi;
 
 export const mainApi = createApi({
   reducerPath: "mainApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3003" }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: "http://localhost:3003",
+  }),
+
   tagTypes: ["SearchResults"],
   endpoints: (builder) => ({
     searchItems: builder.query({
