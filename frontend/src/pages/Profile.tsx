@@ -7,14 +7,12 @@ import { useGetUserDataQuery } from "../redux/api/mainApiSlice";
 import ProfileBuying from "../components/Profile/ProfileBuying/ProfileBuying";
 
 const Profile = () => {
-  const [activeTab, setActiveTab] = React.useState("");
   const location = useLocation();
   const path = location.pathname;
   const activeProfileTab = path.split("/")[1];
 
   return (
     <div className="flex">
-      <ProfileSideBar setActiveTab={setActiveTab} activeTab={activeTab} />
       {activeProfileTab === "profile" && <ProfileDetails />}
       {activeProfileTab === "selling" && <ProfileSelling />}
       {activeProfileTab === "buying" && <ProfileBuying />}

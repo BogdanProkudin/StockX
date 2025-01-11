@@ -19,6 +19,8 @@ import ProfileLayout from "./layout/ProfileLayout";
 import ProductPageLayout from "./layout/ProductPageLayout";
 import EditProfleForm from "./components/Profile/ProfileDetails/PersonalInformation/EditProfileForm/EditProfleForm";
 import ProfileBuying from "./components/Profile/ProfileBuying/ProfileBuying";
+import AuthLayout from "./layout/AuthLayout";
+import MainLayout from "./layout/MainLayout";
 
 type ComponentType = React.FC;
 
@@ -59,17 +61,25 @@ function App() {
         <Route index element={<FullProduct />} />
       </Route>
 
-      <Route path="/" element={<ProfileLayout />}>
-        <Route path="auth" element={<Auth />} />
-        <Route path="settings/profile" element={<EditProfleForm />} />
-        {profileUrl.map((el, id) => (
-          <Route key={id} path={el} element={<Profile />} />
-        ))}
-        <Route path="buying/order" element={<ProfileBuying />} />
-        <Route path="buying/bids" element={<ProfileBuying />} />
-        <Route path="buying/history" element={<ProfileBuying />} />
+      <Route path="/" element={<MainLayout />}>
+        <Route
+          path="auth"
+          element={
+            <AuthLayout>
+              <Auth />
+            </AuthLayout>
+          }
+        ></Route>
+        <Route path="/" element={<ProfileLayout />}>
+          <Route path="settings/profile" element={<EditProfleForm />} />
+          {profileUrl.map((el, id) => (
+            <Route key={id} path={el} element={<Profile />} />
+          ))}
+          <Route path="buying/order" element={<ProfileBuying />} />
+          <Route path="buying/bids" element={<ProfileBuying />} />
+          <Route path="buying/history" element={<ProfileBuying />} />
+        </Route>
       </Route>
-
       {/* <Route
         path="/profile"
         element={

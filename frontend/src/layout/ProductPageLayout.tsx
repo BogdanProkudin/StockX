@@ -46,7 +46,7 @@ const ProductPageLayout = () => {
           setProduct(data.data[0]);
           return;
         }
-        const parsedData = JSON.parse(data).data;
+        const parsedData = JSON.parse(data).data[0];
         console.log(parsedData, "daga");
 
         if (parsedData.length === 0 || data.length === 0) {
@@ -91,10 +91,10 @@ const ProductPageLayout = () => {
             window.location.pathname,
             JSON.stringify(data),
           );
-          setProduct(data.data);
+          setProduct(data.data[0]);
           return;
         }
-        const parsedData = JSON.parse(data).data;
+        const parsedData = JSON.parse(data).data[0];
 
         if (parsedData.length === 0 || data.length === 0) {
           throw new Error("Product not found");
