@@ -11,7 +11,7 @@ import { setUserData } from "../redux/slices/profileSlice";
 interface ProfileLayoutProps {
   children: ReactNode; // Тип для дочерних элементов
 }
-const ProfileLayout = ({ children }: ProfileLayoutProps) => {
+const ProfileLayout = () => {
   const isLargeScreen = useMediaQuery("(min-width: 770px)");
   const userToken = localStorage.getItem("token");
   const navigate = useNavigate();
@@ -23,11 +23,14 @@ const ProfileLayout = ({ children }: ProfileLayoutProps) => {
 
     if (isError) {
       navigate("/auth", { replace: true });
+      console.log("isError");
     } else if (
-      window.location.pathname === "/auth" ||
+      (!isLoading && window.location.pathname === "/auth") ||
       window.location.pathname === "/Auth" ||
       (window.location.pathname === "/resetPassword/:token" && data)
     ) {
+      console.log("is not error");
+
       navigate("/profile", { replace: true });
       dispatch(setUserData(data));
     } else if (data) {
@@ -41,7 +44,8 @@ const ProfileLayout = ({ children }: ProfileLayoutProps) => {
       <div className={styles.headerBar}>
         {data && <Header />}
         {isLargeScreen && data && <NavHeader />}
-        <div>{!isLoading && children}</div>
+
+        <div>{!isLoading && <Outlet />}</div>
       </div>
     </>
   );

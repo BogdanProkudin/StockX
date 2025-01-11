@@ -18,10 +18,20 @@ import Cart from "./pages/Cart";
 import ProfileLayout from "./layout/ProfileLayout";
 import ProductPageLayout from "./layout/ProductPageLayout";
 import EditProfleForm from "./components/Profile/ProfileDetails/PersonalInformation/EditProfileForm/EditProfleForm";
+import ProfileBuying from "./components/Profile/ProfileBuying/ProfileBuying";
 
 type ComponentType = React.FC;
 
 function App() {
+  const profileUrl = [
+    "profile",
+    "selling",
+    "buying",
+    "favorites",
+    "portfolio",
+    "wallet",
+    "settings",
+  ];
   const userToken = useMemo(() => localStorage.getItem("token"), []);
   const isSearching = useAppSelector((state) => state.searchSlice.isSearching);
 
@@ -49,7 +59,18 @@ function App() {
         <Route index element={<FullProduct />} />
       </Route>
 
-      <Route
+      <Route path="/" element={<ProfileLayout />}>
+        <Route path="auth" element={<Auth />} />
+        <Route path="settings/profile" element={<EditProfleForm />} />
+        {profileUrl.map((el, id) => (
+          <Route key={id} path={el} element={<Profile />} />
+        ))}
+        <Route path="buying/order" element={<ProfileBuying />} />
+        <Route path="buying/bids" element={<ProfileBuying />} />
+        <Route path="buying/history" element={<ProfileBuying />} />
+      </Route>
+
+      {/* <Route
         path="/profile"
         element={
           <ProfileLayout>
@@ -104,17 +125,17 @@ function App() {
             <Profile />
           </ProfileLayout>
         }
-      />
+      /> */}
       <Route path="/buy/:title" element={<Cart />} />
-      <Route
+      {/* <Route
         path="/auth"
         element={
           <ProfileLayout>
             <Auth />
           </ProfileLayout>
         }
-      />
-      <Route
+      /> */}
+      {/* <Route
         path="/settings/profile"
         element={
           <ProfileLayout>
@@ -122,7 +143,7 @@ function App() {
           </ProfileLayout>
         }
       />
-      <Route path="/resetPassword/:token" element={<ResetPage />} />
+      <Route path="/resetPassword/:token" element={<ResetPage />} /> */}
     </Routes>
   );
 }
