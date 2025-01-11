@@ -21,13 +21,16 @@ const ProfileLayout = () => {
   useEffect(() => {
     console.log("изменились данные");
 
-    if (isError) {
+    if (data === undefined || isError) {
+      console.log("Data user", data);
       navigate("/auth", { replace: true });
       console.log("isError");
     } else if (
       (!isLoading && window.location.pathname === "/auth") ||
-      window.location.pathname === "/Auth" ||
-      (window.location.pathname === "/resetPassword/:token" && data)
+      (!isLoading && window.location.pathname === "/Auth") ||
+      (!isLoading &&
+        window.location.pathname === "/resetPassword/:token" &&
+        data)
     ) {
       console.log("is not error");
 
