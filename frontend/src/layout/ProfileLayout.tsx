@@ -2,16 +2,8 @@ import { useMediaQuery } from "@mui/material";
 import Header from "../components/Header/Header";
 import NavHeader from "../components/SecondHeader/NavHeader";
 import styles from "./styles.module.scss";
-import {
-  Outlet,
-  useLocation,
-  useNavigate,
-  useOutletContext,
-} from "react-router-dom";
-import { ReactNode, useEffect } from "react";
-import { useGetUserDataQuery } from "../redux/api/mainApiSlice";
-import { useAppDispatch } from "../redux/hook";
-import { setUserData } from "../redux/slices/profileSlice";
+import { Outlet, useOutletContext } from "react-router-dom";
+
 import { OutletPrivateRouteProps } from "../@types/userCardTypes";
 import ProfileSideBar from "../components/Profile/ProfileSideBar/ProfileSideBar";
 import React from "react";
@@ -32,7 +24,7 @@ const ProfileLayout = () => {
 
         <div>
           {!isLoading && !isError && (
-            <div className="flex w-full">
+            <div className="flex">
               <ProfileSideBar
                 setActiveTab={setActiveTab}
                 activeTab={activeTab}

@@ -80,80 +80,10 @@ function App() {
           <Route path="buying/history" element={<ProfileBuying />} />
         </Route>
       </Route>
-      {/* <Route
-        path="/profile"
-        element={
-          <ProfileLayout>
-            <Profile />
-          </ProfileLayout>
-        }
-      />
-      <Route
-        path="/selling"
-        element={
-          <ProfileLayout>
-            <Profile />
-          </ProfileLayout>
-        }
-      />
-      <Route
-        path="/favorites"
-        element={
-          <ProfileLayout>
-            <Profile />
-          </ProfileLayout>
-        }
-      />
-      <Route
-        path="/buying"
-        element={
-          <ProfileLayout>
-            <Profile />
-          </ProfileLayout>
-        }
-      />
-      <Route
-        path="/portfolio"
-        element={
-          <ProfileLayout>
-            <Profile />
-          </ProfileLayout>
-        }
-      />
-      <Route
-        path="/wallet"
-        element={
-          <ProfileLayout>
-            <Profile />
-          </ProfileLayout>
-        }
-      />
-      <Route
-        path="/settings"
-        element={
-          <ProfileLayout>
-            <Profile />
-          </ProfileLayout>
-        }
-      /> */}
+
       <Route path="/buy/:title" element={<Cart />} />
-      {/* <Route
-        path="/auth"
-        element={
-          <ProfileLayout>
-            <Auth />
-          </ProfileLayout>
-        }
-      /> */}
-      {/* <Route
-        path="/settings/profile"
-        element={
-          <ProfileLayout>
-            <EditProfleForm />
-          </ProfileLayout>
-        }
-      />
-      <Route path="/resetPassword/:token" element={<ResetPage />} /> */}
+
+      <Route path="/resetPassword/:token" element={<ResetPage />} />
     </Routes>
   );
 }

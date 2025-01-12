@@ -116,6 +116,8 @@ const ProductPageLayout = () => {
     }
   }, [title, isRedirectFromHome]);
 
+  console.log(product);
+
   if (error) {
     console.log("error", error);
 
@@ -124,8 +126,8 @@ const ProductPageLayout = () => {
 
   return (
     <div className={styles.headerBar}>
-      {product && <Header />}
-      {isLargeScreen && product && <NavHeader />}
+      {<Header />}
+      {isLargeScreen && <NavHeader />}
 
       {isRedirectFromHome && (
         <div className={`productPage container`}>
