@@ -1,13 +1,16 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import TopNavigation from "./TopNavigation";
 import { Search } from "lucide-react";
-import { useAppDispatch, useAppSelector } from "../../../redux/hook";
+import { useAppDispatch } from "../../../redux/hook";
 import { getPurchasedProducts } from "../../../redux/slices/cartSlice";
+import { useLocation } from "react-router-dom";
+import Bids from "./Bids";
+import Order from "./Order";
+import History from "./History";
 
 const ProfileBuying = () => {
   const dispatch = useAppDispatch();
-  const { purchasedProducts } = useAppSelector((state) => state.cartSlice);
-  console.log("purchased items", purchasedProducts);
+  const location = useLocation();
 
   useEffect(() => {
     dispatch(getPurchasedProducts());
@@ -23,11 +26,13 @@ const ProfileBuying = () => {
         />
         <Search size={20} className="absolute left-2 top-4" />
       </div>
-      {/* <div>
-        {purchasedProducts.map((el) => (
-          <p>{el}</p>
-        ))}
-      </div> */}
+      {location.pathname === "/buying/bids" ? (
+        <Bids />
+      ) : location.pathname === "/buying/order" ? (
+        <Order />
+      ) : (
+        location.pathname === "/buying/history" && <History />
+      )}
     </div>
   );
 };
