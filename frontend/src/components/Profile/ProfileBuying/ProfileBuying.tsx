@@ -2,7 +2,10 @@ import { useEffect } from "react";
 import TopNavigation from "./TopNavigation";
 import { Search } from "lucide-react";
 import { useAppDispatch } from "../../../redux/hook";
-import { getPurchasedProducts } from "../../../redux/slices/cartSlice";
+import {
+  getBidsPurchasedProducts,
+  getPurchasedProducts,
+} from "../../../redux/slices/cartSlice";
 import { useLocation } from "react-router-dom";
 import Bids from "./Bids";
 import Order from "./Order";
@@ -14,6 +17,7 @@ const ProfileBuying = () => {
 
   useEffect(() => {
     dispatch(getPurchasedProducts());
+    dispatch(getBidsPurchasedProducts());
   }, []);
   return (
     <div className="profileContainer">

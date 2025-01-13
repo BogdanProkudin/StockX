@@ -30,11 +30,14 @@ const UserSchema = new mongoose.Schema(
       type: String,
     },
 
-    isPurchased: {
+    orderPurchased: {
       type: Array,
       default: [],
     },
-
+    bidPurchased: {
+      type: Array,
+      default: [],
+    },
     shoeSize: {
       type: String,
     },

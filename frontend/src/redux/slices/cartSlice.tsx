@@ -26,6 +26,8 @@ interface ICartSlice {
   isPurchased: boolean;
   purchasedProducts: purchasedProducts[];
   purchasedStatus: fetchRequest;
+  bidsPurchasedProducts: purchasedProducts[];
+  bidsPurchasedStatus: fetchRequest;
 }
 
 const initialState: ICartSlice = {
@@ -46,6 +48,8 @@ const initialState: ICartSlice = {
   isPurchased: false,
   purchasedProducts: [],
   purchasedStatus: fetchRequest.INITIAL,
+  bidsPurchasedProducts: [],
+  bidsPurchasedStatus: fetchRequest.INITIAL,
 };
 
 export const getPurchasedProducts = createAsyncThunk(
@@ -59,7 +63,17 @@ export const getPurchasedProducts = createAsyncThunk(
     return data;
   },
 );
+export const getBidsPurchasedProducts = createAsyncThunk(
+  "cart/getBidsPurchasedProducts",
+  async () => {
+    const { data } = await axios.post("/getBidsPurchasedProducts", {
+      token: localStorage.getItem("token"),
+    });
+    console.log("items from data:", data);
 
+    return data;
+  },
+);
 const cartSlice = createSlice({
   name: "cart",
   initialState,
@@ -91,6 +105,21 @@ const cartSlice = createSlice({
       .addCase(getPurchasedProducts.rejected, (state) => {
         state.purchasedStatus = fetchRequest.ERROR;
         state.purchasedProducts = [];
+      })
+      .addCase(getBidsPurchasedProducts.pending, (state) => {
+        state.bidsPurchasedStatus = fetchRequest.LOADING;
+        state.bidsPurchasedProducts = [];
+      })
+      .addCase(
+        getBidsPurchasedProducts.fulfilled,
+        (state, action: PayloadAction<purchasedProducts[]>) => {
+          state.bidsPurchasedStatus = fetchRequest.SUCCESS;
+          state.bidsPurchasedProducts = action.payload;
+        },
+      )
+      .addCase(getBidsPurchasedProducts.rejected, (state) => {
+        state.bidsPurchasedStatus = fetchRequest.ERROR;
+        state.bidsPurchasedProducts = [];
       });
   },
 });
