@@ -40,7 +40,9 @@ const AddShipingInput = ({
         {...register(inputName)}
         className="border-brand-primary bg-background-accent-1 text-text-prim relative h-12 w-full min-w-0 appearance-none rounded-md border border-[#006340] bg-[#F4F3F1] px-4 text-lg outline-2 outline-offset-2 outline-transparent transition duration-200"
       />
-      {errors[inputName] && <p>{errors[inputName].message}</p>}
+      {errors[inputName] && (
+        <p className="text-red-500">{errors[inputName].message}</p>
+      )}
     </div>
   );
 };

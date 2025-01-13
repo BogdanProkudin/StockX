@@ -10,20 +10,36 @@ import AddShipingInput from "./AddShipingInput";
 import AddShippingCountrySelector from "./AddShippingCountrySelector";
 import AddShippingButton from "./AddShippingButton";
 const schema = yup.object().shape({
-  firstName: yup.string().required("First Name is required"),
-  lastName: yup.string().required("Last Name is required"),
+  firstName: yup
+    .string()
+    .min(2, "First Name must be at least 2 characters")
+    .matches(/^[A-Za-z]+$/, "First Name cannot contain symbols and numbers")
+    .required("First Name is required"),
+  lastName: yup
+    .string()
+    .min(2, "Last Name must be at least 2 characters")
+    .matches(/^[A-Za-z]+$/, "Last Name cannot contain symbols and numbers")
+    .required("Last Name is required"),
   country: yup.string().required("Country is required"),
   address: yup.string().required("Address is required"),
-  city: yup.string().required("City is required"),
-  state: yup.string().required("State/Region is required"),
+  city: yup
+    .string()
+    .required("City is required")
+    .min(2, "City must be at least 2 characters")
+    .matches(/^[A-Za-z]+$/, "City cannot contain symbols and numbers"),
+  state: yup
+    .string()
+    .required("State/Region is required")
+    .min(2, "State/Region must be at least 2 characters")
+    .matches(/^[A-Za-z]+$/, "State/Region cannot contain symbols and numbers"),
   postalCode: yup
     .string()
     .matches(/^\d{5}$/, "Postal Code must be 5 digits")
     .required("Postal Code is required"),
   phoneNumber: yup
     .string()
-    .matches(/^\d{10}$/, "Phone Number must be 10 digits")
-    .required("Phone Number is required"),
+    .matches(/^\+?[0-9]\d{0,14}(\s?\d+)*$/, "Phone Number must be 10 digits")
+    .required("Phone Number format is invalid"),
 });
 
 const AddShippingForm = () => {
@@ -39,6 +55,8 @@ const AddShippingForm = () => {
   const onSubmit = async (data: any) => {};
   const [isLoading, setIsLoading] = useState(false);
   const [country, setCountry] = useState("");
+  console.log(errors);
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}

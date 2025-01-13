@@ -108,7 +108,7 @@ const EditProfleForm = () => {
                 errors={errors}
               />
             </div>
-            <div className="mb-4 flex flex-col gap-3">
+            <div className="mb-2 flex flex-col gap-3">
               <EditProfileInput
                 register={register}
                 inputName="userName"
@@ -116,7 +116,7 @@ const EditProfleForm = () => {
               />
             </div>
             <ShoeSizeSelector shoeSize={ShoeSize} setShoeSize={setShoeSize} />
-            <div className="mt-4">
+            <div className="mt-2">
               <EditProfileInput
                 register={register}
                 inputName="email"
