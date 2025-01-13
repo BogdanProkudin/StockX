@@ -21,6 +21,7 @@ import EditProfleForm from "./components/Profile/ProfileDetails/PersonalInformat
 import ProfileBuying from "./components/Profile/ProfileBuying/ProfileBuying";
 import AuthLayout from "./layout/AuthLayout";
 import MainLayout from "./layout/MainLayout";
+import AddShippingForm from "./components/Profile/ProfileDetails/ShippingInformation/AddShippingForm/AddShippingForm";
 
 type ComponentType = React.FC;
 
@@ -72,6 +73,7 @@ function App() {
         ></Route>
         <Route path="/" element={<ProfileLayout />}>
           <Route path="settings/profile" element={<EditProfleForm />} />
+          <Route path="settings/shipping" element={<AddShippingForm />} />
           {profileUrl.map((el, id) => (
             <Route key={id} path={el} element={<Profile />} />
           ))}

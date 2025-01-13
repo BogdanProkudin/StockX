@@ -7,7 +7,7 @@ interface EditProfileInputProps {
   errors: FieldError | any;
   inputName: string;
 }
-const EditProfileInput = ({
+const AddShipingInput = ({
   inputName,
   register,
   errors,
@@ -15,13 +15,23 @@ const EditProfileInput = ({
   const placeholders =
     inputName === "firstName"
       ? "First Name"
-      : inputName === "secondName"
+      : inputName === "lastName"
         ? "Last Name"
-        : inputName === "email"
-          ? "Contact Info"
-          : inputName === "userName"
-            ? "Username"
-            : "Password";
+        : inputName === "Country"
+          ? "Country"
+          : inputName === "address"
+            ? "Adress 1"
+            : inputName === "address2"
+              ? "Adress 2"
+              : inputName === "city"
+                ? "City"
+                : inputName === "state"
+                  ? "State/Region"
+                  : inputName === "postalCode"
+                    ? "Postal Code"
+                    : inputName === "phoneNumber"
+                      ? "Phone Number"
+                      : "";
 
   return (
     <div>
@@ -31,10 +41,10 @@ const EditProfileInput = ({
         className="border-brand-primary bg-background-accent-1 text-text-prim relative h-12 w-full min-w-0 appearance-none rounded-md border border-[#006340] bg-[#F4F3F1] px-4 text-lg outline-2 outline-offset-2 outline-transparent transition duration-200"
       />
       {errors[inputName] && (
-        <p className="ml-2 text-sm text-red-500">{errors[inputName].message}</p>
+        <p className="text-red-500">{errors[inputName].message}</p>
       )}
     </div>
   );
 };
 
-export default EditProfileInput;
+export default AddShipingInput;

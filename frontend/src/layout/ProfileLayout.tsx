@@ -10,7 +10,9 @@ import React from "react";
 
 const ProfileLayout = () => {
   const isLargeScreen = useMediaQuery("(min-width: 770px)");
-
+  const isShowSideBar =
+    window.location.pathname !== "/settings/profile" &&
+    window.location.pathname !== "/settings/shipping";
   const [activeTab, setActiveTab] = React.useState("");
 
   const { isError, data, isLoading } =
@@ -25,10 +27,12 @@ const ProfileLayout = () => {
         <div>
           {!isLoading && !isError && (
             <div className="flex">
-              <ProfileSideBar
-                setActiveTab={setActiveTab}
-                activeTab={activeTab}
-              />
+              {isShowSideBar && (
+                <ProfileSideBar
+                  setActiveTab={setActiveTab}
+                  activeTab={activeTab}
+                />
+              )}
               <Outlet />
             </div>
           )}

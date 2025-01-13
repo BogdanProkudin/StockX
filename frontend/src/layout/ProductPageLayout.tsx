@@ -8,6 +8,7 @@ import axios from "axios";
 import NotFound from "../pages/NotFound";
 import Home from "../pages/Home";
 import { useAppSelector } from "../redux/hook";
+import Footer from "../components/Footer/Footer";
 
 const ProductPageLayout = () => {
   const isLargeScreen = useMediaQuery("(min-width: 770px)");
