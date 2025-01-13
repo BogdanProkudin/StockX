@@ -16,7 +16,8 @@ import {
 } from "../../../../AuthUser/SignUp/SignUpValidation";
 import { EditUserData } from "../../../../../redux/thunks/profileThunks";
 import { useNavigate } from "react-router-dom";
-import { ProfileFormType } from "../../../../AuthUser/@types/ProfileFormTyoes";
+import { ProfileFormType } from "../../../../../@types/ProfileFormTyoes";
+import ShoeSizeSelector from "./ShoeSizeSelector";
 
 const validationSchema = Yup.object().shape({
   email: emailValidationSchema,
@@ -37,7 +38,7 @@ const EditProfleForm = () => {
   });
   const userData = useAppSelector((state) => state.profileSlice.userData);
   const [isLoading, setIsLoading] = useState(true);
-
+  const [ShoeSize, setShoeSize] = useState<string>("6.5");
   const dispatch = useAppDispatch();
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
@@ -65,7 +66,7 @@ const EditProfleForm = () => {
       secondName: lastNameValue,
       email: emailValue,
       userName: userNameValue,
-      shoeSize: "",
+      shoeSize: ShoeSize,
     };
     console.log(updatedData, userData);
 
@@ -94,29 +95,36 @@ const EditProfleForm = () => {
           <span className="text-[20px] text-[#242424]">
             Change your profile settings
           </span>
-          <div>
-            <EditProfileInput
-              register={register}
-              inputName="firstName"
-              errors={errors}
-            />
-            <EditProfileInput
-              register={register}
-              inputName="secondName"
-              errors={errors}
-            />
-            <EditProfileInput
-              register={register}
-              inputName="email"
-              errors={errors}
-            />
-            <EditProfileInput
-              register={register}
-              inputName="userName"
-              errors={errors}
-            />
+          <div className="mt-4 flex flex-col">
+            <div className="mb-4 flex flex-col gap-3">
+              <EditProfileInput
+                register={register}
+                inputName="firstName"
+                errors={errors}
+              />
+              <EditProfileInput
+                register={register}
+                inputName="secondName"
+                errors={errors}
+              />
+            </div>
+            <div className="mb-4 flex flex-col gap-3">
+              <EditProfileInput
+                register={register}
+                inputName="userName"
+                errors={errors}
+              />
+            </div>
+            <ShoeSizeSelector shoeSize={ShoeSize} setShoeSize={setShoeSize} />
+            <div className="mt-4">
+              <EditProfileInput
+                register={register}
+                inputName="email"
+                errors={errors}
+              />
+            </div>
           </div>
-          <div className="mt-3 flex flex-row justify-between gap-5">
+          <div className="mb-5 mt-5 flex flex-row justify-between gap-5">
             <EditProfileInputButton buttonName="Cancel" />
             <EditProfileInputButton buttonName="Submit" />
           </div>

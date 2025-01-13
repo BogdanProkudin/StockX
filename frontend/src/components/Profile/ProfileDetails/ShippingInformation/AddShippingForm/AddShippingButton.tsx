@@ -3,7 +3,7 @@ import { useAppDispatch } from "../../../../../redux/hook";
 import { EditUserData } from "../../../../../redux/thunks/profileThunks";
 import clsx from "clsx";
 
-const EditProfileInputButton = ({ buttonName }: { buttonName: string }) => {
+const AddShippingButton = ({ buttonName }: { buttonName: string }) => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const dispatch = useAppDispatch();
@@ -29,4 +29,4 @@ const EditProfileInputButton = ({ buttonName }: { buttonName: string }) => {
     </button>
   );
 };
-export default EditProfileInputButton;
+export default AddShippingButton;

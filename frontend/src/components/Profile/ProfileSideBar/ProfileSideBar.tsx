@@ -15,6 +15,11 @@ const ProfileSideBar = ({
   const navigate = useNavigate();
   const handleSelectTab = (name: string) => {
     setActiveTab(name.toLowerCase());
+    if (name === "Buying") {
+      navigate("/buying/order".toLowerCase());
+      return;
+    }
+
     navigate(`/${name.toLowerCase()}`);
   };
   const userName = userData.firstName + " " + userData.secondName;
