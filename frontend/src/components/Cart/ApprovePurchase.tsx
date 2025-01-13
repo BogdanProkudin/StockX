@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hook";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import BillingAddress from "./BillingAddress";
 import PaymentMethod from "./PaymentMethod";
 import { LoaderCircle } from "lucide-react";
@@ -20,12 +20,15 @@ const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({
   const dispatch = useAppDispatch();
   const price = useAppSelector((state) => state.cartSlice.price);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   const [isBillingAddress, setIsBillingAddress] = useState(false);
   const [isPayment, setIsPayment] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isApprove, setIsApprove] = useState(false);
   const totalPrice = price + 23.12 + 15.95;
+  const buyQuery = searchParams.get("isBuy");
+
   const itemInfo = [
     {
       key: "Title:",
@@ -76,7 +79,7 @@ const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({
   };
 
   useEffect(() => {
-    const sendProductData = async () => {
+    const sendProductOrderData = async () => {
       setIsLoading(true);
       try {
         const productData = {
@@ -108,9 +111,42 @@ const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({
         setIsApprove(false);
       }
     };
+    const sendProductBidData = async () => {
+      setIsLoading(true);
+      try {
+        const productData = {
+          title: title,
+          size: size,
+          price: price,
+          img: img,
+        };
 
-    if (isApprove) {
-      sendProductData();
+        console.log("data", productData);
+
+        const { data } = await axios.post("/bidsPurchasedProducts", {
+          productData,
+          token,
+        });
+
+        if (data.message == "Product purchased successfully") {
+          navigate("/");
+          dispatch(setIsPurchased(true));
+
+          setTimeout(() => {
+            dispatch(setIsPurchased(false));
+          }, 6000);
+        }
+      } catch (error) {
+        console.error("Error sending product data:", error);
+      } finally {
+        setIsLoading(false);
+        setIsApprove(false);
+      }
+    };
+    if (isApprove && buyQuery === "true") {
+      sendProductOrderData();
+    } else if (isApprove && buyQuery === null) {
+      sendProductBidData();
     }
   }, [isApprove]);
   return (

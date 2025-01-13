@@ -47,9 +47,16 @@ app.post("/tokenValidation", UserController.isTokenValid);
 app.post("/resetPassword", UserController.resetPassword);
 
 //User purchase
-app.post("/purchasedProducts", PurchasedController.purchasedProducts);
-app.post("/getPurchasedProducts", PurchasedController.getPurchasedProducts);
-
+app.post("/purchasedProducts", PurchasedController.orderPurchasedProducts);
+app.post(
+  "/getPurchasedProducts",
+  PurchasedController.getOrderPurchasedProducts
+);
+app.post("/bidsPurchasedProducts", PurchasedController.bidsPurchasedProducts);
+app.post(
+  "/getBidsPurchasedProducts",
+  PurchasedController.getBidsPurchasedProducts
+);
 //ItemsLogic
 app.get("/getUserSection", ShoesController.getUserSection);
 app.get("/getCollectionSection/:section", ShoesController.getCollectionSection);
