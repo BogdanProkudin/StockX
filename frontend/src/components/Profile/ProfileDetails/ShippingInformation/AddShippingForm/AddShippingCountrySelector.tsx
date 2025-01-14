@@ -205,12 +205,17 @@ const countries = [
 export default function AddShippingCountrySelector({
   country,
   setCountry,
+  setIsCountrySelectedError,
+  isCountrySelectedError,
 }: {
   country: string;
   setCountry: Dispatch<SetStateAction<string>>;
+  setIsCountrySelectedError: Dispatch<SetStateAction<boolean>>;
+  isCountrySelectedError: boolean;
 }) {
   const handleChange = (event: SelectChangeEvent<string>) => {
     setCountry(event.target.value);
+    setIsCountrySelectedError(true);
   };
 
   return (
@@ -238,6 +243,9 @@ export default function AddShippingCountrySelector({
           </MenuItem>
         ))}
       </Select>
+      {isCountrySelectedError && country.length === 0 && (
+        <p className="text-red-500">Country is required</p>
+      )}
     </FormControl>
   );
 }

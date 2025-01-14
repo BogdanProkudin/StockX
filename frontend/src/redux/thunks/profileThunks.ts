@@ -1,9 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { IUser } from "../../@types/userAuth";
 import axios from "../../axiosConfig/axios";
-import { EditProfileSuccessResponse } from "../slices/profileSlice";
+import {
+  AddShippingAddressResponse,
+  EditProfileSuccessResponse,
+} from "../slices/profileSlice";
 
-// Редактирование данных юзера
 export const EditUserData = createAsyncThunk<
   EditProfileSuccessResponse,
   { token: string; userData: IUser },
@@ -15,6 +17,28 @@ export const EditUserData = createAsyncThunk<
         Authorization: `Bearer ${token}`,
       },
     });
+
+    return response.data;
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.response.data);
+  }
+});
+
+export const AddShippingAddress = createAsyncThunk<
+  AddShippingAddressResponse,
+  { token: string; userData: IUser },
+  { rejectValue: { message: string } }
+>("profile/AddShippingAddress", async ({ token, userData }, thunkAPI) => {
+  try {
+    const response = await axios.post(
+      "/addShippingAddress",
+      { shippingAddress: userData },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
 
     return response.data;
   } catch (error: any) {

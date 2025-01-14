@@ -9,6 +9,9 @@ import {
 import AddShipingInput from "./AddShipingInput";
 import AddShippingCountrySelector from "./AddShippingCountrySelector";
 import AddShippingButton from "./AddShippingButton";
+import { useAppDispatch } from "../../../../../redux/hook";
+import { AddShippingAddress } from "../../../../../redux/thunks/profileThunks";
+import { useNavigate } from "react-router-dom";
 const schema = yup.object().shape({
   firstName: yup
     .string()
@@ -20,7 +23,7 @@ const schema = yup.object().shape({
     .min(2, "Last Name must be at least 2 characters")
     .matches(/^[A-Za-z]+$/, "Last Name cannot contain symbols and numbers")
     .required("Last Name is required"),
-  country: yup.string().required("Country is required"),
+
   address: yup.string().required("Address is required"),
   city: yup
     .string()
@@ -52,9 +55,27 @@ const AddShippingForm = () => {
   } = useForm<ShippingFormType>({
     resolver: yupResolver(schema),
   });
-  const onSubmit = async (data: any) => {};
-  const [isLoading, setIsLoading] = useState(false);
   const [country, setCountry] = useState("");
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  const [isCountrySelectedError, setIsCountrySelectedError] = useState(false);
+  const onSubmit = async (data: any) => {
+    if (!token) return;
+    if (country.length === 0) {
+      setIsCountrySelectedError(true);
+      return;
+    }
+
+    const response = await dispatch(
+      AddShippingAddress({ token, userData: data }),
+    );
+    if (response.meta.requestStatus === "fulfilled") {
+      navigate("/profile");
+    }
+  };
+  const [isLoading, setIsLoading] = useState(false);
+
   console.log(errors);
 
   return (
@@ -84,6 +105,8 @@ const AddShippingForm = () => {
             <AddShippingCountrySelector
               country={country}
               setCountry={setCountry}
+              setIsCountrySelectedError={setIsCountrySelectedError}
+              isCountrySelectedError={isCountrySelectedError}
             />
             <AddShipingInput
               inputName="address"
@@ -119,8 +142,16 @@ const AddShippingForm = () => {
             />
           </div>
           <div className="mb-4 mt-4 flex justify-between">
-            <AddShippingButton buttonName="Cancel" />
-            <AddShippingButton buttonName="Submit" />
+            <AddShippingButton
+              country={country}
+              setIsCountrySelectedError={setIsCountrySelectedError}
+              buttonName="Cancel"
+            />
+            <AddShippingButton
+              country={country}
+              setIsCountrySelectedError={setIsCountrySelectedError}
+              buttonName="Submit"
+            />
           </div>
         </div>
       )}

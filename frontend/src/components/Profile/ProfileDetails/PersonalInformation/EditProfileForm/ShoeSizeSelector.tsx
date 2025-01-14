@@ -62,6 +62,7 @@ export default function ShoeSizeSelector({
           </MenuItem>
         ))}
       </Select>
+      {shoeSize.length === 0 && <span className="text-red-500">Required</span>}
     </FormControl>
   );
 }

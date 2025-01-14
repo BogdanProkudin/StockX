@@ -41,6 +41,10 @@ const UserSchema = new mongoose.Schema(
     shoeSize: {
       type: String,
     },
+    shippingAddresses: {
+      type: Array,
+      default: [],
+    },
     userName: {
       type: String,
     },

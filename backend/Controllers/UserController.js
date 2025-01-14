@@ -342,3 +342,42 @@ export const EditUserData = async (req, res) => {
     return res.status(500).json({ message: "Something went wrong" });
   }
 };
+
+export const addShippingAddress = async (req, res) => {
+  try {
+    const { shippingAddress } = req.body;
+    const userId = req.userId;
+    console.log(userId, "q");
+
+    const user = await userModel.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    console.log(shippingAddress);
+    const isShippingAddressExist = user.shippingAddresses.some(
+      (address) => JSON.stringify(address) === JSON.stringify(shippingAddress)
+    );
+    if (isShippingAddressExist) {
+      return res
+        .status(400)
+        .json({ message: "Shipping address already exists" });
+    }
+    // Обновляем пользователя с флагом { new: true }
+    const updatedUser = await userModel.findByIdAndUpdate(
+      userId,
+      { $push: { shippingAddresses: shippingAddress } },
+      { new: true }
+    );
+
+    console.log(updatedUser);
+
+    res.json({
+      message: "Shipping address added successfully",
+      shippingAddresses: updatedUser.shippingAddresses,
+    });
+  } catch (error) {
+    console.error("error", error);
+    return res.status(500).json({ message: "Something went wrong" });
+  }
+};

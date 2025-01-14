@@ -2,7 +2,10 @@ import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useGetUserDataQuery } from "../redux/api/mainApiSlice";
 import { useAppDispatch } from "../redux/hook";
-import { setUserData } from "../redux/slices/profileSlice";
+import {
+  setShippingAddresses,
+  setUserData,
+} from "../redux/slices/profileSlice";
 
 const MainLayout = () => {
   const navigate = useNavigate();
@@ -26,6 +29,7 @@ const MainLayout = () => {
       dispatch(setUserData(data));
     } else if (data) {
       dispatch(setUserData(data));
+      dispatch(setShippingAddresses(data.shippingAddresses));
       return;
     }
   }, [data, isError]);

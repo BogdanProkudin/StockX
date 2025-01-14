@@ -57,6 +57,7 @@ const EditProfleForm = () => {
     if (!token) {
       return;
     }
+
     const firstNameValue = data.firstName;
     const lastNameValue = data.secondName;
     const emailValue = data.email;

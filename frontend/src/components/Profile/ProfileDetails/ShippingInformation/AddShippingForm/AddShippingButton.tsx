@@ -2,13 +2,26 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../../../../redux/hook";
 import { EditUserData } from "../../../../../redux/thunks/profileThunks";
 import clsx from "clsx";
+import { Dispatch, SetStateAction } from "react";
 
-const AddShippingButton = ({ buttonName }: { buttonName: string }) => {
+const AddShippingButton = ({
+  buttonName,
+  setIsCountrySelectedError,
+  country,
+}: {
+  buttonName: string;
+  setIsCountrySelectedError: Dispatch<SetStateAction<boolean>>;
+  country: string;
+}) => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const dispatch = useAppDispatch();
   const handleButtonClick = () => {
     if (buttonName === "Submit") {
+      if (country.length === 0) {
+        setIsCountrySelectedError(true);
+        return;
+      }
       return;
     } else if (buttonName === "Cancel") {
       navigate("/profile");
