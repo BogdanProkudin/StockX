@@ -4,26 +4,26 @@ import { useAppSelector } from "../../../../redux/hook";
 interface CategoryItemProps {
   categoryName: string;
   subcategoryNames: string[];
-  setIsShowDropDown: Dispatch<SetStateAction<boolean>>;
+  activeFilter: string;
+  setActiveFilter: Dispatch<SetStateAction<string>>;
   handleSelectSubCategory: (selectedSubCategory: string) => void;
-  isShowDropDown: boolean;
 }
 
 const CategoryItem: React.FC<CategoryItemProps> = React.memo(
   ({
-    isShowDropDown,
-    setIsShowDropDown,
     subcategoryNames,
     handleSelectSubCategory,
     categoryName,
+    setActiveFilter,
+    activeFilter,
   }) => {
     const selectedSubCategory = useAppSelector(
       (state) => state.searchSlice.selectedSubCategory,
     );
 
     const toggleDropdown = useCallback(() => {
-      setIsShowDropDown(!isShowDropDown);
-    }, [isShowDropDown, setIsShowDropDown]);
+      setActiveFilter(categoryName === activeFilter ? "" : categoryName);
+    }, [setActiveFilter, activeFilter]);
 
     const handleSubCategoryClick = useCallback(
       (subName: string) => {
@@ -37,7 +37,6 @@ const CategoryItem: React.FC<CategoryItemProps> = React.memo(
         <button
           onClick={toggleDropdown}
           className="flex cursor-pointer items-center justify-between p-4"
-          aria-expanded={isShowDropDown}
           aria-controls="subcategory-list"
         >
           <p className="select-none pb-0 text-base font-semibold text-blackTextColor">
@@ -49,7 +48,7 @@ const CategoryItem: React.FC<CategoryItemProps> = React.memo(
             focusable="false"
             aria-hidden="true"
             className={`h-[1rem] w-[1rem] transform pb-0 transition-transform duration-300 ${
-              isShowDropDown ? "rotate-0" : "rotate-180"
+              activeFilter === categoryName ? "rotate-0" : "rotate-180"
             }`}
           >
             <path
@@ -62,11 +61,11 @@ const CategoryItem: React.FC<CategoryItemProps> = React.memo(
         <div
           id="subcategory-list"
           className={`flex flex-col gap-3 overflow-hidden pl-4 transition-all duration-300 ease-in-out ${
-            isShowDropDown ? "max-h-80 pb-3" : "max-h-0"
+            activeFilter === categoryName ? "max-h-80 pb-3" : "max-h-0"
           }`}
           role="list"
         >
-          {subcategoryNames.map((subName) => (
+          {subcategoryNames.map((subName, index) => (
             <button
               key={subName}
               onClick={() => handleSubCategoryClick(subName)}

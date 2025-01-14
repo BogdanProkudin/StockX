@@ -1,23 +1,41 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { SearchResponse } from "../../types/searchTypes";
 
 // Создаем API-сервис
 export const userApi = createApi({
   reducerPath: "userApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3003" }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: "http://localhost:3003",
+    prepareHeaders: (headers) => {
+      // Получение токена из Redux (или localStorage)
+      const token = localStorage.getItem("token");
+
+      if (token) {
+        headers.set("Authorization", `Bearer ${token}`); // Установка заголовка Authorization
+      }
+
+      return headers;
+    },
+  }),
   endpoints: (builder) => ({
     userSectionFetch: builder.query({
       query: () => "/getUserSection",
       keepUnusedDataFor: 60,
     }),
+    getUserData: builder.query({
+      query: () => `/getUserData`,
+      keepUnusedDataFor: 60,
+    }),
   }),
 });
 
-export const { useUserSectionFetchQuery } = userApi;
+export const { useUserSectionFetchQuery, useGetUserDataQuery } = userApi;
 
 export const mainApi = createApi({
   reducerPath: "mainApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3003" }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: "http://localhost:3003",
+  }),
+
   tagTypes: ["SearchResults"],
   endpoints: (builder) => ({
     searchItems: builder.query({

@@ -19,7 +19,7 @@ const SearchedItem: React.FC<SearchItem> = ({
     <>
       <Link
         to={`/${title}`}
-        className="relative flex h-full w-[200px] cursor-pointer flex-col items-center"
+        className="mediumScreen:w-full mediumScreen:items-start relative flex h-full w-[200px] cursor-pointer flex-col items-center"
       >
         <button onClick={onClickFavorite} className="absolute right-5">
           <FavoriteBorderIcon />

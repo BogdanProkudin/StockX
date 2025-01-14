@@ -14,7 +14,6 @@ export interface SearchItem {
 
   release_date?: string;
   image: string;
-  // добавьте другие поля, которые приходят с бэкенда
 }
 
 export interface SearchParams {

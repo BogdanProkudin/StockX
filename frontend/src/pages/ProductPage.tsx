@@ -1,79 +1,40 @@
-import { useEffect, useState } from "react";
+import { useOutletContext } from "react-router-dom";
 import BreadCrumbs from "../components/BreadCrumbs/BreadCrumbs";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
-import { imageNotFound } from "../assets/images/imageNotFound";
-import { FullProductProps } from "../@types/userCardTypes";
-import { Rocket } from "lucide-react";
 import PriceBlock from "../components/FullProduct/PriceBlock";
 import SizePopUp from "../components/FullProduct/SizePopUp";
-import Skeleton from "../components/BreadCrumbs/Skeleton";
-import SubTitleSkeleton from "../components/FullProduct/Skeletons/SubTitleSkeleton";
-import TitleSkeleton from "../components/FullProduct/Skeletons/TitleSkeleton";
-import SizeSkeleton from "../components/FullProduct/Skeletons/SizeSkeleton";
 import InfoBlock from "../components/FullProduct/InfoBlock";
-import SellBlock from "../components/FullProduct/SellBlock";
-import InfoBlockSkeleton from "../components/FullProduct/Skeletons/InfoBlockSkeleton";
 import RelatedProducts from "../components/FullProduct/RelatedProducts";
 import DescriptionBlock from "../components/FullProduct/DescriptionBlock";
 import ReviewBlock from "../components/FullProduct/ReviewBlock";
 import MonthHistoricalBlock from "../components/FullProduct/MonthHistoricalBlock";
+import { useState } from "react";
+import { OutletProductPageProps } from "../@types/userCardTypes";
+import Skeleton from "../components/BreadCrumbs/Skeleton";
+import SubTitleSkeleton from "../components/FullProduct/Skeletons/SubTitleSkeleton";
+import TitleSkeleton from "../components/Sections/TitleSkeleton";
+import { Rocket } from "lucide-react";
+import { imageNotFound } from "../assets/images/imageNotFound";
+import SellBlock from "../components/FullProduct/SellBlock";
+import InfoBlockSkeleton from "../components/FullProduct/Skeletons/InfoBlockSkeleton";
+import SizeSkeleton from "../components/FullProduct/Skeletons/SizeSkeleton";
 
 const FullProduct = () => {
-  const { title } = useParams();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const [product, setProduct] = useState<FullProductProps | null>(null);
-  const [category, setCategory] = useState<string | null>(null);
-  const [isPrice, setIsPrice] = useState<number | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const { product, isLoading } = useOutletContext<OutletProductPageProps>(); //это данные с лайаута
   const [sellVisible, setSellVisible] = useState(false);
   const [sellPrice, setSellPrice] = useState(0);
   const [soldItems, setSoldItems] = useState(0);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    const fetchFullProduct = async () => {
-      try {
-        setIsLoading(true);
-        setError(null);
-        document.body.style.overflow = "hidden";
-        const apiUrl = `https://api.sneakersapi.dev/api/v2/products?search=${title}`;
-        const { data } = await axios.get(apiUrl, {
-          headers: { Authorization: "f-2895d084cba594772c79255a5fb658d0" },
-        });
-        setProduct(data.data[0]);
-        setCategory(data.data[0].category);
-      } catch (error) {
-        console.error(error);
-        setError("Info failed try again");
-      } finally {
-        document.body.style.overflow = "auto";
-        setIsLoading(false);
-      }
-    };
-
-    fetchFullProduct();
-  }, [location.pathname]);
-
-  useEffect(() => {
-    if (error) {
-      navigate("/not-found", { replace: true });
-    }
-  }, [error, navigate]);
-
+  const [isPrice, setIsPrice] = useState<number | null>(null);
   return (
     <div className="w-[1120px]">
       {isLoading ? (
         <Skeleton />
       ) : (
         <>
-          {product && category && (
+          {product && product.category && (
             <BreadCrumbs
               brand={product.brand}
               title={product.title}
-              category={category}
+              category={product.category}
               slug={product.slug}
             />
           )}
@@ -128,6 +89,7 @@ const FullProduct = () => {
           ) : (
             <PriceBlock
               id={product?.id}
+              title={product?.title}
               price={product?.avg_price}
               max_price={product?.max_price}
               min_price={product?.min_price}

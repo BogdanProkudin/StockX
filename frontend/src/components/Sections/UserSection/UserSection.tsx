@@ -40,7 +40,7 @@ const UserSection: React.FC<UserSectionProps> = ({
         )}
       </div>
 
-      <div className="flex justify-between">
+      <div className="flex max-w-full justify-between overflow-x-auto">
         {mainTitle.length < 1
           ? cardSkeleton
           : items.map((obj: productProps, id: number) => (

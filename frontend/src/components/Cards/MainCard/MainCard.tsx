@@ -1,7 +1,9 @@
 import React from "react";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { setRedirectFromMainPage } from "../../../redux/slices/searchSlice";
+import { useAppDispatch } from "../../../redux/hook";
 
 interface ProductCardProps {
   id?: string;
@@ -24,13 +26,22 @@ const ProductCard: React.FC<ProductCardProps> = ({
   };
   // const formattedUrl = slug.slice(0, -6);
   const price = Math.round(avg_price);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
+  const handleClick = async () => {
+    dispatch(setRedirectFromMainPage(true));
+    navigate(`/${title}`);
+    console.log("click");
+
+    // dispatch(setIsSearching(false));
+  };
   return (
-    <Link
-      to={`/${title}`}
-      className="relative flex h-full w-[190px] cursor-pointer flex-col items-center"
+    <div
+      onClick={handleClick}
+      className="relative flex h-full w-[190px] min-w-[190px] cursor-pointer flex-col items-center"
     >
-      <button onClick={onClickFavorite} className="absolute right-5">
+      <button onClick={onClickFavorite} className="z-15 absolute right-5">
         <FavoriteBorderIcon />
       </button>
       <img
@@ -46,7 +57,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         <b className="f font-mono text-[23px]">€{price}</b>
         <p className="w-4/5 bg-gray-100 p-1 text-xs">min price: €{min_price}</p>
       </div>
-    </Link>
+    </div>
   );
 };
 

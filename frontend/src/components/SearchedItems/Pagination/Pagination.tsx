@@ -1,3 +1,4 @@
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 const Pagination = ({
   pageCount,
   currentPage,
@@ -31,17 +32,16 @@ const Pagination = ({
   const inactiveButtonStyle = "text-gray-700 hover:bg-[#08a05c]/10";
   const disabledButtonStyle =
     "text-gray-400 cursor-not-allowed hover:bg-transparent";
-  const navButtonStyle = "min-w-[100px] border border-gray-300";
+  const navButtonStyle = "min-w-[40px]";
 
   return (
-    <div className="flex items-center gap-2">
-      <button
-        disabled={currentPage === 1}
+    <div className="mediumScreen:mb-4 mb-4 flex items-center gap-2">
+      <NavigateNextIcon
+        style={{ transform: "rotate(180deg)" }}
         onClick={() => handlePageChange(currentPage - 1)}
         className={`${buttonBaseStyle} ${navButtonStyle} ${currentPage === 1 ? disabledButtonStyle : inactiveButtonStyle}`}
-      >
-        ← Previous
-      </button>
+      />
+
       {currentPage > 3 && (
         <>
           <button
@@ -73,13 +73,10 @@ const Pagination = ({
           </button>
         </>
       )}
-      <button
-        disabled={currentPage === pageCount}
+      <NavigateNextIcon
         onClick={() => handlePageChange(currentPage + 1)}
         className={`${buttonBaseStyle} ${navButtonStyle} ${currentPage === pageCount ? disabledButtonStyle : inactiveButtonStyle}`}
-      >
-        Next →
-      </button>
+      />
     </div>
   );
 };

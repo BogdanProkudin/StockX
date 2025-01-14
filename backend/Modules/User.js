@@ -29,7 +29,27 @@ const UserSchema = new mongoose.Schema(
     newPasswordExpires: {
       type: String,
     },
+
+    orderPurchased: {
+      type: Array,
+      default: [],
+    },
+    bidPurchased: {
+      type: Array,
+      default: [],
+    },
+    shoeSize: {
+      type: String,
+    },
+    shippingAddresses: {
+      type: Array,
+      default: [],
+    },
+    userName: {
+      type: String,
+    },
   },
+
   {
     timestamps: true,
   }
