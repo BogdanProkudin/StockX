@@ -18,6 +18,7 @@ export const orderPurchasedProducts = async (req, res) => {
       user.orderPurchased.push({
         ...productData,
         addedAt: new Date(),
+        status: "Proccessing",
       });
       await user.save();
       return res
