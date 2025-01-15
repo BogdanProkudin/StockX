@@ -1,12 +1,13 @@
 import React from "react";
-import { useAppSelector } from "../../../redux/hook";
+
 import { Link } from "react-router-dom";
 import ProfileCard from "../../Cards/ProfileCard/ProfileCard";
+import { purchasedProducts } from "../../../redux/slices/cartSlice";
 
-const Order = () => {
-  const { purchasedProducts } = useAppSelector((state) => state.cartSlice);
-  console.log(purchasedProducts);
-
+interface orderProps {
+  purchasedProducts: purchasedProducts[];
+}
+const Order: React.FC<orderProps> = ({ purchasedProducts }) => {
   return (
     <>
       {purchasedProducts.length > 0 ? (

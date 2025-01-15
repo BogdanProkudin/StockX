@@ -1,12 +1,13 @@
 import React from "react";
-import { useAppSelector } from "../../../redux/hook";
+
 import ProfileCard from "../../Cards/ProfileCard/ProfileCard";
 import { Link } from "react-router-dom";
+import { purchasedProducts } from "../../../redux/slices/cartSlice";
 
-const Bids = () => {
-  const { bidsPurchasedProducts } = useAppSelector((state) => state.cartSlice);
-  console.log(bidsPurchasedProducts);
-
+interface bidsProps {
+  bidsPurchasedProducts: purchasedProducts[];
+}
+const Bids: React.FC<bidsProps> = ({ bidsPurchasedProducts }) => {
   return (
     <>
       {bidsPurchasedProducts.length > 0 ? (

@@ -13,11 +13,14 @@ export type ShipForm = {
   postalCode: number;
   phoneNumber: number;
 };
-type purchasedProducts = {
+export type purchasedProducts = {
   title: string;
   size: string;
   price: number;
   img: string;
+  brand: string;
+  addedAt: number;
+  status: string;
 };
 interface ICartSlice {
   price: number;
