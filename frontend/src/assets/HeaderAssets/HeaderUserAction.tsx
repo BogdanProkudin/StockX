@@ -65,7 +65,7 @@ export const profileArr: {
   {
     img: <ScanBarcode size={26} />,
     name: "Buying",
-    path: "/buying",
+    path: "/buying/order",
     description: "Active Bids, In-Progress, Completed Orders",
   },
   {

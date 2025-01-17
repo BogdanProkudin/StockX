@@ -8,6 +8,7 @@ interface ProfileCardProps {
   brand?: string;
   addedAt: number;
   status: string;
+  sku: string;
 }
 
 const ProfileCard: React.FC<ProfileCardProps> = ({
@@ -18,6 +19,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   brand,
   addedAt,
   status,
+  sku,
 }) => {
   const dataPurchased = String(addedAt).split("T")[0];
   return (
@@ -32,6 +34,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
           <p className="text-[#969696]">Size: {size}</p>
         </div>
       </div>
+      <p>{sku}</p>
       <div>€{price}</div>
       <p>{dataPurchased}</p>
       <p className="mr-5">{status}</p>

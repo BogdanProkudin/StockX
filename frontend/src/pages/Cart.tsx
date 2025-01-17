@@ -93,6 +93,7 @@ const Cart: React.FC = () => {
                 size={sizeQuery}
                 img={product?.image}
                 brand={product?.brand}
+                sku={product?.sku}
               />
             ) : (
               <>

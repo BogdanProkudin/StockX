@@ -12,12 +12,14 @@ interface ApprovePurchaseProps {
   size: string | null;
   img: string | undefined;
   brand: string | undefined;
+  sku: string | undefined;
 }
 const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({
   title,
   size,
   img,
   brand,
+  sku,
 }) => {
   const dispatch = useAppDispatch();
   const price = useAppSelector((state) => state.cartSlice.price);
@@ -90,6 +92,7 @@ const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({
           price: price,
           img: img,
           brand: brand,
+          sku: sku,
         };
 
         console.log("data", productData);
@@ -123,6 +126,7 @@ const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({
           price: price,
           img: img,
           brand: brand,
+          sku: sku,
         };
 
         console.log("data", productData);
