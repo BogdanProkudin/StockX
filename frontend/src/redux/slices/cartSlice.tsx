@@ -21,6 +21,7 @@ export type purchasedProducts = {
   brand: string;
   addedAt: number;
   status: string;
+  sku: string;
 };
 interface ICartSlice {
   price: number;

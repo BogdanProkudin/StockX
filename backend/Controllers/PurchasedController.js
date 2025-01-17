@@ -1,5 +1,6 @@
 import userModel from "../Modules/User.js";
 import jwt from "jsonwebtoken";
+
 export const orderPurchasedProducts = async (req, res) => {
   try {
     const { token, productData } = req.body;
@@ -14,6 +15,11 @@ export const orderPurchasedProducts = async (req, res) => {
       const user = await userModel.findById(verified._id);
       if (!user) {
         return res.status(404).json({ message: "User not found" });
+      }
+      const skuId =
+        productData.sku == "" ? generateRandomCode() : productData.sku;
+      if (productData.sku === "") {
+        productData.sku = skuId;
       }
       user.orderPurchased.push({
         ...productData,
@@ -74,6 +80,11 @@ export const bidsPurchasedProducts = async (req, res) => {
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
+      const skuId =
+        productData.sku == "" ? generateRandomCode() : productData.sku;
+      if (productData.sku === "") {
+        productData.sku = skuId;
+      }
       user.bidPurchased.push({
         ...productData,
         addedAt: new Date(),
@@ -133,3 +144,21 @@ const removeExpiredProducts = async () => {
 };
 
 setInterval(removeExpiredProducts, 48 * 60 * 60 * 1000);
+function generateRandomCode() {
+  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const numbers = "0123456789";
+
+  function getRandomChars(source, length) {
+    let result = "";
+    for (let i = 0; i < length; i++) {
+      result += source.charAt(Math.floor(Math.random() * source.length));
+    }
+    return result;
+  }
+
+  const part1 = getRandomChars(letters, 2);
+  const part2 = getRandomChars(numbers, 4);
+  const part3 = getRandomChars(numbers, 3);
+
+  return `${part1}${part2}-${part3}`;
+}
