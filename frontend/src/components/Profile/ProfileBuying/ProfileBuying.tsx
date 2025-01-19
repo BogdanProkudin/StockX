@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import TopNavigation from "./TopNavigation";
-import { ChevronDown, ChevronUp, Search } from "lucide-react";
+import { ChevronDown, ChevronsUpDown, ChevronUp, Search } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../../../redux/hook";
 import {
   getBidsPurchasedProducts,
@@ -15,9 +15,12 @@ import History from "./History";
 const ProfileBuying = () => {
   const dispatch = useAppDispatch();
 
-  const { purchasedProducts, bidsPurchasedProducts } = useAppSelector(
-    (state) => state.cartSlice,
-  );
+  const {
+    purchasedProducts,
+    bidsPurchasedProducts,
+    bidsPurchasedStatus,
+    purchasedStatus,
+  } = useAppSelector((state) => state.cartSlice);
   const location = useLocation();
   useEffect(() => {
     dispatch(getPurchasedProducts());
@@ -33,13 +36,13 @@ const ProfileBuying = () => {
     {
       key: "id",
       label: "Id",
-      width: "80px",
+      width: "110px",
       sortable: false,
     },
     {
       key: "price",
       label: "Price",
-      width: "85px",
+      width: "115px",
       sortable: true,
     },
     {
@@ -121,15 +124,37 @@ const ProfileBuying = () => {
       <div className="mt-2 flex w-full items-center justify-between rounded-lg border border-[#006340] px-5">
         {sortVariants.map((obj, id) => (
           <span
-            className={`flex w-[${obj.width}] justify-between border-r border-[#006340] py-2 pr-1 ${obj.sortable ? "cursor-pointer" : "cursor-default"}`}
+            className={`flex w-[${obj.width}] items-center justify-between border-r border-[#006340] px-2 py-2 pr-1 last:border-r-0 ${obj.sortable ? "cursor-pointer" : "cursor-default"}`}
             key={id}
+            onClick={
+              obj.sortable
+                ? () =>
+                    setSort({
+                      key: obj.key,
+                      value: sort.value === "asc" ? "desc" : "asc",
+                    })
+                : undefined
+            }
           >
             {obj.label}
+            {obj.sortable &&
+              (sort.key === obj.key ? (
+                sort.value === "asc" ? (
+                  <ChevronDown />
+                ) : (
+                  <ChevronUp />
+                )
+              ) : (
+                <ChevronsUpDown size={18} />
+              ))}
           </span>
         ))}
       </div>
       {location.pathname === "/buying/bids" ? (
-        <Bids bidsPurchasedProducts={bidsPurchasedProducts} />
+        <Bids
+          bidsPurchasedProducts={bidsPurchasedProducts}
+          status={bidsPurchasedStatus}
+        />
       ) : location.pathname === "/buying/order" ? (
         <Order
           purchasedProducts={
@@ -139,6 +164,7 @@ const ProfileBuying = () => {
                 ? sortedOrders
                 : purchasedProducts
           }
+          status={purchasedStatus}
         />
       ) : (
         location.pathname === "/buying/history" && <History />
@@ -148,45 +174,3 @@ const ProfileBuying = () => {
 };
 
 export default ProfileBuying;
-{
-  /* <span
-onClick={() =>
-  setSort({
-    key: "title",
-    value: sort.value === "asc" ? "desc" : "asc",
-  })
-}
-className="flex w-[380px] cursor-pointer justify-between border-r border-[#006340] py-2 pr-1"
->
-Items <ChevronUp />
-</span>
-<span className="flex w-[80px] justify-between">Id</span>
-<span
-onClick={() =>
-  setSort({
-    key: "price",
-    value: sort.value === "asc" ? "desc" : "asc",
-  })
-}
-className="flex w-[85px] justify-between"
->
-Price{" "}
-{sort.key === "price" && sort.value === "asc" ? (
-  <ChevronDown />
-) : (
-  <ChevronUp />
-)}
-</span>
-<span
-onClick={() =>
-  setSort({
-    key: "date",
-    value: sort.value === "asc" ? "desc" : "asc",
-  })
-}
-className="flex w-[80px] justify-between"
->
-Date <ChevronUp />
-</span>
-<span className="flex w-[110px] justify-between">Status</span> */
-}

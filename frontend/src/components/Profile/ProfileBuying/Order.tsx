@@ -3,14 +3,18 @@ import React from "react";
 import { Link } from "react-router-dom";
 import ProfileCard from "../../Cards/ProfileCard/ProfileCard";
 import { purchasedProducts } from "../../../redux/slices/cartSlice";
+import { fetchRequest } from "../../../@types/status";
 
 interface orderProps {
   purchasedProducts: purchasedProducts[];
+  status: fetchRequest;
 }
-const Order: React.FC<orderProps> = ({ purchasedProducts }) => {
+const Order: React.FC<orderProps> = ({ purchasedProducts, status }) => {
   return (
     <>
-      {purchasedProducts.length > 0 ? (
+      {status === fetchRequest.LOADING ? (
+        "loading"
+      ) : purchasedProducts.length > 0 ? (
         <div className="mt-6">
           {purchasedProducts.map((obj, id) => (
             <ProfileCard key={id} {...obj} />
