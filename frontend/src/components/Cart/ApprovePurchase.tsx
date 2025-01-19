@@ -56,7 +56,7 @@ const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({
     },
     {
       key: "Total:",
-      value: "€" + totalPrice,
+      value: "€" + totalPrice.toFixed(2),
     },
   ];
 
