@@ -1,15 +1,20 @@
 import React from "react";
-import { useAppSelector } from "../../../redux/hook";
+
 import { Link } from "react-router-dom";
 import ProfileCard from "../../Cards/ProfileCard/ProfileCard";
+import { purchasedProducts } from "../../../redux/slices/cartSlice";
+import { fetchRequest } from "../../../@types/status";
 
-const Order = () => {
-  const { purchasedProducts } = useAppSelector((state) => state.cartSlice);
-  console.log(purchasedProducts);
-
+interface orderProps {
+  purchasedProducts: purchasedProducts[];
+  status: fetchRequest;
+}
+const Order: React.FC<orderProps> = ({ purchasedProducts, status }) => {
   return (
     <>
-      {purchasedProducts.length > 0 ? (
+      {status === fetchRequest.LOADING ? (
+        "loading"
+      ) : purchasedProducts.length > 0 ? (
         <div className="mt-6">
           {purchasedProducts.map((obj, id) => (
             <ProfileCard key={id} {...obj} />

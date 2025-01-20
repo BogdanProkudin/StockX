@@ -11,11 +11,15 @@ interface ApprovePurchaseProps {
   title: string | undefined;
   size: string | null;
   img: string | undefined;
+  brand: string | undefined;
+  sku: string | undefined;
 }
 const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({
   title,
   size,
   img,
+  brand,
+  sku,
 }) => {
   const dispatch = useAppDispatch();
   const price = useAppSelector((state) => state.cartSlice.price);
@@ -52,7 +56,7 @@ const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({
     },
     {
       key: "Total:",
-      value: "€" + totalPrice,
+      value: "€" + totalPrice.toFixed(2),
     },
   ];
 
@@ -87,6 +91,8 @@ const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({
           size: size,
           price: price,
           img: img,
+          brand: brand,
+          sku: sku,
         };
 
         console.log("data", productData);
@@ -119,6 +125,8 @@ const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({
           size: size,
           price: price,
           img: img,
+          brand: brand,
+          sku: sku,
         };
 
         console.log("data", productData);
@@ -181,7 +189,7 @@ const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({
               Edit
             </button>
           </div>
-          <div className="mb-10 flex w-full justify-between rounded-lg bg-white px-4 py-3">
+          <div className="mb-8 flex w-full justify-between rounded-lg bg-white px-4 py-3">
             <span>Payment method</span>
             <button
               onClick={onClickPayment}
