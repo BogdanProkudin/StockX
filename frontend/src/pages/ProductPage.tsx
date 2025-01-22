@@ -85,7 +85,7 @@ const FullProduct = () => {
             )
           )}
           {sellVisible ? (
-            <SellBlock sellPrice={sellPrice} />
+            <SellBlock title={product?.title} sellPrice={sellPrice} />
           ) : (
             <PriceBlock
               id={product?.id}

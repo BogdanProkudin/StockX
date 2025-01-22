@@ -1,15 +1,24 @@
 import React from "react";
 import { CallculateSellPrice } from "../../utils/CallculateSellPrice";
+import { useNavigate } from "react-router-dom";
 
 interface SellBlockProps {
   sellPrice: number;
+  title: string;
 }
-const SellBlock: React.FC<SellBlockProps> = ({ sellPrice }) => {
+const SellBlock: React.FC<SellBlockProps> = ({ sellPrice, title }) => {
+  const navigate = useNavigate();
   const lastSale =
     sellPrice % 2 === 0
       ? Math.round(Math.random() * (sellPrice / 0.7))
       : Math.round(Math.random() * (sellPrice / 0.4));
   const lowestAsk = CallculateSellPrice(sellPrice);
+  const onClickSell = () => {
+    navigate(`/sell/${title}?isSell=true`);
+  };
+  const onClickPlace = () => {
+    navigate(`/sell/${title}isPlace=true`);
+  };
   return (
     <div className="rounded-xl border border-[#a4a4a4] p-4">
       <div className="w-[98px]">
@@ -18,10 +27,16 @@ const SellBlock: React.FC<SellBlockProps> = ({ sellPrice }) => {
         </p>
       </div>
       <div className="mt-2 flex items-center gap-2">
-        <button className="w-[212px] rounded-full border border-black px-8 py-[10px] font-bold transition-all duration-300 ease-in-out hover:bg-black hover:text-white">
+        <button
+          onClick={onClickPlace}
+          className="w-[212px] rounded-full border border-black px-8 py-[10px] font-bold transition-all duration-300 ease-in-out hover:bg-black hover:text-white"
+        >
           Place Ask
         </button>
-        <button className="w-[212px] rounded-full border bg-[black] px-8 py-[10px] font-bold text-white transition-all duration-300 ease-in-out hover:opacity-80">
+        <button
+          onClick={onClickSell}
+          className="w-[212px] rounded-full border bg-[black] px-8 py-[10px] font-bold text-white transition-all duration-300 ease-in-out hover:opacity-80"
+        >
           Sell Now
         </button>
       </div>
