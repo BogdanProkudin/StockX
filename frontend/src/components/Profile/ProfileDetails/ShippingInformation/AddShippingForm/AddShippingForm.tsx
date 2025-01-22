@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import {
@@ -9,9 +9,10 @@ import {
 import AddShipingInput from "./AddShipingInput";
 import AddShippingCountrySelector from "./AddShippingCountrySelector";
 import AddShippingButton from "./AddShippingButton";
-import { useAppDispatch } from "../../../../../redux/hook";
+import { useAppDispatch, useAppSelector } from "../../../../../redux/hook";
 import { AddShippingAddress } from "../../../../../redux/thunks/profileThunks";
 import { useNavigate } from "react-router-dom";
+import { log } from "node:console";
 const schema = yup.object().shape({
   firstName: yup
     .string()
@@ -55,11 +56,27 @@ const AddShippingForm = () => {
   } = useForm<ShippingFormType>({
     resolver: yupResolver(schema),
   });
+  const selectedEditShippingAddresses = JSON.parse(
+    localStorage.getItem("editShipping") || "{}",
+  );
   const [country, setCountry] = useState("");
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const [isCountrySelectedError, setIsCountrySelectedError] = useState(false);
+  useEffect(() => {
+    if (selectedEditShippingAddresses) {
+      setIsLoading(false);
+      setValue("firstName", selectedEditShippingAddresses.firstName);
+      setValue("lastName", selectedEditShippingAddresses.lastName);
+      setValue("address", selectedEditShippingAddresses.address);
+      setValue("address2", selectedEditShippingAddresses.address2);
+      setValue("city", selectedEditShippingAddresses.city);
+      setValue("phoneNumber", selectedEditShippingAddresses.phoneNumber);
+      setValue("postalCode", selectedEditShippingAddresses.postalCode);
+      setValue("state", selectedEditShippingAddresses.state);
+    }
+  }, [selectedEditShippingAddresses, setValue]);
   const onSubmit = async (data: any) => {
     if (!token) return;
     if (country.length === 0) {
@@ -74,9 +91,10 @@ const AddShippingForm = () => {
       navigate("/profile");
     }
   };
+  useEffect(() => {
+    console.log(selectedEditShippingAddresses, "selected");
+  }, []);
   const [isLoading, setIsLoading] = useState(false);
-
-  console.log(errors);
 
   return (
     <form

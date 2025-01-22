@@ -19,6 +19,7 @@ export interface AddShippingAddressResponse {
 interface IProfileSlice {
   userData: IUser;
   shippingAddresses: ShippingFormType[];
+  selectedEditShippingAddress: ShippingFormType;
 }
 
 const initialState: IProfileSlice = {
@@ -31,6 +32,15 @@ const initialState: IProfileSlice = {
     shoeSize: "",
   },
   shippingAddresses: [],
+  selectedEditShippingAddress: {
+    firstName: "",
+    lastName: "",
+    address: "",
+    city: "",
+    state: "",
+    postalCode: "",
+    phoneNumber: "",
+  },
 };
 
 const profileSlice = createSlice({
@@ -45,6 +55,9 @@ const profileSlice = createSlice({
       action: PayloadAction<ShippingFormType[]>,
     ) => {
       state.shippingAddresses = action.payload;
+    },
+    setSelectedEditShippingAddress: (state, action) => {
+      state.selectedEditShippingAddress = action.payload;
     },
   },
   extraReducers: (builder: ActionReducerMapBuilder<IProfileSlice>) => {
@@ -84,5 +97,9 @@ const profileSlice = createSlice({
   },
 });
 
-export const { setUserData, setShippingAddresses } = profileSlice.actions;
+export const {
+  setUserData,
+  setShippingAddresses,
+  setSelectedEditShippingAddress,
+} = profileSlice.actions;
 export default profileSlice.reducer;

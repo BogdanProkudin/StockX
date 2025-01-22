@@ -14,9 +14,9 @@ const AddShippingButton = ({
   country: string;
 }) => {
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
-  const dispatch = useAppDispatch();
+
   const handleButtonClick = () => {
+    localStorage.setItem("editShipping", "");
     if (buttonName === "Submit") {
       if (country.length === 0) {
         setIsCountrySelectedError(true);
