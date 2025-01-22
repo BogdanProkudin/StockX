@@ -4,15 +4,22 @@ import {
   PayloadAction,
 } from "@reduxjs/toolkit";
 import { IUser } from "../../@types/userAuth";
-import { EditUserData } from "../thunks/profileThunks";
+import { AddShippingAddress, EditUserData } from "../thunks/profileThunks";
+import { ShippingFormType } from "../../@types/ProfileFormTyoes";
+
 export interface EditProfileSuccessResponse {
   message: string;
   userData: IUser;
 }
-export type ProfileType = {};
+
+export interface AddShippingAddressResponse {
+  shippingAddresses: ShippingFormType[];
+}
 
 interface IProfileSlice {
   userData: IUser;
+  shippingAddresses: ShippingFormType[];
+  selectedEditShippingAddress: ShippingFormType;
 }
 
 const initialState: IProfileSlice = {
@@ -24,6 +31,16 @@ const initialState: IProfileSlice = {
     userName: "",
     shoeSize: "",
   },
+  shippingAddresses: [],
+  selectedEditShippingAddress: {
+    firstName: "",
+    lastName: "",
+    address: "",
+    city: "",
+    state: "",
+    postalCode: "",
+    phoneNumber: "",
+  },
 };
 
 const profileSlice = createSlice({
@@ -33,6 +50,15 @@ const profileSlice = createSlice({
     setUserData: (state, action: PayloadAction<IUser>) => {
       state.userData = action.payload;
     },
+    setShippingAddresses: (
+      state,
+      action: PayloadAction<ShippingFormType[]>,
+    ) => {
+      state.shippingAddresses = action.payload;
+    },
+    setSelectedEditShippingAddress: (state, action) => {
+      state.selectedEditShippingAddress = action.payload;
+    },
   },
   extraReducers: (builder: ActionReducerMapBuilder<IProfileSlice>) => {
     builder
@@ -40,8 +66,7 @@ const profileSlice = createSlice({
       .addCase(
         EditUserData.fulfilled,
         (state, action: PayloadAction<EditProfileSuccessResponse>) => {
-          console.log("ACTION PAYLOAD", action.payload);
-
+          console.log("ACTION PAYLOAD EditUserData", action.payload);
           state.userData = action.payload.userData;
         },
       )
@@ -55,8 +80,26 @@ const profileSlice = createSlice({
           shoeSize: "",
         };
       });
+
+    builder
+      .addCase(AddShippingAddress.pending, (state) => {})
+      .addCase(
+        AddShippingAddress.fulfilled,
+        (state, action: PayloadAction<AddShippingAddressResponse>) => {
+          console.log(
+            "ACTION PAYLOAD AddShippingAddress",
+            action.payload.shippingAddresses,
+          );
+          state.shippingAddresses = action.payload.shippingAddresses;
+        },
+      )
+      .addCase(AddShippingAddress.rejected, (state) => {});
   },
 });
 
-export const { setUserData } = profileSlice.actions;
+export const {
+  setUserData,
+  setShippingAddresses,
+  setSelectedEditShippingAddress,
+} = profileSlice.actions;
 export default profileSlice.reducer;

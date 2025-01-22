@@ -35,6 +35,8 @@ export default function authMiddleware(req, res, next) {
       }
 
       // Сохраняем данные пользователя из токена
+      console.log(decoded._id, "decoded");
+
       req.userId = decoded._id;
       next();
     });

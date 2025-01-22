@@ -75,6 +75,11 @@ app.get(
   "/loadMoreItems/:sectionName/:page",
   FiltrationController.loadMoreItems
 );
+app.post(
+  "/addShippingAddress",
+  authMiddleware,
+  UserController.addShippingAddress
+);
 app.listen(port, (err) => {
   if (err) {
     console.log("Error starting server", err);
