@@ -22,6 +22,7 @@ import ProfileBuying from "./components/Profile/ProfileBuying/ProfileBuying";
 import AuthLayout from "./layout/AuthLayout";
 import MainLayout from "./layout/MainLayout";
 import AddShippingForm from "./components/Profile/ProfileDetails/ShippingInformation/AddShippingForm/AddShippingForm";
+import Sell from "./pages/Sell";
 
 type ComponentType = React.FC;
 
@@ -85,6 +86,7 @@ function App() {
 
       <Route path="/buy/:title" element={<Cart />} />
 
+      <Route path="/sell/:title" element={<Sell />} />
       <Route path="/resetPassword/:token" element={<ResetPage />} />
     </Routes>
   );
