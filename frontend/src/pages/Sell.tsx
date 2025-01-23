@@ -8,20 +8,19 @@ import {
 } from "react-router-dom";
 import { FullProductProps } from "../@types/userCardTypes";
 import axios from "axios";
-import SizeBlock from "../components/Cart/SizeBlock";
+
 import ProductPreview from "../components/Cart/ProductPreview";
 import HeaderCart from "../components/Cart/HeaderCart";
 import Loader from "../components/Cart/Loader";
-import SizeGrid from "../components/Cart/SizeGrid";
-import { ArrowRight, Car } from "lucide-react";
-import EditSize from "../components/Cart/EditSize";
-import PriceBlock from "../components/Cart/PriceBlock";
+
 import TotalPrice from "../components/Cart/TotalPrice";
-import MakeOffer from "../components/Cart/MakeOffer";
+
 import { useAppDispatch } from "../redux/hook";
 import { setCartPrice } from "../redux/slices/cartSlice";
 import ShipForm from "../components/Cart/ShipForm";
 import ApprovePurchase from "../components/Cart/ApprovePurchase";
+import EditSize from "../components/Cart/EditSize";
+import SizeBlock from "../components/Sell/SizeBlock";
 
 const Sell: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -31,7 +30,7 @@ const Sell: React.FC = () => {
   const [product, setProduct] = useState<FullProductProps | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isMakeOffer, setIsMakeOffer] = useState(false);
+
   const [shipping, setShipping] = useState(false);
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -65,7 +64,7 @@ const Sell: React.FC = () => {
     }
   }, [error, navigate]);
   const sizeQuery = searchParams.get("size");
-  const isBid = searchParams.get("isPlace");
+  const isPlace = searchParams.get("isPlace");
   const isConfirm = searchParams.get("isConfirm");
 
   return (
@@ -102,12 +101,9 @@ const Sell: React.FC = () => {
                       {sizeQuery ? (
                         <div className="flex h-[450px] flex-col gap-5">
                           <h1 className="mb-3 text-center text-lg font-bold">
-                            {isMakeOffer || isBid ? "Make An Offer" : "Buy Now"}
+                            {isPlace ? "Make An Offer" : "Sell Now"}
                           </h1>
-                          <EditSize
-                            gender={product?.gender}
-                            sizeOrder={sizeOrder[0]}
-                          />
+                          <EditSize gender={product?.gender} sizeOrder={"Us"} />
                         </div>
                       ) : (
                         <>
