@@ -4,8 +4,13 @@ import {
   PayloadAction,
 } from "@reduxjs/toolkit";
 import { IUser } from "../../@types/userAuth";
-import { AddShippingAddress, EditUserData } from "../thunks/profileThunks";
+import {
+  AddShippingAddress,
+  EditShippingAddress,
+  EditUserData,
+} from "../thunks/profileThunks";
 import { ShippingFormType } from "../../@types/ProfileFormTyoes";
+import { Interface } from "node:readline";
 
 export interface EditProfileSuccessResponse {
   message: string;
@@ -15,6 +20,8 @@ export interface EditProfileSuccessResponse {
 export interface AddShippingAddressResponse {
   shippingAddresses: ShippingFormType[];
 }
+export interface EditShippingAddressResponse
+  extends AddShippingAddressResponse {}
 
 interface IProfileSlice {
   userData: IUser;
@@ -86,14 +93,19 @@ const profileSlice = createSlice({
       .addCase(
         AddShippingAddress.fulfilled,
         (state, action: PayloadAction<AddShippingAddressResponse>) => {
-          console.log(
-            "ACTION PAYLOAD AddShippingAddress",
-            action.payload.shippingAddresses,
-          );
           state.shippingAddresses = action.payload.shippingAddresses;
         },
       )
       .addCase(AddShippingAddress.rejected, (state) => {});
+    builder
+      .addCase(EditShippingAddress.pending, (state) => {})
+      .addCase(
+        EditShippingAddress.fulfilled,
+        (state, action: PayloadAction<EditShippingAddressResponse>) => {
+          state.shippingAddresses = action.payload.shippingAddresses;
+        },
+      )
+      .addCase(EditShippingAddress.rejected, (state) => {});
   },
 });
 

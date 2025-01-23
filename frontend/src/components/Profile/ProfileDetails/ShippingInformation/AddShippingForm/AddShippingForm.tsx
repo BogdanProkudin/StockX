@@ -10,7 +10,10 @@ import AddShipingInput from "./AddShipingInput";
 import AddShippingCountrySelector from "./AddShippingCountrySelector";
 import AddShippingButton from "./AddShippingButton";
 import { useAppDispatch, useAppSelector } from "../../../../../redux/hook";
-import { AddShippingAddress } from "../../../../../redux/thunks/profileThunks";
+import {
+  AddShippingAddress,
+  EditShippingAddress,
+} from "../../../../../redux/thunks/profileThunks";
 import { useNavigate } from "react-router-dom";
 import { log } from "node:console";
 const schema = yup.object().shape({
@@ -60,23 +63,36 @@ const AddShippingForm = () => {
     localStorage.getItem("editShipping") || "{}",
   );
   const [country, setCountry] = useState("");
+  const [isShippingAddressExist, setIsShippingAddressExist] =
+    useState<boolean>(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const [isCountrySelectedError, setIsCountrySelectedError] = useState(false);
   useEffect(() => {
-    if (selectedEditShippingAddresses) {
+    if (
+      selectedEditShippingAddresses &&
+      selectedEditShippingAddresses.country
+    ) {
       setIsLoading(false);
+
       setValue("firstName", selectedEditShippingAddresses.firstName);
       setValue("lastName", selectedEditShippingAddresses.lastName);
       setValue("address", selectedEditShippingAddresses.address);
       setValue("address2", selectedEditShippingAddresses.address2);
       setValue("city", selectedEditShippingAddresses.city);
+      setCountry(selectedEditShippingAddresses.country);
       setValue("phoneNumber", selectedEditShippingAddresses.phoneNumber);
       setValue("postalCode", selectedEditShippingAddresses.postalCode);
       setValue("state", selectedEditShippingAddresses.state);
     }
-  }, [selectedEditShippingAddresses, setValue]);
+    if (selectedEditShippingAddresses.id) {
+      setIsShippingAddressExist(true);
+      console.log("найден айдишка");
+    } else {
+      setIsShippingAddressExist(false);
+    }
+  }, [setValue]);
   const onSubmit = async (data: any) => {
     if (!token) return;
     if (country.length === 0) {
@@ -84,6 +100,23 @@ const AddShippingForm = () => {
       return;
     }
 
+    if (isShippingAddressExist) {
+      data.country = country;
+      data.id = selectedEditShippingAddresses.id;
+
+      const response = await dispatch(
+        EditShippingAddress({ token, userData: data }),
+      );
+
+      if (response.meta.requestStatus === "fulfilled") {
+        navigate("/profile");
+      }
+      return;
+    }
+    const id = "id" + new Date().getTime();
+
+    data.country = country;
+    data.id = id;
     const response = await dispatch(
       AddShippingAddress({ token, userData: data }),
     );
