@@ -30,25 +30,25 @@ const ProfileBuying = () => {
     {
       key: "title",
       label: "Items",
-      width: "380px",
+      width: "435px",
       sortable: true,
     },
     {
       key: "id",
       label: "Id",
-      width: "110px",
+      width: "180px",
       sortable: false,
     },
     {
       key: "price",
       label: "Price",
-      width: "115px",
+      width: "185px",
       sortable: true,
     },
     {
       key: "date",
       label: "Date",
-      width: "80px",
+      width: "180px",
       sortable: true,
     },
     {
@@ -78,7 +78,6 @@ const ProfileBuying = () => {
           ? [...purchasedProducts].sort((a, b) => a.price - b.price)
           : [...purchasedProducts].sort((a, b) => b.price - a.price);
       setSortedOrders(sortedPrice);
-      console.log("sort price", sortedPrice);
     }
     if (sort.key === "title") {
       const sortedTitle =
@@ -106,8 +105,6 @@ const ProfileBuying = () => {
     }
   }, [sort.key, sort.value]);
 
-  console.log("sorted arr", sortedOrders);
-
   return (
     <div className="profileContainer">
       <TopNavigation />
@@ -121,10 +118,11 @@ const ProfileBuying = () => {
         />
         <Search size={20} className="absolute left-2 top-4" />
       </div>
-      <div className="mt-2 flex w-full items-center justify-between rounded-lg border border-[#006340] px-5">
+      <div className="mt-2 flex w-full items-center rounded-lg border border-[#006340] px-1">
         {sortVariants.map((obj, id) => (
           <span
-            className={`flex w-[${obj.width}] items-center justify-between border-r border-[#006340] px-2 py-2 pr-1 last:border-r-0 ${obj.sortable ? "cursor-pointer" : "cursor-default"}`}
+            style={{ width: obj.width }}
+            className={`flex items-center justify-between border-r border-[#006340] px-2 py-2 pr-1 last:justify-end last:border-r-0 ${obj.sortable ? "cursor-pointer" : "cursor-default"}`}
             key={id}
             onClick={
               obj.sortable
