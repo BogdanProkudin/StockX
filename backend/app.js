@@ -80,6 +80,11 @@ app.post(
   authMiddleware,
   UserController.addShippingAddress
 );
+app.post(
+  "/editShippingAddress",
+  authMiddleware,
+  UserController.editShippingAddress
+);
 app.listen(port, (err) => {
   if (err) {
     console.log("Error starting server", err);

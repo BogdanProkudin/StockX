@@ -347,30 +347,27 @@ export const addShippingAddress = async (req, res) => {
   try {
     const { shippingAddress } = req.body;
     const userId = req.userId;
-    console.log(userId, "q");
 
     const user = await userModel.findById(userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    console.log(shippingAddress);
     const isShippingAddressExist = user.shippingAddresses.some(
       (address) => JSON.stringify(address) === JSON.stringify(shippingAddress)
     );
+
     if (isShippingAddressExist) {
       return res
         .status(400)
         .json({ message: "Shipping address already exists" });
     }
-    // Обновляем пользователя с флагом { new: true }
+
     const updatedUser = await userModel.findByIdAndUpdate(
       userId,
       { $push: { shippingAddresses: shippingAddress } },
       { new: true }
     );
-
-    console.log(updatedUser);
 
     res.json({
       message: "Shipping address added successfully",
@@ -379,5 +376,31 @@ export const addShippingAddress = async (req, res) => {
   } catch (error) {
     console.error("error", error);
     return res.status(500).json({ message: "Something went wrong" });
+  }
+};
+export const editShippingAddress = async (req, res) => {
+  const { shippingAddress } = req.body;
+  const userId = req.userId;
+
+  const user = await userModel.findById(userId);
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+
+  const isShippingAddressExist = user.shippingAddresses.find((address) => {
+    return address.id === shippingAddress.id;
+  });
+  console.log("isShiipingExist", isShippingAddressExist);
+  if (isShippingAddressExist) {
+    const result = await userModel.findOneAndUpdate(
+      { _id: userId, "shippingAddresses.id": shippingAddress.id },
+      { $set: { "shippingAddresses.$": shippingAddress } },
+      { new: true }
+    );
+
+    return res.status(200).json({
+      message: "Shipping address edited successfully",
+      shippingAddresses: result.shippingAddresses,
+    });
   }
 };

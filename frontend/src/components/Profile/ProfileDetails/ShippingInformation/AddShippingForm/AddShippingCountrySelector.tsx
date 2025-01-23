@@ -6,6 +6,7 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
+import { log } from "node:console";
 const countries = [
   "Afghanistan",
   "Albania",
@@ -214,9 +215,12 @@ export default function AddShippingCountrySelector({
   isCountrySelectedError: boolean;
 }) {
   const handleChange = (event: SelectChangeEvent<string>) => {
+    console.log(event.target.value, "value");
+
     setCountry(event.target.value);
     setIsCountrySelectedError(true);
   };
+  console.log("CCC", country);
 
   return (
     <FormControl className="">
@@ -224,7 +228,7 @@ export default function AddShippingCountrySelector({
       <Select
         className="border-brand-primary bg-background-accent-1 text-text-prim relative h-12 w-full min-w-0 appearance-none rounded-md border border-[#006340] bg-[#F4F3F1] px-4 pl-0 text-lg outline-2 outline-offset-2 outline-transparent transition duration-200"
         value={country}
-        onChange={handleChange}
+        onChange={(e) => handleChange(e)}
         sx={{
           "& .MuiSelect-select": {
             fontWeight: "500",
@@ -243,7 +247,7 @@ export default function AddShippingCountrySelector({
           </MenuItem>
         ))}
       </Select>
-      {isCountrySelectedError && country.length === 0 && (
+      {isCountrySelectedError && country && country.length === 0 && (
         <p className="text-red-500">Country is required</p>
       )}
     </FormControl>

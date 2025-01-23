@@ -4,6 +4,7 @@ import axios from "../../axiosConfig/axios";
 import {
   AddShippingAddressResponse,
   EditProfileSuccessResponse,
+  EditShippingAddressResponse,
 } from "../slices/profileSlice";
 
 export const EditUserData = createAsyncThunk<
@@ -32,6 +33,27 @@ export const AddShippingAddress = createAsyncThunk<
   try {
     const response = await axios.post(
       "/addShippingAddress",
+      { shippingAddress: userData },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    return response.data;
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.response.data);
+  }
+});
+export const EditShippingAddress = createAsyncThunk<
+  EditShippingAddressResponse,
+  { token: string; userData: IUser },
+  { rejectValue: { message: string } }
+>("profile/EditShippingAddress", async ({ token, userData }, thunkAPI) => {
+  try {
+    const response = await axios.post(
+      "/editShippingAddress",
       { shippingAddress: userData },
       {
         headers: {
