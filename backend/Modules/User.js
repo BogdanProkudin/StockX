@@ -48,6 +48,10 @@ const UserSchema = new mongoose.Schema(
     userName: {
       type: String,
     },
+    favotites: {
+      type: Array,
+      default: [],
+    },
   },
 
   {
