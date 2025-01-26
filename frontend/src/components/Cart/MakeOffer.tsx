@@ -1,7 +1,7 @@
 import { Euro } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAppDispatch } from "../../redux/hook";
-import { setCartPrice } from "../../redux/slices/cartSlice";
+import { setBidVariant, setCartPrice } from "../../redux/slices/cartSlice";
 import { variants } from "../FullProduct/SizePopUp";
 import { useSearchParams } from "react-router-dom";
 interface MakeOfferBlockProps {
@@ -27,10 +27,11 @@ const MakeOffer: React.FC<MakeOfferBlockProps> = ({ variants }) => {
   const initialVariant = String(priceOptionArr[1].priceVariant);
   const [isActive, setIsActive] = useState(1);
   const [value, setValue] = useState(initialVariant);
-  const onClickVariant = (id: number) => {
+  const onClickVariant = (id: number, subTital: string) => {
     setIsActive(id);
     const variant = String(priceOptionArr[id].priceVariant);
     setValue(variant);
+    dispatch(setBidVariant(subTital));
     dispatch(setCartPrice(Number(variant)));
   };
   const onChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,13 +39,20 @@ const MakeOffer: React.FC<MakeOfferBlockProps> = ({ variants }) => {
 
     setValue(value);
   };
+  useEffect(() => {
+    const bid = priceOptionArr.find(
+      (el) => el.priceVariant === value,
+    )?.subTital;
+    dispatch(setBidVariant(String(bid)));
+    dispatch(setCartPrice(Number(value)));
+  }, []);
   return (
     <div className="rounded-xl bg-white px-5 py-5">
       <h4 className="font-semibold">Pricing Options</h4>
       <div className="mb-5 flex items-center justify-between">
         {priceOptionArr.map((obj, id) => (
           <button
-            onClick={() => onClickVariant(id)}
+            onClick={() => onClickVariant(id, obj.subTital)}
             className={`mt-2 flex w-[155px] flex-col items-center rounded-lg border px-3 py-2 text-sm font-semibold transition-all duration-300 ease-in-out hover:border-[#006340] hover:bg-[#e5e5e5] ${
               isActive === id
                 ? "cursor-default border-[#006340] bg-[#e5e5e5]"

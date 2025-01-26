@@ -29,7 +29,7 @@ export type purchasedProducts = {
 interface ICartSlice {
   price: number;
   shipForm: ShipForm[];
-
+  bidVariant: string;
   isPurchased: boolean;
   purchasedProducts: purchasedProducts[];
   purchasedStatus: fetchRequest;
@@ -40,6 +40,7 @@ interface ICartSlice {
 
 const initialState: ICartSlice = {
   price: 0,
+  bidVariant: "",
   shipForm: [
     {
       firstName: "",
@@ -104,6 +105,9 @@ const cartSlice = createSlice({
     setIsPurchased: (state, action: PayloadAction<boolean>) => {
       state.isPurchased = action.payload;
     },
+    setBidVariant: (state, action: PayloadAction<string>) => {
+      state.bidVariant = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -148,5 +152,6 @@ const cartSlice = createSlice({
   },
 });
 
-export const { setCartPrice, setFormShip, setIsPurchased } = cartSlice.actions;
+export const { setCartPrice, setFormShip, setIsPurchased, setBidVariant } =
+  cartSlice.actions;
 export default cartSlice.reducer;

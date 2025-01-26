@@ -15,7 +15,7 @@ const Bids: React.FC<bidsProps> = ({ bidsPurchasedProducts, status }) => {
       {status === fetchRequest.LOADING ? (
         "loading"
       ) : bidsPurchasedProducts.length > 0 ? (
-        <div className="mt-6">
+        <div className="mt-4">
           {bidsPurchasedProducts.map((obj, id) => (
             <ProfileCard key={id} {...obj} />
           ))}

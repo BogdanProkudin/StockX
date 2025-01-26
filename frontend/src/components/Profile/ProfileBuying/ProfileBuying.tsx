@@ -110,44 +110,47 @@ const ProfileBuying = () => {
       <TopNavigation />
       <div className="relative">
         <input
-          className="w-full rounded-md border border-[#a4a4a4] px-4 py-3 pl-10 text-lg outline-none"
+          className="w-full rounded-md border border-[#a4a4a4] px-4 py-2 pl-10 text-lg outline-none"
           type="text"
           placeholder="Search name"
           value={value}
           onChange={(e) => setValue(e.target.value)}
         />
-        <Search size={20} className="absolute left-2 top-4" />
+        <Search size={20} className="absolute left-2 top-3" />
       </div>
-      <div className="mt-2 flex w-full items-center rounded-lg border border-[#006340] px-1">
-        {sortVariants.map((obj, id) => (
-          <span
-            style={{ width: obj.width }}
-            className={`flex items-center justify-between border-r border-[#006340] px-2 py-2 pr-1 last:justify-end last:border-r-0 ${obj.sortable ? "cursor-pointer" : "cursor-default"}`}
-            key={id}
-            onClick={
-              obj.sortable
-                ? () =>
-                    setSort({
-                      key: obj.key,
-                      value: sort.value === "asc" ? "desc" : "asc",
-                    })
-                : undefined
-            }
-          >
-            {obj.label}
-            {obj.sortable &&
-              (sort.key === obj.key ? (
-                sort.value === "asc" ? (
-                  <ChevronDown />
-                ) : (
-                  <ChevronUp />
-                )
-              ) : (
-                <ChevronsUpDown size={18} />
-              ))}
-          </span>
-        ))}
-      </div>
+      {location.pathname === "/buying/order" &&
+        purchasedProducts.length > 0 && (
+          <div className="mt-2 flex w-full items-center rounded-lg border px-1">
+            {sortVariants.map((obj, id) => (
+              <span
+                style={{ width: obj.width }}
+                className={`flex items-center justify-between border-r px-2 py-2 pr-1 last:justify-center last:border-r-0 ${obj.sortable ? "cursor-pointer" : "cursor-default"}`}
+                key={id}
+                onClick={
+                  obj.sortable
+                    ? () =>
+                        setSort({
+                          key: obj.key,
+                          value: sort.value === "asc" ? "desc" : "asc",
+                        })
+                    : undefined
+                }
+              >
+                {obj.label}
+                {obj.sortable &&
+                  (sort.key === obj.key ? (
+                    sort.value === "asc" ? (
+                      <ChevronDown />
+                    ) : (
+                      <ChevronUp />
+                    )
+                  ) : (
+                    <ChevronsUpDown size={18} />
+                  ))}
+              </span>
+            ))}
+          </div>
+        )}
       {location.pathname === "/buying/bids" ? (
         <Bids
           bidsPurchasedProducts={bidsPurchasedProducts}
