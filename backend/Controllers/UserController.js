@@ -386,11 +386,15 @@ export const editShippingAddress = async (req, res) => {
   if (!user) {
     return res.status(404).json({ message: "User not found" });
   }
+  console.log("SHipping addres", shippingAddress.id);
 
   const isShippingAddressExist = user.shippingAddresses.find((address) => {
     return address.id === shippingAddress.id;
   });
   console.log("isShiipingExist", isShippingAddressExist);
+  if (!isShippingAddressExist) {
+    return res.status(404).json({ message: "Shipping address not found" });
+  }
   if (isShippingAddressExist) {
     const result = await userModel.findOneAndUpdate(
       { _id: userId, "shippingAddresses.id": shippingAddress.id },
@@ -403,4 +407,13 @@ export const editShippingAddress = async (req, res) => {
       shippingAddresses: result.shippingAddresses,
     });
   }
+};
+
+export const getShippingAddresses = async (req, res) => {
+  const userId = req.userId;
+  const user = await userModel.findById(userId);
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+  return res.status(200).json({ shippingAddresses: user.shippingAddresses });
 };

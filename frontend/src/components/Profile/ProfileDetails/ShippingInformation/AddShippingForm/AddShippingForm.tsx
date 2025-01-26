@@ -16,6 +16,7 @@ import {
 } from "../../../../../redux/thunks/profileThunks";
 import { useNavigate } from "react-router-dom";
 import { log } from "node:console";
+import { GetShippingAddress } from "../../../../../redux/thunks/cartThunks";
 const schema = yup.object().shape({
   firstName: yup
     .string()
@@ -49,7 +50,7 @@ const schema = yup.object().shape({
     .required("Phone Number format is invalid"),
 });
 
-const AddShippingForm = () => {
+const AddShippingForm = ({ version }: { version: string }) => {
   const {
     register,
     handleSubmit,
@@ -63,12 +64,26 @@ const AddShippingForm = () => {
     localStorage.getItem("editShipping") || "{}",
   );
   const [country, setCountry] = useState("");
+  const [defaultShippingAddress, setDefaultShippingAddress] = useState({});
   const [isShippingAddressExist, setIsShippingAddressExist] =
     useState<boolean>(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const [isCountrySelectedError, setIsCountrySelectedError] = useState(false);
+
+  useEffect(() => {
+    const getShippingAddress = async () => {
+      if (!token) {
+        return;
+      }
+      if (version === "CartShippingForm") {
+        const response = await dispatch(GetShippingAddress({ token }));
+        console.log(response, "res");
+      }
+    };
+    getShippingAddress();
+  }, [version]);
   useEffect(() => {
     if (
       selectedEditShippingAddresses &&
@@ -103,12 +118,18 @@ const AddShippingForm = () => {
     if (isShippingAddressExist) {
       data.country = country;
       data.id = selectedEditShippingAddresses.id;
+      console.log(
+        "shipping address exist",
+        data,
+        selectedEditShippingAddresses,
+      );
 
       const response = await dispatch(
         EditShippingAddress({ token, userData: data }),
       );
 
       if (response.meta.requestStatus === "fulfilled") {
+        localStorage.setItem("editShipping", "");
         navigate("/profile");
       }
       return;
@@ -121,6 +142,7 @@ const AddShippingForm = () => {
       AddShippingAddress({ token, userData: data }),
     );
     if (response.meta.requestStatus === "fulfilled") {
+      localStorage.setItem("editShipping", "");
       navigate("/profile");
     }
   };
@@ -132,7 +154,9 @@ const AddShippingForm = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex h-full w-full justify-center bg-[#EDEDED] pt-10"
+      className={`flex h-full w-full justify-center ${
+        version !== "CartShippingForm" ? "bg-[#EDEDED] pt-10" : ""
+      }`}
     >
       {!isLoading && (
         <div className="w-[500px]">

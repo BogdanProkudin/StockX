@@ -4,6 +4,7 @@ export default function authMiddleware(req, res, next) {
   try {
     // Проверяем наличие заголовка Authorization
     const authHeader = req.headers.authorization;
+    console.log("HGE");
 
     if (!authHeader) {
       return res

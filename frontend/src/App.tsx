@@ -74,7 +74,10 @@ function App() {
         ></Route>
         <Route path="/" element={<ProfileLayout />}>
           <Route path="settings/profile" element={<EditProfleForm />} />
-          <Route path="settings/shipping" element={<AddShippingForm />} />
+          <Route
+            path="settings/shipping"
+            element={<AddShippingForm version="ProfileShippingForm" />}
+          />
           {profileUrl.map((el, id) => (
             <Route key={id} path={el} element={<Profile />} />
           ))}

@@ -18,7 +18,7 @@ const ShippingInformationSection = () => {
     return id;
   };
   return (
-    <div className="mt-5 flex h-[200px] w-full max-w-[955px] flex-wrap justify-between">
+    <div className="mt-5 flex h-[200px] w-full flex-wrap gap-3">
       {shippingAddresses && shippingAddresses.length > 0
         ? shippingAddresses.map((item, id) => (
             <ShippingItem
