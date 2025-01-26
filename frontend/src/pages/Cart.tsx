@@ -20,7 +20,7 @@ import TotalPrice from "../components/Cart/TotalPrice";
 import MakeOffer from "../components/Cart/MakeOffer";
 import { useAppDispatch } from "../redux/hook";
 import { setCartPrice } from "../redux/slices/cartSlice";
-import ShipForm from "../components/Cart/ShipForm";
+
 import ApprovePurchase from "../components/Cart/ApprovePurchase";
 import AddShippingForm from "../components/Profile/ProfileDetails/ShippingInformation/AddShippingForm/AddShippingForm";
 
@@ -34,6 +34,7 @@ const Cart: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isMakeOffer, setIsMakeOffer] = useState(false);
   const [shipping, setShipping] = useState(false);
+
   useEffect(() => {
     window.scrollTo(0, 0);
     const fetchFullProduct = async () => {
@@ -90,6 +91,7 @@ const Cart: React.FC = () => {
           <div className="flex h-full min-h-[87vh] min-w-[600px] flex-col bg-[#f4f3f1] pt-8">
             {isConfirm ? (
               <ApprovePurchase
+                variant={product?.variants}
                 title={product?.title}
                 size={sizeQuery}
                 img={product?.image}

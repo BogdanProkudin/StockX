@@ -6,6 +6,7 @@ import PaymentMethod from "./PaymentMethod";
 import { LoaderCircle } from "lucide-react";
 import { setIsPurchased } from "../../redux/slices/cartSlice";
 import axios from "../../axiosConfig/axios";
+import { variants } from "../FullProduct/SizePopUp";
 
 interface ApprovePurchaseProps {
   title: string | undefined;
@@ -13,6 +14,7 @@ interface ApprovePurchaseProps {
   img: string | undefined;
   brand: string | undefined;
   sku: string | undefined;
+  variant: variants[] | undefined;
 }
 const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({
   title,
@@ -20,19 +22,22 @@ const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({
   img,
   brand,
   sku,
+  variant,
 }) => {
   const dispatch = useAppDispatch();
-  const price = useAppSelector((state) => state.cartSlice.price);
+  const { price, bidVariant } = useAppSelector((state) => state.cartSlice);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const buyQuery = searchParams.get("isBuy");
 
   const [isBillingAddress, setIsBillingAddress] = useState(false);
   const [isPayment, setIsPayment] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isApprove, setIsApprove] = useState(false);
-  const totalPrice = price + 23.12 + 15.95;
-  const buyQuery = searchParams.get("isBuy");
-
+  const priceVariant = buyQuery
+    ? variant?.find((el) => el.size === size)?.price
+    : price;
+  const totalPrice = Number(priceVariant) + 23.12 + 15.95;
   const itemInfo = [
     {
       key: "Title:",
@@ -44,7 +49,7 @@ const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({
     },
     {
       key: "Item Price:",
-      value: "€" + price,
+      value: "€" + priceVariant,
     },
     {
       key: "Processing Fee:",
@@ -89,7 +94,7 @@ const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({
         const productData = {
           title: title,
           size: size,
-          price: price,
+          price: priceVariant,
           img: img,
           brand: brand,
           sku: sku,
