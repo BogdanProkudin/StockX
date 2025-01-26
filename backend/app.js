@@ -45,6 +45,11 @@ app.post("/editUserData", authMiddleware, UserController.EditUserData);
 app.post("/requestResetPassword", UserController.forgotPassword);
 app.post("/tokenValidation", UserController.isTokenValid);
 app.post("/resetPassword", UserController.resetPassword);
+app.get(
+  "/getShippingAddresses",
+  authMiddleware,
+  UserController.getShippingAddresses
+);
 
 //User purchase
 app.post("/purchasedProducts", PurchasedController.orderPurchasedProducts);

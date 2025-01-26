@@ -1,6 +1,9 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "../../axiosConfig/axios";
 import { fetchRequest } from "../../@types/status";
+import { AddShippingAddressResponse } from "./profileSlice";
+import { ShippingFormType } from "../../@types/ProfileFormTyoes";
+import { GetShippingAddress } from "../thunks/cartThunks";
 
 export type ShipForm = {
   firstName: string;
@@ -32,6 +35,7 @@ interface ICartSlice {
   purchasedStatus: fetchRequest;
   bidsPurchasedProducts: purchasedProducts[];
   bidsPurchasedStatus: fetchRequest;
+  userShippingAddress: ShippingFormType | {};
 }
 
 const initialState: ICartSlice = {
@@ -54,6 +58,15 @@ const initialState: ICartSlice = {
   purchasedStatus: fetchRequest.INITIAL,
   bidsPurchasedProducts: [],
   bidsPurchasedStatus: fetchRequest.INITIAL,
+  userShippingAddress: {
+    firstName: "",
+    lastName: "",
+    address: "",
+    city: "",
+    state: "",
+    postalCode: "",
+    phoneNumber: "",
+  },
 };
 
 export const getPurchasedProducts = createAsyncThunk(
@@ -124,6 +137,13 @@ const cartSlice = createSlice({
       .addCase(getBidsPurchasedProducts.rejected, (state) => {
         state.bidsPurchasedStatus = fetchRequest.ERROR;
         state.bidsPurchasedProducts = [];
+      })
+      .addCase(GetShippingAddress.pending, (state) => {})
+      .addCase(GetShippingAddress.fulfilled, (state, action) => {
+        state.userShippingAddress = action.payload;
+      })
+      .addCase(GetShippingAddress.rejected, (state) => {
+        state.userShippingAddress = {};
       });
   },
 });

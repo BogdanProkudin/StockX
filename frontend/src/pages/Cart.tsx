@@ -22,6 +22,7 @@ import { useAppDispatch } from "../redux/hook";
 import { setCartPrice } from "../redux/slices/cartSlice";
 import ShipForm from "../components/Cart/ShipForm";
 import ApprovePurchase from "../components/Cart/ApprovePurchase";
+import AddShippingForm from "../components/Profile/ProfileDetails/ShippingInformation/AddShippingForm/AddShippingForm";
 
 const Cart: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -98,9 +99,7 @@ const Cart: React.FC = () => {
             ) : (
               <>
                 {shipping ? (
-                  <div className="px-7">
-                    <ShipForm setShipping={() => setShipping(false)} />
-                  </div>
+                  <AddShippingForm version="CartShippingForm" />
                 ) : (
                   <>
                     <div className="flex-1 px-7">
