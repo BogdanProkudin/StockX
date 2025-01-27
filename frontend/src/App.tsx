@@ -23,6 +23,7 @@ import AuthLayout from "./layout/AuthLayout";
 import MainLayout from "./layout/MainLayout";
 import AddShippingForm from "./components/Profile/ProfileDetails/ShippingInformation/AddShippingForm/AddShippingForm";
 import Sell from "./pages/Sell";
+import FavoriteList from "./components/Profile/ProfileFavorites/FavoriteList";
 
 type ComponentType = React.FC;
 
@@ -52,7 +53,7 @@ function App() {
     <Routes>
       <Route path="/" element={<HeaderLayout />}>
         <Route path="" element={renderMainContent(Home)} />
-
+        <Route path="/favorites/all-favorites" element={<FavoriteList />} />
         <Route path="search" element={renderMainContent(FilterPage)} />
         <Route path="not-found" element={<NotFound />} />
         <Route path="*" element={<NotFound />} />

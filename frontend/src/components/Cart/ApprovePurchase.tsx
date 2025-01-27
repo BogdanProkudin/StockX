@@ -130,6 +130,7 @@ const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({
           size: size,
           price: price,
           img: img,
+          bidVariant: bidVariant,
           brand: brand,
           sku: sku,
         };
