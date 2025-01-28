@@ -50,7 +50,8 @@ app.get(
   authMiddleware,
   UserController.getShippingAddresses
 );
-
+//User Favorite List
+app.post("/getFavoriteList", FavoritesController.getFavoriteList);
 //User purchase
 app.post("/purchasedProducts", PurchasedController.orderPurchasedProducts);
 app.post(
