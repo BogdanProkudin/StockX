@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "../../axiosConfig/axios";
 import { fetchRequest } from "../../@types/status";
-import { AddShippingAddressResponse } from "./profileSlice";
+
 import { ShippingFormType } from "../../@types/ProfileFormTyoes";
 import { GetShippingAddress } from "../thunks/cartThunks";
 
