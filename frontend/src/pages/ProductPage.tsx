@@ -22,6 +22,7 @@ const FullProduct = () => {
   const { product, isLoading } = useOutletContext<OutletProductPageProps>(); //это данные с лайаута
   const [sellVisible, setSellVisible] = useState(false);
   const [sellPrice, setSellPrice] = useState(0);
+
   const [soldItems, setSoldItems] = useState(0);
   const [isPrice, setIsPrice] = useState<number | null>(null);
   return (

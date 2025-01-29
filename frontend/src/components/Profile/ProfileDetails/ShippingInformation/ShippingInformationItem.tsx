@@ -2,10 +2,11 @@ type ShippingItemProps = {
   firstName: string;
   lastName: string;
   address: string;
+  country?: string;
   city: string;
-  postalCode: string;
+  postalCode?: number;
   state: string;
-  handleEditShippingAddress: () => number;
+  handleEditShippingAddress?: () => number;
 };
 const ShippingItem: React.FC<ShippingItemProps> = ({
   firstName,

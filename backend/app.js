@@ -8,6 +8,7 @@ import {
   ShoesController,
   FiltrationController,
   PurchasedController,
+  FavoritesController,
 } from "./Controllers/index.js";
 import { ErrorValidation } from "./utils/ErrorValidation.js";
 import authMiddleware from "./utils/CheckAuth.js";

@@ -2,12 +2,13 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../../axiosConfig/axios";
 import { IUser } from "../../@types/userAuth";
 import { ShippingFormType } from "../../@types/ProfileFormTyoes";
+import { ShipForm } from "../slices/cartSlice";
 
 export interface GetShippingAddressError {
   message: string; // Ошибочное сообщение.
 }
 export const GetShippingAddress = createAsyncThunk<
-  ShippingFormType,
+  { shippingAddresses: ShipForm[] },
   { token: string },
   { rejectValue: GetShippingAddressError }
 >("cart/GetShippingAddress", async ({ token }, thunkAPI) => {

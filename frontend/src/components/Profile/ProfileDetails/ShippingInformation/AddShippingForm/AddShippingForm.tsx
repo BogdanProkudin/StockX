@@ -1,5 +1,11 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useEffect, useState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import {
@@ -15,222 +21,279 @@ import {
   EditShippingAddress,
 } from "../../../../../redux/thunks/profileThunks";
 import { useNavigate } from "react-router-dom";
-import { log } from "node:console";
 import { GetShippingAddress } from "../../../../../redux/thunks/cartThunks";
+import { ShipForm } from "../../../../../redux/slices/cartSlice";
+import { IUser } from "../../../../../@types/userAuth";
+import { log } from "node:console";
+
 const schema = yup.object().shape({
   firstName: yup
     .string()
-    .min(2, "First Name must be at least 2 characters")
-    .matches(/^[A-Za-z]+$/, "First Name cannot contain symbols and numbers")
-    .required("First Name is required"),
+    .min(2, "Must be at least 2 characters")
+    .matches(/^[A-Za-z]+$/, "No symbols or numbers")
+    .required(),
   lastName: yup
     .string()
-    .min(2, "Last Name must be at least 2 characters")
-    .matches(/^[A-Za-z]+$/, "Last Name cannot contain symbols and numbers")
-    .required("Last Name is required"),
-
+    .min(2, "Must be at least 2 characters")
+    .matches(/^[A-Za-z]+$/, "No symbols or numbers")
+    .required(),
   address: yup.string().required("Address is required"),
   city: yup
     .string()
-    .required("City is required")
-    .min(2, "City must be at least 2 characters")
-    .matches(/^[A-Za-z]+$/, "City cannot contain symbols and numbers"),
+    .min(2, "Must be at least 2 characters")
+    .matches(/^[A-Za-z]+$/, "No symbols or numbers")
+    .required(),
   state: yup
     .string()
-    .required("State/Region is required")
-    .min(2, "State/Region must be at least 2 characters")
-    .matches(/^[A-Za-z]+$/, "State/Region cannot contain symbols and numbers"),
+    .min(2, "Must be at least 2 characters")
+    .matches(/^[A-Za-z]+$/, "No symbols or numbers")
+    .required(),
   postalCode: yup
-    .string()
-    .matches(/^\d{5}$/, "Postal Code must be 5 digits")
-    .required("Postal Code is required"),
+    .number()
+    // .matches(/^\d{5}$/, "Must be 5 digits")
+    .required(),
   phoneNumber: yup
-    .string()
-    .matches(/^\+?[0-9]\d{0,14}(\s?\d+)*$/, "Phone Number must be 10 digits")
-    .required("Phone Number format is invalid"),
+    .number()
+    // .matches(/^\+?[0-9]\d{0,14}(\s?\d+)*$/, "Invalid format")
+    .required(),
 });
 
-const AddShippingForm = ({ version }: { version: string }) => {
+const AddShippingForm = ({
+  version,
+  setShipping,
+}: {
+  version: string;
+  setShipping: Dispatch<SetStateAction<boolean>>;
+}) => {
   const {
     register,
     handleSubmit,
     setValue,
-
     formState: { errors },
-  } = useForm<ShippingFormType>({
-    resolver: yupResolver(schema),
-  });
+  } = useForm<ShipForm>({ resolver: yupResolver(schema) });
+
   const selectedEditShippingAddresses = JSON.parse(
     localStorage.getItem("editShipping") || "{}",
   );
+  const userShippingAddress = useAppSelector(
+    (state) => state.cartSlice.userShippingAddress,
+  );
+  const token = localStorage.getItem("token");
+
   const [country, setCountry] = useState("");
-  const [defaultShippingAddress, setDefaultShippingAddress] = useState({});
-  const [isShippingAddressExist, setIsShippingAddressExist] =
-    useState<boolean>(false);
+  const [isShippingAddressExist, setIsShippingAddressExist] = useState(
+    !!selectedEditShippingAddresses.id,
+  );
+  const [isCountrySelectedError, setIsCountrySelectedError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
-  const [isCountrySelectedError, setIsCountrySelectedError] = useState(false);
+
+  const setFormValues = useCallback(
+    (data: any) => {
+      setValue("firstName", data.firstName);
+      setValue("lastName", data.lastName);
+      setValue("address", data.address);
+      setValue("address2", data.address2);
+      setValue("city", data.city);
+      setValue("phoneNumber", data.phoneNumber);
+      setValue("postalCode", data.postalCode);
+      setValue("state", data.state);
+      setCountry(data.country);
+    },
+    [setValue],
+  );
 
   useEffect(() => {
-    const getShippingAddress = async () => {
-      if (!token) {
-        return;
-      }
-      if (version === "CartShippingForm") {
-        const response = await dispatch(GetShippingAddress({ token }));
-        console.log(response, "res");
-      }
-    };
-    getShippingAddress();
-  }, [version]);
+    if (token && version === "CartShippingForm") {
+      dispatch(GetShippingAddress({ token }));
+    }
+  }, [version, token, dispatch]);
+
   useEffect(() => {
     if (
-      selectedEditShippingAddresses &&
-      selectedEditShippingAddresses.country
+      selectedEditShippingAddresses?.country &&
+      version !== "CartShippingForm"
     ) {
       setIsLoading(false);
+      setFormValues(selectedEditShippingAddresses);
+    }
+  }, [setFormValues, selectedEditShippingAddresses]);
 
-      setValue("firstName", selectedEditShippingAddresses.firstName);
-      setValue("lastName", selectedEditShippingAddresses.lastName);
-      setValue("address", selectedEditShippingAddresses.address);
-      setValue("address2", selectedEditShippingAddresses.address2);
-      setValue("city", selectedEditShippingAddresses.city);
-      setCountry(selectedEditShippingAddresses.country);
-      setValue("phoneNumber", selectedEditShippingAddresses.phoneNumber);
-      setValue("postalCode", selectedEditShippingAddresses.postalCode);
-      setValue("state", selectedEditShippingAddresses.state);
+  const handleUseDefaultAddress = () => {
+    if (userShippingAddress) {
+      setFormValues(userShippingAddress);
     }
-    if (selectedEditShippingAddresses.id) {
-      setIsShippingAddressExist(true);
-      console.log("найден айдишка");
-    } else {
-      setIsShippingAddressExist(false);
+  };
+
+  // const onSubmit = async (data: ShipForm | IUser) => {
+  //   if (!token || version === "CartShippingForm") {
+  //     setShipping(false);
+  //     return;
+  //   }
+
+  //   if (!country) {
+  //     setIsCountrySelectedError(true);
+  //     return;
+  //   }
+
+  //   // Формируем данные с учетом страны и ID
+  //   const shippingData:  ShipForm = {
+  //     ...data,
+  //     country,
+  //     id: isShippingAddressExist
+  //       ? selectedEditShippingAddresses.id // Для редактирования используем существующий ID
+  //       : `id${Date.now()}`, // Для добавления создаём новый уникальный ID
+  //   };
+
+  //   // Определяем действие (редактирование или добавление)
+  //   const action = isShippingAddressExist
+  //     ? EditShippingAddress
+  //     : AddShippingAddress;
+  //   console.log(action, "action");
+
+  //   // Вызываем Redux-Thunk для отправки данных
+  //   const response = await dispatch(action({ token, userData: shippingData }));
+
+  //   // Если запрос выполнен успешно
+  //   if (response.meta.requestStatus === "fulfilled") {
+  //     localStorage.removeItem("editShipping"); // Удаляем временные данные редактирования
+  //     navigate("/profile"); // Перенаправляем на профиль
+  //   }
+  // };
+  const onSubmit = async (data: ShipForm) => {
+    if (!token || version === "CartShippingForm") {
+      setShipping(false);
+      return;
     }
-  }, [setValue]);
-  const onSubmit = async (data: any) => {
-    if (!token) return;
-    if (country.length === 0) {
+
+    if (!country) {
       setIsCountrySelectedError(true);
       return;
     }
 
+    // Создаём объект данных с преобразованием `postalCode` в строку
+    const shippingData: ShipForm = {
+      ...data,
+
+      country,
+      postalCode: data.postalCode, // Преобразование в строку
+    };
+
     if (isShippingAddressExist) {
-      data.country = country;
-      data.id = selectedEditShippingAddresses.id;
-      console.log(
-        "shipping address exist",
-        data,
-        selectedEditShippingAddresses,
-      );
+      // 📝 Редактирование существующего адреса
+      shippingData.id = selectedEditShippingAddresses.id;
+      console.log("Редактирование адреса:", shippingData);
 
       const response = await dispatch(
-        EditShippingAddress({ token, userData: data }),
+        EditShippingAddress({ token, userData: shippingData }),
       );
 
       if (response.meta.requestStatus === "fulfilled") {
-        localStorage.setItem("editShipping", "");
+        console.log("Адрес успешно отредактирован!");
+        localStorage.removeItem("editShipping");
         navigate("/profile");
+      } else {
+        console.error("Ошибка при редактировании адреса", response);
       }
-      return;
-    }
-    const id = "id" + new Date().getTime();
+    } else {
+      // 🆕 Добавление нового адреса
+      shippingData.id = `id${Date.now()}`; // Генерация уникального ID
+      console.log("Добавление нового адреса:", shippingData);
 
-    data.country = country;
-    data.id = id;
-    const response = await dispatch(
-      AddShippingAddress({ token, userData: data }),
-    );
-    if (response.meta.requestStatus === "fulfilled") {
-      localStorage.setItem("editShipping", "");
-      navigate("/profile");
+      const response = await dispatch(
+        AddShippingAddress({ token, userData: shippingData }),
+      );
+
+      if (response.meta.requestStatus === "fulfilled") {
+        console.log("Адрес успешно добавлен!");
+        localStorage.removeItem("editShipping");
+        navigate("/profile");
+      } else {
+        console.error("Ошибка при добавлении адреса", response);
+      }
     }
   };
-  useEffect(() => {
-    console.log(selectedEditShippingAddresses, "selected");
-  }, []);
-  const [isLoading, setIsLoading] = useState(false);
 
+  const handleUser = (user: IUser) => {
+    console.log("Обрабатываем пользователя:", user.userName);
+  };
+
+  const handleShipping = (form: ShipForm) => {
+    console.log("Обрабатываем форму доставки:", form.address);
+  };
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className={`flex h-full w-full justify-center ${
-        version !== "CartShippingForm" ? "bg-[#EDEDED] pt-10" : ""
-      }`}
+    <div
+      className={`} flex w-full min-w-[500px] flex-col items-center justify-center`}
     >
-      {!isLoading && (
-        <div className="w-[500px]">
-          <h1 className="mb-4 text-[24px] font-bold text-[#242424]">
-            Shipping
-          </h1>
-          <span className="text-[16px] text-[#242424]">
-            Enter your shipping details below.
-          </span>
-          <div className="mt-4 flex flex-col">
-            <AddShipingInput
-              inputName="firstName"
-              register={register}
-              errors={errors}
-            />
-            <AddShipingInput
-              inputName="lastName"
-              register={register}
-              errors={errors}
-            />
-            <AddShippingCountrySelector
-              country={country}
-              setCountry={setCountry}
-              setIsCountrySelectedError={setIsCountrySelectedError}
-              isCountrySelectedError={isCountrySelectedError}
-            />
-            <AddShipingInput
-              inputName="address"
-              register={register}
-              errors={errors}
-            />
-            <AddShipingInput
-              inputName="address2"
-              register={register}
-              errors={errors}
-            />
-            <AddShipingInput
-              inputName="city"
-              register={register}
-              errors={errors}
-            />
-            <div className="flex justify-between gap-4">
-              <AddShipingInput
-                inputName="state"
-                register={register}
-                errors={errors}
-              />
-              <AddShipingInput
-                inputName="postalCode"
-                register={register}
-                errors={errors}
-              />
-            </div>
-            <AddShipingInput
-              inputName="phoneNumber"
-              register={register}
-              errors={errors}
-            />
+      {version === "CartShippingForm" && userShippingAddress?.firstName && (
+        <div className="mb-2 flex w-full max-w-[500px] justify-between rounded-lg border border-[#cfcfcf] bg-white px-4 py-3">
+          <div>
+            <p className="text-[#777777]">
+              Address: {userShippingAddress.address}{" "}
+              {userShippingAddress.address2}
+            </p>
+            <p className="text-[#777777]">
+              Country: {userShippingAddress.country}
+            </p>
           </div>
-          <div className="mb-4 mt-4 flex justify-between">
-            <AddShippingButton
-              country={country}
-              setIsCountrySelectedError={setIsCountrySelectedError}
-              buttonName="Cancel"
-            />
-            <AddShippingButton
-              country={country}
-              setIsCountrySelectedError={setIsCountrySelectedError}
-              buttonName="Submit"
-            />
-          </div>
+          <button onClick={handleUseDefaultAddress} className="text-[#006340]">
+            Use This Address
+          </button>
         </div>
       )}
-    </form>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className={`flex h-full w-full justify-center ${version !== "CartShippingForm" ? "bg-[#EDEDED] pt-10" : "w-[90%] flex-col"}`}
+      >
+        {!isLoading && (
+          <div className="w-[500px]">
+            <h1 className="mb-4 text-[24px] font-bold text-[#242424]">
+              Shipping
+            </h1>
+            <span className="text-[16px] text-[#242424]">
+              Enter your shipping details below.
+            </span>
+            <div className="mt-4 flex flex-col">
+              {[
+                "firstName",
+                "lastName",
+                "address",
+                "address2",
+                "city",
+                "state",
+                "postalCode",
+                "phoneNumber",
+              ].map((inputName) => (
+                <AddShipingInput
+                  key={inputName}
+                  inputName={inputName as keyof ShippingFormType}
+                  register={register}
+                  errors={errors}
+                />
+              ))}
+              <AddShippingCountrySelector
+                country={country}
+                setCountry={setCountry}
+                setIsCountrySelectedError={setIsCountrySelectedError}
+                isCountrySelectedError={isCountrySelectedError}
+              />
+            </div>
+            <div className="mb-4 mt-4 flex justify-between">
+              {["Cancel", "Submit"].map((buttonName) => (
+                <AddShippingButton
+                  key={buttonName}
+                  country={country}
+                  setIsCountrySelectedError={setIsCountrySelectedError}
+                  buttonName={buttonName}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+      </form>
+    </div>
   );
 };
 
