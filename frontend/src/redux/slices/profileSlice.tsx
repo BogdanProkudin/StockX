@@ -21,6 +21,9 @@ export interface EditProfileSuccessResponse {
 export interface AddShippingAddressResponse {
   shippingAddresses: ShipForm[];
 }
+export interface AddBillingAddressResponse {
+  billingAddresses: ShipForm[];
+}
 export interface EditShippingAddressResponse
   extends AddShippingAddressResponse {}
 
@@ -72,7 +75,7 @@ const profileSlice = createSlice({
       .addCase(EditUserData.pending, (state) => {})
       .addCase(
         EditUserData.fulfilled,
-        (state, action: PayloadAction<EditProfileSuccessResponse>) => {
+        (state, action: PayloadAction<EditProfileSuccessResponse | any>) => {
           console.log("ACTION PAYLOAD EditUserData", action.payload);
           state.userData = action.payload.userData;
         },

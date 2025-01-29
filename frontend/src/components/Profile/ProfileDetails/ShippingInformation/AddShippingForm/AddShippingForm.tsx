@@ -21,8 +21,16 @@ import {
   EditShippingAddress,
 } from "../../../../../redux/thunks/profileThunks";
 import { useNavigate } from "react-router-dom";
-import { GetShippingAddress } from "../../../../../redux/thunks/cartThunks";
-import { ShipForm } from "../../../../../redux/slices/cartSlice";
+import {
+  AddBillingAddress,
+  GetShippingAddress,
+} from "../../../../../redux/thunks/cartThunks";
+import {
+  setSelectedBillingAddress,
+  setSelectedShippingAddress,
+  setUserShippingAddress,
+  ShipForm,
+} from "../../../../../redux/slices/cartSlice";
 import { IUser } from "../../../../../@types/userAuth";
 import { log } from "node:console";
 
@@ -60,10 +68,10 @@ const schema = yup.object().shape({
 
 const AddShippingForm = ({
   version,
-  setShipping,
+  setIsOpen,
 }: {
   version: string;
-  setShipping: Dispatch<SetStateAction<boolean>>;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
   const {
     register,
@@ -114,7 +122,8 @@ const AddShippingForm = ({
   useEffect(() => {
     if (
       selectedEditShippingAddresses?.country &&
-      version !== "CartShippingForm"
+      version !== "CartShippingForm" &&
+      version !== "BillingAddress"
     ) {
       setIsLoading(false);
       setFormValues(selectedEditShippingAddresses);
@@ -127,67 +136,50 @@ const AddShippingForm = ({
     }
   };
 
-  // const onSubmit = async (data: ShipForm | IUser) => {
-  //   if (!token || version === "CartShippingForm") {
-  //     setShipping(false);
-  //     return;
-  //   }
-
-  //   if (!country) {
-  //     setIsCountrySelectedError(true);
-  //     return;
-  //   }
-
-  //   // Формируем данные с учетом страны и ID
-  //   const shippingData:  ShipForm = {
-  //     ...data,
-  //     country,
-  //     id: isShippingAddressExist
-  //       ? selectedEditShippingAddresses.id // Для редактирования используем существующий ID
-  //       : `id${Date.now()}`, // Для добавления создаём новый уникальный ID
-  //   };
-
-  //   // Определяем действие (редактирование или добавление)
-  //   const action = isShippingAddressExist
-  //     ? EditShippingAddress
-  //     : AddShippingAddress;
-  //   console.log(action, "action");
-
-  //   // Вызываем Redux-Thunk для отправки данных
-  //   const response = await dispatch(action({ token, userData: shippingData }));
-
-  //   // Если запрос выполнен успешно
-  //   if (response.meta.requestStatus === "fulfilled") {
-  //     localStorage.removeItem("editShipping"); // Удаляем временные данные редактирования
-  //     navigate("/profile"); // Перенаправляем на профиль
-  //   }
-  // };
   const onSubmit = async (data: ShipForm) => {
-    if (!token || version === "CartShippingForm") {
-      setShipping(false);
+    if (!token) {
       return;
     }
-
     if (!country) {
       setIsCountrySelectedError(true);
       return;
     }
 
     // Создаём объект данных с преобразованием `postalCode` в строку
-    const shippingData: ShipForm = {
+    const requestData: ShipForm = {
       ...data,
 
       country,
       postalCode: data.postalCode, // Преобразование в строку
     };
+    if (version === "CartShippingForm") {
+      // dispatch(setSelectedShippingAddress(data));
+      const response = await dispatch(
+        AddShippingAddress({ token, userData: requestData }),
+      );
+      dispatch(setUserShippingAddress(response.payload?.shippingAddresses[0]));
+
+      setIsOpen(false);
+      return;
+    }
+    if (version === "BillingAddress") {
+      dispatch(setSelectedBillingAddress(data));
+      const response = await dispatch(
+        AddBillingAddress({ token, userData: requestData }),
+      );
+      dispatch(
+        setSelectedBillingAddress(response.payload?.billingAddresses[0]),
+      );
+      setIsOpen(false);
+      return;
+    }
 
     if (isShippingAddressExist) {
-      // 📝 Редактирование существующего адреса
-      shippingData.id = selectedEditShippingAddresses.id;
-      console.log("Редактирование адреса:", shippingData);
+      requestData.id = selectedEditShippingAddresses.id;
+      console.log("Редактирование адреса:", requestData);
 
       const response = await dispatch(
-        EditShippingAddress({ token, userData: shippingData }),
+        EditShippingAddress({ token, userData: requestData }),
       );
 
       if (response.meta.requestStatus === "fulfilled") {
@@ -198,12 +190,11 @@ const AddShippingForm = ({
         console.error("Ошибка при редактировании адреса", response);
       }
     } else {
-      // 🆕 Добавление нового адреса
-      shippingData.id = `id${Date.now()}`; // Генерация уникального ID
-      console.log("Добавление нового адреса:", shippingData);
+      requestData.id = `id${Date.now()}`; // Генерация уникального ID
+      console.log("Добавление нового адреса:", requestData);
 
       const response = await dispatch(
-        AddShippingAddress({ token, userData: shippingData }),
+        AddShippingAddress({ token, userData: requestData }),
       );
 
       if (response.meta.requestStatus === "fulfilled") {
@@ -216,16 +207,9 @@ const AddShippingForm = ({
     }
   };
 
-  const handleUser = (user: IUser) => {
-    console.log("Обрабатываем пользователя:", user.userName);
-  };
-
-  const handleShipping = (form: ShipForm) => {
-    console.log("Обрабатываем форму доставки:", form.address);
-  };
   return (
     <div
-      className={`} flex w-full min-w-[500px] flex-col items-center justify-center`}
+      className={`flex w-full min-w-[500px] flex-col items-center justify-center`}
     >
       {version === "CartShippingForm" && userShippingAddress?.firstName && (
         <div className="mb-2 flex w-full max-w-[500px] justify-between rounded-lg border border-[#cfcfcf] bg-white px-4 py-3">
@@ -245,15 +229,17 @@ const AddShippingForm = ({
       )}
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className={`flex h-full w-full justify-center ${version !== "CartShippingForm" ? "bg-[#EDEDED] pt-10" : "w-[90%] flex-col"}`}
+        className={`flex h-full w-full justify-center ${version === "CartShippingForm" ? "w-[90%] flex-col" : version === "BillingAddress" ? "w-full" : "bg-[#EDEDED] pt-10"} `}
       >
         {!isLoading && (
           <div className="w-[500px]">
             <h1 className="mb-4 text-[24px] font-bold text-[#242424]">
-              Shipping
+              {version === "BillingAddress" ? "Billing Address" : "Shipping"}
             </h1>
             <span className="text-[16px] text-[#242424]">
-              Enter your shipping details below.
+              {version === "BillingAddress"
+                ? " Enter your billing details below."
+                : " Enter your shipping details below."}
             </span>
             <div className="mt-4 flex flex-col">
               {[
@@ -284,6 +270,8 @@ const AddShippingForm = ({
               {["Cancel", "Submit"].map((buttonName) => (
                 <AddShippingButton
                   key={buttonName}
+                  version={version}
+                  setIsOpen={setIsOpen}
                   country={country}
                   setIsCountrySelectedError={setIsCountrySelectedError}
                   buttonName={buttonName}

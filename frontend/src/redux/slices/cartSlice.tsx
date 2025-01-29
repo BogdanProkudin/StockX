@@ -37,6 +37,8 @@ interface ICartSlice {
   bidsPurchasedProducts: purchasedProducts[];
   bidsPurchasedStatus: fetchRequest;
   userShippingAddress: ShipForm;
+  selectedShippingAddress: ShipForm;
+  selectedBillingAddress: ShipForm;
 }
 
 const initialState: ICartSlice = {
@@ -68,6 +70,24 @@ const initialState: ICartSlice = {
     country: "",
     state: "",
     address2: "",
+    postalCode: 0,
+    phoneNumber: 0,
+  },
+  selectedShippingAddress: {
+    firstName: "",
+    lastName: "",
+    address: "",
+    city: "",
+    state: "",
+    postalCode: 0,
+    phoneNumber: 0,
+  },
+  selectedBillingAddress: {
+    firstName: "",
+    lastName: "",
+    address: "",
+    city: "",
+    state: "",
     postalCode: 0,
     phoneNumber: 0,
   },
@@ -110,6 +130,15 @@ const cartSlice = createSlice({
     },
     setBidVariant: (state, action: PayloadAction<string>) => {
       state.bidVariant = action.payload;
+    },
+    setUserShippingAddress: (state, action) => {
+      state.userShippingAddress = action.payload;
+    },
+    setSelectedShippingAddress: (state, action) => {
+      state.selectedShippingAddress = action.payload;
+    },
+    setSelectedBillingAddress: (state, action) => {
+      state.selectedBillingAddress = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -167,6 +196,14 @@ const cartSlice = createSlice({
   },
 });
 
-export const { setCartPrice, setFormShip, setIsPurchased, setBidVariant } =
-  cartSlice.actions;
+export const {
+  setCartPrice,
+  setFormShip,
+  setUserShippingAddress,
+  setIsPurchased,
+
+  setSelectedBillingAddress,
+  setBidVariant,
+  setSelectedShippingAddress,
+} = cartSlice.actions;
 export default cartSlice.reducer;

@@ -8,6 +8,9 @@ interface TotalPriceProps {
 }
 const TotalPrice: React.FC<TotalPriceProps> = ({ setShipping }) => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const userShippingAddress = useAppSelector(
+    (state) => state.cartSlice.userShippingAddress,
+  );
   const price = useAppSelector((state) => state.cartSlice.price);
   const priceArr = [
     {
@@ -35,7 +38,7 @@ const TotalPrice: React.FC<TotalPriceProps> = ({ setShipping }) => {
 
   const formShipForm = localStorage.getItem("formDataShip");
   const onClickNext = () => {
-    if (formShipForm) {
+    if (userShippingAddress.firstName) {
       searchParams.set("isConfirm", "true");
       setSearchParams(searchParams);
     } else {

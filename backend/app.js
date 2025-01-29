@@ -92,6 +92,11 @@ app.post(
   authMiddleware,
   UserController.editShippingAddress
 );
+app.post(
+  "/addBillingAddress",
+  authMiddleware,
+  UserController.addBillingAddress
+);
 app.listen(port, (err) => {
   if (err) {
     console.log("Error starting server", err);

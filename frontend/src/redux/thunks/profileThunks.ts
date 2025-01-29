@@ -7,9 +7,10 @@ import {
   EditShippingAddressResponse,
 } from "../slices/profileSlice";
 import { ShipForm } from "../slices/cartSlice";
+import { GetShippingAddressError } from "./cartThunks";
 
 export const EditUserData = createAsyncThunk<
-  EditProfileSuccessResponse,
+  { shippingAddresses: ShipForm[] },
   { token: string; userData: IUser },
   { rejectValue: { message: string } }
 >("profile/EditUserData", async ({ token, userData }, thunkAPI) => {
@@ -29,7 +30,7 @@ export const EditUserData = createAsyncThunk<
 export const AddShippingAddress = createAsyncThunk<
   AddShippingAddressResponse,
   { token: string; userData: ShipForm },
-  { rejectValue: { message: string } }
+  { rejectValue: AddShippingAddressResponse }
 >("profile/AddShippingAddress", async ({ token, userData }, thunkAPI) => {
   try {
     const response = await axios.post(
@@ -55,6 +56,28 @@ export const EditShippingAddress = createAsyncThunk<
   try {
     const response = await axios.post(
       "/editShippingAddress",
+      { shippingAddress: userData },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    return response.data;
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.response.data);
+  }
+});
+
+export const AddBillingAddress = createAsyncThunk<
+  EditShippingAddressResponse,
+  { token: string; userData: ShipForm },
+  { rejectValue: { message: string } }
+>("profile/AddBillingAddress", async ({ token, userData }, thunkAPI) => {
+  try {
+    const response = await axios.post(
+      "/addBillingAddress",
       { shippingAddress: userData },
       {
         headers: {

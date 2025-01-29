@@ -7,6 +7,8 @@ import { LoaderCircle } from "lucide-react";
 import { setIsPurchased } from "../../redux/slices/cartSlice";
 import axios from "../../axiosConfig/axios";
 import { variants } from "../FullProduct/SizePopUp";
+import AddShippingForm from "../Profile/ProfileDetails/ShippingInformation/AddShippingForm/AddShippingForm";
+import { log } from "node:console";
 
 interface ApprovePurchaseProps {
   title: string | undefined;
@@ -29,7 +31,9 @@ const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const buyQuery = searchParams.get("isBuy");
-
+  const billingAddress = useAppSelector(
+    (state) => state.cartSlice.selectedBillingAddress,
+  );
   const [isBillingAddress, setIsBillingAddress] = useState(false);
   const [isPayment, setIsPayment] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -66,14 +70,14 @@ const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({
   ];
 
   const paymentMethod = localStorage.getItem("formDataPayment");
-  const billingAddress = localStorage.getItem("BillingAddress");
+
   const token = localStorage.getItem("token");
 
   const onClickApprove = () => {
     if (!paymentMethod) {
       setIsPayment(true);
     }
-    if (!billingAddress) {
+    if (billingAddress) {
       setIsBillingAddress(true);
     }
     if (billingAddress && paymentMethod) {
@@ -86,6 +90,7 @@ const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({
   const onClickPayment = () => {
     setIsPayment(true);
   };
+  console.log(billingAddress, "1");
 
   useEffect(() => {
     const sendProductOrderData = async () => {
@@ -165,9 +170,12 @@ const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({
   }, [isApprove]);
   return (
     <div className="px-7">
-      {isBillingAddress ? (
-        <BillingAddress setBills={() => setIsBillingAddress(false)} />
-      ) : isPayment ? (
+      {isBillingAddress && !billingAddress.firstName ? (
+        <AddShippingForm
+          version="BillingAddress"
+          setIsOpen={setIsBillingAddress}
+        />
+      ) : billingAddress && billingAddress.firstName && isPayment ? (
         <PaymentMethod setPayment={() => setIsPayment(false)} />
       ) : (
         <>

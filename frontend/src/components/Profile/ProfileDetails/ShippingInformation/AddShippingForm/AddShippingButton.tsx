@@ -7,10 +7,14 @@ import { Dispatch, SetStateAction } from "react";
 const AddShippingButton = ({
   buttonName,
   setIsCountrySelectedError,
+  version,
+  setIsOpen,
   country,
 }: {
   buttonName: string;
+  version: string;
   setIsCountrySelectedError: Dispatch<SetStateAction<boolean>>;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
   country: string;
 }) => {
   const navigate = useNavigate();
@@ -22,8 +26,14 @@ const AddShippingButton = ({
         return;
       }
       return;
-    } else if (buttonName === "Cancel") {
+    } else if (
+      buttonName === "Cancel" &&
+      version !== "BillingAddress" &&
+      version !== "CartShippingForm"
+    ) {
       navigate("/profile");
+    } else {
+      setIsOpen(false);
     }
   };
   return (
