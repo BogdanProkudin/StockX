@@ -13,16 +13,17 @@ import ProductPreview from "../components/Cart/ProductPreview";
 import HeaderCart from "../components/Cart/HeaderCart";
 import Loader from "../components/Cart/Loader";
 import SizeGrid from "../components/Cart/SizeGrid";
-import { ArrowRight, Car } from "lucide-react";
+import { ArrowRight, Car, House } from "lucide-react";
 import EditSize from "../components/Cart/EditSize";
 import PriceBlock from "../components/Cart/PriceBlock";
 import TotalPrice from "../components/Cart/TotalPrice";
 import MakeOffer from "../components/Cart/MakeOffer";
-import { useAppDispatch } from "../redux/hook";
+import { useAppDispatch, useAppSelector } from "../redux/hook";
 import { setCartPrice } from "../redux/slices/cartSlice";
 
 import ApprovePurchase from "../components/Cart/ApprovePurchase";
 import AddShippingForm from "../components/Profile/ProfileDetails/ShippingInformation/AddShippingForm/AddShippingForm";
+import { GetShippingAddress } from "../redux/thunks/cartThunks";
 
 const Cart: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -34,7 +35,10 @@ const Cart: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isMakeOffer, setIsMakeOffer] = useState(false);
   const [shipping, setShipping] = useState(false);
-
+  const userShippingAddress = useAppSelector(
+    (state) => state.cartSlice.userShippingAddress,
+  );
+  const token = localStorage.getItem("token");
   useEffect(() => {
     window.scrollTo(0, 0);
     const fetchFullProduct = async () => {
@@ -71,7 +75,11 @@ const Cart: React.FC = () => {
   const isConfirm = searchParams.get("isConfirm");
 
   const sizeOrder = ["US", "UK", "CM", "KR", "EU"];
-
+  useEffect(() => {
+    if (sizeQuery && token) {
+      dispatch(GetShippingAddress({ token }));
+    }
+  }, [searchParams]);
   const onClickMakeOffer = () => {
     setIsMakeOffer(true);
   };
@@ -88,7 +96,7 @@ const Cart: React.FC = () => {
             title={product?.title}
           />
 
-          <div className="flex h-full min-h-[87vh] min-w-[550px] flex-col items-center justify-center bg-[#f4f3f1] pt-8">
+          <div className="flex h-full min-h-[87vh] min-w-[550px] flex-col justify-center bg-[#f4f3f1] pt-8">
             {isConfirm ? (
               <ApprovePurchase
                 variant={product?.variants}
@@ -102,7 +110,7 @@ const Cart: React.FC = () => {
               <>
                 {shipping ? (
                   <AddShippingForm
-                    setShipping={setShipping}
+                    setIsOpen={setShipping}
                     version="CartShippingForm"
                   />
                 ) : (
@@ -144,20 +152,41 @@ const Cart: React.FC = () => {
                           )}
 
                           <div className="flex items-center justify-between rounded-xl bg-white px-5 py-3">
-                            <div className="flex items-center gap-5">
-                              <Car />
-                              <p>
-                                Standard Shipping <br />
-                                <span className="text-sm text-[#969696]">
-                                  Typically arrives within 14 days
-                                </span>
-                              </p>
-                            </div>
+                            {userShippingAddress ? (
+                              <div className="flex items-center gap-5">
+                                <House />
+                                <p>
+                                  Standard Shipping <br />
+                                  <span className="text-[17px] text-[#969696]">
+                                    {userShippingAddress.address +
+                                      " " +
+                                      userShippingAddress.city +
+                                      "," +
+                                      userShippingAddress.state +
+                                      " " +
+                                      userShippingAddress.postalCode}
+                                  </span>
+                                </p>
+                              </div>
+                            ) : (
+                              <div className="flex items-center gap-5">
+                                <House />
+                                <p>
+                                  Standard Shipping <br />
+                                  <span className="text-[17px] text-[#969696]">
+                                    Selected Shipping Address
+                                  </span>
+                                </p>
+                              </div>
+                            )}
                             <span
                               onClick={() => setShipping(true)}
                               className="cursor-pointer text-sm font-bold text-[#006340]"
                             >
-                              Add
+                              {userShippingAddress &&
+                              userShippingAddress.firstName
+                                ? "Edit"
+                                : "Add"}
                             </span>
                           </div>
                         </div>

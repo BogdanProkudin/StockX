@@ -45,6 +45,10 @@ const UserSchema = new mongoose.Schema(
       type: Array,
       default: [],
     },
+    billingAddresses: {
+      type: Array,
+      default: [],
+    },
     userName: {
       type: String,
     },

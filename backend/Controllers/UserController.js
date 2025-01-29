@@ -417,3 +417,39 @@ export const getShippingAddresses = async (req, res) => {
   }
   return res.status(200).json({ shippingAddresses: user.shippingAddresses });
 };
+
+export const addBillingAddress = async (req, res) => {
+  try {
+    const { billingAddress } = req.body;
+    const userId = req.userId;
+    console.log(billingAddress);
+
+    const user = await userModel.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const isBillingAddressExist = user.billingAddresses.some(
+      (address) => JSON.stringify(address) === JSON.stringify(billingAddress)
+    );
+
+    if (isBillingAddressExist) {
+      return res
+        .status(400)
+        .json({ message: "Billing address already exists" });
+    }
+
+    const updatedUser = await userModel.findByIdAndUpdate(
+      userId,
+      { $push: { billingAddresses: billingAddress } },
+      { new: true }
+    );
+
+    return res.status(200).json({
+      message: "Billngs address added successfully",
+      billingAddresses: updatedUser.billingAddresses,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
