@@ -88,7 +88,7 @@ const Cart: React.FC = () => {
             title={product?.title}
           />
 
-          <div className="flex h-full min-h-[87vh] min-w-[600px] flex-col bg-[#f4f3f1] pt-8">
+          <div className="flex h-full min-h-[87vh] min-w-[550px] flex-col items-center justify-center bg-[#f4f3f1] pt-8">
             {isConfirm ? (
               <ApprovePurchase
                 variant={product?.variants}
@@ -101,7 +101,10 @@ const Cart: React.FC = () => {
             ) : (
               <>
                 {shipping ? (
-                  <AddShippingForm version="CartShippingForm" />
+                  <AddShippingForm
+                    setShipping={setShipping}
+                    version="CartShippingForm"
+                  />
                 ) : (
                   <>
                     <div className="flex-1 px-7">

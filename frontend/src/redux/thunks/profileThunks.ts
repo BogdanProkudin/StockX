@@ -6,6 +6,7 @@ import {
   EditProfileSuccessResponse,
   EditShippingAddressResponse,
 } from "../slices/profileSlice";
+import { ShipForm } from "../slices/cartSlice";
 
 export const EditUserData = createAsyncThunk<
   EditProfileSuccessResponse,
@@ -27,7 +28,7 @@ export const EditUserData = createAsyncThunk<
 
 export const AddShippingAddress = createAsyncThunk<
   AddShippingAddressResponse,
-  { token: string; userData: IUser },
+  { token: string; userData: ShipForm },
   { rejectValue: { message: string } }
 >("profile/AddShippingAddress", async ({ token, userData }, thunkAPI) => {
   try {
@@ -48,7 +49,7 @@ export const AddShippingAddress = createAsyncThunk<
 });
 export const EditShippingAddress = createAsyncThunk<
   EditShippingAddressResponse,
-  { token: string; userData: IUser },
+  { token: string; userData: ShipForm },
   { rejectValue: { message: string } }
 >("profile/EditShippingAddress", async ({ token, userData }, thunkAPI) => {
   try {

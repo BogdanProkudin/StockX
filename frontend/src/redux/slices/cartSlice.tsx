@@ -8,9 +8,10 @@ import { GetShippingAddress } from "../thunks/cartThunks";
 export type ShipForm = {
   firstName: string;
   lastName: string;
-  country: string;
+  country?: string;
+  id?: string;
   address: string;
-  address2: string;
+  address2?: string;
   city: string;
   state: string;
   postalCode: number;
@@ -35,7 +36,7 @@ interface ICartSlice {
   purchasedStatus: fetchRequest;
   bidsPurchasedProducts: purchasedProducts[];
   bidsPurchasedStatus: fetchRequest;
-  userShippingAddress: ShippingFormType | {};
+  userShippingAddress: ShipForm;
 }
 
 const initialState: ICartSlice = {
@@ -64,9 +65,11 @@ const initialState: ICartSlice = {
     lastName: "",
     address: "",
     city: "",
+    country: "",
     state: "",
-    postalCode: "",
-    phoneNumber: "",
+    address2: "",
+    postalCode: 0,
+    phoneNumber: 0,
   },
 };
 
@@ -144,10 +147,22 @@ const cartSlice = createSlice({
       })
       .addCase(GetShippingAddress.pending, (state) => {})
       .addCase(GetShippingAddress.fulfilled, (state, action) => {
-        state.userShippingAddress = action.payload;
+        console.log("ACTIB", action.payload);
+
+        state.userShippingAddress = action.payload.shippingAddresses[0];
       })
       .addCase(GetShippingAddress.rejected, (state) => {
-        state.userShippingAddress = {};
+        state.userShippingAddress = {
+          firstName: "",
+          lastName: "",
+          address: "",
+          country: "",
+          address2: "",
+          city: "",
+          state: "",
+          postalCode: 0,
+          phoneNumber: 0,
+        };
       });
   },
 });

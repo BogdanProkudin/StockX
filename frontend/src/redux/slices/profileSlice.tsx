@@ -11,6 +11,7 @@ import {
 } from "../thunks/profileThunks";
 import { ShippingFormType } from "../../@types/ProfileFormTyoes";
 import { Interface } from "node:readline";
+import { ShipForm } from "./cartSlice";
 
 export interface EditProfileSuccessResponse {
   message: string;
@@ -18,15 +19,15 @@ export interface EditProfileSuccessResponse {
 }
 
 export interface AddShippingAddressResponse {
-  shippingAddresses: ShippingFormType[];
+  shippingAddresses: ShipForm[];
 }
 export interface EditShippingAddressResponse
   extends AddShippingAddressResponse {}
 
 interface IProfileSlice {
   userData: IUser;
-  shippingAddresses: ShippingFormType[];
-  selectedEditShippingAddress: ShippingFormType;
+  shippingAddresses: ShipForm[];
+  selectedEditShippingAddress: ShipForm;
 }
 
 const initialState: IProfileSlice = {
@@ -43,10 +44,12 @@ const initialState: IProfileSlice = {
     firstName: "",
     lastName: "",
     address: "",
+    country: "",
+    address2: "",
     city: "",
     state: "",
-    postalCode: "",
-    phoneNumber: "",
+    postalCode: 0,
+    phoneNumber: 0,
   },
 };
 
@@ -57,10 +60,7 @@ const profileSlice = createSlice({
     setUserData: (state, action: PayloadAction<IUser>) => {
       state.userData = action.payload;
     },
-    setShippingAddresses: (
-      state,
-      action: PayloadAction<ShippingFormType[]>,
-    ) => {
+    setShippingAddresses: (state, action: PayloadAction<ShipForm[]>) => {
       state.shippingAddresses = action.payload;
     },
     setSelectedEditShippingAddress: (state, action) => {
