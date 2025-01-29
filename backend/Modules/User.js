@@ -48,7 +48,7 @@ const UserSchema = new mongoose.Schema(
     userName: {
       type: String,
     },
-    favotites: {
+    favoriteLists: {
       type: Array,
       default: [],
     },
