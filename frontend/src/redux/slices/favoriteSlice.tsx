@@ -19,6 +19,13 @@ export const fetchFavoriteList = createAsyncThunk(
     return data;
   },
 );
+export const addToFavorite = createAsyncThunk(
+  "favorite/addToFavorite",
+  async (dataProduct) => {
+    const { data } = await axios.post("/addToFavoriteList", dataProduct);
+    return data;
+  },
+);
 const favoriteSlice = createSlice({
   name: "favorite",
   initialState,

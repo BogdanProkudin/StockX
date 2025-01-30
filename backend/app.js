@@ -58,6 +58,11 @@ app.get(
 );
 //User Favorite List
 app.post("/getFavoriteList", FavoritesController.getFavoriteList);
+app.post(
+  "/addToFavoriteList",
+  authMiddleware,
+  FavoritesController.addToFavoriteList
+);
 //User purchase
 app.post("/purchasedProducts", PurchasedController.orderPurchasedProducts);
 app.post(

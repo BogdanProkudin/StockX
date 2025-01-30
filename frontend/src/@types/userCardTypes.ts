@@ -32,6 +32,7 @@
 //     variant_link: string;
 //   }[];
 
+import { variants } from "../components/FullProduct/SizePopUp";
 import { IUser } from "./userAuth";
 
 // }
@@ -61,6 +62,7 @@ export interface productProps {
   weekly_orders: number;
   link: string;
   trending: boolean;
+  variants: variants[];
 }
 export interface oneProductProps {
   avg_price: number;
