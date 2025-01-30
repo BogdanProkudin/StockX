@@ -76,7 +76,12 @@ const Cart: React.FC = () => {
 
   const sizeOrder = ["US", "UK", "CM", "KR", "EU"];
   useEffect(() => {
-    if (sizeQuery && token) {
+    if (
+      sizeQuery &&
+      token &&
+      userShippingAddress &&
+      userShippingAddress.firstName.length < 1
+    ) {
       dispatch(GetShippingAddress({ token }));
     }
   }, [searchParams]);

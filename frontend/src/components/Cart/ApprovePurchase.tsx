@@ -9,6 +9,7 @@ import axios from "../../axiosConfig/axios";
 import { variants } from "../FullProduct/SizePopUp";
 import AddShippingForm from "../Profile/ProfileDetails/ShippingInformation/AddShippingForm/AddShippingForm";
 import { log } from "node:console";
+import { GetBillingAddress } from "../../redux/thunks/cartThunks";
 
 interface ApprovePurchaseProps {
   title: string | undefined;
@@ -68,16 +69,26 @@ const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({
       value: "€" + totalPrice.toFixed(2),
     },
   ];
-
+  useEffect(() => {
+    const handleGetBillingAddress = async () => {
+      if (!token) {
+        return;
+      }
+      await dispatch(GetBillingAddress({ token }));
+    };
+    handleGetBillingAddress();
+  }, []);
   const paymentMethod = localStorage.getItem("formDataPayment");
 
   const token = localStorage.getItem("token");
 
   const onClickApprove = () => {
+    console.log(billingAddress);
+
     if (!paymentMethod) {
       setIsPayment(true);
     }
-    if (billingAddress) {
+    if (!billingAddress) {
       setIsBillingAddress(true);
     }
     if (billingAddress && paymentMethod) {
@@ -170,7 +181,7 @@ const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({
   }, [isApprove]);
   return (
     <div className="px-7">
-      {isBillingAddress && !billingAddress.firstName ? (
+      {isBillingAddress && !billingAddress ? (
         <AddShippingForm
           version="BillingAddress"
           setIsOpen={setIsBillingAddress}
@@ -195,7 +206,8 @@ const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({
             </ul>
           </div>
           <div className="mb-5 flex w-full justify-between rounded-lg bg-white px-4 py-3">
-            <span>Billing Address</span>
+            <span>{`Billing Address:  ${billingAddress && billingAddress.firstName.length > 1 && billingAddress.country + " " + billingAddress.city + " " + billingAddress.address}`}</span>
+
             <button
               onClick={onClickEditBills}
               className="text-sm font-semibold text-[#006340]"

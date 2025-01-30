@@ -3,7 +3,7 @@ import axios from "../../axiosConfig/axios";
 import { fetchRequest } from "../../@types/status";
 
 import { ShippingFormType } from "../../@types/ProfileFormTyoes";
-import { GetShippingAddress } from "../thunks/cartThunks";
+import { GetBillingAddress, GetShippingAddress } from "../thunks/cartThunks";
 
 export type ShipForm = {
   firstName: string;
@@ -176,12 +176,27 @@ const cartSlice = createSlice({
       })
       .addCase(GetShippingAddress.pending, (state) => {})
       .addCase(GetShippingAddress.fulfilled, (state, action) => {
-        console.log("ACTIB", action.payload);
-
         state.userShippingAddress = action.payload.shippingAddresses[0];
       })
       .addCase(GetShippingAddress.rejected, (state) => {
         state.userShippingAddress = {
+          firstName: "",
+          lastName: "",
+          address: "",
+          country: "",
+          address2: "",
+          city: "",
+          state: "",
+          postalCode: 0,
+          phoneNumber: 0,
+        };
+      })
+      .addCase(GetBillingAddress.pending, (state) => {})
+      .addCase(GetBillingAddress.fulfilled, (state, action) => {
+        state.selectedBillingAddress = action.payload.billingAddresses[0];
+      })
+      .addCase(GetBillingAddress.rejected, (state) => {
+        state.selectedBillingAddress = {
           firstName: "",
           lastName: "",
           address: "",

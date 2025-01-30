@@ -38,7 +38,7 @@ const TotalPrice: React.FC<TotalPriceProps> = ({ setShipping }) => {
 
   const formShipForm = localStorage.getItem("formDataShip");
   const onClickNext = () => {
-    if (userShippingAddress.firstName) {
+    if (userShippingAddress && userShippingAddress.firstName) {
       searchParams.set("isConfirm", "true");
       setSearchParams(searchParams);
     } else {
