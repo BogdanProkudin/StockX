@@ -145,12 +145,11 @@ const AddShippingForm = ({
       return;
     }
 
-    // Создаём объект данных с преобразованием `postalCode` в строку
     const requestData: ShipForm = {
       ...data,
 
       country,
-      postalCode: data.postalCode, // Преобразование в строку
+      postalCode: data.postalCode,
     };
     if (version === "CartShippingForm") {
       // dispatch(setSelectedShippingAddress(data));

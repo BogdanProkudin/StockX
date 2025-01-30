@@ -51,6 +51,11 @@ app.get(
   authMiddleware,
   UserController.getShippingAddresses
 );
+app.get(
+  "/getBillingAddresses",
+  authMiddleware,
+  UserController.getBillingAddresses
+);
 //User Favorite List
 app.post("/getFavoriteList", FavoritesController.getFavoriteList);
 //User purchase

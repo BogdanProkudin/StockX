@@ -52,3 +52,20 @@ export const AddBillingAddress = createAsyncThunk<
     return thunkAPI.rejectWithValue(error.response.data);
   }
 });
+export const GetBillingAddress = createAsyncThunk<
+  { billingAddresses: ShipForm[] },
+  { token: string },
+  { rejectValue: GetShippingAddressError }
+>("cart/GetBillingAddress", async ({ token }, thunkAPI) => {
+  try {
+    const response = await axios.get("/getBillingAddresses", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.response.data);
+  }
+});
