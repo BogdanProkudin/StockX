@@ -1,6 +1,6 @@
 import React from "react";
 import { CallculateSellPrice } from "../../utils/CallculateSellPrice";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 interface SellBlockProps {
   sellPrice: number;
@@ -8,16 +8,24 @@ interface SellBlockProps {
 }
 const SellBlock: React.FC<SellBlockProps> = ({ sellPrice, title }) => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  const sizeQuery = searchParams.get("size");
   const lastSale =
     sellPrice % 2 === 0
       ? Math.round(Math.random() * (sellPrice / 0.7))
       : Math.round(Math.random() * (sellPrice / 0.4));
   const lowestAsk = CallculateSellPrice(sellPrice);
+
   const onClickSell = () => {
-    navigate(`/sell/${title}?isSell=true`);
+    navigate(
+      `/sell/${title}?${sizeQuery !== null ? "size=" + sizeQuery + `&` : ""}isSell=true`,
+    );
   };
   const onClickPlace = () => {
-    navigate(`/sell/${title}isPlace=true`);
+    navigate(
+      `/sell/${title}?${sizeQuery !== null ? "size=" + sizeQuery + `&` : ""}isPlace=true`,
+    );
   };
   return (
     <div className="rounded-xl border border-[#a4a4a4] p-4">

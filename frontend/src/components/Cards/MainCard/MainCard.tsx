@@ -26,7 +26,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
 }) => {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const onClickFavorite = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setIsOpenModal(true);
+    if (variants.length > 1) {
+      setIsOpenModal(true);
+    }
     e.stopPropagation();
   };
   // const formattedUrl = slug.slice(0, -6);
