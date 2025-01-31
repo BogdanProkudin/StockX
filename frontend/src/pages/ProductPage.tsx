@@ -25,6 +25,7 @@ const FullProduct = () => {
 
   const [soldItems, setSoldItems] = useState(0);
   const [isPrice, setIsPrice] = useState<number | null>(null);
+
   return (
     <div className="w-[1120px]">
       {isLoading ? (
@@ -79,6 +80,7 @@ const FullProduct = () => {
           ) : (
             product?.variants.find((el) => el.size.length > 1) && (
               <SizePopUp
+                sellVisible={sellVisible}
                 price={product.avg_price}
                 variants={product.variants}
                 setIsPrice={setIsPrice}

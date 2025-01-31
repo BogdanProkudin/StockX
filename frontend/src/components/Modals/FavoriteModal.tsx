@@ -1,16 +1,17 @@
 import React, { useEffect, useRef } from "react";
 import { variants } from "../FullProduct/SizePopUp";
 import { X } from "lucide-react";
-
+import { SizeVariants } from "../../utils/SizeVariants";
 interface Imodal {
-  id: string;
+  id: string | undefined;
   variants: variants[];
   image: string;
+  min_price: number;
   title: string;
   price: number;
   closeModal: () => void;
 }
-const FavoriteModal: React.FC<Imodal> = ({ closeModal }) => {
+const FavoriteModal: React.FC<Imodal> = ({ closeModal, variants }) => {
   const modalRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -37,11 +38,12 @@ const FavoriteModal: React.FC<Imodal> = ({ closeModal }) => {
       document.removeEventListener("click", handleClose);
     };
   }, [closeModal]);
+  const sizes = SizeVariants(variants);
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div
         ref={modalRef}
-        className="mb-32 h-[360px] w-[500px] rounded-3xl bg-white text-black shadow-lg"
+        className="mb-32 max-w-[500px] rounded-3xl bg-white text-black shadow-lg"
       >
         <div className="flex items-center justify-between border-b border-[#a4a4a4] px-5 pb-2 pt-4">
           <h1 className="text-xl">Favorite Item</h1>
@@ -56,7 +58,22 @@ const FavoriteModal: React.FC<Imodal> = ({ closeModal }) => {
             decisions.
           </p>
           <span className="text-lg font-[540]">Size*</span>
-          <div></div>
+          <div
+            className="grid-cols-auto my-3 grid gap-2"
+            style={{
+              gridTemplateColumns: "repeat(auto-fit, minmax(45px, 1fr))",
+            }}
+          >
+            {sizes.map((size, index) => (
+              <button
+                className="h-[40px] w-[45px] rounded-lg border border-[#a4a4a462] font-bold"
+                key={index}
+              >
+                {size}
+              </button>
+            ))}
+          </div>
+          <span className="text-lg font-[540]">Add to list-</span>
         </div>
       </div>
     </div>
