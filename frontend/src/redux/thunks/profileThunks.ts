@@ -70,24 +70,3 @@ export const EditShippingAddress = createAsyncThunk<
   }
 });
 
-export const AddBillingAddress = createAsyncThunk<
-  EditShippingAddressResponse,
-  { token: string; userData: ShipForm },
-  { rejectValue: { message: string } }
->("profile/AddBillingAddress", async ({ token, userData }, thunkAPI) => {
-  try {
-    const response = await axios.post(
-      "/addBillingAddress",
-      { shippingAddress: userData },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    );
-
-    return response.data;
-  } catch (error: any) {
-    return thunkAPI.rejectWithValue(error.response.data);
-  }
-});

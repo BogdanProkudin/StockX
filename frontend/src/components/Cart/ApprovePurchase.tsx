@@ -74,6 +74,7 @@ const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({
       if (!token) {
         return;
       }
+      localStorage.removeItem("editBilling");
       await dispatch(GetBillingAddress({ token }));
     };
     handleGetBillingAddress();
@@ -96,12 +97,14 @@ const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({
     }
   };
   const onClickEditBills = () => {
+    if (billingAddress) {
+      localStorage.setItem("editBilling", JSON.stringify(billingAddress));
+    }
     setIsBillingAddress(true);
   };
   const onClickPayment = () => {
     setIsPayment(true);
   };
-  console.log(billingAddress, "1");
 
   useEffect(() => {
     const sendProductOrderData = async () => {
@@ -181,7 +184,7 @@ const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({
   }, [isApprove]);
   return (
     <div className="px-7">
-      {isBillingAddress && !billingAddress ? (
+      {isBillingAddress ? (
         <AddShippingForm
           version="BillingAddress"
           setIsOpen={setIsBillingAddress}
@@ -206,7 +209,7 @@ const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({
             </ul>
           </div>
           <div className="mb-5 flex w-full justify-between rounded-lg bg-white px-4 py-3">
-            <span>{`Billing Address:  ${billingAddress && billingAddress.firstName.length > 1 && billingAddress.country + " " + billingAddress.city + " " + billingAddress.address}`}</span>
+            <span>{`Billing Address:  ${billingAddress ? billingAddress.firstName.length > 1 && billingAddress.country + " " + billingAddress.city + " " + billingAddress.address : ""}`}</span>
 
             <button
               onClick={onClickEditBills}

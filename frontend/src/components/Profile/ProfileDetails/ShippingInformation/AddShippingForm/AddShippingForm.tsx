@@ -83,6 +83,9 @@ const AddShippingForm = ({
   const selectedEditShippingAddresses = JSON.parse(
     localStorage.getItem("editShipping") || "{}",
   );
+  const selectedEditBillingAddresses = JSON.parse(
+    localStorage.getItem("editBilling") || "{}",
+  );
   const userShippingAddress = useAppSelector(
     (state) => state.cartSlice.userShippingAddress,
   );
@@ -92,6 +95,10 @@ const AddShippingForm = ({
   const [isShippingAddressExist, setIsShippingAddressExist] = useState(
     !!selectedEditShippingAddresses.id,
   );
+
+  const [isBillingAddressExist, setIsBillingAddressExist] = useState(
+    !!selectedEditBillingAddresses.id,
+  );
   const [isCountrySelectedError, setIsCountrySelectedError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -100,6 +107,8 @@ const AddShippingForm = ({
 
   const setFormValues = useCallback(
     (data: any) => {
+      console.log(data, "data");
+
       setValue("firstName", data.firstName);
       setValue("lastName", data.lastName);
       setValue("address", data.address);
@@ -122,13 +131,22 @@ const AddShippingForm = ({
   useEffect(() => {
     if (
       selectedEditShippingAddresses?.country &&
-      version !== "CartShippingForm" &&
-      version !== "BillingAddress"
+      version !== "CartShippingForm"
     ) {
       setIsLoading(false);
       setFormValues(selectedEditShippingAddresses);
     }
-  }, [setFormValues, selectedEditShippingAddresses]);
+    console.log(version, selectedEditBillingAddresses);
+
+    if (version == "BillingAddress" && selectedEditBillingAddresses?.country) {
+      setIsLoading(false);
+      setFormValues(selectedEditBillingAddresses);
+    }
+  }, [
+    setFormValues,
+    selectedEditBillingAddresses,
+    selectedEditShippingAddresses,
+  ]);
 
   const handleUseDefaultAddress = () => {
     if (userShippingAddress) {
@@ -162,16 +180,26 @@ const AddShippingForm = ({
       return;
     }
     if (version === "BillingAddress") {
-      dispatch(setSelectedBillingAddress(data));
+      requestData.id = `id${Date.now()}`; // Генерация уникального ID
+      console.log(country, "counry", data);
+
+      if (isBillingAddressExist) {
+        localStorage.removeItem("editBilling");
+        setIsOpen(false);
+        console.log("BILING EXIST");
+        return;
+      }
       const response = await dispatch(
         AddBillingAddress({ token, userData: requestData }),
       );
+      localStorage.removeItem("editBilling");
       dispatch(
         setSelectedBillingAddress(response.payload?.billingAddresses[0]),
       );
       setIsOpen(false);
       return;
     }
+    console.log("ISS", isShippingAddressExist);
 
     if (isShippingAddressExist) {
       requestData.id = selectedEditShippingAddresses.id;
@@ -228,7 +256,7 @@ const AddShippingForm = ({
       )}
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className={`flex h-full w-full justify-center ${version === "CartShippingForm" ? "w-[90%] flex-col" : version === "BillingAddress" ? "w-full" : "bg-[#EDEDED] pt-10"} `}
+        className={`flex h-full w-full items-center justify-center ${version === "CartShippingForm" ? "w-[90%] flex-col" : version === "BillingAddress" ? "w-full" : "bg-[#EDEDED] pt-10"} `}
       >
         {!isLoading && (
           <div className="w-[500px]">

@@ -11,7 +11,7 @@ export default function authMiddleware(req, res, next) {
         .status(401)
         .json({ message: "Authorization header is missing" });
     }
-
+9
     // Извлекаем токен из заголовка
     const token = authHeader.split(" ")[1]
       ? authHeader.split(" ")[1]
