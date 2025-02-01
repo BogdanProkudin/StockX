@@ -462,3 +462,32 @@ export const getBillingAddresses = async (req, res) => {
   }
   return res.status(200).json({ billingAddresses: user.billingAddresses });
 };
+export const editBillingAddress = async (req, res) => {
+  const { billingAddress } = req.body;
+  const userId = req.userId;
+  const user = await userModel.findById(userId);
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+  console.log(billingAddress);
+
+  const isBillingAddressExist = user.billingAddresses.find((address) => {
+    return address.id === billingAddress.id;
+  });
+
+  if (!isBillingAddressExist) {
+    return res.status(404).json({ message: "Billing address not found" });
+  }
+  if (isBillingAddressExist) {
+    const result = await userModel.findOneAndUpdate(
+      { _id: userId, "billingAddresses.id": billingAddress.id },
+      { $set: { "billingAddresses.$": billingAddress } },
+      { new: true }
+    );
+
+    return res.status(200).json({
+      message: "Billing address edited successfully",
+      billingAddresses: result.billingAddresses,
+    });
+  }
+};

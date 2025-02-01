@@ -26,6 +26,7 @@ export interface AddBillingAddressResponse {
 }
 export interface EditShippingAddressResponse
   extends AddShippingAddressResponse {}
+export interface EditBillingAddressResponse extends AddBillingAddressResponse {}
 
 interface IProfileSlice {
   userData: IUser;
