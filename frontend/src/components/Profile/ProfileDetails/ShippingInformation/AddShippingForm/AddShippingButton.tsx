@@ -31,8 +31,10 @@ const AddShippingButton = ({
       version !== "BillingAddress" &&
       version !== "CartShippingForm"
     ) {
+      localStorage.removeItem("editShipping");
       navigate("/profile");
     } else {
+      localStorage.removeItem("editBilling");
       setIsOpen(false);
     }
   };
