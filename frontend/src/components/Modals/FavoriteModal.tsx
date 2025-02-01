@@ -1,7 +1,7 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { variants } from "../FullProduct/SizePopUp";
 import { X } from "lucide-react";
-import { SizeVariants } from "../../utils/SizeVariants";
+
 interface Imodal {
   id: string | undefined;
   variants: variants[];
@@ -13,6 +13,29 @@ interface Imodal {
 }
 const FavoriteModal: React.FC<Imodal> = ({ closeModal, variants }) => {
   const modalRef = useRef<HTMLDivElement>(null);
+  const sizeOrder = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
+
+  const [sortedVariants, setSortedVariants] = useState<variants[] | undefined>(
+    [],
+  );
+
+  useEffect(() => {
+    if (!variants) return;
+
+    const sortedCopy = [...variants];
+    sortedCopy.sort(
+      (a, b) => sizeOrder.indexOf(a.size) - sizeOrder.indexOf(b.size),
+    );
+
+    const sorted = sortedCopy.some((el) => el.size.includes("Y"))
+      ? sortedCopy.sort(
+          (big, small) =>
+            Number(big.size.split("Y")[0]) - Number(small.size.split("Y")[0]),
+        )
+      : sortedCopy.sort((big, small) => Number(big.size) - Number(small.size));
+
+    setSortedVariants(sorted);
+  }, [variants]);
   useEffect(() => {
     document.body.style.overflow = "hidden";
 
@@ -38,7 +61,7 @@ const FavoriteModal: React.FC<Imodal> = ({ closeModal, variants }) => {
       document.removeEventListener("click", handleClose);
     };
   }, [closeModal]);
-  const sizes = SizeVariants(variants);
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div
@@ -47,7 +70,10 @@ const FavoriteModal: React.FC<Imodal> = ({ closeModal, variants }) => {
       >
         <div className="flex items-center justify-between border-b border-[#a4a4a4] px-5 pb-2 pt-4">
           <h1 className="text-xl">Favorite Item</h1>
-          <button className="cursor-pointer rounded-full p-1 transition-all duration-300 ease-in-out hover:bg-gray-100">
+          <button
+            onClick={closeModal}
+            className="cursor-pointer rounded-full p-1 transition-all duration-300 ease-in-out hover:bg-gray-100"
+          >
             <X size={20} />
           </button>
         </div>
@@ -64,12 +90,12 @@ const FavoriteModal: React.FC<Imodal> = ({ closeModal, variants }) => {
               gridTemplateColumns: "repeat(auto-fit, minmax(45px, 1fr))",
             }}
           >
-            {sizes.map((size, index) => (
+            {sortedVariants?.map((obj, index) => (
               <button
-                className="h-[40px] w-[45px] rounded-lg border border-[#a4a4a462] font-bold"
+                className="h-[40px] w-[45px] rounded-lg border border-[#a4a4a462] font-bold transition-all duration-300 ease-in-out hover:bg-gray-100"
                 key={index}
               >
-                {size}
+                {obj.size}
               </button>
             ))}
           </div>
