@@ -6,6 +6,7 @@ import { ShipForm } from "../slices/cartSlice";
 import {
   AddBillingAddressResponse,
   AddShippingAddressResponse,
+  EditBillingAddressResponse,
   EditShippingAddressResponse,
 } from "../slices/profileSlice";
 
@@ -39,6 +40,27 @@ export const AddBillingAddress = createAsyncThunk<
   try {
     const response = await axios.post(
       "/addBillingAddress",
+      { billingAddress: userData },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    return response.data;
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.response.data);
+  }
+});
+export const EditBillingAddress = createAsyncThunk<
+  EditBillingAddressResponse,
+  { token: string; userData: ShipForm },
+  { rejectValue: EditBillingAddressResponse }
+>("cart/EditBillingAddress", async ({ token, userData }, thunkAPI) => {
+  try {
+    const response = await axios.post(
+      "/editBillingAddress",
       { billingAddress: userData },
       {
         headers: {

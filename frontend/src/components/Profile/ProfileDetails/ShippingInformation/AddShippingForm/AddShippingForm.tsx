@@ -23,6 +23,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import {
   AddBillingAddress,
+  EditBillingAddress,
   GetShippingAddress,
 } from "../../../../../redux/thunks/cartThunks";
 import {
@@ -136,7 +137,6 @@ const AddShippingForm = ({
       setIsLoading(false);
       setFormValues(selectedEditShippingAddresses);
     }
-    console.log(version, selectedEditBillingAddresses);
 
     if (version == "BillingAddress" && selectedEditBillingAddresses?.country) {
       setIsLoading(false);
@@ -170,7 +170,6 @@ const AddShippingForm = ({
       postalCode: data.postalCode,
     };
     if (version === "CartShippingForm") {
-      // dispatch(setSelectedShippingAddress(data));
       const response = await dispatch(
         AddShippingAddress({ token, userData: requestData }),
       );
@@ -180,15 +179,15 @@ const AddShippingForm = ({
       return;
     }
     if (version === "BillingAddress") {
-      requestData.id = `id${Date.now()}`; // Генерация уникального ID
-      console.log(country, "counry", data);
-
       if (isBillingAddressExist) {
+        requestData.id = selectedEditBillingAddresses.id;
         localStorage.removeItem("editBilling");
+        await dispatch(EditBillingAddress({ token, userData: requestData }));
         setIsOpen(false);
-        console.log("BILING EXIST");
+
         return;
       }
+      requestData.id = `id${Date.now()}`;
       const response = await dispatch(
         AddBillingAddress({ token, userData: requestData }),
       );
@@ -203,29 +202,25 @@ const AddShippingForm = ({
 
     if (isShippingAddressExist) {
       requestData.id = selectedEditShippingAddresses.id;
-      console.log("Редактирование адреса:", requestData);
 
       const response = await dispatch(
         EditShippingAddress({ token, userData: requestData }),
       );
 
       if (response.meta.requestStatus === "fulfilled") {
-        console.log("Адрес успешно отредактирован!");
         localStorage.removeItem("editShipping");
         navigate("/profile");
       } else {
         console.error("Ошибка при редактировании адреса", response);
       }
     } else {
-      requestData.id = `id${Date.now()}`; // Генерация уникального ID
-      console.log("Добавление нового адреса:", requestData);
+      requestData.id = `id${Date.now()}`;
 
       const response = await dispatch(
         AddShippingAddress({ token, userData: requestData }),
       );
 
       if (response.meta.requestStatus === "fulfilled") {
-        console.log("Адрес успешно добавлен!");
         localStorage.removeItem("editShipping");
         navigate("/profile");
       } else {
