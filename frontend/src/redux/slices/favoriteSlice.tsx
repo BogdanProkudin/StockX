@@ -3,11 +3,17 @@ import axios from "../../axiosConfig/axios";
 import { fetchRequest } from "../../@types/status";
 
 interface IinitialState {
-  favoriteList: [];
+  favoriteList: {
+    title: string;
+    data: [];
+  };
   favoriteListStatus: fetchRequest;
 }
 const initialState: IinitialState = {
-  favoriteList: [],
+  favoriteList: {
+    title: "",
+    data: [],
+  },
   favoriteListStatus: fetchRequest.INITIAL,
 };
 export const fetchFavoriteList = createAsyncThunk(
@@ -34,7 +40,10 @@ const favoriteSlice = createSlice({
     builder
       .addCase(fetchFavoriteList.pending, (state) => {
         state.favoriteListStatus = fetchRequest.LOADING;
-        state.favoriteList = [];
+        state.favoriteList = {
+          title: "",
+          data: [],
+        };
       })
       .addCase(fetchFavoriteList.fulfilled, (state, action) => {
         state.favoriteListStatus = fetchRequest.SUCCESS;
@@ -42,7 +51,10 @@ const favoriteSlice = createSlice({
       })
       .addCase(fetchFavoriteList.rejected, (state) => {
         state.favoriteListStatus = fetchRequest.ERROR;
-        state.favoriteList = [];
+        state.favoriteList = {
+          title: "",
+          data: [],
+        };
       });
   },
 });

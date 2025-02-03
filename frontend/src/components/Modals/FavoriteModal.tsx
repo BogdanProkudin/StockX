@@ -1,6 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { variants } from "../FullProduct/SizePopUp";
-import { X } from "lucide-react";
+import { ChevronDown, ChevronUp, X } from "lucide-react";
+import AddList from "./AddList";
+import { useAppDispatch } from "../../redux/hook";
+import { fetchFavoriteList } from "../../redux/slices/favoriteSlice";
 
 interface Imodal {
   id: string | undefined;
@@ -12,12 +15,15 @@ interface Imodal {
   closeModal: () => void;
 }
 const FavoriteModal: React.FC<Imodal> = ({ closeModal, variants }) => {
+  const dispatch = useAppDispatch();
   const modalRef = useRef<HTMLDivElement>(null);
   const sizeOrder = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
 
   const [sortedVariants, setSortedVariants] = useState<variants[] | undefined>(
     [],
   );
+  const [selectedSize, setSelectedSize] = useState<string[]>([]);
+  const [isOpened, setIsOpened] = useState<boolean>(false);
 
   useEffect(() => {
     if (!variants) return;
@@ -62,6 +68,20 @@ const FavoriteModal: React.FC<Imodal> = ({ closeModal, variants }) => {
     };
   }, [closeModal]);
 
+  const onClickSelected = (el: string) => {
+    if (!selectedSize.includes(el)) {
+      setSelectedSize((prev) => [...prev, el]);
+    } else {
+      setSelectedSize((prev) => prev.filter((item) => item !== el));
+    }
+  };
+  const onOpenSelectList = () => {
+    setIsOpened(!isOpened);
+  };
+  useEffect(() => {
+    dispatch(fetchFavoriteList());
+  }, []);
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div
@@ -92,14 +112,28 @@ const FavoriteModal: React.FC<Imodal> = ({ closeModal, variants }) => {
           >
             {sortedVariants?.map((obj, index) => (
               <button
-                className="h-[40px] w-[45px] rounded-lg border border-[#a4a4a462] font-bold transition-all duration-300 ease-in-out hover:bg-gray-100"
+                onClick={() => onClickSelected(obj.size)}
+                className={`h-[40px] w-[45px] rounded-lg border border-[#a4a4a462] font-bold transition-all duration-300 ease-in-out hover:bg-gray-100 ${
+                  selectedSize.includes(obj.size) && "bg-gray-200"
+                }`}
                 key={index}
               >
                 {obj.size}
               </button>
             ))}
           </div>
-          <span className="text-lg font-[540]">Add to list-</span>
+          <span className="text-lg font-[540]">
+            Add to list- {selectedSize.join(", ")}
+          </span>
+          <div
+            onClick={() => onOpenSelectList()}
+            className="flex w-full cursor-pointer items-center justify-between rounded-lg border border-[#a4a4a462] px-4 py-3 text-[#858585]"
+          >
+            <span>Add to...</span>
+
+            {isOpened ? <ChevronUp /> : <ChevronDown />}
+          </div>
+          {isOpened && <AddList />}
         </div>
       </div>
     </div>

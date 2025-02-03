@@ -14,7 +14,7 @@ export const getFavoriteList = async (req, res) => {
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
-      res.status(200).json(user.favoriteLists);
+      res.status(200).json(user.favoriteLists.default);
     } catch (err) {
       console.error("Error verifying jwt", err.message);
       return res.status(403).json({ message: "Invalid permissions" });
@@ -29,7 +29,7 @@ export const addToFavoriteList = async (req, res) => {
   const userId = req.userId;
   const user = await userModel.findById(userId);
   try {
-    user.favoriteLists.push(data);
+    user.favoriteLists.default.data.push(data);
     await user.save();
     res.status(200).json({ message: "Product added to favorite list" });
   } catch (error) {
