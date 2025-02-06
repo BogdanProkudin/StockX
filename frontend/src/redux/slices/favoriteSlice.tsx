@@ -11,10 +11,10 @@ interface IinitialState {
 }
 const initialState: IinitialState = {
   favoriteList: {
-    title: "",
+    title: "All Favorites",
     data: [],
   },
-  favoriteListStatus: fetchRequest.INITIAL,
+  favoriteListStaos: fetchRequest.INITIAL,
 };
 export const fetchFavoriteList = createAsyncThunk(
   "favorite/fetchFavoriteList",
@@ -41,7 +41,7 @@ const favoriteSlice = createSlice({
       .addCase(fetchFavoriteList.pending, (state) => {
         state.favoriteListStatus = fetchRequest.LOADING;
         state.favoriteList = {
-          title: "",
+          title: "All Favorites",
           data: [],
         };
       })
@@ -52,7 +52,7 @@ const favoriteSlice = createSlice({
       .addCase(fetchFavoriteList.rejected, (state) => {
         state.favoriteListStatus = fetchRequest.ERROR;
         state.favoriteList = {
-          title: "",
+          title: "All Favorites",
           data: [],
         };
       });

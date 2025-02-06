@@ -24,6 +24,18 @@ export const getFavoriteList = async (req, res) => {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+export const createFavoriteList = async (req, res) => {
+  const {} = req.body;
+  const userId = req.userId;
+  const user = await userModel.findById(userId);
+  try {
+  } catch (error) {
+    console.error("Internal Error:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
 export const addToFavoriteList = async (req, res) => {
   const { data } = req.body;
   const userId = req.userId;
