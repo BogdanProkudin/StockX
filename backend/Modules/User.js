@@ -58,7 +58,7 @@ const UserSchema = new mongoose.Schema(
           title: { type: String, default: "All Favourites" },
           data: [
             {
-              title: { type: String, require: true },
+              titleList: { type: String, require: true },
               data: { type: Array, default: [] },
             },
           ],

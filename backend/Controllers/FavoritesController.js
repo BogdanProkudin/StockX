@@ -26,7 +26,7 @@ export const getFavoriteList = async (req, res) => {
 };
 
 export const createFavoriteList = async (req, res) => {
-  const {} = req.body;
+  const { titleList } = req.body;
   const userId = req.userId;
   const user = await userModel.findById(userId);
   try {
