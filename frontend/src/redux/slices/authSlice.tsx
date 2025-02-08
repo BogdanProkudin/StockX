@@ -160,7 +160,7 @@ const userAuthSlice = createSlice({
         state.resetPasswordBackendError =
           action.payload?.message || "An unknown error occurred";
       })
-      // Проверка токена для сброса пароля
+
       .addCase(isResetPasswordTokenValid.pending, (state) => {
         state.tokenStatus = fetchRequest.LOADING;
       })
@@ -173,7 +173,6 @@ const userAuthSlice = createSlice({
   },
 });
 
-// Экспортируем экшены и редьюсер
 export const {
   setValidationErrors,
   setClearValidationErrors,

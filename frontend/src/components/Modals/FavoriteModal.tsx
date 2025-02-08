@@ -135,6 +135,10 @@ const FavoriteModal: React.FC<Imodal> = ({ closeModal, variants }) => {
           </div>
           {isOpened && <AddList />}
         </div>
+        <div className="mt-2 flex items-center justify-between border-t border-t-[#a4a4a462] px-5 py-4">
+          <button>Cancel</button>
+          <button>Confirm</button>
+        </div>
       </div>
     </div>
   );
