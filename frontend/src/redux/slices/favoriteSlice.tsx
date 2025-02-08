@@ -5,7 +5,7 @@ import { fetchRequest } from "../../@types/status";
 interface IinitialState {
   favoriteList: {
     title: string;
-    data: [];
+    data: { titleList: string; data: [] }[];
   };
   favoriteListStatus: fetchRequest;
 }
@@ -14,22 +14,28 @@ const initialState: IinitialState = {
     title: "All Favorites",
     data: [],
   },
-  favoriteListStaos: fetchRequest.INITIAL,
+  favoriteListStatus: fetchRequest.INITIAL,
 };
 export const fetchFavoriteList = createAsyncThunk(
   "favorite/fetchFavoriteList",
-  async () => {
-    const { data } = await axios.post("/getFavoriteList", {
-      token: localStorage.getItem("token"),
-    });
-    return data;
+  async (_, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.get("/getFavoriteList");
+      return data;
+    } catch (error: any) {
+      return rejectWithValue(error.data);
+    }
   },
 );
-export const addToFavorite = createAsyncThunk(
-  "favorite/addToFavorite",
-  async (dataProduct) => {
-    const { data } = await axios.post("/addToFavoriteList", dataProduct);
-    return data;
+export const createNewList = createAsyncThunk(
+  "favorite/createNewList",
+  async (titleList: string, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.post("/createNewList", { titleList });
+      return data;
+    } catch (error: any) {
+      return rejectWithValue(error.data);
+    }
   },
 );
 const favoriteSlice = createSlice({
@@ -50,6 +56,20 @@ const favoriteSlice = createSlice({
         state.favoriteList = action.payload;
       })
       .addCase(fetchFavoriteList.rejected, (state) => {
+        state.favoriteListStatus = fetchRequest.ERROR;
+        state.favoriteList = {
+          title: "All Favorites",
+          data: [],
+        };
+      })
+      .addCase(createNewList.pending, (state) => {
+        state.favoriteListStatus = fetchRequest.LOADING;
+      })
+      .addCase(createNewList.fulfilled, (state, action) => {
+        state.favoriteListStatus = fetchRequest.SUCCESS;
+        state.favoriteList = action.payload;
+      })
+      .addCase(createNewList.rejected, (state) => {
         state.favoriteListStatus = fetchRequest.ERROR;
         state.favoriteList = {
           title: "All Favorites",

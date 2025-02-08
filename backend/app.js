@@ -57,12 +57,17 @@ app.get(
   UserController.getBillingAddresses
 );
 //User Favorite List
-app.post("/getFavoriteList", FavoritesController.getFavoriteList);
-app.post(
-  "/addToFavoriteList",
+app.get(
+  "/getFavoriteList",
   authMiddleware,
-  FavoritesController.addToFavoriteList
+  FavoritesController.getFavoriteList
 );
+app.post(
+  "/createNewList",
+  authMiddleware,
+  FavoritesController.createFavoriteList
+);
+
 //User purchase
 app.post("/purchasedProducts", PurchasedController.orderPurchasedProducts);
 app.post(

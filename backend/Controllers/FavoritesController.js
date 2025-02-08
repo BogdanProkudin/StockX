@@ -3,16 +3,12 @@ import jwt from "jsonwebtoken";
 
 export const getFavoriteList = async (req, res) => {
   try {
-    const { token } = req.body;
-    if (!token) {
-      return res.status(400).json({ message: "Permissions are required." });
-    }
+    const userId = req.userId;
 
     try {
-      const verified = jwt.verify(token, process.env.JWT_PAS);
-      const user = await userModel.findById(verified._id);
+      const user = await userModel.findById(userId);
       if (!user) {
-        return res.status(404).json({ message: "User not found" });
+        return res.status(403).json({ message: "Invalid permissions" });
       }
       res.status(200).json(user.favoriteLists.default);
     } catch (err) {
@@ -27,9 +23,20 @@ export const getFavoriteList = async (req, res) => {
 
 export const createFavoriteList = async (req, res) => {
   const { titleList } = req.body;
+  console.log("name list", titleList);
+
   const userId = req.userId;
-  const user = await userModel.findById(userId);
   try {
+    const user = await userModel.findById(userId);
+    if (!user) {
+      return res.status(403).json({ message: "Invalid permissions" });
+    }
+    user.favoriteLists.default.data.push({
+      titleList,
+      data: [],
+    });
+    await user.save();
+    return res.status(200).json(user.favoriteLists.default);
   } catch (error) {
     console.error("Internal Error:", error);
     return res.status(500).json({ message: "Internal Server Error" });
