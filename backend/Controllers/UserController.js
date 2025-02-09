@@ -422,7 +422,7 @@ export const addBillingAddress = async (req, res) => {
   try {
     const { billingAddress } = req.body;
     const userId = req.userId;
-    console.log(billingAddress);
+    console.log(userId);
 
     const user = await userModel.findById(userId);
     if (!user) {
@@ -460,7 +460,10 @@ export const getBillingAddresses = async (req, res) => {
   if (!user) {
     return res.status(404).json({ message: "User not found" });
   }
-  return res.status(200).json({ billingAddresses: user.billingAddresses });
+  return res.status(200).json({
+    billingAddresses: user.billingAddresses,
+    billingMethods: user.billingMethods,
+  });
 };
 export const editBillingAddress = async (req, res) => {
   const { billingAddress } = req.body;
@@ -489,5 +492,30 @@ export const editBillingAddress = async (req, res) => {
       message: "Billing address edited successfully",
       billingAddresses: result.billingAddresses,
     });
+  }
+};
+export const addBillingMethod = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const { billingMethod } = req.body;
+    console.log(userId);
+
+    const user = await userModel.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const updatedUser = await userModel.findByIdAndUpdate(
+      userId,
+      { $push: { billingMethods: billingMethod } },
+      { new: true }
+    );
+
+    return res.status(200).json({
+      message: "Billing method added",
+      billingMethods: updatedUser.billingMethods,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 };
