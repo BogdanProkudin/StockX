@@ -56,7 +56,7 @@ export const EditShippingAddress = createAsyncThunk<
   try {
     const response = await axios.post(
       "/editShippingAddress",
-      { billingAddress: userData },
+      { shippingAddress: userData },
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -69,3 +69,4 @@ export const EditShippingAddress = createAsyncThunk<
     return thunkAPI.rejectWithValue(error.response.data);
   }
 });
+

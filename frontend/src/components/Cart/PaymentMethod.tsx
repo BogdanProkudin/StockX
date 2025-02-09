@@ -3,11 +3,13 @@ import React, { useEffect, useState } from "react";
 import visa from "../../assets/Cart/visa-svgrepo-com.svg";
 import masterCard from "../../assets/Cart/mastercard-svgrepo-com.svg";
 import unknown from "../../assets/Cart/card.svg";
+import { useAppDispatch } from "../../redux/hook";
+import { AddBillingMethod } from "../../redux/thunks/cartThunks";
 
 interface PaymentMethodProps {
   setPayment: () => void;
 }
-interface FormData {
+export interface BillingMethodFormData {
   holderName: string;
   cardNumber: string;
   expDate: string;
@@ -15,7 +17,8 @@ interface FormData {
   cardType: string;
 }
 const PaymentMethod: React.FC<PaymentMethodProps> = ({ setPayment }) => {
-  const [savedCards, setSavedCards] = useState<FormData[]>([]);
+  const [savedCards, setSavedCards] = useState<BillingMethodFormData[]>([]);
+  const dispatch = useAppDispatch();
   const [cardNumber, setCardNumber] = useState("");
   const [cardType, setCardType] = useState("unknown");
   const [expDate, setExpDate] = useState("");
@@ -85,7 +88,7 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({ setPayment }) => {
     setPayment();
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const newErrors = {
@@ -105,7 +108,9 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({ setPayment }) => {
       const formData = { holderName, cardNumber, expDate, cvv, cardType };
       const data = localStorage.getItem("formDataPayment");
 
-      const existingData: FormData[] = data ? JSON.parse(data) : [];
+      const existingData: BillingMethodFormData[] = data
+        ? JSON.parse(data)
+        : [];
 
       const existedData = existingData.find(
         (item) => item.cardNumber === formData.cardNumber,
@@ -116,7 +121,8 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({ setPayment }) => {
         localStorage.setItem("formDataPayment", JSON.stringify(updatedData));
       } else {
         const updatedData = [...existingData, formData];
-        localStorage.setItem("formDataPayment", JSON.stringify(updatedData));
+
+        await dispatch(AddBillingMethod({ billingMethod: formData }));
       }
 
       console.log("Form submitted successfully!");

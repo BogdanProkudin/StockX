@@ -56,6 +56,7 @@ app.get(
   authMiddleware,
   UserController.getBillingAddresses
 );
+
 //User Favorite List
 app.get(
   "/getFavoriteList",
@@ -121,6 +122,7 @@ app.post(
   authMiddleware,
   UserController.editBillingAddress
 );
+app.post("/addBillingMethod", authMiddleware, UserController.addBillingMethod);
 app.listen(port, (err) => {
   if (err) {
     console.log("Error starting server", err);
