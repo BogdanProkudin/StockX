@@ -43,14 +43,18 @@ export const createFavoriteList = async (req, res) => {
   }
 };
 
-export const addToFavoriteList = async (req, res) => {
-  const { data } = req.body;
+export const addProductToList = async (req, res) => {
+  const { listId } = req.params;
+  console.log("listId", listId);
   const userId = req.userId;
+  const { productData } = req.body;
+  console.log("data", productData);
+
   const user = await userModel.findById(userId);
   try {
-    user.favoriteLists.default.data.push(data);
-    await user.save();
-    res.status(200).json({ message: "Product added to favorite list" });
+    if (!user) {
+      return res.status(403).json({ message: "Invalid permissions" });
+    }
   } catch (error) {
     console.error("Internal Error:", error);
     return res.status(500).json({ message: "Internal Server Error" });

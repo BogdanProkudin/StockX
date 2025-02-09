@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hook";
 import { createNewList } from "../../redux/slices/favoriteSlice";
 
-const AddList = () => {
+interface addListProps {
+  selectedList: string[];
+  setSelectedList: React.Dispatch<React.SetStateAction<string[]>>;
+}
+const AddList: React.FC<addListProps> = ({ selectedList, setSelectedList }) => {
   const dispatch = useAppDispatch();
   const favoriteList = useAppSelector(
     (state) => state.favoriteSlice.favoriteList,
@@ -16,6 +20,13 @@ const AddList = () => {
       setValue("");
     } else {
       setError(`The list with name:${value} already exist. Create another one`);
+    }
+  };
+  const onClickAddToList = (list: string) => {
+    if (selectedList.includes(list)) {
+      setSelectedList(selectedList.filter((el) => el !== list));
+    } else {
+      setSelectedList([...selectedList, list]);
     }
   };
   return (
@@ -37,7 +48,7 @@ const AddList = () => {
         </button>
       </div>
       {error && <span>{error}</span>}
-      <ul>
+      <ul className="mt-3 max-h-[135px] overflow-y-auto">
         <li className="my-2 cursor-not-allowed opacity-60">
           <input
             className="mr-2 cursor-not-allowed"
@@ -48,8 +59,16 @@ const AddList = () => {
           {favoriteList.title}
         </li>
         {favoriteList.data.map((obj, id) => (
-          <li key={id}>
-            <input className="mr-2" type="checkbox" />
+          <li
+            className="my-1 cursor-pointer"
+            onClick={() => onClickAddToList(obj.titleList)}
+            key={id}
+          >
+            <input
+              className="mr-2"
+              checked={selectedList.includes(obj.titleList)}
+              type="checkbox"
+            />
             {obj.titleList}
           </li>
         ))}

@@ -2,6 +2,15 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "../../axiosConfig/axios";
 import { fetchRequest } from "../../@types/status";
 
+type productDataType = {
+  id: string | undefined;
+  title: string;
+  image: string;
+  price: number;
+  min_price: number;
+  size: string[];
+  list: string[];
+};
 interface IinitialState {
   favoriteList: {
     title: string;
@@ -32,6 +41,20 @@ export const createNewList = createAsyncThunk(
   async (titleList: string, { rejectWithValue }) => {
     try {
       const { data } = await axios.post("/createNewList", { titleList });
+      return data;
+    } catch (error: any) {
+      return rejectWithValue(error.data);
+    }
+  },
+);
+export const productAddToList = createAsyncThunk(
+  "favorite/addToList",
+  async (productData: productDataType, { rejectWithValue }) => {
+    try {
+      const listId = productData.list[0];
+      const { data } = await axios.post(`/addToList/${listId}`, {
+        productData,
+      });
       return data;
     } catch (error: any) {
       return rejectWithValue(error.data);

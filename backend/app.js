@@ -67,7 +67,11 @@ app.post(
   authMiddleware,
   FavoritesController.createFavoriteList
 );
-
+app.post(
+  `/addToList/:listId`,
+  authMiddleware,
+  FavoritesController.addProductToList
+);
 //User purchase
 app.post("/purchasedProducts", PurchasedController.orderPurchasedProducts);
 app.post(

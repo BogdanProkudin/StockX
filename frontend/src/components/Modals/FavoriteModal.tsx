@@ -3,7 +3,10 @@ import { variants } from "../FullProduct/SizePopUp";
 import { ChevronDown, ChevronUp, X } from "lucide-react";
 import AddList from "./AddList";
 import { useAppDispatch } from "../../redux/hook";
-import { fetchFavoriteList } from "../../redux/slices/favoriteSlice";
+import {
+  fetchFavoriteList,
+  productAddToList,
+} from "../../redux/slices/favoriteSlice";
 
 interface Imodal {
   id: string | undefined;
@@ -14,7 +17,15 @@ interface Imodal {
   price: number;
   closeModal: () => void;
 }
-const FavoriteModal: React.FC<Imodal> = ({ closeModal, variants }) => {
+const FavoriteModal: React.FC<Imodal> = ({
+  closeModal,
+  variants,
+  id,
+  image,
+  min_price,
+  title,
+  price,
+}) => {
   const dispatch = useAppDispatch();
   const modalRef = useRef<HTMLDivElement>(null);
   const sizeOrder = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
@@ -22,9 +33,13 @@ const FavoriteModal: React.FC<Imodal> = ({ closeModal, variants }) => {
   const [sortedVariants, setSortedVariants] = useState<variants[] | undefined>(
     [],
   );
+  const [selectedList, setSelectedList] = useState<string[]>([]);
   const [selectedSize, setSelectedSize] = useState<string[]>([]);
   const [isOpened, setIsOpened] = useState<boolean>(false);
 
+  useEffect(() => {
+    dispatch(fetchFavoriteList());
+  }, []);
   useEffect(() => {
     if (!variants) return;
 
@@ -78,10 +93,24 @@ const FavoriteModal: React.FC<Imodal> = ({ closeModal, variants }) => {
   const onOpenSelectList = () => {
     setIsOpened(!isOpened);
   };
-  useEffect(() => {
-    dispatch(fetchFavoriteList());
-  }, []);
+  console.log("lists", selectedList.length);
+  console.log("size", selectedSize.length);
 
+  const lists = selectedList.map((el) => el).join(", ");
+  const onClickConfirm = () => {
+    const data = {
+      id,
+      title,
+      image,
+      price,
+      min_price,
+      size: selectedSize,
+      list: selectedList,
+    };
+    console.log("clicked");
+
+    dispatch(productAddToList(data));
+  };
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div
@@ -127,17 +156,32 @@ const FavoriteModal: React.FC<Imodal> = ({ closeModal, variants }) => {
           </span>
           <div
             onClick={() => onOpenSelectList()}
-            className="flex w-full cursor-pointer items-center justify-between rounded-lg border border-[#a4a4a462] px-4 py-3 text-[#858585]"
+            className={`flex w-full cursor-pointer items-center justify-between rounded-lg border border-[#a4a4a462] px-4 py-3 ${selectedList.length > 0 ? "text-black" : "text-[#858585]"}`}
           >
-            <span>Add to...</span>
+            <span>
+              {selectedList.length > 0 ? `Add to ${lists}` : `Add to...`}
+            </span>
 
             {isOpened ? <ChevronUp /> : <ChevronDown />}
           </div>
-          {isOpened && <AddList />}
+          {isOpened && (
+            <AddList
+              selectedList={selectedList}
+              setSelectedList={setSelectedList}
+            />
+          )}
         </div>
         <div className="mt-2 flex items-center justify-between border-t border-t-[#a4a4a462] px-5 py-4">
-          <button>Cancel</button>
-          <button>Confirm</button>
+          <button className="rounded-3xl border border-black px-4 py-1 transition-all duration-200 ease-in-out hover:bg-black hover:text-white">
+            Cancel
+          </button>
+          <button
+            onClick={onClickConfirm}
+            disabled={selectedList.length === 0 || selectedSize.length === 0}
+            className="cursor-pointer rounded-3xl border border-black bg-black px-4 py-1 text-white transition-all duration-200 ease-in-out hover:opacity-85 disabled:cursor-not-allowed disabled:border-[#bfbfbf] disabled:bg-[#bfbfbf] disabled:opacity-60"
+          >
+            Confirm
+          </button>
         </div>
       </div>
     </div>
