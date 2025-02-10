@@ -462,7 +462,7 @@ export const getBillingAddresses = async (req, res) => {
   }
   return res.status(200).json({
     billingAddresses: user.billingAddresses,
-    billingMethods: user.billingMethods,
+    billingMethod: user.billingMethods[user.billingMethods.length - 1],
   });
 };
 export const editBillingAddress = async (req, res) => {
@@ -512,7 +512,7 @@ export const addBillingMethod = async (req, res) => {
 
     return res.status(200).json({
       message: "Billing method added",
-      billingMethods: updatedUser.billingMethods,
+      billingMethod: billingMethod,
     });
   } catch (err) {
     console.log(err);

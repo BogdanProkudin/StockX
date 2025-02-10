@@ -122,7 +122,11 @@ const AddShippingForm = ({
     },
     [setValue],
   );
-
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+    });
+  }, []);
   useEffect(() => {
     if (token && version === "CartShippingForm") {
       dispatch(GetShippingAddress({ token }));
@@ -198,7 +202,6 @@ const AddShippingForm = ({
       setIsOpen(false);
       return;
     }
-    console.log("ISS", isShippingAddressExist);
 
     if (isShippingAddressExist) {
       requestData.id = selectedEditShippingAddresses.id;
