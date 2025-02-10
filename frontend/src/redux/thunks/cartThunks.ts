@@ -76,7 +76,7 @@ export const EditBillingAddress = createAsyncThunk<
   }
 });
 export const GetBillingAddress = createAsyncThunk<
-  { billingAddresses: ShipForm[]; billingMethods: BillingMethodFormData[] },
+  { billingAddresses: ShipForm[]; billingMethod: BillingMethodFormData },
   { token: string },
   { rejectValue: GetShippingAddressError }
 >("cart/GetBillingAddress", async ({ token }, thunkAPI) => {

@@ -208,7 +208,7 @@ const cartSlice = createSlice({
       .addCase(GetBillingAddress.pending, (state) => {})
       .addCase(GetBillingAddress.fulfilled, (state, action) => {
         state.selectedBillingAddress = action.payload.billingAddresses[0];
-        state.selectedBillingMethod = action.payload.billingMethods[0];
+        state.selectedBillingMethod = action.payload.billingMethod;
       })
       .addCase(GetBillingAddress.rejected, (state) => {
         state.selectedBillingAddress = {
