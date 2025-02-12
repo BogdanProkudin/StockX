@@ -4,13 +4,12 @@ export default function authMiddleware(req, res, next) {
   try {
     // Проверяем наличие заголовка Authorization
     const authHeader = req.headers.authorization;
-
+    console.log("TOKEN", authHeader);
     if (!authHeader) {
       return res
         .status(401)
         .json({ message: "Authorization header is missing" });
     }
-    9;
     // Извлекаем токен из заголовка
     const token = authHeader.split(" ")[1]
       ? authHeader.split(" ")[1]

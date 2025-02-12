@@ -4,10 +4,12 @@ import { fetchRequest } from "../../@types/status";
 
 import { ShippingFormType } from "../../@types/ProfileFormTyoes";
 import {
+  AddBillingMethod,
   EditBillingAddress,
   GetBillingAddress,
   GetShippingAddress,
 } from "../thunks/cartThunks";
+import { BillingMethodFormData } from "../../components/Cart/PaymentMethod";
 
 export type ShipForm = {
   firstName: string;
@@ -43,6 +45,7 @@ interface ICartSlice {
   userShippingAddress: ShipForm;
   selectedShippingAddress: ShipForm;
   selectedBillingAddress: ShipForm;
+  selectedBillingMethod: BillingMethodFormData;
 }
 
 const initialState: ICartSlice = {
@@ -94,6 +97,13 @@ const initialState: ICartSlice = {
     state: "",
     postalCode: 0,
     phoneNumber: 0,
+  },
+  selectedBillingMethod: {
+    holderName: "",
+    cardNumber: "",
+    expDate: "",
+    cvv: "",
+    cardType: "",
   },
 };
 
@@ -198,6 +208,7 @@ const cartSlice = createSlice({
       .addCase(GetBillingAddress.pending, (state) => {})
       .addCase(GetBillingAddress.fulfilled, (state, action) => {
         state.selectedBillingAddress = action.payload.billingAddresses[0];
+        state.selectedBillingMethod = action.payload.billingMethod;
       })
       .addCase(GetBillingAddress.rejected, (state) => {
         state.selectedBillingAddress = {
@@ -227,6 +238,20 @@ const cartSlice = createSlice({
           state: "",
           postalCode: 0,
           phoneNumber: 0,
+        };
+      })
+      .addCase(AddBillingMethod.pending, (state) => {})
+
+      .addCase(AddBillingMethod.fulfilled, (state, action) => {
+        state.selectedBillingMethod = action.payload.billingMethod;
+      })
+      .addCase(AddBillingMethod.rejected, (state) => {
+        state.selectedBillingMethod = {
+          holderName: "",
+          cardNumber: "",
+          expDate: "",
+          cvv: "",
+          cardType: "",
         };
       });
   },

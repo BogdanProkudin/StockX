@@ -35,6 +35,9 @@ const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({
   const billingAddress = useAppSelector(
     (state) => state.cartSlice.selectedBillingAddress,
   );
+  const billingMethod = useAppSelector(
+    (state) => state.cartSlice.selectedBillingMethod,
+  );
   const [isBillingAddress, setIsBillingAddress] = useState(false);
   const [isPayment, setIsPayment] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -86,13 +89,13 @@ const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({
   const onClickApprove = () => {
     console.log(billingAddress);
 
-    if (!paymentMethod) {
+    if (!billingMethod) {
       setIsPayment(true);
     }
     if (!billingAddress) {
       setIsBillingAddress(true);
     }
-    if (billingAddress && paymentMethod) {
+    if (billingAddress && billingMethod) {
       setIsApprove(true);
     }
   };
@@ -219,7 +222,11 @@ const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({
             </button>
           </div>
           <div className="mb-8 flex w-full justify-between rounded-lg bg-white px-4 py-3">
-            <span>Payment method</span>
+            <span>
+              {`Payment method: ${
+                billingMethod ? billingMethod.cardNumber : ""
+              }`}
+            </span>
             <button
               onClick={onClickPayment}
               className="text-sm font-semibold text-[#006340]"

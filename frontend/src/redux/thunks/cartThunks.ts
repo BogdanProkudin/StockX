@@ -9,6 +9,7 @@ import {
   EditBillingAddressResponse,
   EditShippingAddressResponse,
 } from "../slices/profileSlice";
+import { BillingMethodFormData } from "../../components/Cart/PaymentMethod";
 
 export interface GetShippingAddressError {
   message: string; // Ошибочное сообщение.
@@ -75,16 +76,26 @@ export const EditBillingAddress = createAsyncThunk<
   }
 });
 export const GetBillingAddress = createAsyncThunk<
-  { billingAddresses: ShipForm[] },
+  { billingAddresses: ShipForm[]; billingMethod: BillingMethodFormData },
   { token: string },
   { rejectValue: GetShippingAddressError }
 >("cart/GetBillingAddress", async ({ token }, thunkAPI) => {
   try {
-    const response = await axios.get("/getBillingAddresses", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await axios.get("/getBillingAddresses", {});
+
+    return response.data;
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.response.data);
+  }
+});
+
+export const AddBillingMethod = createAsyncThunk<
+  { billingMethod: BillingMethodFormData },
+  { billingMethod: BillingMethodFormData },
+  { rejectValue: { message: BillingMethodFormData } }
+>("cart/AddBillingMethod", async ({ billingMethod }, thunkAPI) => {
+  try {
+    const response = await axios.post("/addBillingMethod", { billingMethod });
 
     return response.data;
   } catch (error: any) {

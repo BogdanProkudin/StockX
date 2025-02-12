@@ -88,6 +88,7 @@ const Sell: React.FC = () => {
                 img={product?.image}
                 brand={product?.brand}
                 sku={product?.sku}
+                variant={undefined}
               />
             ) : (
               <>
