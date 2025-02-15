@@ -2,10 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 import { variants } from "../FullProduct/SizePopUp";
 import { ChevronDown, ChevronUp, X } from "lucide-react";
 import AddList from "./AddList";
-import { useAppDispatch } from "../../redux/hook";
+import { useAppDispatch, useAppSelector } from "../../redux/hook";
 import {
   fetchFavoriteList,
   productAddToList,
+  setProductAdded,
 } from "../../redux/slices/favoriteSlice";
 
 interface Imodal {
@@ -27,6 +28,9 @@ const FavoriteModal: React.FC<Imodal> = ({
   price,
 }) => {
   const dispatch = useAppDispatch();
+  const { productAdded, favoriteList } = useAppSelector(
+    (state) => state.favoriteSlice,
+  );
   const modalRef = useRef<HTMLDivElement>(null);
   const sizeOrder = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
 
@@ -95,22 +99,31 @@ const FavoriteModal: React.FC<Imodal> = ({
   };
   console.log("lists", selectedList.length);
   console.log("size", selectedSize.length);
+  console.log("favoriteList", favoriteList);
 
   const lists = selectedList.map((el) => el).join(", ");
+
   const onClickConfirm = () => {
-    const data = {
+    const productData = {
       id,
       title,
       image,
       price,
       min_price,
       size: selectedSize,
-      list: selectedList,
     };
     console.log("clicked");
 
-    dispatch(productAddToList(data));
+    dispatch(productAddToList({ titleList: selectedList, productData }));
   };
+  useEffect(() => {
+    if (productAdded.checked && productAdded.text !== "error") {
+      closeModal();
+    }
+    setTimeout(() => {
+      dispatch(setProductAdded());
+    }, 5000);
+  }, [productAdded]);
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div

@@ -9,21 +9,32 @@ type productDataType = {
   price: number;
   min_price: number;
   size: string[];
-  list: string[];
 };
+interface addToList {
+  titleList: string[];
+  productData: productDataType;
+}
 interface IinitialState {
   favoriteList: {
     title: string;
     data: { titleList: string; data: [] }[];
   };
   favoriteListStatus: fetchRequest;
+  productAdded: {
+    text: string;
+    checked: boolean;
+  };
 }
 const initialState: IinitialState = {
   favoriteList: {
-    title: "All Favorites",
+    title: "",
     data: [],
   },
   favoriteListStatus: fetchRequest.INITIAL,
+  productAdded: {
+    text: "",
+    checked: false,
+  },
 };
 export const fetchFavoriteList = createAsyncThunk(
   "favorite/fetchFavoriteList",
@@ -49,10 +60,10 @@ export const createNewList = createAsyncThunk(
 );
 export const productAddToList = createAsyncThunk(
   "favorite/addToList",
-  async (productData: productDataType, { rejectWithValue }) => {
+  async ({ titleList, productData }: addToList, { rejectWithValue }) => {
     try {
-      const listId = productData.list[0];
-      const { data } = await axios.post(`/addToList/${listId}`, {
+      const { data } = await axios.post(`/addToList`, {
+        titleList,
         productData,
       });
       return data;
@@ -64,7 +75,14 @@ export const productAddToList = createAsyncThunk(
 const favoriteSlice = createSlice({
   name: "favorite",
   initialState,
-  reducers: {},
+  reducers: {
+    setProductAdded: (state) => {
+      state.productAdded = {
+        text: "",
+        checked: false,
+      };
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchFavoriteList.pending, (state) => {
@@ -94,11 +112,27 @@ const favoriteSlice = createSlice({
       })
       .addCase(createNewList.rejected, (state) => {
         state.favoriteListStatus = fetchRequest.ERROR;
+        state.productAdded.checked = false;
         state.favoriteList = {
           title: "All Favorites",
           data: [],
         };
+      })
+      .addCase(productAddToList.pending, (state) => {
+        state.favoriteListStatus = fetchRequest.LOADING;
+        state.productAdded.checked = false;
+      })
+      .addCase(productAddToList.fulfilled, (state, action) => {
+        state.favoriteListStatus = fetchRequest.SUCCESS;
+        state.productAdded.text = action.payload;
+        state.productAdded.checked = true;
+      })
+      .addCase(productAddToList.rejected, (state) => {
+        state.favoriteListStatus = fetchRequest.ERROR;
+        state.productAdded.text = "error";
+        state.productAdded.checked = true;
       });
   },
 });
+export const { setProductAdded } = favoriteSlice.actions;
 export default favoriteSlice.reducer;
