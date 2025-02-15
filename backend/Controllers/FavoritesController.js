@@ -1,20 +1,15 @@
-import userModel from "../Modules/User.js";
+import favoriteModel from "../Modules/Favorite.js";
 import jwt from "jsonwebtoken";
 
 export const getFavoriteList = async (req, res) => {
   try {
     const userId = req.userId;
 
-    try {
-      const user = await userModel.findById(userId);
-      if (!user) {
-        return res.status(403).json({ message: "Invalid permissions" });
-      }
-      res.status(200).json(user.favoriteLists.default);
-    } catch (err) {
-      console.error("Error verifying jwt", err.message);
-      return res.status(403).json({ message: "Invalid permissions" });
+    const favoriteList = await favoriteModel.findOne({ user: userId });
+    if (!favoriteList) {
+      return res.status(404).json({ message: "Favorite list not found" });
     }
+    return res.status(200).json(favoriteList.lists);
   } catch (error) {
     console.error("Internal Error:", error);
     return res.status(500).json({ message: "Internal Server Error" });
@@ -27,16 +22,17 @@ export const createFavoriteList = async (req, res) => {
 
   const userId = req.userId;
   try {
-    const user = await userModel.findById(userId);
-    if (!user) {
+    const favoriteList = await favoriteModel.findOne({ user: userId });
+    if (!favoriteList) {
       return res.status(403).json({ message: "Invalid permissions" });
     }
-    user.favoriteLists.default.data.push({
+    const newList = {
       titleList,
       data: [],
-    });
-    await user.save();
-    return res.status(200).json(user.favoriteLists.default);
+    };
+    favoriteList.lists.data.push(newList);
+    await favoriteList.save();
+    return res.status(200).json(favoriteList.lists);
   } catch (error) {
     console.error("Internal Error:", error);
     return res.status(500).json({ message: "Internal Server Error" });
@@ -44,17 +40,33 @@ export const createFavoriteList = async (req, res) => {
 };
 
 export const addProductToList = async (req, res) => {
-  const { listId } = req.params;
-  console.log("listId", listId);
-  const userId = req.userId;
-  const { productData } = req.body;
-  console.log("data", productData);
+  const { titleList, productData } = req.body;
+  console.log("name list", titleList);
+  console.log("productData:", productData);
 
-  const user = await userModel.findById(userId);
+  const userId = req.userId;
   try {
-    if (!user) {
-      return res.status(403).json({ message: "Invalid permissions" });
+    const updateFavoriteList = await favoriteModel.findOneAndUpdate(
+      {
+        user: userId,
+        "lists.data.titleList": { $in: titleList },
+      },
+      {
+        $push: {
+          "lists.data.$[].data": productData,
+          "lists.$[All Favorites].data": productData,
+        },
+      },
+      {
+        new: true,
+      }
+    );
+    if (!updateFavoriteList) {
+      return res.status(404).json({ message: "Invalid lists" });
     }
+    console.log("updateFavoriteList:", updateFavoriteList.lists.data);
+
+    return res.status(200).json({ message: "Product added to list" });
   } catch (error) {
     console.error("Internal Error:", error);
     return res.status(500).json({ message: "Internal Server Error" });

@@ -53,7 +53,7 @@ function App() {
     <Routes>
       <Route path="/" element={<HeaderLayout />}>
         <Route path="" element={renderMainContent(Home)} />
-        <Route path="/favorites/all-favorites" element={<FavoriteList />} />
+        <Route path="/favorites/:title" element={<FavoriteList />} />
         <Route path="search" element={renderMainContent(FilterPage)} />
         <Route path="not-found" element={<NotFound />} />
         <Route path="*" element={<NotFound />} />

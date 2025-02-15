@@ -17,6 +17,7 @@ import { useFetchImageSection } from "../hooks/useFetchImageSection";
 import { useFetchCardSection } from "../hooks/useFetchCardSection";
 import { useFetchSliderSection } from "../hooks/useFetchSlider";
 import IsPurchased from "../components/Cart/Purchased/IsPurchased";
+import ProductAddedToFavorite from "../components/Favorite/ProductAdded";
 
 const Home: React.FC = () => {
   const {
@@ -63,6 +64,7 @@ const Home: React.FC = () => {
   return (
     <div className="mt-6">
       {<IsPurchased />}
+      {<ProductAddedToFavorite />}
       <div className="p-4" ref={refTopSlider}>
         <TopSlider data={topSlider.data} />
       </div>

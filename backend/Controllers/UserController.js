@@ -1,3 +1,4 @@
+import favoriteModel from "../Modules/Favorite.js";
 import userModel from "../Modules/User.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
@@ -23,11 +24,18 @@ export const register = async (req, res) => {
       password: hashPass,
       firstName: req.body.firstName,
       secondName: req.body.secondName,
-
       userName: "SkibidiUser" + Math.floor(Math.random() * 1000),
       shoeSize: "Not Set",
     });
     const user = await doc.save();
+    const favoriteList = new favoriteModel({
+      user: user._id,
+      lists: {
+        title: "All Favorites",
+        data: [],
+      },
+    });
+    await favoriteList.save();
     const token = jwt.sign(
       {
         _id: user._id,
