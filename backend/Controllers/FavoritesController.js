@@ -30,7 +30,7 @@ export const createFavoriteList = async (req, res) => {
       titleList,
       data: [],
     };
-    favoriteList.lists.data.push(newList);
+    favoriteList.lists.push(newList);
     await favoriteList.save();
     return res.status(200).json(favoriteList.lists);
   } catch (error) {
@@ -49,12 +49,11 @@ export const addProductToList = async (req, res) => {
     const updateFavoriteList = await favoriteModel.findOneAndUpdate(
       {
         user: userId,
-        "lists.data.titleList": { $in: titleList },
+        "lists.titleList": { $in: titleList },
       },
       {
         $push: {
-          "lists.data.$[].data": productData,
-          "lists.$[All Favorites].data": productData,
+          "lists.$[].data": productData,
         },
       },
       {

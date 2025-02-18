@@ -15,10 +15,7 @@ interface addToList {
   productData: productDataType;
 }
 interface IinitialState {
-  favoriteList: {
-    title: string;
-    data: { titleList: string; data: [] }[];
-  };
+  favoriteList: { titleList: string; data: [] }[];
   favoriteListStatus: fetchRequest;
   productAdded: {
     text: string;
@@ -26,10 +23,12 @@ interface IinitialState {
   };
 }
 const initialState: IinitialState = {
-  favoriteList: {
-    title: "",
-    data: [],
-  },
+  favoriteList: [
+    {
+      titleList: "",
+      data: [],
+    },
+  ],
   favoriteListStatus: fetchRequest.INITIAL,
   productAdded: {
     text: "",
@@ -87,10 +86,12 @@ const favoriteSlice = createSlice({
     builder
       .addCase(fetchFavoriteList.pending, (state) => {
         state.favoriteListStatus = fetchRequest.LOADING;
-        state.favoriteList = {
-          title: "All Favorites",
-          data: [],
-        };
+        state.favoriteList = [
+          {
+            titleList: "All Favorites",
+            data: [],
+          },
+        ];
       })
       .addCase(fetchFavoriteList.fulfilled, (state, action) => {
         state.favoriteListStatus = fetchRequest.SUCCESS;
@@ -98,10 +99,12 @@ const favoriteSlice = createSlice({
       })
       .addCase(fetchFavoriteList.rejected, (state) => {
         state.favoriteListStatus = fetchRequest.ERROR;
-        state.favoriteList = {
-          title: "All Favorites",
-          data: [],
-        };
+        state.favoriteList = [
+          {
+            titleList: "All Favorites",
+            data: [],
+          },
+        ];
       })
       .addCase(createNewList.pending, (state) => {
         state.favoriteListStatus = fetchRequest.LOADING;
@@ -113,10 +116,12 @@ const favoriteSlice = createSlice({
       .addCase(createNewList.rejected, (state) => {
         state.favoriteListStatus = fetchRequest.ERROR;
         state.productAdded.checked = false;
-        state.favoriteList = {
-          title: "All Favorites",
-          data: [],
-        };
+        state.favoriteList = [
+          {
+            titleList: "All Favorites",
+            data: [],
+          },
+        ];
       })
       .addCase(productAddToList.pending, (state) => {
         state.favoriteListStatus = fetchRequest.LOADING;

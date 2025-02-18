@@ -14,11 +14,13 @@ const FavoriteSchema = new mongoose.Schema(
       index: true,
     },
     lists: {
-      title: { type: String, default: "All Favorites" },
-      data: {
-        type: [ListSchema],
-        default: [],
-      },
+      type: [ListSchema],
+      default: [
+        {
+          titleList: "All Favorites",
+          data: [],
+        },
+      ],
     },
   },
   { timestamps: true }

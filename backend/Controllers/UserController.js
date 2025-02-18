@@ -30,10 +30,12 @@ export const register = async (req, res) => {
     const user = await doc.save();
     const favoriteList = new favoriteModel({
       user: user._id,
-      lists: {
-        title: "All Favorites",
-        data: [],
-      },
+      lists: [
+        {
+          titleList: "All Favorites",
+          data: [],
+        },
+      ],
     });
     await favoriteList.save();
     const token = jwt.sign(
@@ -49,8 +51,6 @@ export const register = async (req, res) => {
     const { password, ...userData } = user._doc;
 
     res.status(200).json({ message: "User registered successfully", token });
-
-    //отправка на фронт только токена потом по этому токену будем находить юзера в бд/ или по юзер айди
   } catch (error) {
     console.log("ERROR REGISTRATION USER", error);
 
