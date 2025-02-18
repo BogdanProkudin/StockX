@@ -14,7 +14,7 @@ const AddList: React.FC<addListProps> = ({ selectedList, setSelectedList }) => {
   const [value, setValue] = useState("");
   const [error, setError] = useState<string | null>(null);
   const onClickCreateList = () => {
-    const list = favoriteList.data.find((el) => el.titleList === value);
+    const list = favoriteList.find((el) => el.titleList === value);
     if (!list) {
       dispatch(createNewList(value));
       setValue("");
@@ -56,9 +56,9 @@ const AddList: React.FC<addListProps> = ({ selectedList, setSelectedList }) => {
             disabled
             type="checkbox"
           />
-          {favoriteList.title}
+          {favoriteList[0].titleList}
         </li>
-        {favoriteList.data.map((obj, id) => (
+        {favoriteList.map((obj, id) => (
           <li
             className="my-1 cursor-pointer"
             onClick={() => onClickAddToList(obj.titleList)}
