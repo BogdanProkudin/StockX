@@ -37,7 +37,7 @@ const FavoriteModal: React.FC<Imodal> = ({
   const [sortedVariants, setSortedVariants] = useState<variants[] | undefined>(
     [],
   );
-  const [selectedList, setSelectedList] = useState<string[]>([]);
+  const [selectedList, setSelectedList] = useState<string[]>(["All Favorites"]);
   const [selectedSize, setSelectedSize] = useState<string[]>([]);
   const [isOpened, setIsOpened] = useState<boolean>(false);
 
@@ -190,7 +190,7 @@ const FavoriteModal: React.FC<Imodal> = ({
           </button>
           <button
             onClick={onClickConfirm}
-            disabled={selectedList.length === 0 || selectedSize.length === 0}
+            disabled={selectedSize.length === 0}
             className="cursor-pointer rounded-3xl border border-black bg-black px-4 py-1 text-white transition-all duration-200 ease-in-out hover:opacity-85 disabled:cursor-not-allowed disabled:border-[#bfbfbf] disabled:bg-[#bfbfbf] disabled:opacity-60"
           >
             Confirm

@@ -17,6 +17,8 @@ interface addToList {
 interface IinitialState {
   favoriteList: { titleList: string; data: [] }[];
   favoriteListStatus: fetchRequest;
+  oneListStatus: fetchRequest;
+  oneList: { titleList: string; data: productDataType[] };
   productAdded: {
     text: string;
     checked: boolean;
@@ -34,6 +36,8 @@ const initialState: IinitialState = {
     text: "",
     checked: false,
   },
+  oneList: { titleList: "", data: [] },
+  oneListStatus: fetchRequest.INITIAL,
 };
 export const fetchFavoriteList = createAsyncThunk(
   "favorite/fetchFavoriteList",
@@ -65,6 +69,18 @@ export const productAddToList = createAsyncThunk(
         titleList,
         productData,
       });
+      return data;
+    } catch (error: any) {
+      return rejectWithValue(error.data);
+    }
+  },
+);
+
+export const getOneList = createAsyncThunk(
+  "favorite/getOneList",
+  async (titleList: string, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.get(`/getOneList/${titleList}`);
       return data;
     } catch (error: any) {
       return rejectWithValue(error.data);
@@ -136,6 +152,20 @@ const favoriteSlice = createSlice({
         state.favoriteListStatus = fetchRequest.ERROR;
         state.productAdded.text = "error";
         state.productAdded.checked = true;
+      })
+      .addCase(getOneList.pending, (state) => {
+        state.oneListStatus = fetchRequest.LOADING;
+      })
+      .addCase(getOneList.fulfilled, (state, action) => {
+        state.oneListStatus = fetchRequest.SUCCESS;
+        state.oneList = action.payload;
+      })
+      .addCase(getOneList.rejected, (state) => {
+        state.oneListStatus = fetchRequest.ERROR;
+        state.oneList = {
+          titleList: "",
+          data: [],
+        };
       });
   },
 });

@@ -58,7 +58,7 @@ const AddList: React.FC<addListProps> = ({ selectedList, setSelectedList }) => {
           />
           {favoriteList[0].titleList}
         </li>
-        {favoriteList.map((obj, id) => (
+        {favoriteList.slice(1).map((obj, id) => (
           <li
             className="my-1 cursor-pointer"
             onClick={() => onClickAddToList(obj.titleList)}

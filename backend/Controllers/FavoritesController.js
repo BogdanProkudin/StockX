@@ -31,6 +31,8 @@ export const createFavoriteList = async (req, res) => {
       data: [],
     };
     favoriteList.lists.push(newList);
+    console.log("favoriteList:", favoriteList.lists);
+
     await favoriteList.save();
     return res.status(200).json(favoriteList.lists);
   } catch (error) {
@@ -53,7 +55,7 @@ export const addProductToList = async (req, res) => {
       },
       {
         $push: {
-          "lists.$[].data": productData,
+          "lists.$.data": productData,
         },
       },
       {
@@ -66,6 +68,30 @@ export const addProductToList = async (req, res) => {
     console.log("updateFavoriteList:", updateFavoriteList.lists.data);
 
     return res.status(200).json({ message: "Product added to list" });
+  } catch (error) {
+    console.error("Internal Error:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+export const getOneList = async (req, res) => {
+  const { titleList } = req.params;
+  console.log("name list", titleList);
+
+  const userId = req.userId;
+  console.log("userId", userId);
+
+  try {
+    const favoriteList = await favoriteModel.findOne({ user: userId });
+    if (!favoriteList) {
+      return res.status(404).json({ message: "List not found" });
+    }
+
+    const list = favoriteList.lists.find(
+      (list) => list.titleList === titleList
+    );
+    console.log("lists");
+
+    return res.status(200).json(list);
   } catch (error) {
     console.error("Internal Error:", error);
     return res.status(500).json({ message: "Internal Server Error" });
