@@ -26,13 +26,6 @@ const ProfileFavorites = () => {
       ) : (
         favoriteListStatus === "success" && (
           <div className="flex flex-wrap gap-10">
-            <div>
-              <Link to="/favorites/all-favorites">
-                <div className="mb-2 h-[123px] w-[194px] cursor-pointer rounded-lg border bg-slate-50 transition-all duration-300 ease-in-out hover:bg-white"></div>
-              </Link>
-              <h1 className="font-bold">{favoriteList[0].titleList}</h1>
-              <span className="text-base">0 Items</span>
-            </div>
             {favoriteList.map((el, index) => (
               <div key={index}>
                 <Link to={`/favorites/${el.titleList}`}>

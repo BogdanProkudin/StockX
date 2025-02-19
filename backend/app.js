@@ -63,6 +63,11 @@ app.get(
   authMiddleware,
   FavoritesController.getFavoriteList
 );
+app.get(
+  "/getOneList/:titleList",
+  authMiddleware,
+  FavoritesController.getOneList
+);
 app.post(
   "/createNewList",
   authMiddleware,
@@ -80,6 +85,7 @@ app.post(
   "/getBidsPurchasedProducts",
   PurchasedController.getBidsPurchasedProducts
 );
+
 //ItemsLogic
 app.get("/getUserSection", ShoesController.getUserSection);
 app.get("/getCollectionSection/:section", ShoesController.getCollectionSection);
