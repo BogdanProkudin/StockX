@@ -7,6 +7,8 @@ export interface IUser {
   secondName: string;
   shoeSize: string;
   userName: string;
+  id?: string;
+  country?: string;
   //нужно так же добавлять типизацию на favouriteShoes и тд , но это позже
 }
 export interface IUserAuthSlice {

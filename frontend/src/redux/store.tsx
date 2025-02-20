@@ -13,12 +13,15 @@ import homeItems from "./slices/homeItemsSlice";
 import searchSlice from "./slices/searchSlice";
 import cartSlice from "./slices/cartSlice";
 import profileSlice from "./slices/profileSlice";
+import favoriteSlice from "./slices/favoriteSlice";
+
 export const store = configureStore({
   reducer: {
     userAuth: userAuth,
     searchSlice: searchSlice,
     homeItems: homeItems,
     profileSlice: profileSlice,
+    favoriteSlice: favoriteSlice,
     cartSlice,
     [userApi.reducerPath]: userApi.reducer,
     [mainApi.reducerPath]: mainApi.reducer,
@@ -33,13 +36,12 @@ export const store = configureStore({
     getDefaultMiddleware().concat(
       userApi.middleware,
       mainApi.middleware,
-
       mainImageApi.middleware,
       searchApi.middleware,
       mainCardApi.middleware,
       sliderApi.middleware,
       instagramApi.middleware,
-    ), // добавление api.middleware
+    ),
 });
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

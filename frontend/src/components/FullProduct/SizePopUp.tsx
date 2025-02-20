@@ -1,6 +1,7 @@
 import { ChevronDown, ChevronUp } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { SizeVariants } from "../../utils/SizeVariants";
 
 export type variants = {
   id: string;
@@ -10,13 +11,13 @@ export type variants = {
 };
 interface SizePopUpType {
   price: number;
-
+  sellVisible: boolean;
   variants: variants[];
   setIsPrice?: (value: number) => void;
 }
 const SizePopUp: React.FC<SizePopUpType> = ({
   price,
-
+  sellVisible,
   variants,
   setIsPrice,
 }) => {
@@ -36,10 +37,10 @@ const SizePopUp: React.FC<SizePopUpType> = ({
     setIsValue("All");
     if (setIsPrice) setIsPrice(mainPrice);
   };
-  const onClickSize = (value: string, price: number) => {
+  const onClickSize = (value: string, price?: number) => {
     setIsOpen(false);
     setIsValue(`${sizeSystem + " " + value}`);
-    if (setIsPrice) setIsPrice(price);
+    if (setIsPrice && price) setIsPrice(price);
   };
 
   useEffect(() => {
@@ -81,6 +82,7 @@ const SizePopUp: React.FC<SizePopUpType> = ({
     }
   }, []);
 
+  const sellVariants = SizeVariants(variants);
   return (
     <div className="relative">
       <div
@@ -113,19 +115,36 @@ const SizePopUp: React.FC<SizePopUpType> = ({
               <span className="font-bold text-[#006340]">€{mainPrice}</span>
             </button>
             <ul className={`mt-3 grid grid-cols-3 gap-3`}>
-              {sortedVariants.map((obj: variants, id: number) => (
-                <li className="max-h-[45px]" key={id}>
-                  <button
-                    onClick={() => onClickSize(obj.size, obj.price)}
-                    className="flex w-[136px] flex-col items-center justify-center gap-[1px] rounded-md border border-[#a4a4a4] py-[1px] text-sm"
-                  >
-                    {obj.size}
-                    <span className="font-bold text-[#006340]">
-                      €{obj.price}
-                    </span>
-                  </button>
-                </li>
-              ))}
+              {sellVisible ? (
+                <>
+                  {sellVariants.map((el, id: number) => (
+                    <li className="max-h-[45px] text-center" key={id}>
+                      <button
+                        onClick={() => onClickSize(String(el))}
+                        className="flex w-[136px] flex-col items-center justify-center gap-[1px] rounded-md border border-[#a4a4a4] py-[12px] text-sm"
+                      >
+                        {el}
+                      </button>
+                    </li>
+                  ))}
+                </>
+              ) : (
+                <>
+                  {sortedVariants.map((obj: variants, id: number) => (
+                    <li className="max-h-[45px]" key={id}>
+                      <button
+                        onClick={() => onClickSize(obj.size, obj.price)}
+                        className="flex w-[136px] flex-col items-center justify-center gap-[1px] rounded-md border border-[#a4a4a4] py-[1px] text-sm"
+                      >
+                        {obj.size}
+                        <span className="font-bold text-[#006340]">
+                          €{obj.price}
+                        </span>
+                      </button>
+                    </li>
+                  ))}
+                </>
+              )}
             </ul>
           </div>
         </div>

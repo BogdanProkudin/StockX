@@ -15,8 +15,6 @@ const ProfileSideBarItem = ({
   handleSelectTab,
   activeTab,
 }: ProfileSideBarItemProps) => {
-  console.log(activeTab, title);
-
   return (
     <div
       onClick={() => handleSelectTab(title)}

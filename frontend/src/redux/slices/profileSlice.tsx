@@ -4,8 +4,14 @@ import {
   PayloadAction,
 } from "@reduxjs/toolkit";
 import { IUser } from "../../@types/userAuth";
-import { AddShippingAddress, EditUserData } from "../thunks/profileThunks";
+import {
+  AddShippingAddress,
+  EditShippingAddress,
+  EditUserData,
+} from "../thunks/profileThunks";
 import { ShippingFormType } from "../../@types/ProfileFormTyoes";
+import { Interface } from "node:readline";
+import { ShipForm } from "./cartSlice";
 
 export interface EditProfileSuccessResponse {
   message: string;
@@ -13,12 +19,19 @@ export interface EditProfileSuccessResponse {
 }
 
 export interface AddShippingAddressResponse {
-  shippingAddresses: ShippingFormType[];
+  shippingAddresses: ShipForm[];
 }
+export interface AddBillingAddressResponse {
+  billingAddresses: ShipForm[];
+}
+export interface EditShippingAddressResponse
+  extends AddShippingAddressResponse {}
+export interface EditBillingAddressResponse extends AddBillingAddressResponse {}
 
 interface IProfileSlice {
   userData: IUser;
-  shippingAddresses: ShippingFormType[];
+  shippingAddresses: ShipForm[];
+  selectedEditShippingAddress: ShipForm;
 }
 
 const initialState: IProfileSlice = {
@@ -31,6 +44,17 @@ const initialState: IProfileSlice = {
     shoeSize: "",
   },
   shippingAddresses: [],
+  selectedEditShippingAddress: {
+    firstName: "",
+    lastName: "",
+    address: "",
+    country: "",
+    address2: "",
+    city: "",
+    state: "",
+    postalCode: 0,
+    phoneNumber: 0,
+  },
 };
 
 const profileSlice = createSlice({
@@ -40,11 +64,11 @@ const profileSlice = createSlice({
     setUserData: (state, action: PayloadAction<IUser>) => {
       state.userData = action.payload;
     },
-    setShippingAddresses: (
-      state,
-      action: PayloadAction<ShippingFormType[]>,
-    ) => {
+    setShippingAddresses: (state, action: PayloadAction<ShipForm[]>) => {
       state.shippingAddresses = action.payload;
+    },
+    setSelectedEditShippingAddress: (state, action) => {
+      state.selectedEditShippingAddress = action.payload;
     },
   },
   extraReducers: (builder: ActionReducerMapBuilder<IProfileSlice>) => {
@@ -52,7 +76,7 @@ const profileSlice = createSlice({
       .addCase(EditUserData.pending, (state) => {})
       .addCase(
         EditUserData.fulfilled,
-        (state, action: PayloadAction<EditProfileSuccessResponse>) => {
+        (state, action: PayloadAction<EditProfileSuccessResponse | any>) => {
           console.log("ACTION PAYLOAD EditUserData", action.payload);
           state.userData = action.payload.userData;
         },
@@ -73,16 +97,25 @@ const profileSlice = createSlice({
       .addCase(
         AddShippingAddress.fulfilled,
         (state, action: PayloadAction<AddShippingAddressResponse>) => {
-          console.log(
-            "ACTION PAYLOAD AddShippingAddress",
-            action.payload.shippingAddresses,
-          );
           state.shippingAddresses = action.payload.shippingAddresses;
         },
       )
       .addCase(AddShippingAddress.rejected, (state) => {});
+    builder
+      .addCase(EditShippingAddress.pending, (state) => {})
+      .addCase(
+        EditShippingAddress.fulfilled,
+        (state, action: PayloadAction<EditShippingAddressResponse>) => {
+          state.shippingAddresses = action.payload.shippingAddresses;
+        },
+      )
+      .addCase(EditShippingAddress.rejected, (state) => {});
   },
 });
 
-export const { setUserData, setShippingAddresses } = profileSlice.actions;
+export const {
+  setUserData,
+  setShippingAddresses,
+  setSelectedEditShippingAddress,
+} = profileSlice.actions;
 export default profileSlice.reducer;

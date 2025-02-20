@@ -1,3 +1,4 @@
+import favoriteModel from "../Modules/Favorite.js";
 import userModel from "../Modules/User.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
@@ -23,11 +24,20 @@ export const register = async (req, res) => {
       password: hashPass,
       firstName: req.body.firstName,
       secondName: req.body.secondName,
-
       userName: "SkibidiUser" + Math.floor(Math.random() * 1000),
       shoeSize: "Not Set",
     });
     const user = await doc.save();
+    const favoriteList = new favoriteModel({
+      user: user._id,
+      lists: [
+        {
+          titleList: "All Favorites",
+          data: [],
+        },
+      ],
+    });
+    await favoriteList.save();
     const token = jwt.sign(
       {
         _id: user._id,
@@ -41,8 +51,6 @@ export const register = async (req, res) => {
     const { password, ...userData } = user._doc;
 
     res.status(200).json({ message: "User registered successfully", token });
-
-    //отправка на фронт только токена потом по этому токену будем находить юзера в бд/ или по юзер айди
   } catch (error) {
     console.log("ERROR REGISTRATION USER", error);
 
@@ -347,30 +355,27 @@ export const addShippingAddress = async (req, res) => {
   try {
     const { shippingAddress } = req.body;
     const userId = req.userId;
-    console.log(userId, "q");
 
     const user = await userModel.findById(userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    console.log(shippingAddress);
     const isShippingAddressExist = user.shippingAddresses.some(
       (address) => JSON.stringify(address) === JSON.stringify(shippingAddress)
     );
+
     if (isShippingAddressExist) {
       return res
         .status(400)
         .json({ message: "Shipping address already exists" });
     }
-    // Обновляем пользователя с флагом { new: true }
+
     const updatedUser = await userModel.findByIdAndUpdate(
       userId,
       { $push: { shippingAddresses: shippingAddress } },
       { new: true }
     );
-
-    console.log(updatedUser);
 
     res.json({
       message: "Shipping address added successfully",
@@ -379,5 +384,146 @@ export const addShippingAddress = async (req, res) => {
   } catch (error) {
     console.error("error", error);
     return res.status(500).json({ message: "Something went wrong" });
+  }
+};
+export const editShippingAddress = async (req, res) => {
+  const { shippingAddress } = req.body;
+  const userId = req.userId;
+
+  const user = await userModel.findById(userId);
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+  console.log("SHipping addres", shippingAddress.id);
+
+  const isShippingAddressExist = user.shippingAddresses.find((address) => {
+    return address.id === shippingAddress.id;
+  });
+  console.log("isShiipingExist", isShippingAddressExist);
+  if (!isShippingAddressExist) {
+    return res.status(404).json({ message: "Shipping address not found" });
+  }
+  if (isShippingAddressExist) {
+    const result = await userModel.findOneAndUpdate(
+      { _id: userId, "shippingAddresses.id": shippingAddress.id },
+      { $set: { "shippingAddresses.$": shippingAddress } },
+      { new: true }
+    );
+
+    return res.status(200).json({
+      message: "Shipping address edited successfully",
+      shippingAddresses: result.shippingAddresses,
+    });
+  }
+};
+
+export const getShippingAddresses = async (req, res) => {
+  const userId = req.userId;
+  const user = await userModel.findById(userId);
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+  return res.status(200).json({ shippingAddresses: user.shippingAddresses });
+};
+
+export const addBillingAddress = async (req, res) => {
+  try {
+    const { billingAddress } = req.body;
+    const userId = req.userId;
+    console.log(userId);
+
+    const user = await userModel.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const isBillingAddressExist = user.billingAddresses.some(
+      (address) => JSON.stringify(address) === JSON.stringify(billingAddress)
+    );
+
+    if (isBillingAddressExist) {
+      return res
+        .status(400)
+        .json({ message: "Billing address already exists" });
+    }
+
+    const updatedUser = await userModel.findByIdAndUpdate(
+      userId,
+      { $push: { billingAddresses: billingAddress } },
+      { new: true }
+    );
+
+    return res.status(200).json({
+      message: "Billngs address added successfully",
+      billingAddresses: updatedUser.billingAddresses,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getBillingAddresses = async (req, res) => {
+  const userId = req.userId;
+  const user = await userModel.findById(userId);
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+  return res.status(200).json({
+    billingAddresses: user.billingAddresses,
+    billingMethod: user.billingMethods[user.billingMethods.length - 1],
+  });
+};
+export const editBillingAddress = async (req, res) => {
+  const { billingAddress } = req.body;
+  const userId = req.userId;
+  const user = await userModel.findById(userId);
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+  console.log(billingAddress);
+
+  const isBillingAddressExist = user.billingAddresses.find((address) => {
+    return address.id === billingAddress.id;
+  });
+
+  if (!isBillingAddressExist) {
+    return res.status(404).json({ message: "Billing address not found" });
+  }
+  if (isBillingAddressExist) {
+    const result = await userModel.findOneAndUpdate(
+      { _id: userId, "billingAddresses.id": billingAddress.id },
+      { $set: { "billingAddresses.$": billingAddress } },
+      { new: true }
+    );
+
+    return res.status(200).json({
+      message: "Billing address edited successfully",
+      billingAddresses: result.billingAddresses,
+    });
+  }
+};
+export const addBillingMethod = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const { billingMethod } = req.body;
+    console.log(userId);
+
+    const user = await userModel.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const updatedUser = await userModel.findByIdAndUpdate(
+      userId,
+      { $push: { billingMethods: billingMethod } },
+      { new: true }
+    );
+
+    return res.status(200).json({
+      message: "Billing method added",
+      billingMethod: billingMethod,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 };

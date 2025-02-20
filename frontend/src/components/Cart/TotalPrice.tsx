@@ -8,6 +8,9 @@ interface TotalPriceProps {
 }
 const TotalPrice: React.FC<TotalPriceProps> = ({ setShipping }) => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const userShippingAddress = useAppSelector(
+    (state) => state.cartSlice.userShippingAddress,
+  );
   const price = useAppSelector((state) => state.cartSlice.price);
   const priceArr = [
     {
@@ -35,7 +38,7 @@ const TotalPrice: React.FC<TotalPriceProps> = ({ setShipping }) => {
 
   const formShipForm = localStorage.getItem("formDataShip");
   const onClickNext = () => {
-    if (formShipForm) {
+    if (userShippingAddress && userShippingAddress.firstName) {
       searchParams.set("isConfirm", "true");
       setSearchParams(searchParams);
     } else {
@@ -44,7 +47,7 @@ const TotalPrice: React.FC<TotalPriceProps> = ({ setShipping }) => {
   };
 
   return (
-    <div className="relative">
+    <div className="relative w-full">
       <div
         className={`border-l border-t border-l-[#cfcfcf] border-t-[#cfcfcf] bg-white px-7 py-5 ${
           isTotalPrice
@@ -52,6 +55,7 @@ const TotalPrice: React.FC<TotalPriceProps> = ({ setShipping }) => {
             : "relative flex items-center justify-between"
         }`}
         style={{
+          width: isTotalPrice ? "" : "",
           transform: isTotalPrice ? "translateY(-57%)" : "translateY(0)",
         }}
       >

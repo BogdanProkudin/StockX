@@ -7,24 +7,35 @@ import { Dispatch, SetStateAction } from "react";
 const AddShippingButton = ({
   buttonName,
   setIsCountrySelectedError,
+  version,
+  setIsOpen,
   country,
 }: {
   buttonName: string;
+  version: string;
   setIsCountrySelectedError: Dispatch<SetStateAction<boolean>>;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
   country: string;
 }) => {
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
-  const dispatch = useAppDispatch();
+
   const handleButtonClick = () => {
     if (buttonName === "Submit") {
-      if (country.length === 0) {
+      if (country && country.length === 0) {
         setIsCountrySelectedError(true);
         return;
       }
       return;
-    } else if (buttonName === "Cancel") {
+    } else if (
+      buttonName === "Cancel" &&
+      version !== "BillingAddress" &&
+      version !== "CartShippingForm"
+    ) {
+      localStorage.removeItem("editShipping");
       navigate("/profile");
+    } else {
+      localStorage.removeItem("editBilling");
+      setIsOpen(false);
     }
   };
   return (

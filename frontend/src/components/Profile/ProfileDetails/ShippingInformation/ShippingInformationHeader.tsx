@@ -4,6 +4,7 @@ const ShippingHeader = () => {
   const navigate = useNavigate();
   const handleAddShippingAddress = () => {
     navigate("/settings/shipping");
+    localStorage.setItem("editShipping", "");
   };
   return (
     <div className="flex w-full items-center justify-between border-b-2 border-E2E8F0 pb-2 pt-4">

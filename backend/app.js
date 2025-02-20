@@ -8,6 +8,7 @@ import {
   ShoesController,
   FiltrationController,
   PurchasedController,
+  FavoritesController,
 } from "./Controllers/index.js";
 import { ErrorValidation } from "./utils/ErrorValidation.js";
 import authMiddleware from "./utils/CheckAuth.js";
@@ -45,7 +46,34 @@ app.post("/editUserData", authMiddleware, UserController.EditUserData);
 app.post("/requestResetPassword", UserController.forgotPassword);
 app.post("/tokenValidation", UserController.isTokenValid);
 app.post("/resetPassword", UserController.resetPassword);
+app.get(
+  "/getShippingAddresses",
+  authMiddleware,
+  UserController.getShippingAddresses
+);
+app.get(
+  "/getBillingAddresses",
+  authMiddleware,
+  UserController.getBillingAddresses
+);
 
+//User Favorite List
+app.get(
+  "/getFavoriteList",
+  authMiddleware,
+  FavoritesController.getFavoriteList
+);
+app.get(
+  "/getOneList/:titleList",
+  authMiddleware,
+  FavoritesController.getOneList
+);
+app.post(
+  "/createNewList",
+  authMiddleware,
+  FavoritesController.createFavoriteList
+);
+app.post(`/addToList`, authMiddleware, FavoritesController.addProductToList);
 //User purchase
 app.post("/purchasedProducts", PurchasedController.orderPurchasedProducts);
 app.post(
@@ -57,6 +85,7 @@ app.post(
   "/getBidsPurchasedProducts",
   PurchasedController.getBidsPurchasedProducts
 );
+
 //ItemsLogic
 app.get("/getUserSection", ShoesController.getUserSection);
 app.get("/getCollectionSection/:section", ShoesController.getCollectionSection);
@@ -80,6 +109,22 @@ app.post(
   authMiddleware,
   UserController.addShippingAddress
 );
+app.post(
+  "/editShippingAddress",
+  authMiddleware,
+  UserController.editShippingAddress
+);
+app.post(
+  "/addBillingAddress",
+  authMiddleware,
+  UserController.addBillingAddress
+);
+app.post(
+  "/editBillingAddress",
+  authMiddleware,
+  UserController.editBillingAddress
+);
+app.post("/addBillingMethod", authMiddleware, UserController.addBillingMethod);
 app.listen(port, (err) => {
   if (err) {
     console.log("Error starting server", err);

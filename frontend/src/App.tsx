@@ -22,6 +22,8 @@ import ProfileBuying from "./components/Profile/ProfileBuying/ProfileBuying";
 import AuthLayout from "./layout/AuthLayout";
 import MainLayout from "./layout/MainLayout";
 import AddShippingForm from "./components/Profile/ProfileDetails/ShippingInformation/AddShippingForm/AddShippingForm";
+import Sell from "./pages/Sell";
+import FavoriteList from "./components/Profile/ProfileFavorites/FavoriteList";
 
 type ComponentType = React.FC;
 
@@ -51,12 +53,10 @@ function App() {
     <Routes>
       <Route path="/" element={<HeaderLayout />}>
         <Route path="" element={renderMainContent(Home)} />
-
+        <Route path="/favorites/:title" element={<FavoriteList />} />
         <Route path="search" element={renderMainContent(FilterPage)} />
         <Route path="not-found" element={<NotFound />} />
         <Route path="*" element={<NotFound />} />
-
-        {/* <Route path=":title" element={<FullProduct />} /> */}
       </Route>
       <Route path=":title" element={<ProductPageLayout />}>
         <Route index element={<FullProduct />} />
@@ -73,7 +73,10 @@ function App() {
         ></Route>
         <Route path="/" element={<ProfileLayout />}>
           <Route path="settings/profile" element={<EditProfleForm />} />
-          <Route path="settings/shipping" element={<AddShippingForm />} />
+          <Route
+            path="settings/shipping"
+            element={<AddShippingForm version="ProfileShippingForm" />}
+          />
           {profileUrl.map((el, id) => (
             <Route key={id} path={el} element={<Profile />} />
           ))}
@@ -85,6 +88,7 @@ function App() {
 
       <Route path="/buy/:title" element={<Cart />} />
 
+      <Route path="/sell/:title" element={<Sell />} />
       <Route path="/resetPassword/:token" element={<ResetPage />} />
     </Routes>
   );

@@ -22,8 +22,10 @@ const FullProduct = () => {
   const { product, isLoading } = useOutletContext<OutletProductPageProps>(); //это данные с лайаута
   const [sellVisible, setSellVisible] = useState(false);
   const [sellPrice, setSellPrice] = useState(0);
+
   const [soldItems, setSoldItems] = useState(0);
   const [isPrice, setIsPrice] = useState<number | null>(null);
+
   return (
     <div className="w-[1120px]">
       {isLoading ? (
@@ -78,6 +80,7 @@ const FullProduct = () => {
           ) : (
             product?.variants.find((el) => el.size.length > 1) && (
               <SizePopUp
+                sellVisible={sellVisible}
                 price={product.avg_price}
                 variants={product.variants}
                 setIsPrice={setIsPrice}
@@ -85,7 +88,7 @@ const FullProduct = () => {
             )
           )}
           {sellVisible ? (
-            <SellBlock sellPrice={sellPrice} />
+            <SellBlock title={product?.title} sellPrice={sellPrice} />
           ) : (
             <PriceBlock
               id={product?.id}

@@ -6,29 +6,46 @@ import PaymentMethod from "./PaymentMethod";
 import { LoaderCircle } from "lucide-react";
 import { setIsPurchased } from "../../redux/slices/cartSlice";
 import axios from "../../axiosConfig/axios";
+import { variants } from "../FullProduct/SizePopUp";
+import AddShippingForm from "../Profile/ProfileDetails/ShippingInformation/AddShippingForm/AddShippingForm";
+import { log } from "node:console";
+import { GetBillingAddress } from "../../redux/thunks/cartThunks";
 
 interface ApprovePurchaseProps {
   title: string | undefined;
   size: string | null;
   img: string | undefined;
+  brand: string | undefined;
+  sku: string | undefined;
+  variant: variants[] | undefined;
 }
 const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({
   title,
   size,
   img,
+  brand,
+  sku,
+  variant,
 }) => {
   const dispatch = useAppDispatch();
-  const price = useAppSelector((state) => state.cartSlice.price);
+  const { price, bidVariant } = useAppSelector((state) => state.cartSlice);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-
+  const buyQuery = searchParams.get("isBuy");
+  const billingAddress = useAppSelector(
+    (state) => state.cartSlice.selectedBillingAddress,
+  );
+  const billingMethod = useAppSelector(
+    (state) => state.cartSlice.selectedBillingMethod,
+  );
   const [isBillingAddress, setIsBillingAddress] = useState(false);
   const [isPayment, setIsPayment] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isApprove, setIsApprove] = useState(false);
-  const totalPrice = price + 23.12 + 15.95;
-  const buyQuery = searchParams.get("isBuy");
-
+  const priceVariant = buyQuery
+    ? variant?.find((el) => el.size === size)?.price
+    : price;
+  const totalPrice = Number(priceVariant) + 23.12 + 15.95;
   const itemInfo = [
     {
       key: "Title:",
@@ -40,7 +57,7 @@ const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({
     },
     {
       key: "Item Price:",
-      value: "€" + price,
+      value: "€" + priceVariant,
     },
     {
       key: "Processing Fee:",
@@ -52,26 +69,40 @@ const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({
     },
     {
       key: "Total:",
-      value: "€" + totalPrice,
+      value: "€" + totalPrice.toFixed(2),
     },
   ];
-
+  useEffect(() => {
+    const handleGetBillingAddress = async () => {
+      if (!token) {
+        return;
+      }
+      localStorage.removeItem("editBilling");
+      await dispatch(GetBillingAddress({ token }));
+    };
+    handleGetBillingAddress();
+  }, []);
   const paymentMethod = localStorage.getItem("formDataPayment");
-  const billingAddress = localStorage.getItem("BillingAddress");
+
   const token = localStorage.getItem("token");
 
   const onClickApprove = () => {
-    if (!paymentMethod) {
+    console.log(billingAddress);
+
+    if (!billingMethod) {
       setIsPayment(true);
     }
     if (!billingAddress) {
       setIsBillingAddress(true);
     }
-    if (billingAddress && paymentMethod) {
+    if (billingAddress && billingMethod) {
       setIsApprove(true);
     }
   };
   const onClickEditBills = () => {
+    if (billingAddress) {
+      localStorage.setItem("editBilling", JSON.stringify(billingAddress));
+    }
     setIsBillingAddress(true);
   };
   const onClickPayment = () => {
@@ -85,8 +116,10 @@ const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({
         const productData = {
           title: title,
           size: size,
-          price: price,
+          price: priceVariant,
           img: img,
+          brand: brand,
+          sku: sku,
         };
 
         console.log("data", productData);
@@ -119,6 +152,9 @@ const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({
           size: size,
           price: price,
           img: img,
+          bidVariant: bidVariant,
+          brand: brand,
+          sku: sku,
         };
 
         console.log("data", productData);
@@ -152,8 +188,11 @@ const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({
   return (
     <div className="px-7">
       {isBillingAddress ? (
-        <BillingAddress setBills={() => setIsBillingAddress(false)} />
-      ) : isPayment ? (
+        <AddShippingForm
+          version="BillingAddress"
+          setIsOpen={setIsBillingAddress}
+        />
+      ) : billingAddress && billingAddress.firstName && isPayment ? (
         <PaymentMethod setPayment={() => setIsPayment(false)} />
       ) : (
         <>
@@ -173,7 +212,8 @@ const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({
             </ul>
           </div>
           <div className="mb-5 flex w-full justify-between rounded-lg bg-white px-4 py-3">
-            <span>Billing Address</span>
+            <span>{`Billing Address:  ${billingAddress ? billingAddress.firstName.length > 1 && billingAddress.country + " " + billingAddress.city + " " + billingAddress.address : ""}`}</span>
+
             <button
               onClick={onClickEditBills}
               className="text-sm font-semibold text-[#006340]"
@@ -181,8 +221,12 @@ const ApprovePurchase: React.FC<ApprovePurchaseProps> = ({
               Edit
             </button>
           </div>
-          <div className="mb-10 flex w-full justify-between rounded-lg bg-white px-4 py-3">
-            <span>Payment method</span>
+          <div className="mb-8 flex w-full justify-between rounded-lg bg-white px-4 py-3">
+            <span>
+              {`Payment method: ${
+                billingMethod ? billingMethod.cardNumber : ""
+              }`}
+            </span>
             <button
               onClick={onClickPayment}
               className="text-sm font-semibold text-[#006340]"
