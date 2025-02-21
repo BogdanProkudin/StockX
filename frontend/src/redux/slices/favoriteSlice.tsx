@@ -15,7 +15,7 @@ interface addToList {
   productData: productDataType;
 }
 interface IinitialState {
-  favoriteList: { titleList: string; data: [] }[];
+  favoriteList: { titleList: string; data: productDataType[] }[];
   favoriteListStatus: fetchRequest;
   oneListStatus: fetchRequest;
   oneList: { titleList: string; data: productDataType[] };
