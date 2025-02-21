@@ -1,11 +1,12 @@
-import React, { useState } from "react";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import React, { useEffect, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 import { setRedirectFromMainPage } from "../../../redux/slices/searchSlice";
-import { useAppDispatch } from "../../../redux/hook";
+import { useAppDispatch, useAppSelector } from "../../../redux/hook";
 import { variants } from "../../FullProduct/SizePopUp";
 import FavoriteModal from "../../Modals/FavoriteModal";
+import { fetchFavoriteList } from "../../../redux/slices/favoriteSlice";
+import { Heart } from "lucide-react";
 
 interface ProductCardProps {
   id?: string;
@@ -24,7 +25,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
   avg_price,
   min_price,
 }) => {
+  const { favoriteList } = useAppSelector((state) => state.favoriteSlice);
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const [isFav, setIsFav] = useState(false);
   const onClickFavorite = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (variants.length > 1) {
       setIsOpenModal(true);
@@ -41,7 +44,16 @@ const ProductCard: React.FC<ProductCardProps> = ({
     navigate(`/${title}`);
     console.log("click");
   };
-
+  useEffect(() => {
+    dispatch(fetchFavoriteList());
+  }, [dispatch]);
+  useEffect(() => {
+    if (favoriteList.length > 0 && favoriteList[0]?.data) {
+      setIsFav(favoriteList[0].data.some((item) => item.id === id));
+    } else {
+      setIsFav(false);
+    }
+  }, [favoriteList, id]);
   return (
     <>
       {isOpenModal && (
@@ -63,7 +75,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           onClick={onClickFavorite}
           className="z-15 absolute right-5 rounded-full p-1 transition-all duration-300 ease-in-out hover:bg-gray-100"
         >
-          <FavoriteBorderIcon />
+          <Heart size={19} fill={isFav ? "black" : "none"} />
         </button>
         <img
           className="h-[140px] min-h-[140px] w-[160px] p-4"
