@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 import { setRedirectFromMainPage } from "../../../redux/slices/searchSlice";
@@ -25,9 +25,13 @@ const ProductCard: React.FC<ProductCardProps> = ({
   avg_price,
   min_price,
 }) => {
-  const { favoriteList } = useAppSelector((state) => state.favoriteSlice);
+  const { favoriteList, productAdded } = useAppSelector(
+    (state) => state.favoriteSlice,
+  );
+
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isFav, setIsFav] = useState(false);
+  const firstRender = useRef(true);
   const onClickFavorite = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (variants.length > 1) {
       setIsOpenModal(true);
@@ -45,8 +49,11 @@ const ProductCard: React.FC<ProductCardProps> = ({
     console.log("click");
   };
   useEffect(() => {
-    dispatch(fetchFavoriteList());
-  }, [dispatch]);
+    if (firstRender.current || productAdded.checked) {
+      dispatch(fetchFavoriteList());
+    }
+    firstRender.current = false;
+  }, [dispatch, productAdded]);
   useEffect(() => {
     if (favoriteList.length > 0 && favoriteList[0]?.data) {
       setIsFav(favoriteList[0].data.some((item) => item.id === id));

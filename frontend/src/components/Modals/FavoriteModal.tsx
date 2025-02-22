@@ -43,12 +43,10 @@ const FavoriteModal: React.FC<Imodal> = ({
 
   useEffect(() => {
     if (!variants) return;
-
     const sortedCopy = [...variants];
     sortedCopy.sort(
       (a, b) => sizeOrder.indexOf(a.size) - sizeOrder.indexOf(b.size),
     );
-
     const sorted = sortedCopy.some((el) => el.size.includes("Y"))
       ? sortedCopy.sort(
           (big, small) =>
@@ -94,6 +92,7 @@ const FavoriteModal: React.FC<Imodal> = ({
   const onOpenSelectList = () => {
     setIsOpened(!isOpened);
   };
+  console.log(favoriteList);
 
   const lists = selectedList.filter((el) => el !== "All Favorites").join(", ");
 

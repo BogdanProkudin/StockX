@@ -6,7 +6,7 @@ import { Outlet, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import NotFound from "../pages/NotFound";
-import Home from "../pages/Home";
+
 import { useAppSelector } from "../redux/hook";
 import Footer from "../components/Footer/Footer";
 
@@ -48,7 +48,6 @@ const ProductPageLayout = () => {
           return;
         }
         const parsedData = JSON.parse(data).data[0];
-        console.log(parsedData, "daga");
 
         if (parsedData.length === 0 || data.length === 0) {
           throw new Error("Product not found");
@@ -117,8 +116,6 @@ const ProductPageLayout = () => {
     }
   }, [title, isRedirectFromHome]);
 
-  console.log(product);
-
   if (error) {
     console.log("error", error);
 
@@ -140,6 +137,7 @@ const ProductPageLayout = () => {
           <Outlet context={{ product: product, isLoading: isLoading }} />
         </div>
       )}
+      {!isRedirectFromHome && product && <Footer />}
     </div>
   );
 };
