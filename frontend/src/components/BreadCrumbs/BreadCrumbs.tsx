@@ -1,22 +1,43 @@
 import { CirclePlus, Heart, Share } from "lucide-react";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../redux/hook";
+import { fetchFavoriteList } from "../../redux/slices/favoriteSlice";
 
 interface BreadCrumbsProps {
   brand: string;
   category: string;
   title: string;
-
+  id: string;
   slug: string;
 }
 const BreadCrumbs: React.FC<BreadCrumbsProps> = ({
   category,
   brand,
   title,
-
+  id,
   slug,
 }) => {
+  const dispatch = useAppDispatch();
+  const firstRender = useRef(true);
+  const { productAdded, favoriteList } = useAppSelector(
+    (state) => state.favoriteSlice,
+  );
   const type = category.charAt(0).toUpperCase() + category.slice(1);
+  const [isFav, setIsFav] = useState(false);
+  useEffect(() => {
+    if (firstRender.current || productAdded.checked) {
+      dispatch(fetchFavoriteList());
+    }
+    firstRender.current = false;
+  }, [dispatch, productAdded]);
+  useEffect(() => {
+    if (favoriteList.length > 0 && favoriteList[0]?.data) {
+      setIsFav(favoriteList[0].data.some((item) => item.id === id));
+    } else {
+      setIsFav(false);
+    }
+  }, [favoriteList, id]);
   const breadCrumbArr = [
     {
       link: "/",
@@ -57,7 +78,11 @@ const BreadCrumbs: React.FC<BreadCrumbsProps> = ({
       <div className="text-[13px]">{breadcrumbs}</div>
       <div className="flex items-center gap-3">
         <CirclePlus className="cursor-pointer" size={22} />
-        <Heart className="cursor-pointer" size={22} />
+        <Heart
+          fill={isFav ? "black" : "none"}
+          className="cursor-pointer"
+          size={22}
+        />
         <Share className="cursor-pointer" size={22} />
       </div>
     </div>

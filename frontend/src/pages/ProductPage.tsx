@@ -17,9 +17,10 @@ import { imageNotFound } from "../assets/images/imageNotFound";
 import SellBlock from "../components/FullProduct/SellBlock";
 import InfoBlockSkeleton from "../components/FullProduct/Skeletons/InfoBlockSkeleton";
 import SizeSkeleton from "../components/FullProduct/Skeletons/SizeSkeleton";
+import Footer from "../components/Footer/Footer";
 
 const FullProduct = () => {
-  const { product, isLoading } = useOutletContext<OutletProductPageProps>(); //это данные с лайаута
+  const { product, isLoading } = useOutletContext<OutletProductPageProps>();
   const [sellVisible, setSellVisible] = useState(false);
   const [sellPrice, setSellPrice] = useState(0);
 
@@ -34,6 +35,7 @@ const FullProduct = () => {
         <>
           {product && product.category && (
             <BreadCrumbs
+              id={product.id}
               brand={product.brand}
               title={product.title}
               category={product.category}
