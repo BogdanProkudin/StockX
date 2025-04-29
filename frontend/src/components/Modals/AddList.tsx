@@ -17,9 +17,12 @@ const AddList: React.FC<addListProps> = ({ selectedList, setSelectedList }) => {
     const list = favoriteList.find((el) => el.titleList === value);
     if (!list) {
       dispatch(createNewList(value));
+      setSelectedList([...selectedList, value]);
       setValue("");
     } else {
-      setError(`The list with name:${value} already exist. Create another one`);
+      setError(
+        `The list with name: ${value} already exist. Create another one`,
+      );
     }
   };
   const onClickAddToList = (list: string) => {
@@ -31,11 +34,17 @@ const AddList: React.FC<addListProps> = ({ selectedList, setSelectedList }) => {
   };
   return (
     <div className="mt-2 w-full rounded-xl px-2 py-1 shadow-md">
+      {error && <span className="mb-1 text-sm text-red-500">{error}</span>}
       <div className="flex items-center gap-3">
         <input
           onChange={(e) => setValue(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              onClickCreateList();
+            }
+          }}
           value={value}
-          className="w-4/5 rounded-lg border px-3 py-2 outline-none"
+          className={`w-4/5 rounded-lg border px-3 py-2 outline-none ${error && "border-red-500"}`}
           type="text"
           placeholder="Create a list"
         />
@@ -47,12 +56,12 @@ const AddList: React.FC<addListProps> = ({ selectedList, setSelectedList }) => {
           Create
         </button>
       </div>
-      {error && <span>{error}</span>}
+
       <ul className="mt-3 max-h-[135px] overflow-y-auto">
         <li className="my-2 cursor-not-allowed opacity-60">
           <input
             className="mr-2 cursor-not-allowed"
-            checked
+            defaultChecked
             disabled
             type="checkbox"
           />
@@ -65,8 +74,9 @@ const AddList: React.FC<addListProps> = ({ selectedList, setSelectedList }) => {
             key={id}
           >
             <input
-              className="mr-2"
+              className="mr-2 cursor-pointer"
               checked={selectedList.includes(obj.titleList)}
+              onChange={() => onClickAddToList(obj.titleList)}
               type="checkbox"
             />
             {obj.titleList}

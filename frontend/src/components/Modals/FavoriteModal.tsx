@@ -42,16 +42,11 @@ const FavoriteModal: React.FC<Imodal> = ({
   const [isOpened, setIsOpened] = useState<boolean>(false);
 
   useEffect(() => {
-    dispatch(fetchFavoriteList());
-  }, []);
-  useEffect(() => {
     if (!variants) return;
-
     const sortedCopy = [...variants];
     sortedCopy.sort(
       (a, b) => sizeOrder.indexOf(a.size) - sizeOrder.indexOf(b.size),
     );
-
     const sorted = sortedCopy.some((el) => el.size.includes("Y"))
       ? sortedCopy.sort(
           (big, small) =>
@@ -97,11 +92,9 @@ const FavoriteModal: React.FC<Imodal> = ({
   const onOpenSelectList = () => {
     setIsOpened(!isOpened);
   };
-  console.log("lists", selectedList.length);
-  console.log("size", selectedSize.length);
-  console.log("favoriteList", favoriteList);
+  console.log(favoriteList);
 
-  const lists = selectedList.map((el) => el).join(", ");
+  const lists = selectedList.filter((el) => el !== "All Favorites").join(", ");
 
   const onClickConfirm = () => {
     const productData = {
@@ -185,7 +178,10 @@ const FavoriteModal: React.FC<Imodal> = ({
           )}
         </div>
         <div className="mt-2 flex items-center justify-between border-t border-t-[#a4a4a462] px-5 py-4">
-          <button className="rounded-3xl border border-black px-4 py-1 transition-all duration-200 ease-in-out hover:bg-black hover:text-white">
+          <button
+            onClick={closeModal}
+            className="rounded-3xl border border-black px-4 py-1 transition-all duration-200 ease-in-out hover:bg-black hover:text-white"
+          >
             Cancel
           </button>
           <button
