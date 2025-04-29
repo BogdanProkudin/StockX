@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const ListSchema = new mongoose.Schema({
-  titleList: { type: String, required: true, unique: true },
+  titleList: { type: String, required: true },
   data: { type: Array, default: [] },
 });
 
